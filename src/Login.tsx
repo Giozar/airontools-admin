@@ -4,6 +4,8 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from './App';
 import { UserDataBackend, transformUserData } from './adapter';
+import './Login.css';
+import { Navigate } from 'react-router-dom';
 
 interface LoginResponse {
   token: string;
@@ -21,6 +23,15 @@ interface ValidationError{
   response: string;
   data: string;
   message: string[];
+}
+
+function HeaderLogin(){
+  return(
+    <header>
+      <img src={aironLogo} alt='logo de airon tools'></img>
+      <h1>Administrador de Herramientas AironTools</h1>
+    </header>
+  );
 }
 
 function ErrorLogin({message} : {message : string}){
@@ -48,6 +59,7 @@ function Login(){
             user.id = decodedToken.id;
 
             authContext?.setAuth({ isAuthenticated: true, user: transformUserData(user) });
+             
           } catch (error) {
             if (!axios.isAxiosError<ValidationError>(error)) {
               console.error('Login failed', error);
@@ -63,9 +75,12 @@ function Login(){
               setErrorLog({isError:true,messageError:errorMessage.join(', ')});      
           }
     }
-    
+    if (authContext?.isAuthenticated){
+      return <Navigate to='/home'/>;
+    }
     return( 
     <>
+    <HeaderLogin/>
     { errorLog.isError && <ErrorLogin message={errorLog.messageError}/>}
     <div className='login'>
       <form onSubmit={handleLogin}>
