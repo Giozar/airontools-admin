@@ -8,7 +8,7 @@ function Home(){
     <h1>Bienvenido </h1>
     ID: {authContext?.user?.id}
     <br></br>
-    USERNAME: {authContext?.user?.fullName}
+    USERNAME: {authContext?.user?.name}
     <br></br>
     Roles: {authContext?.user?.roles}
     

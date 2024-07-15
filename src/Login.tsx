@@ -3,24 +3,19 @@ import aironLogo from '/vite.svg'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from './App';
+import { UserDataBackend, transformUserData } from './adapter';
 
 interface LoginResponse {
-    token: string;
-    user: UserData;
-  }
-  
+  token: string;
+  user: UserDataBackend;
+}
+
 interface DecodedToken {
     id: string;
     iat: number;
     exp: number;
 }
 
-interface UserData{
-  id: string;
-  email: string;
-  fullName: string;
-  roles: string[];
-}
 interface ValidationError{
   error: string;
   response: string;
@@ -52,7 +47,7 @@ function Login(){
 
             user.id = decodedToken.id;
 
-            authContext?.setAuth({ isAuthenticated: true, user: user });
+            authContext?.setAuth({ isAuthenticated: true, user: transformUserData(user) });
           } catch (error) {
             if (!axios.isAxiosError<ValidationError>(error)) {
               console.error('Login failed', error);
@@ -60,7 +55,7 @@ function Login(){
             }
             if(!error.response)
               return;
-            
+
             const errorMessage = error.response.data.message;
             if (typeof errorMessage === "string")
               setErrorLog({isError:true,messageError:errorMessage});
