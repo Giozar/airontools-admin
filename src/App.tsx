@@ -1,35 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, createContext} from 'react'
+
+import aironLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+//Se importan las rutas de los componentes
+import Login from './Login';
+import Home from './Bienvenida';
+import React from 'react';
 
+//Esta interfaz se encarga de guardar el usuario y decir si está logeado o no
+interface AuthContextType {
+  isAuthenticated: boolean;
+  user: User | null;
+  setAuth: (auth: { isAuthenticated: boolean; user: User | null }) => void;
+}
+//Esta es la interfaz de usuario y se encarga de guardar caracteristicas
+interface User {
+  id: string;
+  email: string;
+  fullName: string;
+  roles: string[];
+}
+//Crea el contexto de la aplicación, funciona como una variable global
+//Que guarda el usuario si esta logeado o no
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+//Es donde está el titulo de la página, esto se puede cambiar de lugar o cambiar
+function Header(){
+  return(
+    <header>
+      <img src={aironLogo} alt='logo de airon tools'></img>
+      <h1>Administrador de Herramientas AironTools</h1>
+    </header>
+  );
+}
+
+function App() {
+  //El estado inicial es que no hay usuario
+  const [auth, setAuth] = useState<{ isAuthenticated: boolean; user: User | null }>({
+    isAuthenticated: false,
+    user: null,
+  });
+  //Por ahora solo muestra login o home, esto se puede cambiar en un futuro
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+     <AuthContext.Provider value={{ ... auth, setAuth }}>
+        <Header/>
+        <PrivateRoute Component={Home}/>
+      </AuthContext.Provider>
     </>
-  )
+  );
+}
+//Esta funcion puede ser redundante pero es para mostrar login o home dependiendo
+function PrivateRoute({ Component }: { Component: React.ComponentType }) {
+  const authContext = React.useContext(AuthContext);
+
+  if (!authContext) return null;
+
+  return authContext.isAuthenticated ? <Component /> : <Login/>;
 }
 
 export default App
