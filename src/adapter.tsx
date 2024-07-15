@@ -1,4 +1,52 @@
 /* Este adaptador traduce/transforma los datos que vienen de backend a datos que vienen de frontend
 Cada vez que haya un cambio en el backend de algun nombre como 'name' se debe de cambiar aquí y no en todo el código
-TODO: implementar adaptador o mapeo de datos
 */
+
+export interface UserDataBackend {
+    id: string;
+    email: string;
+    fullName: string;
+    roles: string[];
+}
+
+export interface UserDataFrontend{
+    id: string;
+    email: string;
+    name: string;
+    roles: string[];
+}
+
+// el mapeo de los datos de usuario
+const userMapping: Record<keyof UserDataBackend, keyof UserDataFrontend> = {
+  id: "id",
+  email: "email",
+  fullName: "name",
+  roles: "roles",
+};
+
+//Transform data generico, este se podra usar para transformar otros datos que vengan del backend
+const transformData = <T extends object, U extends object>(
+    data: T,
+    mapping: Record<keyof T, keyof U>
+  ): Partial<U> => {
+    const transformedData = {} as Partial<U>;
+  
+    (Object.keys(data) as Array<keyof T>).forEach(key => {
+      const mappedKey = mapping[key];
+      if (mappedKey) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        transformedData[mappedKey] = data[key] as any; 
+      } else {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (transformedData as any)[key] = data[key]; // Conserva claves no mapeadas
+      }
+    });
+  
+    return transformedData;
+  };
+  
+// Funcion especifica para transformar datos de usuario
+export const transformUserData = (data: UserDataBackend): UserDataFrontend => {
+    return transformData<UserDataBackend, UserDataFrontend>(data, userMapping) as UserDataFrontend;
+  };
+

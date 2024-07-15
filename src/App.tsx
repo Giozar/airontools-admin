@@ -1,4 +1,5 @@
 import { useState, createContext} from 'react'
+import { UserDataFrontend} from './adapter';
 
 import aironLogo from '/vite.svg'
 import './App.css'
@@ -11,15 +12,8 @@ import React from 'react';
 //Esta interfaz se encarga de guardar el usuario y decir si está logeado o no
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: User | null;
-  setAuth: (auth: { isAuthenticated: boolean; user: User | null }) => void;
-}
-//Esta es la interfaz de usuario y se encarga de guardar caracteristicas
-interface User {
-  id: string;
-  email: string;
-  fullName: string;
-  roles: string[];
+  user: UserDataFrontend | null;
+  setAuth: (auth: { isAuthenticated: boolean; user: UserDataFrontend | null }) => void;
 }
 //Crea el contexto de la aplicación, funciona como una variable global
 //Que guarda el usuario si esta logeado o no
@@ -37,7 +31,7 @@ function Header(){
 
 function App() {
   //El estado inicial es que no hay usuario
-  const [auth, setAuth] = useState<{ isAuthenticated: boolean; user: User | null }>({
+  const [auth, setAuth] = useState<{ isAuthenticated: boolean; user: UserDataFrontend | null }>({
     isAuthenticated: false,
     user: null,
   });
