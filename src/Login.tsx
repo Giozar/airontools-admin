@@ -21,11 +21,24 @@ interface UserData{
   fullName: string;
   roles: string[];
 }
+interface ValidationError{
+  error: string;
+  response: string;
+  data: string;
+  message: string[];
+}
+
+function ErrorLogin({message} : {message : string}){
+  return (<p className='errorLogin'>{message}</p>);
+
+}
 
 function Login(){
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const authContext = useContext(AuthContext);
+    const [errorLog, setErrorLog] = useState({isError:false,messageError:''});
+
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,20 +49,35 @@ function Login(){
 
             localStorage.setItem('token', token);
             const decodedToken = jwtDecode<DecodedToken>(token);
-            //Obtiene los datos del usuario y los guarda
-            
+
             user.id = decodedToken.id;
 
             authContext?.setAuth({ isAuthenticated: true, user: user });
           } catch (error) {
-            console.error('Login failed', error);
+            if (!axios.isAxiosError<ValidationError>(error)) {
+              console.error('Login failed', error);
+              return;
+            }
+            if(!error.response)
+              return;
+            
+            const errorMessage = error.response.data.message;
+            if (typeof errorMessage === "string")
+              setErrorLog({isError:true,messageError:errorMessage});
+            else
+              setErrorLog({isError:true,messageError:errorMessage.join(', ')});      
           }
     }
     
-    return( <div className='login'>
-      <img src={aironLogo} alt='logo de airon tools'></img>
-      <h2>Inicio de Sesión</h2>
+    return( 
+    <>
+    { errorLog.isError && <ErrorLogin message={errorLog.messageError}/>}
+    <div className='login'>
       <form onSubmit={handleLogin}>
+        
+        <img src={aironLogo} alt='logo de airon tools'></img>
+        <h2>Inicio de Sesión</h2>
+
         <label htmlFor="email">Correo electrónico</label>
         <input
           id='email'
@@ -68,10 +96,12 @@ function Login(){
           onChange={(e)=>setPassword((e.target.value))}
           required
         />
-        <label>¿No tiene una cuenta? Hable con el administrador.</label>
+        <p>¿No tiene una cuenta? Hable con el administrador.</p>
         <button type="submit">Entrar</button>
       </form>
-    </div>);
+    </div>
+    </>
+    );
   }
 
 export default Login;

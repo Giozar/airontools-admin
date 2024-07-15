@@ -19,31 +19,49 @@ header h1{
 }
 
 .login {
-  margin-top: 200px;
-  margin-left: 30vw;
-  width: 40%;
-}
-.login h2{
-  font-size: 2em;
-  margin: 0;
-  font-weight: normal;
-  border-bottom: 2px solid white;
+  margin-top: 60px;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
 }
 .login form{
   display: grid;
 }
+.errorLogin{
+  background-color: #d12e2ea6;
+  color: #ff9797;
+  padding: 15px;
+  border-radius: 20px;
+  text-align: center;
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+.login h2{
+  font-size: 2em;
+  margin-top: 0;
+  font-weight: normal;
+  border-bottom: 2px solid white;
+}
+
 .login form label{
   color: white;
-  font-size: medium;
-  padding: 20px 0;
+  font-size: large;
+  padding: 10px 0;
 }
 .login form input{
   background-color: white;
-  color: gray;
+  color: #18181B;
   padding: 15px;
-  border: 0px;
+  border: 2px solid white;
   border-radius: 20px;
   margin: 2px;
+}
+.login form input:focus{
+  background-color: #1196E6;
+  
 }
 .login form button{
   background-color: #1196E6;
