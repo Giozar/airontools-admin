@@ -2,7 +2,7 @@ import { useState, createContext} from 'react'
 import { UserDataFrontend} from './adapter';
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Login from './Login';
-import Home from './Bienvenida';
+import Home from './MainPage';
 import React from 'react';
 
 
