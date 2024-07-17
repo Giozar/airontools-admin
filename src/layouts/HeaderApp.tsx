@@ -4,9 +4,9 @@ TODO: hacer que el css sea generico para todas las paginas
 TODO: que el darkmode se guarde en un contexto*/
 import aironLogo from '/vite.svg';
 import { useContext, useState } from 'react';
-import { AuthContext } from './App';
+import { AuthContext } from '../App';
 
-function HeaderApp(){
+function HeaderApp({ruta}:{ruta:string}){
     const [isDarkMode, setIsDarkMode] = useState(false);
     const authContext = useContext(AuthContext);
 
@@ -17,11 +17,11 @@ function HeaderApp(){
     return(
         <header>
             {/*Aqui debe de estar el componente breadcrumbs cuando se haga xd*/}
-            <h2>Acciones</h2>
+            <h2>{ruta}</h2>
             {/*Aqui debe de estar el componente breadcrumbs cuando se haga xd*/}
             <div className='userinfo'>
                 <div className='userpic' style={{ backgroundImage: `url(${aironLogo})` }}></div>
-                <p>{authContext?.user?.name}</p>
+                <p>{authContext?.user?.name} <span>({authContext?.user?.roles})</span></p>
                 <button onClick={toggleDarkMode}>
                     {isDarkMode ? 
                     //SVG de sol

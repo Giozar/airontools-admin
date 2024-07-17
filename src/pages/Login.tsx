@@ -2,9 +2,9 @@ import { useContext, useState } from 'react'
 import aironLogo from '/vite.svg'
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { AuthContext } from './App';
-import { UserDataBackend, transformUserData } from './adapter';
-import './Login.css';
+import { AuthContext } from '../App';
+import { UserDataBackend, transformUserData } from '../adapter';
+import './css/Login.css';
 import { Navigate } from 'react-router-dom';
 
 interface LoginResponse {
@@ -56,7 +56,7 @@ function Login(){
             localStorage.setItem('token', token);
             const decodedToken = jwtDecode<DecodedToken>(token);
 
-            user.id = decodedToken.id;
+            user._id = decodedToken.id;
 
             authContext?.setAuth({ isAuthenticated: true, user: transformUserData(user) });
              

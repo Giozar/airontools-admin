@@ -2,7 +2,7 @@
 TODO: que tenga un css consistente durante todas las paginas
 */
 
-import ComboBox from './ComboBox';
+import ComboBox from '../components/ComboBox';
 import aironLogo from '/vite.svg';
 
 

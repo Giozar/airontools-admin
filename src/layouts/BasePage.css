@@ -139,6 +139,10 @@ header {
     margin: 0 1rem;
 }
 
+.content .userinfo p span{
+    color:yellow;
+}
+
 .content .userinfo button {
     padding: 0.5rem;
     border-radius: 50%;

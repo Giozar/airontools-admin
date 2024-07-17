@@ -3,7 +3,7 @@ Cada vez que haya un cambio en el backend de algun nombre como 'name' se debe de
 */
 
 export interface UserDataBackend {
-    id: string;
+    _id: string;
     email: string;
     fullName: string;
     roles: string[];
@@ -11,6 +11,7 @@ export interface UserDataBackend {
 
 export interface UserDataFrontend{
     id: string;
+    image: string;
     email: string;
     name: string;
     roles: string[];
@@ -18,7 +19,7 @@ export interface UserDataFrontend{
 
 // el mapeo de los datos de usuario
 const userMapping: Record<keyof UserDataBackend, keyof UserDataFrontend> = {
-  id: "id",
+  _id: "id",
   email: "email",
   fullName: "name",
   roles: "roles",

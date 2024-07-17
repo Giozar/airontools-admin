@@ -1,0 +1,66 @@
+.content main h3 span{
+    padding-right: 100px;
+}
+.content main h3{
+    font-size: xx-large;
+    color: white;
+    border-bottom: 2px solid white;
+    width: fit-content;
+}
+
+.content main .options.users .card{
+    justify-content: space-between;
+    flex-direction: row;
+    height: 4rem;
+}
+
+.userlist h2{
+    color: white;
+    border-bottom: 1px solid white;
+}
+.userlist input{
+    color: #102e42;
+    background-color: aliceblue;
+    padding: 10px;
+    border: 0px;
+    border-radius: 10px;
+}
+.userlist ul{
+    list-style-type: none;
+    background-color: #046eb548;
+    color: white;
+    padding: 0;
+}
+.userlist ul .title{
+    background-color: #046eb556;
+}
+.userlist ul li{
+    display: grid;
+    margin: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) repeat(3,130px);
+    border-bottom: 2px solid #102e42;
+    overflow: hidden;
+}
+.userlist ul li p,img,button{
+    margin: auto;
+    padding: 10px 0;
+}
+
+.userlist ul li p{
+    word-break: break-all;
+}
+.userlist ul li button{
+    width: fit-content;
+    border: 0px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.userlist ul li .delete{
+    background-color: rgba(255, 0, 0, 0.521);
+}
+.userlist ul li .edit{
+    background-color: rgba(255, 166, 0, 0.521);
+}
+.userlist ul li .editrol{
+    background-color: rgba(255, 0, 157, 0.521);
+}
