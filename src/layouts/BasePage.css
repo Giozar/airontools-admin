@@ -103,6 +103,8 @@ header {
     align-items: center;
     background-color: #18181B;
     color: #F3F4F6;
+    top: 0;
+    position: sticky;
 }
 
 .content header {
