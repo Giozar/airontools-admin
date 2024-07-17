@@ -7,7 +7,6 @@ import { useState } from 'react';
 import '../css/UserOptionsCreate.css'
 import {transformUserDataBack, UserDataBackend } from '../../adapter';
 import axios from 'axios';
-import ComboBox from '../../components/ComboBox';
 
 interface registerResponse {
   token: string;
@@ -33,8 +32,8 @@ function CreateUserForm(){
   const [password,setPassword] = useState("");
   const [errorLog, setErrorLog] = useState({isError:false,messageError:''});
   const [successLog, setSuccessLog] = useState({ifSuccess:false,message:''});
-  const [selectedOption, setSelectedOption] = useState('Elige un rol'); 
-
+  const [role, setRole] = useState('Elige un rol'); 
+  const roleOptions = ["Editor", "Administrador","SuperAdministrador" ];
 
   const generatePassword = () =>{
     const charsetNumber = "0123456789";
@@ -59,10 +58,6 @@ function CreateUserForm(){
     setText("Añade una imagen");
     
   }
-  
-  const handleOptionSelected = (selectedOption: string) => {
-    setSelectedOption(selectedOption);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,6 +83,10 @@ function CreateUserForm(){
         else
           setErrorLog({isError:true,messageError:errorMessage.join(', ')});      
       }
+  }
+
+  function handleOptionChange(e: React.ChangeEvent<HTMLSelectElement>){
+    setRole(e.target.value);
   }
 
   return(<>
@@ -126,11 +125,20 @@ function CreateUserForm(){
         <input type='button' onClick={generatePassword} value="Generar contraseña"/>
         <p>{password}</p>
       </div>
-      <label>Rol:</label>
-      <ComboBox option={selectedOption} 
-      options = {["SuperAdministrador", "Administrador", "Editor"]}
-      onOptionSelected={handleOptionSelected}
-      />
+      <label htmlFor='options'>Rol:</label>
+    
+      <select
+        id="options"
+        value={role} 
+        onChange={handleOptionChange}
+      >
+        {roleOptions.map((option, index) => (
+          <option key={index} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+
       <button type="submit" value="Submit">Crear usuario</button>
     </form>
     </div>
@@ -157,50 +165,3 @@ function UserOptionCreate(){
     );
 }
 export default UserOptionCreate;
-/*
-function Login(){
-  const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
-  const authContext = useContext(AuthContext);
-  const [errorLog, setErrorLog] = useState({isError:false,messageError:''});
-
-
-  
-  if (authContext?.isAuthenticated){
-    return <Navigate to='/home'/>;
-  }
-  return( 
-  <>
-  <HeaderLogin/>
-  { errorLog.isError && <ErrorLogin message={errorLog.messageError}/>}
-  <div className='login'>
-    <form onSubmit={handleLogin}>
-      
-      <img src={aironLogo} alt='logo de airon tools'></img>
-      <h2>Inicio de Sesión</h2>
-
-      <label htmlFor="email">Correo electrónico</label>
-      <input
-        id='email'
-        type="email"
-        placeholder="Introduce tu correo electrónico"
-        value={email}
-        onChange={(e)=>setEmail((e.target.value))}
-        required
-      />
-      <label htmlFor="password">Contraseña</label>
-      <input
-        id='password'
-        type="password"
-        placeholder="Introduce tu Contraseña"
-        value={password}
-        onChange={(e)=>setPassword((e.target.value))}
-        required
-      />
-      <p>¿No tiene una cuenta? Hable con el administrador.</p>
-      <button type="submit">Entrar</button>
-    </form>
-  </div>
-  </>
-  );
-}*/

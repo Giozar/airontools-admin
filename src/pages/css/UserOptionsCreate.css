@@ -1,6 +1,7 @@
 .register{
     border-top: 1rem;
     display: flex;
+    color: white;
 }
 
 .register form{
@@ -54,6 +55,7 @@
     height: 20px;
     padding: 10px;
     border-radius: 10px;
+    color: black;
 }
 
 .register form .passwordgenerator input{
@@ -64,6 +66,7 @@
     margin-right: 1rem;
     cursor: pointer;
     transition: 100ms ease-in-out opacity;
+    color: white;
 }
 .register form .passwordgenerator input:hover{
     opacity: 0.60;
@@ -77,38 +80,20 @@
     border: 0px;   
     border-bottom: 4px #093f63 solid;
 }
-.register form .combobox{
+.register form select{
     margin: 0;
     border: 0px;
     padding: 10px;
-    margin-bottom: -15px;
+    background-color: #046DB5;
+    border-radius: 15px;
 }
-.register form .comboboxOptions{
-    margin: 0;
-    padding: 0;
-}
-.register form .comboboxOptions li{
+
+.register form select option{
     background-color: #046DB5;
     opacity: 0.7;
     padding: 5px;
-    margin-right: 30px;
-    margin-left: 10px;
     border-bottom: 1px #093f63 solid;
 }
-.register form .comboboxOptions li a{
-    margin: 0;
-    border: 0px;
-    padding: 10px;
-    text-decoration: none;
-    color: white;
-    font-size: small;
-    cursor: pointer;
-    transition: 100ms ease-in-out opacity;
-}
-.register form .comboboxOptions li:hover{
-    opacity: 1;
-}
-
 
 
 .success{
