@@ -64,3 +64,14 @@
 .userlist ul li .editrol{
     background-color: rgba(255, 0, 157, 0.521);
 }
+@media (max-width: 1024px) {
+    .userlist ul li{
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+    .userlist ul li p{
+        font-size: small;
+    }
+    .userlist ul li button{
+        padding: 5px;
+    }
+}
