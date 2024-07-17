@@ -82,7 +82,7 @@ function ReturnUsers() {
               
               <button className='editrol' onClick={() => handleEditRol(user.id)}>
                 {/*ICONO DE EDITAR ROLES*/}
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 21a8 8 0 0 1 10.434-7.62"/>
                 <circle cx="10" cy="8" r="5"/>
                 <circle cx="18" cy="18" r="3"/>
@@ -99,7 +99,7 @@ function ReturnUsers() {
               
               <button className='edit' onClick={() => handleEdit(user.id)}>
                 {/*ICONO DE EDITAR*/}
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M11.5 15H7a4 4 0 0 0-4 4v2"/>
                 <path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
                 <circle cx="10" cy="7" r="4"/>
@@ -108,7 +108,7 @@ function ReturnUsers() {
 
               <button className='delete'  onClick={() => handleDelete(user.id)}> 
                 {/*ICONO DE BASURA*/}
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
                 <line x1="10" x2="10" y1="11" y2="17"/>

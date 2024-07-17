@@ -41,11 +41,13 @@
     border-bottom: 2px solid #102e42;
     overflow: hidden;
 }
-.userlist ul li p,img,button{
+.userlist ul li p,img{
     margin: auto;
     padding: 10px 0;
 }
-
+.userlist ul li p:first-child{
+    padding-left: 15px;
+}
 .userlist ul li p{
     word-break: break-all;
 }
@@ -54,6 +56,7 @@
     border: 0px;
     padding: 10px;
     border-radius: 10px;
+    margin: auto;
 }
 .userlist ul li .delete{
     background-color: rgba(255, 0, 0, 0.521);
