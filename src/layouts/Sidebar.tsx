@@ -21,10 +21,14 @@ function Sidebar(){
                     </svg>
                     Notificaciones
                 </a>
-                <ComboBox option='Productos' />
-                <ComboBox option='Empleados' />
-                <ComboBox option='Especificaciones' />
-                <ComboBox option='Roles' />
+                <ComboBox option='Herramientas' 
+                options = {["Ver", "Crear", "Actualizar", "Eliminar"].map((val)=>val+' Herramientas')}/>
+                <ComboBox option='Empleados'
+                options = {["Ver", "Crear", "Actualizar", "Eliminar"].map((val)=>val+' Empleados')} />
+                <ComboBox option='Especificaciones'
+                options = {["Ver", "Crear", "Actualizar", "Eliminar"].map((val)=>val+' Especificaciones')} />
+                <ComboBox option='Roles' 
+                options = {["Ver", "Crear", "Actualizar", "Eliminar"].map((val)=>val+' Roles')}/>
             </div>
             <div className="bottom">
                 <nav>
