@@ -29,16 +29,16 @@ function SuccessLogin({ message }: { message: string }) {
 }
 
 function CreateUserForm() {
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(""); /*TODO: Enviar petición de imagen archivo */
   const [text, setText] = useState("Añade una imagen");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("Elige un rol");
+  const [roles, setRoles] = useState("Elige un rol");
   const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
   const [successLog, setSuccessLog] = useState<FormError>({ isError: false, message: "" });
 
-  const roleOptions = ["Editor", "Administrador", "SuperAdministrador"];
+  const roleOptions = ["Editor", "Administrador", "SuperAdministrador"]; /* TODO: recuperar roles*/
 
   const generatePassword = () => {
     const charsetNumber = "0123456789";
@@ -76,13 +76,13 @@ function CreateUserForm() {
   };
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRole(e.target.value);
+    setRoles(e.target.value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post<RegisterResponse>("http://localhost:4000/auth/register", transformUserDataBack({ email, password, name, role }));
+      const response = await axios.post<RegisterResponse>("http://localhost:4000/auth/register", transformUserDataBack({ email, password, name, roles }));
       const { user } = response.data;
       console.log(user);
       setSuccessLog({ isError: true, message: "Usuario Creado Con Éxito" });
