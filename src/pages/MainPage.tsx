@@ -8,7 +8,7 @@ function ContentMainPage() {
     const location = useLocation();
     return (
         <BasePage>
-        <HeaderApp ruta="Acciones" />
+        <HeaderApp/>
         <main>
           <HeaderTitle title="Acciones" />
           <div className="options">

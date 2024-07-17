@@ -1,11 +1,15 @@
 import { useState } from "react";
 
-function ComboBox({ option }: { option: string }) {
+function ComboBox({ option, options,onOptionSelected }: { option: string,options : string[], onOptionSelected: (selectedOption: string) => void}) {
     const [isOpen, setIsOpen] = useState(false);
 
     function toggleOpen() {
         setIsOpen(!isOpen);
     }
+    function handleOptionClick(action: string) {
+        onOptionSelected(action); 
+        setIsOpen(false);
+      }
     return (
     <>
         <button onClick={toggleOpen} className='combobox'>
@@ -18,13 +22,14 @@ function ComboBox({ option }: { option: string }) {
         </button>
         {isOpen && (
             <ul className='comboboxOptions'>
-                {["Ver", "Crear", "Actualizar", "Eliminar"].map((action, index) => (
-                    <li key={index}><a href={`#${action} ${option}`}>{action} {option}</a></li>
+                {options.map((action, index) => (
+                    <li key={index} onClick={() => handleOptionClick(action)}>
+                        <a href={`#${action} ${option}`}>{action}</a>
+                    </li>
                 ))}
             </ul>
         )}
     </>
     );
 }
-
 export default ComboBox;

@@ -20,4 +20,8 @@ body {
 }
 button{
   cursor: pointer;
+  transition: 150ms ease-in-out opacity;
+}
+button:hover{
+  opacity: 0.60;
 }

@@ -103,6 +103,8 @@ header {
     align-items: center;
     background-color: #18181B;
     color: #F3F4F6;
+    top: 0;
+    position: sticky;
 }
 
 .content header {
@@ -115,7 +117,15 @@ header {
 .content header h2 {
     margin-left: 2.5rem;
 }
+.content header h2 span a{
+    color: white;
+    text-decoration: none;
+    text-transform: capitalize;
+}
 
+.content header h2 .separator{
+    padding: 10px;
+}
 .content .userinfo {
     display: flex;
     align-items: center;
