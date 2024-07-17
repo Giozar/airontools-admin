@@ -144,7 +144,7 @@ function CreateUserForm() {
 function ContentMainPage() {
   return (
     <BasePage>
-      <HeaderApp ruta="Acciones / Usuario / Crear Usuario" />
+      <HeaderApp />
       <main>
         <HeaderTitle title="Crear Usuario" />
         <CreateUserForm />

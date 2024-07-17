@@ -129,7 +129,7 @@ function ContentMainPage() {
     const location = useLocation();
     return (
         <BasePage>
-        <HeaderApp ruta="Acciones / Usuarios" />
+        <HeaderApp/>
         <main>
           <HeaderTitle title="Usuarios" />
           <div className='options users'>

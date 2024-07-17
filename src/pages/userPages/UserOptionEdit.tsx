@@ -8,7 +8,7 @@ function ContentMainPage() {
     //const location = useLocation();
     return (
         <BasePage>
-        <HeaderApp ruta="Acciones / Usuario / Editar Usuario" />
+        <HeaderApp/>
         <main>
           <HeaderTitle title="Editar Usuario" />
           <h1>ola soy editar</h1>
