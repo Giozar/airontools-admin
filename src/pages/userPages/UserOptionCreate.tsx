@@ -7,6 +7,7 @@ import axios from "axios";
 import "../css/UserOptionsCreate.css";
 import { useUserRoles } from "../../hooks/useUserRoles";
 import { UserRole } from "../../interfaces/UserRole";
+import FileUpload from "../../components/FileUpload";
 
 interface RegisterResponse {
   token: string;
@@ -31,8 +32,6 @@ function SuccessLogin({ message }: { message: string }) {
 }
 
 function CreateUserForm() {
-  const [file, setFile] = useState(""); /*TODO: Enviar petición de imagen archivo */
-  const [text, setText] = useState("Añade una imagen");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -54,13 +53,6 @@ function CreateUserForm() {
       newPassword += charsetMax.charAt(Math.floor(Math.random() * charsetMax.length));
     }
     setPassword(newPassword);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFile(URL.createObjectURL(e.target.files[0]));
-      setText("");
-    } else setText("Añade una imagen");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,13 +100,7 @@ function CreateUserForm() {
 
       <div className="register">
         <form onSubmit={handleSubmit}>
-          <div className="profileimage">
-            <div className="image" style={{ backgroundImage: `url(${file})` }}>
-              {text}
-            </div>
-            <input type="file" onChange={handleFileChange} />
-          </div>
-
+          <FileUpload />
           <label htmlFor="name">Nombre:</label>
           <input id="name" type="text" placeholder="Introduce tu nombre" value={name} onChange={handleInputChange} required />
 
