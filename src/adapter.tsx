@@ -4,7 +4,7 @@ Cada vez que haya un cambio en el backend de algun nombre como 'name' se debe de
 
 export interface UserDataBackend {
     _id: string;
-    image: string;
+    imageUrl: string;
     email: string;
     password : string;
     fullName: string;
@@ -13,7 +13,7 @@ export interface UserDataBackend {
 
 export interface UserDataFrontend{
     id?: string;
-    image?: string;
+    imageUrl?: string;
     email: string;
     password : string;
     name: string;
@@ -23,7 +23,7 @@ export interface UserDataFrontend{
 // el mapeo de los datos de usuario
 const userMapping: Record<keyof UserDataBackend, keyof UserDataFrontend> = {
   _id: "id",
-  image: "image",
+  imageUrl: "imageUrl",
   email: "email",
   password: "password",
   fullName: "name",
@@ -31,7 +31,7 @@ const userMapping: Record<keyof UserDataBackend, keyof UserDataFrontend> = {
 };
 const userMappingBack: Record<keyof UserDataFrontend,keyof UserDataBackend> = {
   id: "_id",
-  image: "image",
+  imageUrl: "imageUrl",
   email: "email",
   password: "password",
   name: "fullName",

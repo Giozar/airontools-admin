@@ -14,15 +14,20 @@ const useFileUpload = () => {
   };
 
   const handleFileUpload = async () => {
-    if (selectedFile) {
-      const url = await uploadFile(selectedFile);
-      setFileUrl(url);
-    }
+    await getFileUrl();
   };
+
+  const getFileUrl = async() => {
+    if (selectedFile) {
+        const url = await uploadFile(selectedFile);
+        setFileUrl(url);
+      }
+  }
 
   return {
     selectedFile,
     fileUrl,
+    getFileUrl,
     fileName,
     handleFileSelect,
     handleFileUpload,

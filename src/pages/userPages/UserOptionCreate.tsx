@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderApp from "../../layouts/HeaderApp";
 import BasePage from "../../layouts/BasePage";
 import HeaderTitle from "../../components/HeaderTitle";
@@ -33,6 +33,7 @@ function SuccessLogin({ message }: { message: string }) {
 
 function CreateUserForm() {
   const [email, setEmail] = useState("");
+  const [imageUrl, setImageUrl] = useState('');
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [roles, setRoles] = useState("Elige un rol");
@@ -40,6 +41,9 @@ function CreateUserForm() {
   const [successLog, setSuccessLog] = useState<FormError>({ isError: false, message: "" });
   
   const { userRoles: roleOptions } = useUserRoles(); /* recuperar roles */
+
+  useEffect(() => {
+  }, [imageUrl])
 
   const generatePassword = () => {
     const charsetNumber = "0123456789";
@@ -76,7 +80,7 @@ function CreateUserForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post<RegisterResponse>("http://localhost:4000/auth/register", transformUserDataBack({ email, password, name, roles }));
+      const response = await axios.post<RegisterResponse>("http://localhost:4000/auth/register", transformUserDataBack({ email, password, name, roles, imageUrl }));
       const { user } = response.data;
       console.log(user);
       setSuccessLog({ isError: true, message: "Usuario Creado Con Éxito" });
@@ -100,7 +104,7 @@ function CreateUserForm() {
 
       <div className="register">
         <form onSubmit={handleSubmit}>
-          <FileUpload />
+          <FileUpload setImageUrl={setImageUrl} />
           <label htmlFor="name">Nombre:</label>
           <input id="name" type="text" placeholder="Introduce tu nombre" value={name} onChange={handleInputChange} required />
 
