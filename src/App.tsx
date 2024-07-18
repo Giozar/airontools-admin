@@ -7,6 +7,7 @@ import UserOptions from './pages/userPages/UserOptions';
 import UserOptionCreate from './pages/userPages/UserOptionCreate';
 import UserOptionEdit from './pages/userPages/UserOptionEdit';
 import React from 'react';
+import UserOptionCreateRole from './pages/userPages/UserOptionCreateRole';
 
 
 
@@ -35,7 +36,8 @@ function App() {
             <Route element={<PrivateRouteOptionUser/>}>
             <Route path="/home/usuarios" element={<UserOptions/>}/> 
               <Route path="/home/usuarios/crear-usuario" element={<UserOptionCreate/>}/>  
-              <Route path="/home/usuarios/editar-usuario" element={<UserOptionEdit/>}/>    
+              <Route path="/home/usuarios/editar-usuario" element={<UserOptionEdit/>}/>
+              <Route path="/home/usuarios/crear-rol" element={<UserOptionCreateRole/>}/>
             </Route>
         </Route>
       </Routes>

@@ -34,7 +34,7 @@
     color: #046DB5;
 }
 
-.sidebar a {
+.sidebar a, .sidebar .comboboxOptions li span {
     display: flex;
     padding: 0.5rem;
     align-items: center;
@@ -46,7 +46,7 @@
     margin-right: 1rem;
 }
 
-.sidebar a:hover {
+.sidebar a:hover,.sidebar .comboboxOptions li span:hover  {
     background-color: #F3F4F6;
     color: black;
 }
@@ -55,6 +55,7 @@
     color: #F3F4F6;
     font-size: 1rem;
 }
+
 /* Estilos del combo box */
 .combobox {
     background-color: transparent;
@@ -91,7 +92,11 @@
     padding: 0.1rem;
     border-radius: 0.25rem;
 }
-
+.comboboxOptions li span{
+    color: white;
+    text-transform: capitalize;
+    cursor: pointer;
+}
 /* Estilos del contenido principal */
 .content {
     flex: 1 1 0%;

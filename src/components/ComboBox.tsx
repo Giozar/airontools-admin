@@ -1,14 +1,16 @@
 import { useState } from "react";
 
-function ComboBox({ option, options,onOptionSelected }: { option: string,options : string[], onOptionSelected: (selectedOption: string) => void}) {
+function ComboBox({ option, options,onOptionSelected }: { option: string,options : string[], onOptionSelected?: (selectedOption: string) => void}) {
     const [isOpen, setIsOpen] = useState(false);
 
     function toggleOpen() {
         setIsOpen(!isOpen);
     }
     function handleOptionClick(action: string) {
-        onOptionSelected(action); 
-        setIsOpen(false);
+        if(onOptionSelected){
+           onOptionSelected(action);
+           setIsOpen(false);
+        }
       }
     return (
     <>
@@ -24,7 +26,7 @@ function ComboBox({ option, options,onOptionSelected }: { option: string,options
             <ul className='comboboxOptions'>
                 {options.map((action, index) => (
                     <li key={index} onClick={() => handleOptionClick(action)}>
-                        <a href={`#${action} ${option}`}>{action}</a>
+                        <span>{action}</span>
                     </li>
                 ))}
             </ul>
