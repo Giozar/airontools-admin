@@ -4,7 +4,7 @@ TODO: que tenga un css consistente durante todas las paginas
 
 import { Link, useNavigate } from 'react-router-dom';
 import ComboBox from '../components/ComboBox';
-import aironLogo from '/vite.svg';
+import aironLogo from '/Logo-Blanco.png';
 import { AuthContext } from '../App';
 import { useContext } from 'react';
 

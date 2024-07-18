@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import aironLogo from '/vite.svg'
+import aironLogo from '/Logo-Blanco.png';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { AuthContext } from '../App';
