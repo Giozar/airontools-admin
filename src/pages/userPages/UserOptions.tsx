@@ -6,26 +6,77 @@ import ActionCard from '../../components/ActionCard';
 import HeaderTitle from '../../components/HeaderTitle';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { UserDataBackend,UserDataFrontend, transformUserData } from '../../adapter';
+import { UserDataBackend,UserDataFrontend, transformUserDataBack,transformUserData } from '../../adapter';
 import { useUserRoles } from '../../hooks/useUserRoles';
 import { UserRole } from '../../interfaces/UserRole';
-function RoleChangeModal(){
-  const [roles, setRoles] = useState('');
+
+interface RegisterResponse {
+  token: string;
+  user: UserDataBackend;
+}
+interface ValidationError {
+  message: string[];
+}
+interface FormError {
+  isError: boolean;
+  message: string;
+}
+function ErrorLogin({ message }: { message: string }) {
+  return <p className="errorLogin">{message}</p>;
+}
+
+function RoleChangeModal( {userToEdit, onCloseModal, onUpdateList}
+  :{userToEdit:UserDataFrontend, onCloseModal: () => void, onUpdateList: () => void}){
   const { userRoles: roleOptions } = useUserRoles();
+  const [roles, setRoles] = useState(userToEdit.roles);
+  const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRoles(e.target.value);
   };
-  return(<form>
-    <label htmlFor="options">Rol:</label>
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+   try {
+      const response = await axios.put<RegisterResponse>(`http://localhost:4000/auth/update/${userToEdit.id}`, transformUserDataBack({
+        ...userToEdit,
+        roles,
+      }));
+      const { user } = response.data;
+      console.log(user);
+      onUpdateList();
+      onCloseModal();
+    } catch (error) {
+      if (!axios.isAxiosError<ValidationError>(error)) {
+        console.error("Edition failed", error);
+        return;
+      }
+      console.log(userToEdit.id)
+      if (!error.response) return;
+      console.log(error);
+      const errorMessage = error.response.data.message;
+      const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
+      setErrorLog({ isError: true, message });
+    }
+  };
+  
+  return(<>
+  {errorLog.isError && <ErrorLogin message={errorLog.message} />}
+  <form onSubmit={handleSubmit}>
+
+  <label htmlFor="options">Rol:</label>
     <select id="options" value={roles} onChange={handleOptionChange}>
       {roleOptions.map((roleOption: UserRole, index) => (
         <option key={index} value={roleOption.name}>
           {roleOption.name}
         </option>
       ))}
+      
     </select>
+    <button type='submit'>Cambiar</button>
+  </form>
     
-  </form>);
+    
+  </>);
 }
 
 function DeletionModal({
@@ -88,6 +139,7 @@ function ReturnUsers() {
   const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null);
   const [showModalFor, setShowModalFor] = useState<string | null>(null);
   const [deletionMessage, setDeletionMessage] = useState<string | null>(null); // Nuevo state para el mensaje de eliminación
+  const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -106,7 +158,10 @@ function ReturnUsers() {
     };
 
     fetchUsers();
-  }, []);
+
+  }, [updateListFlag]);
+
+
   
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
@@ -144,7 +199,11 @@ function ReturnUsers() {
       
     }
   };
-
+  const handleUpdateList = () => {
+    // Cambia el estado para activar el useEffect
+    setUpdateListFlag(prevFlag => !prevFlag);
+  };
+  
   return (
     <div className='userlist'>
       <h2>Lista de usuarios</h2>
@@ -172,7 +231,7 @@ function ReturnUsers() {
             <img src={user.imageUrl} alt={user.name} style={{ width: '50px', borderRadius: '50%' }} />
             <p>{user.roles}</p>
             
-            <button className='editrol' onClick={() => setShowModalFor(user.id)}>
+            <button className='editrol' onClick={() => setShowModalFor(user.id || "")}>
               {/*ICONO DE EDITAR ROLES*/}
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 21a8 8 0 0 1 10.434-7.62" />
@@ -198,7 +257,7 @@ function ReturnUsers() {
               </svg>
             </button>
 
-            <button className='delete' onClick={() => setShowDeletionModalFor(user.id)}>
+            <button className='delete' onClick={() => setShowDeletionModalFor(user.id || "")}>
               {/*ICONO DE BASURA*/}
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
@@ -212,16 +271,18 @@ function ReturnUsers() {
               <DeletionModal
                 userid={user.id}
                 username={user.name}
-                userimage={user.imageUrl}
+                userimage={user.imageUrl || ""}
                 onClose={()=>handleCloseModal()}
-                onCloseDelete={()=>handleCloseModalDeletion(user.id)}
-                onDelete={() => handleDelete(user.id,user.name)}
+                onCloseDelete={()=>handleCloseModalDeletion(user.id || "")}
+                onDelete={() => handleDelete(user.id || "",user.name)}
                 message={deletionMessage}
               />
             }
             {showModalFor === user.id &&
             <RoleChangeModal
               userToEdit = {user}
+              onCloseModal={() => setShowModalFor(null)}
+              onUpdateList={handleUpdateList}
             />
             }
 
