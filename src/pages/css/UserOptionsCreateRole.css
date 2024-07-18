@@ -1,0 +1,78 @@
+.cuerpo{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0 2rem;
+}
+.create-role-form {
+    max-width: 400px;
+    margin: 0;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+  }
+  
+  .create-role-form h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .create-role-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .create-role-form input {
+    width: 95%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    color: black;
+  }
+  
+  .create-role-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    width: 100%;
+    margin-top: 1.5rem;
+    background-color: #046DB5;
+    padding: 15px;
+    border-radius: 15px;
+    border: 0px;   
+    border-bottom: 4px #093f63 solid;
+  }
+  
+  .createdby{
+    opacity: 0.5;
+  }
+  .error-message {
+    color: red;
+  }
+  
+  .success-message {
+    color: green;
+  }
+  .role-list h2{
+    color: white;
+  }
+  .role-list ul{
+    list-style-type: none;
+  }
+  .role-list ul li .combobox{
+    background-color:#093f63;
+    margin: 10px 0;
+    font-size: 1.1rem;
+  }
+  .role-list ul li .combobox:hover{
+    color: white;
+  }
+  
+  .role-list ul li .comboboxOptions{
+    background-color:#093f63;
+    margin-top: -10px;
+  }
