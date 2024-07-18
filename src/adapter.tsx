@@ -8,16 +8,16 @@ export interface UserDataBackend {
     email: string;
     password : string;
     fullName: string;
-    roles: string[];
+    roles: string;
 }
 
 export interface UserDataFrontend{
-    id: string;
-    image: string;
+    id?: string;
+    image?: string;
     email: string;
     password : string;
     name: string;
-    roles: string[];
+    roles: string;
 }
 
 // el mapeo de los datos de usuario
