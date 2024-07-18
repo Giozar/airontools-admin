@@ -2,7 +2,7 @@
 TODO: hacer componente breadcrumbs para que el titulo se actualice dinamicamente
 TODO: hacer que el css sea generico para todas las paginas
 TODO: que el darkmode se guarde en un contexto*/
-import aironLogo from '/vite.svg';
+import aironLogo from '/Logo-Blanco.png';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../App';
 import Breadcrumb from '../components/Breadcrumb';
