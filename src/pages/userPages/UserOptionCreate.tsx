@@ -5,6 +5,8 @@ import HeaderTitle from "../../components/HeaderTitle";
 import { transformUserDataBack, UserDataBackend } from "../../adapter";
 import axios from "axios";
 import "../css/UserOptionsCreate.css";
+import { useRoles } from "../../hooks/useRoles";
+import { Role } from "../../interfaces/Role";
 
 interface RegisterResponse {
   token: string;
@@ -38,7 +40,8 @@ function CreateUserForm() {
   const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
   const [successLog, setSuccessLog] = useState<FormError>({ isError: false, message: "" });
 
-  const roleOptions = ["Editor", "Administrador", "SuperAdministrador"]; /* TODO: recuperar roles*/
+  // const roleOptions = ["Editor", "Administrador", "SuperAdministrador"]; /* TODO: recuperar roles*/
+  const { roles: roleOptions } = useRoles(); /* TODO: recuperar roles*/
 
   const generatePassword = () => {
     const charsetNumber = "0123456789";
@@ -126,10 +129,10 @@ function CreateUserForm() {
           </div>
 
           <label htmlFor="options">Rol:</label>
-          <select id="options" value={role} onChange={handleOptionChange}>
-            {roleOptions.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
+          <select id="options" value={roles} onChange={handleOptionChange}>
+            {roleOptions.map((roleOption: Role, index) => (
+              <option key={index} value={roleOption.name}>
+                {roleOption.name}
               </option>
             ))}
           </select>
