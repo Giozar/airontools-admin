@@ -28,7 +28,7 @@ interface ValidationError{
 function HeaderLogin(){
   return(
     <header>
-      <img src={aironLogo} alt='logo de airon tools'></img>
+      <img src={aironLogo} alt='logo de airon tools' className='logoimg'></img>
       <h1>Administrador de Herramientas AironTools</h1>
     </header>
   );
