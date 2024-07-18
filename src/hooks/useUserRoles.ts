@@ -1,19 +1,18 @@
-// src/features/roles/hooks/useRoles.js
 import { useState, useEffect } from 'react';
-import { getRoles } from '../services/roles';
+import { getUserRoles } from '../services/userRoles';
 import { ErrorResponse } from '../interfaces/ErrorResponse';
 
-export const useRoles = () => {
-  const [roles, setRoles] = useState([]);
+export const useUserRoles = () => {
+  const [userRoles, setUserRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorResponse>();
 
   useEffect(() => {
-    const fetchRoles = async () => {
+    const fetchUserRoles = async () => {
       try {
         setLoading(true);
-        const data = await getRoles();
-        setRoles(data);
+        const data = await getUserRoles();
+        setUserRoles(data);
       } catch (err) {
         const error = err as ErrorResponse;
         setError(error);
@@ -22,8 +21,8 @@ export const useRoles = () => {
       }
     };
 
-    fetchRoles();
+    fetchUserRoles();
   }, []);
 
-  return { roles, loading, error };
+  return { userRoles, loading, error };
 };
