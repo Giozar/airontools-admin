@@ -56,8 +56,15 @@ function RoleChangeModal( {userToEdit, onCloseModal, onUpdateList}
       const errorMessage = error.response.data.message;
       const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
       setErrorLog({ isError: true, message });
+      handleShowErrorLog();
     }
   };
+
+  const handleShowErrorLog = () => {
+    setTimeout(() => {
+      setErrorLog({ isError: false, message: "" })
+    }, 2000)
+  }
   
   return(<>
   {errorLog.isError && <ErrorLogin message={errorLog.message} />}

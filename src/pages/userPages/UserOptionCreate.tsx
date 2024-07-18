@@ -84,6 +84,7 @@ function CreateUserForm() {
       const { user } = response.data;
       console.log(user);
       setSuccessLog({ isError: true, message: "Usuario Creado Con Éxito" });
+      handleShowMessageModal();
     } catch (error) {
       if (!axios.isAxiosError<ValidationError>(error)) {
         console.error("Registration failed", error);
@@ -94,8 +95,18 @@ function CreateUserForm() {
       const errorMessage = error.response.data.message;
       const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
       setErrorLog({ isError: true, message });
+      handleShowMessageModal();
     }
   };
+
+  const handleShowMessageModal = () => {
+    setTimeout(() => {
+      setErrorLog({ isError: false, message: "" })
+      setSuccessLog({ isError: false, message: "" })
+
+    }, 2000)
+  }
+  
 
   return (
     <>
