@@ -221,7 +221,7 @@ function ContentMainPage() {
           <HeaderTitle title="Usuarios" />
           <div className='options users'>
             <ActionCard title='Crear Usuario' path={location.pathname+'/crear-usuario'}/>
-            <ActionCard title='Crear Rol' path={location.pathname+'/editar-usuario'}/>
+            <ActionCard title='Crear Rol' path={location.pathname+'/crear-rol'}/>
           </div>
           <ReturnUsers/>
         </main>
