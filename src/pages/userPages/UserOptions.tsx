@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import HeaderApp from '../../layouts/HeaderApp';
 import '../css/UserOptions.css';
 import BasePage from '../../layouts/BasePage';
@@ -69,7 +69,8 @@ function ReturnUsers() {
   const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
   const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null);
   const [deletionMessage, setDeletionMessage] = useState<string | null>(null); // Nuevo state para el mensaje de eliminación
-
+  const navigate = useNavigate();
+  const location = useLocation();
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -95,9 +96,11 @@ function ReturnUsers() {
     );
     setFilteredUsers(filtered);
   };
+  
 
-  const handleEdit = (userid: string) => {
-    console.log("Se va a editar ", userid);
+  const handleEdit = (user: UserDataFrontend) => {
+    console.log("Se va a editar ", user.id);
+    navigate(location.pathname + `/editar-usuario`,{state:{user}});
   };
 
   const handleEditRol = (userid: string) => {
@@ -169,7 +172,7 @@ function ReturnUsers() {
               </svg>
             </button>
 
-            <button className='edit' onClick={() => handleEdit(user.id)}>
+            <button className='edit' onClick={() => handleEdit(user)}>
               {/*ICONO DE EDITAR*/}
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M11.5 15H7a4 4 0 0 0-4 4v2" />
