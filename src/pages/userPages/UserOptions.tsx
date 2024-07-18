@@ -6,26 +6,81 @@ import ActionCard from '../../components/ActionCard';
 import HeaderTitle from '../../components/HeaderTitle';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { UserDataBackend,UserDataFrontend, transformUserData } from '../../adapter';
+import { UserDataBackend,UserDataFrontend, transformUserDataBack,transformUserData } from '../../adapter';
 import { useUserRoles } from '../../hooks/useUserRoles';
 import { UserRole } from '../../interfaces/UserRole';
-function RoleChangeModal(){
+
+interface RegisterResponse {
+  token: string;
+  user: UserDataBackend;
+}
+interface ValidationError {
+  message: string[];
+}
+interface FormError {
+  isError: boolean;
+  message: string;
+}
+function ErrorLogin({ message }: { message: string }) {
+  return <p className="errorLogin">{message}</p>;
+}
+
+function SuccessLogin({ message }: { message: string }) {
+  return <p className="success">{message}</p>;
+}
+
+function RoleChangeModal( {userToEdit}:{userToEdit:UserDataFrontend}){
   const [roles, setRoles] = useState('');
   const { userRoles: roleOptions } = useUserRoles();
+  const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
+  const [successLog, setSuccessLog] = useState<FormError>({ isError: false, message: "" });
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRoles(e.target.value);
   };
-  return(<form>
-    <label htmlFor="options">Rol:</label>
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+   try {
+      const response = await axios.put<RegisterResponse>(`http://localhost:4000/auth/update/${userToEdit.id}`, transformUserDataBack({
+        ...userToEdit,
+        roles,
+      }));
+      const { user } = response.data;
+      console.log(user);
+      setSuccessLog({ isError: true, message: "Usuario Editado Con Éxito" });
+    } catch (error) {
+      if (!axios.isAxiosError<ValidationError>(error)) {
+        console.error("Edition failed", error);
+        return;
+      }
+      console.log(userToEdit.id)
+      if (!error.response) return;
+      console.log(error);
+      const errorMessage = error.response.data.message;
+      const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
+      setErrorLog({ isError: true, message });
+    }
+  };
+  
+  return(<>
+  {successLog.isError && <SuccessLogin message={successLog.message} />}
+  {errorLog.isError && <ErrorLogin message={errorLog.message} />}
+  <form onSubmit={handleSubmit}>
+
+  <label htmlFor="options">Rol:</label>
     <select id="options" value={roles} onChange={handleOptionChange}>
       {roleOptions.map((roleOption: UserRole, index) => (
         <option key={index} value={roleOption.name}>
           {roleOption.name}
         </option>
       ))}
+      
     </select>
+    <button type='submit'>Cambiar</button>
+  </form>
     
-  </form>);
+    
+  </>);
 }
 
 function DeletionModal({
@@ -107,6 +162,8 @@ function ReturnUsers() {
 
     fetchUsers();
   }, []);
+
+
   
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
