@@ -5,12 +5,21 @@ const useFileUpload = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string>('');
   const [fileName, setFileName] = useState('No hay archivo seleccionado');
+  //Para tener una imagen de preview
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setSelectedFile(event.target.files[0]);
-      setFileName(event.target.files[0].name);
-    } else setFileName('No hay archivo seleccionado');
+      const file = event.target.files[0];
+      setSelectedFile(file);
+      setFileName(file.name);
+      //Imagen preview
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+    } else {
+      setFileName('No hay archivo seleccionado');
+      setPreviewUrl(null);
+    }
   };
 
   const handleFileUpload = async () => {
@@ -29,6 +38,7 @@ const useFileUpload = () => {
     fileUrl,
     getFileUrl,
     fileName,
+    previewUrl,
     handleFileSelect,
     handleFileUpload,
   };

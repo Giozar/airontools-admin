@@ -105,6 +105,7 @@ function CreateUserForm() {
       <div className="register">
         <form onSubmit={handleSubmit}>
           <FileUpload setImageUrl={setImageUrl} />
+          
           <label htmlFor="name">Nombre:</label>
           <input id="name" type="text" placeholder="Introduce tu nombre" value={name} onChange={handleInputChange} required />
 
@@ -113,7 +114,7 @@ function CreateUserForm() {
 
           <label htmlFor="password">Contraseña:</label>
           <div className="passwordgenerator">
-            <input type="button" onClick={generatePassword} value="Generar contraseña" />
+            <input id="password" type="button" onClick={generatePassword} value="Generar contraseña" />
             <p>{password}</p>
           </div>
 
@@ -125,6 +126,10 @@ function CreateUserForm() {
               </option>
             ))}
           </select>
+          
+          <p style={{ color: 'red' }}>
+            {imageUrl === '' ? 'No ha subido una imagen, ¿Quiere continuar?' : ''}
+          </p>
 
           <button type="submit">Crear usuario</button>
         </form>

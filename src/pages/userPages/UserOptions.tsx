@@ -9,45 +9,65 @@ import axios from 'axios';
 import { UserDataBackend,UserDataFrontend, transformUserData } from '../../adapter';
 
 
-function DeletionModal({ userid, username, userimage ,onClose,onDelete, message }:
-  { userid:string , username:string, userimage:string,onClose: ()=>void, onDelete: ()=>void, message: string | null}){
+function DeletionModal({
+  userid,
+  username,
+  userimage,
+  onClose,
+  onDelete,
+  message
+}: {
+  userid: string | null;
+  username: string | null;
+  userimage: string;
+  onClose: () => void;
+  onDelete: () => void;
+  message: string | null;
+}) {
+  const handleDeleteClick = () => {
+    if (userid && username) {
+      onDelete(); // Llama a onDelete para eliminar al usuario del servidor
+    }
+  };
   return (
     <div>
       <div className="deletionmodal">
-      {message ? (
-        <div>
-          <p>{message}</p>
-          <button className="continue" onClick={onClose}>Continuar</button>
-        </div>):(<>
-          <h2>Confirmación de Eliminación</h2>
-          <p>¿Estás seguro de que deseas eliminar a {username}?</p>
-          <img src={userimage} alt='usuario a eliminar'/>
-          <h4>{userid}</h4>
-          <div className="buttons">
-            <button className="cancel" onClick={onClose}>Cancelar</button>
-            <button className="delete" onClick={onDelete}>Eliminar</button>
+        {message ? (
+          <div>
+            <p>{message}</p>
+            <button className="continue" onClick={onClose}>Continuar</button>
           </div>
-        </>)}
+        ) : (
+          <>
+            <h2>Confirmación de Eliminación</h2>
+            <p>¿Estás seguro de que deseas eliminar a {username}?</p>
+            <img src={userimage} alt='usuario a eliminar' />
+            <h4>{userid}</h4>
+            <div className="buttons">
+              <button className="cancel" onClick={onClose}>Cancelar</button>
+              <button className="delete" onClick={handleDeleteClick}>Eliminar</button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
-
 }
+
 
 function ReturnUsers() {
   const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
-  const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null); // State to track which user's deletion modal is open
+  const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null);
   const [deletionMessage, setDeletionMessage] = useState<string | null>(null); // Nuevo state para el mensaje de eliminación
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get<UserDataBackend[]>('http://localhost:4000/auth/users');
-        const transformedUsers = response.data.map((user, index) => ({
-          ...transformUserData(user),
-          image: `https://randomuser.me/api/portraits/thumb/women/${index + 1}.jpg`,
+        const transformedUsers = response.data.map((user) => ({
+          ...transformUserData(user)
         }));
         setUsersList(transformedUsers);
         setFilteredUsers(transformedUsers);
@@ -75,18 +95,18 @@ function ReturnUsers() {
   const handleEditRol = (userid: string) => {
     console.log("Se va a editar el rol de ", userid);
   };
-  const handleCloseModal = () =>{
+  const handleCloseModal = (userid: string) =>{
     setShowDeletionModalFor(null);
     setDeletionMessage(null);
+    setUsersList(usersList.filter(user => user.id !== userid));
+    setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
   }
-  const handleDelete = async (userid: string) => {
+  const handleDelete = async (userid: string, username: string) => {
     try {
       await axios.delete(`http://localhost:4000/auth/delete/${userid}`);
-      // Quita el usuario de la lista
-      setUsersList(usersList.filter(user => user.id !== userid));
-      setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
       // Cierra el modal
-      setDeletionMessage(`Usuario ${userid} eliminado correctamente.`);
+      setDeletionMessage(`Usuario ${username} (${userid}) ha sido eliminado correctamente.`);
+      // Quita el usuario de la lista
       console.log(`Usuario ${userid} eliminado correctamente.`);
     } catch (error) {
       setDeletionMessage(`No se ha podido eliminar al usuario ${userid}.`);
@@ -119,9 +139,9 @@ function ReturnUsers() {
           <li key={index}>
             <p>{user.id}</p>
             <p>{user.name}</p>
-            <img src={user.image} alt={user.name} style={{ width: '50px', borderRadius: '50%' }} />
+            <img src={user.imageUrl} alt={user.name} style={{ width: '50px', borderRadius: '50%' }} />
             <p>{user.roles}</p>
-
+            
             <button className='editrol' onClick={() => handleEditRol(user.id)}>
               {/*ICONO DE EDITAR ROLES*/}
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -162,9 +182,9 @@ function ReturnUsers() {
               <DeletionModal
                 userid={user.id}
                 username={user.name}
-                userimage={user.image}
-                onClose={handleCloseModal}
-                onDelete={() => handleDelete(user.id)}
+                userimage={user.imageUrl}
+                onClose={()=>handleCloseModal(user.id)}
+                onDelete={() => handleDelete(user.id,user.name)}
                 message={deletionMessage}
               />
             }
