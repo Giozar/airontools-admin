@@ -14,6 +14,7 @@ function DeletionModal({
   username,
   userimage,
   onClose,
+  onCloseDelete,
   onDelete,
   message
 }: {
@@ -21,6 +22,7 @@ function DeletionModal({
   username: string | null;
   userimage: string;
   onClose: () => void;
+  onCloseDelete: () => void;
   onDelete: () => void;
   message: string | null;
 }) {
@@ -29,13 +31,19 @@ function DeletionModal({
       onDelete(); // Llama a onDelete para eliminar al usuario del servidor
     }
   };
+  const handleContinueClick = (mensaje : string) =>{
+    onClose();
+    if (!mensaje.includes("No se ha podido eliminar")){
+      onCloseDelete();
+    }
+  }
   return (
     <div>
       <div className="deletionmodal">
         {message ? (
           <div>
             <p>{message}</p>
-            <button className="continue" onClick={onClose}>Continuar</button>
+            <button className="continue" onClick={() => handleContinueClick(message)}>Continuar</button>
           </div>
         ) : (
           <>
@@ -95,9 +103,11 @@ function ReturnUsers() {
   const handleEditRol = (userid: string) => {
     console.log("Se va a editar el rol de ", userid);
   };
-  const handleCloseModal = (userid: string) =>{
+  const handleCloseModal = () =>{
     setShowDeletionModalFor(null);
     setDeletionMessage(null);
+  }
+  const handleCloseModalDeletion = (userid : string)=>{
     setUsersList(usersList.filter(user => user.id !== userid));
     setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
   }
@@ -183,7 +193,8 @@ function ReturnUsers() {
                 userid={user.id}
                 username={user.name}
                 userimage={user.imageUrl}
-                onClose={()=>handleCloseModal(user.id)}
+                onClose={()=>handleCloseModal()}
+                onCloseDelete={()=>handleCloseModalDeletion(user.id)}
                 onDelete={() => handleDelete(user.id,user.name)}
                 message={deletionMessage}
               />
