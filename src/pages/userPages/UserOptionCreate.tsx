@@ -113,7 +113,7 @@ function CreateUserForm() {
 
           <label htmlFor="password">Contraseña:</label>
           <div className="passwordgenerator">
-            <input type="button" onClick={generatePassword} value="Generar contraseña" />
+            <input id="password" type="button" onClick={generatePassword} value="Generar contraseña" />
             <p>{password}</p>
           </div>
 

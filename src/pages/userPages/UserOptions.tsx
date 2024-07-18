@@ -45,9 +45,8 @@ function ReturnUsers() {
     const fetchUsers = async () => {
       try {
         const response = await axios.get<UserDataBackend[]>('http://localhost:4000/auth/users');
-        const transformedUsers = response.data.map((user, index) => ({
-          ...transformUserData(user),
-          image: `https://randomuser.me/api/portraits/thumb/women/${index + 1}.jpg`,
+        const transformedUsers = response.data.map((user) => ({
+          ...transformUserData(user)
         }));
         setUsersList(transformedUsers);
         setFilteredUsers(transformedUsers);
