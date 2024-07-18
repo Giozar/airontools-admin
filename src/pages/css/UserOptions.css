@@ -124,3 +124,6 @@
     margin: auto;
     background-color: rgba(255, 0, 0, 0.521);
 }
+.images{
+    display: flex;
+}

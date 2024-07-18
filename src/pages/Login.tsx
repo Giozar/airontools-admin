@@ -44,8 +44,30 @@ function Login(){
     const [password,setPassword] = useState('');
     const authContext = useContext(AuthContext);
     const [errorLog, setErrorLog] = useState({isError:false,messageError:''});
-
-
+/*
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const decodedToken = jwtDecode<DecodedToken>(token);
+          const now = Math.floor(Date.now() / 1000);
+          // Check if token is expired
+          if (decodedToken.exp > now) {
+            authContext?.setAuth({ isAuthenticated: true, user: transformUserData({
+              _id: decodedToken.id,
+              fullName: "Hola",
+              roles: "employee"
+            }) });
+         } else {
+            localStorage.removeItem('token');
+          }
+        } catch (error) {
+          console.error('Token decoding failed', error);
+          localStorage.removeItem('token');
+        }
+      }
+    }, [authContext]);
+    */
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {

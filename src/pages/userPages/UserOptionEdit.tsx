@@ -63,20 +63,6 @@ function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
     setPassword(newPassword);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    switch (id) {
-      case "name":
-        setName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      default:
-        break;
-    }
-  };
-
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRoles(e.target.value);
   };
@@ -109,19 +95,34 @@ function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
 
       <div className="register">
         <form onSubmit={handleSubmit}>
-
+        <div style={{ display: 'flex', gap: '5rem' }}>
+          <div>
+          <h4>Imagen Actual</h4>
           <div className='profileimage' style={{ backgroundImage: `url(${pastImageUrl})` }}></div>
-          <input id='new' type='button' onClick={()=> setIsEditingImage (true)}
-          value="subir nueva imagen">
-          </input>
-          {isEditingImage ? <FileUpload setImageUrl={setImageUrl} /> : <p></p>}
-          
+          </div>
+          <div>
+          <h4>Subir nueva imagen</h4>
+          <FileUpload setImageUrl={setImageUrl} />
+          </div>
+        </div>
           <label htmlFor="name">Nombre:</label>
-          <input id="name" type="text" placeholder="Introduce tu nombre" value={name} onChange={handleInputChange} required />
-
+          <input
+            id="name"
+            type="text"
+            placeholder="Introduce tu nombre completo"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
           <label htmlFor="email">Correo electrónico:</label>
-          <input id="email" type="email" placeholder="Introduce tu correo electrónico" value={email} onChange={handleInputChange} required />
-
+          <input
+            id="email"
+            type="email"
+            placeholder="Introduce tu correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
           <label htmlFor="password">Contraseña:</label>
           <div className="passwordgenerator">
             <input id="password" type="button" onClick={generatePassword} value="Generar nueva contraseña" />

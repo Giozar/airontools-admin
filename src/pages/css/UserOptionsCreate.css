@@ -2,11 +2,13 @@
     border-top: 1rem;
     display: flex;
     color: white;
+    
 }
 
 .register form{
     display: grid;
     row-gap: 1rem;
+    margin: 0 2rem;
 }
 .register form label{
     color: white;

@@ -7,7 +7,26 @@ import HeaderTitle from '../../components/HeaderTitle';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { UserDataBackend,UserDataFrontend, transformUserData } from '../../adapter';
-
+import { useUserRoles } from '../../hooks/useUserRoles';
+import { UserRole } from '../../interfaces/UserRole';
+function RoleChangeModal(){
+  const [roles, setRoles] = useState('');
+  const { userRoles: roleOptions } = useUserRoles();
+  const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setRoles(e.target.value);
+  };
+  return(<form>
+    <label htmlFor="options">Rol:</label>
+    <select id="options" value={roles} onChange={handleOptionChange}>
+      {roleOptions.map((roleOption: UserRole, index) => (
+        <option key={index} value={roleOption.name}>
+          {roleOption.name}
+        </option>
+      ))}
+    </select>
+    
+  </form>);
+}
 
 function DeletionModal({
   userid,
@@ -62,15 +81,16 @@ function DeletionModal({
   );
 }
 
-
 function ReturnUsers() {
   const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
   const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null);
+  const [showModalFor, setShowModalFor] = useState<string | null>(null);
   const [deletionMessage, setDeletionMessage] = useState<string | null>(null); // Nuevo state para el mensaje de eliminación
   const navigate = useNavigate();
   const location = useLocation();
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -87,7 +107,7 @@ function ReturnUsers() {
 
     fetchUsers();
   }, []);
-
+  
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
@@ -103,9 +123,6 @@ function ReturnUsers() {
     navigate(location.pathname + `/editar-usuario`,{state:{user}});
   };
 
-  const handleEditRol = (userid: string) => {
-    console.log("Se va a editar el rol de ", userid);
-  };
   const handleCloseModal = () =>{
     setShowDeletionModalFor(null);
     setDeletionMessage(null);
@@ -155,7 +172,7 @@ function ReturnUsers() {
             <img src={user.imageUrl} alt={user.name} style={{ width: '50px', borderRadius: '50%' }} />
             <p>{user.roles}</p>
             
-            <button className='editrol' onClick={() => handleEditRol(user.id)}>
+            <button className='editrol' onClick={() => setShowModalFor(user.id)}>
               {/*ICONO DE EDITAR ROLES*/}
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 21a8 8 0 0 1 10.434-7.62" />
@@ -201,6 +218,11 @@ function ReturnUsers() {
                 onDelete={() => handleDelete(user.id,user.name)}
                 message={deletionMessage}
               />
+            }
+            {showModalFor === user.id &&
+            <RoleChangeModal
+              userToEdit = {user}
+            />
             }
 
           </li>
