@@ -37,6 +37,11 @@ header h1{
   width: 50%;
   margin: 0 auto;
   margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  position: absolute;
 }
 
 .login h2{
