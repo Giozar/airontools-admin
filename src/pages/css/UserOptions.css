@@ -127,3 +127,20 @@
 .images{
     display: flex;
 }
+.choserol{
+    background-color: #03121d;
+    border-radius: 10px;
+    width: fit-content;
+    padding: 50px;
+}
+.choserol select{
+    background-color: white;
+    padding: 5px;
+    color: #03121d;
+    border-radius: 10px;
+    margin: 5px 0;
+}
+.choserol button{
+    padding: 10px;
+    background-color: #007bff;
+}

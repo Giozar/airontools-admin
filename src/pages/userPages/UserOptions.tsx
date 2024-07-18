@@ -68,9 +68,9 @@ function RoleChangeModal( {userToEdit, onCloseModal, onUpdateList}
   
   return(<>
   {errorLog.isError && <ErrorLogin message={errorLog.message} />}
-  <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit} className='choserol'>
 
-  <label htmlFor="options">Rol:</label>
+  <label htmlFor="options">Nuevo rol:</label>
     <select id="options" value={roles} onChange={handleOptionChange}>
       {roleOptions.map((roleOption: UserRole, index) => (
         <option key={index} value={roleOption.name}>
