@@ -1,7 +1,10 @@
 import { useState } from 'react';
+interface UsePasswordGeneratorProps {
+    pastPassword?: string; 
+}
 
-function usePasswordGenerator() {
-  const [password, setPassword] = useState<string>('');
+function usePasswordGenerator( {pastPassword}: UsePasswordGeneratorProps) {
+  const [password, setPassword] = useState<string>(pastPassword || '');
 
   const generatePassword = () => {
     const charsetNumber = "0123456789";

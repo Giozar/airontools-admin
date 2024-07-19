@@ -28,7 +28,7 @@ function CreateUserForm() {
   const [email, setEmail] = useState("");
   const [imageUrl, setImageUrl] = useState('');
   const [name, setName] = useState("");
-  const { password, generatePassword } = usePasswordGenerator();
+  const { password, generatePassword } = usePasswordGenerator({});
   const [roles, setRoles] = useState("Elige un rol");
   const { errorLog,showError } = useErrorHandling();
   const { successLog,showSuccess } = useSuccessHandling();

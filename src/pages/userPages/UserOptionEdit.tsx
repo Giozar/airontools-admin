@@ -2,39 +2,27 @@ import HeaderApp from '../../layouts/HeaderApp';
 import {useLocation} from 'react-router-dom';
 import BasePage from '../../layouts/BasePage';
 import HeaderTitle from '../../components/HeaderTitle';
-import { UserDataBackend,UserDataFrontend, transformUserDataBack } from '../../adapter';
+import {UserDataFrontend } from '../../adapter';
 import { useUserRoles } from "../../hooks/useUserRoles";
 import { UserRole } from "../../interfaces/UserRole";
 import FileUpload from "../../components/FileUpload";
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import useErrorHandling from '../../hooks/useErrorHandling';
-import useSuccessHandling from '../../hooks/useSuccessHandling';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
 import usePasswordGenerator from '../../hooks/usePasswordGenerator';
+import useUserUpdate from '../../hooks/useUserUpdate';
 
-interface RegisterResponse {
-  token: string;
-  user: UserDataBackend;
-}
-
-interface ValidationError {
-  message: string[];
-}
 
 function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
   const [email, setEmail] = useState(userToEdit.email);
   const pastImageUrl = userToEdit.imageUrl;
   const [imageUrl, setImageUrl] = useState(userToEdit.imageUrl);
   const [name, setName] = useState(userToEdit.name);
-  const { password, generatePassword } = usePasswordGenerator();
   const [roles, setRoles] = useState(userToEdit.roles);
 
-  const { errorLog,showError } = useErrorHandling();
-  const { successLog,showSuccess } = useSuccessHandling();
-  
-  const { userRoles: roleOptions } = useUserRoles(); /* recuperar roles */
+  const { errorLog, successLog, updateUser } = useUserUpdate();
+  const { password, generatePassword } = usePasswordGenerator({ pastPassword: userToEdit.password })
+  const { userRoles: roleOptions } = useUserRoles();
 
   useEffect(() => {
   }, [imageUrl])
@@ -46,22 +34,25 @@ function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-   try {
-      const response = await axios.put<RegisterResponse>(`http://localhost:4000/auth/update/${userToEdit.id}`, transformUserDataBack({ email, password, name, roles, imageUrl }));
-      const { user } = response.data;
-      console.log(user);
-      showSuccess("Usuario Editado Con Éxito" );
-    } catch (error) {
-      if (!axios.isAxiosError<ValidationError>(error)) {
-        console.error("Edition failed", error);
-        return;
+    try {
+      const updatedUserData = {
+        email,
+        name,
+        roles,
+        imageUrl,
+      };
+
+      if (imageUrl === "") {
+        updatedUserData.imageUrl = pastImageUrl;
       }
-      console.log(userToEdit.id)
-      if (!error.response) return;
-      console.log(error);
-      const errorMessage = error.response.data.message;
-      const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
-      showError(message);
+      if (password ===""){
+        await updateUser(userToEdit.id || "", updatedUserData);
+      }else{
+        await updateUser(userToEdit.id || "", {...updatedUserData, password});
+      }
+      
+    } catch (error) {
+      console.error('Error actualizando usuario:', error);
     }
   };
 
@@ -69,7 +60,6 @@ function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
     <>
       {successLog.isSuccess && <SuccessMessage message={successLog.message} />}
       {errorLog.isError && <ErrorMessage message={errorLog.message} />}
-
       <div className="register">
         <form onSubmit={handleSubmit}>
         <div style={{ display: 'flex', gap: '5rem' }}>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useFileUpload from "../hooks/useFileUpload";
 
-export default function FileUpload ({setImageUrl}: {setImageUrl?: React.Dispatch<React.SetStateAction<string>>}) {
+export default function FileUpload ({setImageUrl}: {setImageUrl?: React.Dispatch<React.SetStateAction<string | undefined>>}) {
   const { fileUrl, fileName, previewUrl, handleFileSelect, handleFileUpload } = useFileUpload();
 
   useEffect(() => {
