@@ -2,7 +2,6 @@
 TODO: hacer componente breadcrumbs para que el titulo se actualice dinamicamente
 TODO: hacer que el css sea generico para todas las paginas
 TODO: que el darkmode se guarde en un contexto*/
-import aironLogo from '/Logo-Blanco.png';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../App';
 import Breadcrumb from '../components/Breadcrumb';
@@ -23,7 +22,7 @@ function HeaderApp(){
             <h2><Breadcrumb/></h2>
             
             <div className='userinfo'>
-                <div className='userpic' style={{ backgroundImage: `url(${aironLogo})` }}></div>
+                <div className='userpic' style={{ backgroundImage: `url(${authContext?.user?.imageUrl})` }}></div>
                 <p>{authContext?.user?.name} <span>({authContext?.user?.roles})</span></p>
                 <button onClick={toggleDarkMode}>
                     {isDarkMode ? <SunIcon/>:<MoonIcon/>}
