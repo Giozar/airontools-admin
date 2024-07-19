@@ -40,10 +40,23 @@
     grid-template-columns: repeat(4, minmax(0, 1fr)) repeat(3,130px);
     border-bottom: 2px solid #102e42;
     overflow: hidden;
+    padding: 5px;
 }
-.userlist ul li p,img{
+.userlist ul li p,.userpicture{
     margin: auto;
     padding: 10px 0;
+}
+.userpicture {
+    width: 50px;
+    border-radius: 10px;
+    width: 3rem;
+    height: 2rem;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-color: #046DB5;
+    
 }
 .userlist ul li p:first-child{
     padding-left: 15px;
@@ -82,3 +95,4 @@
 .images{
     display: flex;
 }
+

@@ -59,7 +59,8 @@ function ReturnUsers() {
           <li key={index}>
             <p>{user.id}</p>
             <p>{user.name}</p>
-            <img src={user.imageUrl} alt={user.name} style={{ width: '50px', borderRadius: '50%' }} />
+            <div className='userpicture' style={{ backgroundImage: `url(${user.imageUrl})`}}></div>
+            
             <p>{user.roles}</p>
             
             <button className='editrol' onClick={() => setShowModalFor(user.id || "")}>
