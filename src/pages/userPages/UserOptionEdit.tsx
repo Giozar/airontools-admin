@@ -12,6 +12,7 @@ import useErrorHandling from '../../hooks/useErrorHandling';
 import useSuccessHandling from '../../hooks/useSuccessHandling';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessMessage from '../../components/SuccessMessage';
+import usePasswordGenerator from '../../hooks/usePasswordGenerator';
 
 interface RegisterResponse {
   token: string;
@@ -24,37 +25,20 @@ interface ValidationError {
 
 function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
   const [email, setEmail] = useState(userToEdit.email);
-  const [pastImageUrl,setPastImageUrl] = useState(userToEdit.imageUrl);
+  const pastImageUrl = userToEdit.imageUrl;
   const [imageUrl, setImageUrl] = useState(userToEdit.imageUrl);
   const [name, setName] = useState(userToEdit.name);
-  const [password, setPassword] = useState(userToEdit.password);
+  const { password, generatePassword } = usePasswordGenerator();
   const [roles, setRoles] = useState(userToEdit.roles);
 
   const { errorLog,showError } = useErrorHandling();
   const { successLog,showSuccess } = useSuccessHandling();
   
-  const [isEditingImage, setIsEditingImage] = useState(false);
   const { userRoles: roleOptions } = useUserRoles(); /* recuperar roles */
 
   useEffect(() => {
-    setIsEditingImage(false);
   }, [imageUrl])
   
-  
-
-  const generatePassword = () => {
-    const charsetNumber = "0123456789";
-    const charsetMin = "abcdefghijklmnopqrstuvwxyz";
-    const charsetMax = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const passwordLength = 6;
-    let newPassword = "";
-    for (let i = 0; i < passwordLength / 3; i++) {
-      newPassword += charsetNumber.charAt(Math.floor(Math.random() * charsetNumber.length));
-      newPassword += charsetMin.charAt(Math.floor(Math.random() * charsetMin.length));
-      newPassword += charsetMax.charAt(Math.floor(Math.random() * charsetMax.length));
-    }
-    setPassword(newPassword);
-  };
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRoles(e.target.value);

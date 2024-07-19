@@ -13,6 +13,7 @@ import TrashIcon from '../../components/svg/TrashIcon';
 import useFetchUsers from '../../hooks/useFetchUsers';
 import useUserManagement from '../../hooks/useUserManagement';
 
+/* No se que hice con los custom hooks pero parece funcionar si puedes hacerlo mejor estaría chido */
 function ReturnUsers() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const {
@@ -23,15 +24,12 @@ function ReturnUsers() {
     deletionMessage,
     handleEdit,
     handleCloseModal,
-    handleDelete
+    handleDelete,
+    handleUpdateList,
+    updateListFlag
   } = useUserManagement();
-
-  const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
   const { usersList,setUsersList, filteredUsers, setFilteredUsers,handleSearch } = useFetchUsers(updateListFlag);
   
-  const handleUpdateList = () => {
-    setUpdateListFlag(prevFlag => !prevFlag);
-  };
   const handleCloseModalDeletion = (userid : string)=>{
     setUsersList(usersList.filter(user => user.id !== userid));
     setFilteredUsers(filteredUsers.filter(user => user.id !== userid));

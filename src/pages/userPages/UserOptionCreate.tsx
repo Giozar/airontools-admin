@@ -12,6 +12,7 @@ import useErrorHandling from "../../hooks/useErrorHandling";
 import useSuccessHandling from "../../hooks/useSuccessHandling";
 import ErrorMessage from "../../components/ErrorMessage";
 import SuccessMessage from "../../components/SuccessMessage";
+import usePasswordGenerator from "../../hooks/usePasswordGenerator";
 
 interface RegisterResponse {
   token: string;
@@ -27,7 +28,7 @@ function CreateUserForm() {
   const [email, setEmail] = useState("");
   const [imageUrl, setImageUrl] = useState('');
   const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const { password, generatePassword } = usePasswordGenerator();
   const [roles, setRoles] = useState("Elige un rol");
   const { errorLog,showError } = useErrorHandling();
   const { successLog,showSuccess } = useSuccessHandling();
@@ -36,20 +37,6 @@ function CreateUserForm() {
 
   useEffect(() => {
   }, [imageUrl])
-
-  const generatePassword = () => {
-    const charsetNumber = "0123456789";
-    const charsetMin = "abcdefghijklmnopqrstuvwxyz";
-    const charsetMax = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const passwordLength = 6;
-    let newPassword = "";
-    for (let i = 0; i < passwordLength / 3; i++) {
-      newPassword += charsetNumber.charAt(Math.floor(Math.random() * charsetNumber.length));
-      newPassword += charsetMin.charAt(Math.floor(Math.random() * charsetMin.length));
-      newPassword += charsetMax.charAt(Math.floor(Math.random() * charsetMax.length));
-    }
-    setPassword(newPassword);
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;

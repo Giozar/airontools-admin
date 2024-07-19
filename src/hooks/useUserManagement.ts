@@ -9,6 +9,7 @@ const useUserManagement  = () => {
     const [deletionMessage, setDeletionMessage] = useState<string | null>(null);
     const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null);
     const [showModalFor, setShowModalFor] = useState<string | null>(null);
+    const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
     const handleEdit = (user: UserDataFrontend) => {
         navigate(location.pathname + `/editar-usuario`,{state:{user}});
@@ -18,7 +19,9 @@ const useUserManagement  = () => {
         setShowDeletionModalFor(null);
         setDeletionMessage(null);
       }
-
+      const handleUpdateList = () => {
+        setUpdateListFlag(prevFlag => !prevFlag);
+      };
       const handleDelete = async (userid: string, username: string) => {
         try {
           await axios.delete(`http://localhost:4000/auth/delete/${userid}`);
@@ -39,6 +42,8 @@ const useUserManagement  = () => {
     handleEdit,
     handleCloseModal,
     handleDelete,
+    handleUpdateList,
+    updateListFlag
   };
 };
 
