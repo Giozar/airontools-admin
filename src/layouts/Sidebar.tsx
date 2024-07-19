@@ -19,6 +19,7 @@ function Sidebar(){
       };
     const handleClose = () => {
         authContext?.setAuth({ isAuthenticated: false, user: null });
+        localStorage.setItem('token', '');
         navigate('/login');
     }
     return (

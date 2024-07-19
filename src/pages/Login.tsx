@@ -69,10 +69,11 @@ function Login(){
         e.preventDefault();
         try {
             const response = await axios.post<LoginResponse>('http://localhost:4000/auth/login', { email, password });
-  
+            
             const { token, user } = response.data;
 
             localStorage.setItem('token', token);
+            
             const decodedToken = jwtDecode<DecodedToken>(token);
 
             user._id = decodedToken.id;
