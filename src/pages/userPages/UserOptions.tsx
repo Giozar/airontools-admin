@@ -59,7 +59,8 @@ function ReturnUsers() {
           <li key={index}>
             <p>{user.id}</p>
             <p>{user.name}</p>
-            <img src={user.imageUrl} alt={user.name} style={{ width: '50px', borderRadius: '50%' }} />
+            <div className='userpicture' style={{ backgroundImage: `url(${user.imageUrl})`}}></div>
+            
             <p>{user.roles}</p>
             
             <button className='editrol' onClick={() => setShowModalFor(user.id || "")}>
@@ -76,9 +77,9 @@ function ReturnUsers() {
 
             {showDeletionModalFor === user.id &&
               <DeletionModal
-                userid={user.id}
-                username={user.name}
-                userimage={user.imageUrl || ""}
+                id={user.id}
+                name={user.name}
+                image={user.imageUrl || ""}
                 onClose={()=>handleCloseModal()}
                 onCloseDelete={()=>handleCloseModalDeletion(user.id || "")}
                 onDelete={() => handleDelete(user.id || "",user.name)}

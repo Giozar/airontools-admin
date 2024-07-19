@@ -8,6 +8,7 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    color: white;
 }
 .deletionmodal img,h4{
     align-self: center;
