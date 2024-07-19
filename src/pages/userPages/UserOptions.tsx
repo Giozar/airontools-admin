@@ -9,6 +9,9 @@ import axios from 'axios';
 import { UserDataBackend,UserDataFrontend,transformUserData } from '../../adapter';
 import RoleChangeModal from '../../components/RoleChangeModal';
 import DeletionModal from '../../components/DeletionModal';
+import EditIcon from '../../components/svg/EditIcon';
+import EditRoleIcon from '../../components/svg/EditRoleIcon';
+import TrashIcon from '../../components/svg/TrashIcon';
 
 function ReturnUsers() {
   const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
@@ -39,8 +42,6 @@ function ReturnUsers() {
 
   }, [updateListFlag]);
 
-
-  
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
@@ -52,7 +53,6 @@ function ReturnUsers() {
   
 
   const handleEdit = (user: UserDataFrontend) => {
-    console.log("Se va a editar ", user.id);
     navigate(location.pathname + `/editar-usuario`,{state:{user}});
   };
 
@@ -60,10 +60,12 @@ function ReturnUsers() {
     setShowDeletionModalFor(null);
     setDeletionMessage(null);
   }
+
   const handleCloseModalDeletion = (userid : string)=>{
     setUsersList(usersList.filter(user => user.id !== userid));
     setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
   }
+
   const handleDelete = async (userid: string, username: string) => {
     try {
       await axios.delete(`http://localhost:4000/auth/delete/${userid}`);
@@ -110,39 +112,15 @@ function ReturnUsers() {
             <p>{user.roles}</p>
             
             <button className='editrol' onClick={() => setShowModalFor(user.id || "")}>
-              {/*ICONO DE EDITAR ROLES*/}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2 21a8 8 0 0 1 10.434-7.62" />
-                <circle cx="10" cy="8" r="5" />
-                <circle cx="18" cy="18" r="3" />
-                <path d="m19.5 14.3-.4.9" />
-                <path d="m16.9 20.8-.4.9" />
-                <path d="m21.7 19.5-.9-.4" />
-                <path d="m15.2 16.9-.9-.4" />
-                <path d="m21.7 16.5-.9.4" />
-                <path d="m15.2 19.1-.9.4" />
-                <path d="m19.5 21.7-.4-.9" />
-                <path d="m16.9 15.2-.4-.9" />
-              </svg>
+              <EditRoleIcon/>
             </button>
 
             <button className='edit' onClick={() => handleEdit(user)}>
-              {/*ICONO DE EDITAR*/}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M11.5 15H7a4 4 0 0 0-4 4v2" />
-                <path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" />
-                <circle cx="10" cy="7" r="4" />
-              </svg>
+              <EditIcon/>
             </button>
 
             <button className='delete' onClick={() => setShowDeletionModalFor(user.id || "")}>
-              {/*ICONO DE BASURA*/}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                <line x1="10" x2="10" y1="11" y2="17" />
-                <line x1="14" x2="14" y1="11" y2="17" />
-              </svg>
+              <TrashIcon/>
             </button>
 
             {showDeletionModalFor === user.id &&
