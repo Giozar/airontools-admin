@@ -6,6 +6,8 @@ import { AuthContext } from '../App';
 import { UserDataBackend, transformUserData } from '../adapter';
 import './css/Login.css';
 import { Navigate } from 'react-router-dom';
+import ErrorMessage from '../components/ErrorMessage';
+import useErrorHandling from '../hooks/useErrorHandling';
 
 interface LoginResponse {
   token: string;
@@ -34,16 +36,11 @@ function HeaderLogin(){
   );
 }
 
-function ErrorLogin({message} : {message : string}){
-  return (<p className='errorLogin'>{message}</p>);
-
-}
-
 function Login(){
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const authContext = useContext(AuthContext);
-    const [errorLog, setErrorLog] = useState({isError:false,messageError:''});
+    const { errorLog,showError } = useErrorHandling();
 /*
     useEffect(() => {
       const token = localStorage.getItem('token');
@@ -92,9 +89,10 @@ function Login(){
 
             const errorMessage = error.response.data.message;
             if (typeof errorMessage === "string")
-              setErrorLog({isError:true,messageError:errorMessage});
+              showError(errorMessage);
             else
-              setErrorLog({isError:true,messageError:errorMessage.join(', ')});      
+              showError(errorMessage.join(', ')); 
+
           }
     }
     if (authContext?.isAuthenticated){
@@ -103,7 +101,9 @@ function Login(){
     return( 
     <>
     <HeaderLogin/>
-    { errorLog.isError && <ErrorLogin message={errorLog.messageError}/>}
+    
+    {errorLog.isError? <ErrorMessage message={errorLog.message}/>:''}
+    
     <div className='login'>
       <form onSubmit={handleLogin}>
         

@@ -87,23 +87,6 @@
     border-bottom: 1px #093f63 solid;
 }
 
-
-.success{
-    background-color: #2ed136a6;
-    color: #a8ff97;
-    padding: 15px;
-    border-radius: 20px;
-    text-align: center;
-    width: 50%;
-    margin: 0 auto;
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    position: absolute;
-}
-
 .custom-file-upload {
     cursor: pointer;
     padding: 10px;

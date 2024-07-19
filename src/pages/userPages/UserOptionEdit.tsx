@@ -2,66 +2,31 @@ import HeaderApp from '../../layouts/HeaderApp';
 import {useLocation} from 'react-router-dom';
 import BasePage from '../../layouts/BasePage';
 import HeaderTitle from '../../components/HeaderTitle';
-import { UserDataBackend,UserDataFrontend, transformUserDataBack } from '../../adapter';
+import {UserDataFrontend } from '../../adapter';
 import { useUserRoles } from "../../hooks/useUserRoles";
 import { UserRole } from "../../interfaces/UserRole";
 import FileUpload from "../../components/FileUpload";
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
+import usePasswordGenerator from '../../hooks/usePasswordGenerator';
+import useUserUpdate from '../../hooks/useUserUpdate';
 
-interface RegisterResponse {
-  token: string;
-  user: UserDataBackend;
-}
-
-interface ValidationError {
-  message: string[];
-}
-
-interface FormError {
-  isError: boolean;
-  message: string;
-}
-
-function ErrorLogin({ message }: { message: string }) {
-  return <p className="errorLogin">{message}</p>;
-}
-
-function SuccessLogin({ message }: { message: string }) {
-  return <p className="success">{message}</p>;
-}
 
 function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
   const [email, setEmail] = useState(userToEdit.email);
-  const [pastImageUrl,setPastImageUrl] = useState(userToEdit.imageUrl);
+  const pastImageUrl = userToEdit.imageUrl;
   const [imageUrl, setImageUrl] = useState(userToEdit.imageUrl);
   const [name, setName] = useState(userToEdit.name);
-  const [password, setPassword] = useState(userToEdit.password);
   const [roles, setRoles] = useState(userToEdit.roles);
-  const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
-  const [successLog, setSuccessLog] = useState<FormError>({ isError: false, message: "" });
-  const [isEditingImage, setIsEditingImage] = useState(false);
-  const { userRoles: roleOptions } = useUserRoles(); /* recuperar roles */
+
+  const { errorLog, successLog, updateUser } = useUserUpdate();
+  const { password, generatePassword } = usePasswordGenerator({ pastPassword: userToEdit.password })
+  const { userRoles: roleOptions } = useUserRoles();
 
   useEffect(() => {
-    setIsEditingImage(false);
   }, [imageUrl])
   
-  
-
-  const generatePassword = () => {
-    const charsetNumber = "0123456789";
-    const charsetMin = "abcdefghijklmnopqrstuvwxyz";
-    const charsetMax = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const passwordLength = 6;
-    let newPassword = "";
-    for (let i = 0; i < passwordLength / 3; i++) {
-      newPassword += charsetNumber.charAt(Math.floor(Math.random() * charsetNumber.length));
-      newPassword += charsetMin.charAt(Math.floor(Math.random() * charsetMin.length));
-      newPassword += charsetMax.charAt(Math.floor(Math.random() * charsetMax.length));
-    }
-    setPassword(newPassword);
-  };
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRoles(e.target.value);
@@ -69,30 +34,32 @@ function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-   try {
-      const response = await axios.put<RegisterResponse>(`http://localhost:4000/auth/update/${userToEdit.id}`, transformUserDataBack({ email, password, name, roles, imageUrl }));
-      const { user } = response.data;
-      console.log(user);
-      setSuccessLog({ isError: true, message: "Usuario Editado Con Éxito" });
-    } catch (error) {
-      if (!axios.isAxiosError<ValidationError>(error)) {
-        console.error("Edition failed", error);
-        return;
+    try {
+      const updatedUserData = {
+        email,
+        name,
+        roles,
+        imageUrl,
+      };
+
+      if (imageUrl === "") {
+        updatedUserData.imageUrl = pastImageUrl;
       }
-      console.log(userToEdit.id)
-      if (!error.response) return;
-      console.log(error);
-      const errorMessage = error.response.data.message;
-      const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
-      setErrorLog({ isError: true, message });
+      if (password ===""){
+        await updateUser(userToEdit.id || "", updatedUserData);
+      }else{
+        await updateUser(userToEdit.id || "", {...updatedUserData, password});
+      }
+      
+    } catch (error) {
+      console.error('Error actualizando usuario:', error);
     }
   };
 
   return (
     <>
-      {successLog.isError && <SuccessLogin message={successLog.message} />}
-      {errorLog.isError && <ErrorLogin message={errorLog.message} />}
-
+      {successLog.isSuccess && <SuccessMessage message={successLog.message} />}
+      {errorLog.isError && <ErrorMessage message={errorLog.message} />}
       <div className="register">
         <form onSubmit={handleSubmit}>
         <div style={{ display: 'flex', gap: '5rem' }}>

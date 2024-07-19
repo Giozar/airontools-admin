@@ -6,7 +6,7 @@ export interface UserDataBackend {
     _id: string;
     imageUrl: string;
     email: string;
-    password : string;
+    password? : string;
     fullName: string;
     roles: string;
 }
@@ -15,7 +15,7 @@ export interface UserDataFrontend{
     id?: string;
     imageUrl?: string;
     email: string;
-    password : string;
+    password? : string;
     name: string;
     roles: string;
 }

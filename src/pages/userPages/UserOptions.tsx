@@ -1,216 +1,40 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import HeaderApp from '../../layouts/HeaderApp';
 import '../css/UserOptions.css';
 import BasePage from '../../layouts/BasePage';
 import ActionCard from '../../components/ActionCard';
 import HeaderTitle from '../../components/HeaderTitle';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { UserDataBackend,UserDataFrontend, transformUserDataBack,transformUserData } from '../../adapter';
-import { useUserRoles } from '../../hooks/useUserRoles';
-import { UserRole } from '../../interfaces/UserRole';
+import { useState } from 'react';
+import RoleChangeModal from '../../components/RoleChangeModal';
+import DeletionModal from '../../components/DeletionModal';
+import EditIcon from '../../components/svg/EditIcon';
+import EditRoleIcon from '../../components/svg/EditRoleIcon';
+import TrashIcon from '../../components/svg/TrashIcon';
+import useFetchUsers from '../../hooks/useFetchUsers';
+import useUserManagement from '../../hooks/useUserManagement';
 
-interface RegisterResponse {
-  token: string;
-  user: UserDataBackend;
-}
-interface ValidationError {
-  message: string[];
-}
-interface FormError {
-  isError: boolean;
-  message: string;
-}
-function ErrorLogin({ message }: { message: string }) {
-  return <p className="errorLogin">{message}</p>;
-}
-
-function RoleChangeModal( {userToEdit, onCloseModal, onUpdateList}
-  :{userToEdit:UserDataFrontend, onCloseModal: () => void, onUpdateList: () => void}){
-  const { userRoles: roleOptions } = useUserRoles();
-  const [roles, setRoles] = useState(userToEdit.roles);
-  const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
-  const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRoles(e.target.value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-   try {
-      const response = await axios.put<RegisterResponse>(`http://localhost:4000/auth/update/${userToEdit.id}`, transformUserDataBack({
-        ...userToEdit,
-        roles,
-      }));
-      const { user } = response.data;
-      console.log(user);
-      onUpdateList();
-      onCloseModal();
-    } catch (error) {
-      if (!axios.isAxiosError<ValidationError>(error)) {
-        console.error("Edition failed", error);
-        return;
-      }
-      console.log(userToEdit.id)
-      if (!error.response) return;
-      console.log(error);
-      const errorMessage = error.response.data.message;
-      const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
-      setErrorLog({ isError: true, message });
-      handleShowErrorLog();
-    }
-  };
-
-  const handleShowErrorLog = () => {
-    setTimeout(() => {
-      setErrorLog({ isError: false, message: "" })
-    }, 2000)
-  }
-  
-  return(<>
-  {errorLog.isError && <ErrorLogin message={errorLog.message} />}
-  <form onSubmit={handleSubmit} className='choserol'>
-
-  <label htmlFor="options">Nuevo rol:</label>
-    <select id="options" value={roles} onChange={handleOptionChange}>
-      {roleOptions.map((roleOption: UserRole, index) => (
-        <option key={index} value={roleOption.name}>
-          {roleOption.name}
-        </option>
-      ))}
-      
-    </select>
-    <button type='submit'>Cambiar</button>
-  </form>
-    
-    
-  </>);
-}
-
-function DeletionModal({
-  userid,
-  username,
-  userimage,
-  onClose,
-  onCloseDelete,
-  onDelete,
-  message
-}: {
-  userid: string | null;
-  username: string | null;
-  userimage: string;
-  onClose: () => void;
-  onCloseDelete: () => void;
-  onDelete: () => void;
-  message: string | null;
-}) {
-  const handleDeleteClick = () => {
-    if (userid && username) {
-      onDelete(); // Llama a onDelete para eliminar al usuario del servidor
-    }
-  };
-  const handleContinueClick = (mensaje : string) =>{
-    onClose();
-    if (!mensaje.includes("No se ha podido eliminar")){
-      onCloseDelete();
-    }
-  }
-  return (
-    <div>
-      <div className="deletionmodal">
-        {message ? (
-          <div>
-            <p>{message}</p>
-            <button className="continue" onClick={() => handleContinueClick(message)}>Continuar</button>
-          </div>
-        ) : (
-          <>
-            <h2>Confirmación de Eliminación</h2>
-            <p>¿Estás seguro de que deseas eliminar a {username}?</p>
-            <img src={userimage} alt='usuario a eliminar' />
-            <h4>{userid}</h4>
-            <div className="buttons">
-              <button className="cancel" onClick={onClose}>Cancelar</button>
-              <button className="delete" onClick={handleDeleteClick}>Eliminar</button>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-
+/* No se que hice con los custom hooks pero parece funcionar si puedes hacerlo mejor estaría chido */
 function ReturnUsers() {
-  const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
-  const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null);
-  const [showModalFor, setShowModalFor] = useState<string | null>(null);
-  const [deletionMessage, setDeletionMessage] = useState<string | null>(null); // Nuevo state para el mensaje de eliminación
-  const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const {
+    showDeletionModalFor,
+    setShowDeletionModalFor,
+    showModalFor,
+    setShowModalFor,
+    deletionMessage,
+    handleEdit,
+    handleCloseModal,
+    handleDelete,
+    handleUpdateList,
+    updateListFlag
+  } = useUserManagement();
+  const { usersList,setUsersList, filteredUsers, setFilteredUsers,handleSearch } = useFetchUsers(updateListFlag);
   
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get<UserDataBackend[]>('http://localhost:4000/auth/users');
-        const transformedUsers = response.data.map((user) => ({
-          ...transformUserData(user)
-        }));
-        setUsersList(transformedUsers);
-        setFilteredUsers(transformedUsers);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
-    fetchUsers();
-
-  }, [updateListFlag]);
-
-
-  
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const term = event.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = usersList.filter(user =>
-      user.name.toLowerCase().includes(term)
-    );
-    setFilteredUsers(filtered);
-  };
-  
-
-  const handleEdit = (user: UserDataFrontend) => {
-    console.log("Se va a editar ", user.id);
-    navigate(location.pathname + `/editar-usuario`,{state:{user}});
-  };
-
-  const handleCloseModal = () =>{
-    setShowDeletionModalFor(null);
-    setDeletionMessage(null);
-  }
   const handleCloseModalDeletion = (userid : string)=>{
     setUsersList(usersList.filter(user => user.id !== userid));
     setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
   }
-  const handleDelete = async (userid: string, username: string) => {
-    try {
-      await axios.delete(`http://localhost:4000/auth/delete/${userid}`);
-      // Cierra el modal
-      setDeletionMessage(`Usuario ${username} (${userid}) ha sido eliminado correctamente.`);
-      // Quita el usuario de la lista
-      console.log(`Usuario ${userid} eliminado correctamente.`);
-    } catch (error) {
-      setDeletionMessage(`No se ha podido eliminar al usuario ${userid}.`);
-      console.error(`Error al eliminar usuario ${userid}:`, error);
-      
-    }
-  };
-  const handleUpdateList = () => {
-    // Cambia el estado para activar el useEffect
-    setUpdateListFlag(prevFlag => !prevFlag);
-  };
-  
+
   return (
     <div className='userlist'>
       <h2>Lista de usuarios</h2>
@@ -218,7 +42,7 @@ function ReturnUsers() {
         type="text"
         placeholder="Buscar usuarios..."
         value={searchTerm}
-        onChange={handleSearch}
+        onChange={(e) => {handleSearch(e.target.value);setSearchTerm(e.target.value)}}
       />
 
       <ul>
@@ -239,39 +63,15 @@ function ReturnUsers() {
             <p>{user.roles}</p>
             
             <button className='editrol' onClick={() => setShowModalFor(user.id || "")}>
-              {/*ICONO DE EDITAR ROLES*/}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2 21a8 8 0 0 1 10.434-7.62" />
-                <circle cx="10" cy="8" r="5" />
-                <circle cx="18" cy="18" r="3" />
-                <path d="m19.5 14.3-.4.9" />
-                <path d="m16.9 20.8-.4.9" />
-                <path d="m21.7 19.5-.9-.4" />
-                <path d="m15.2 16.9-.9-.4" />
-                <path d="m21.7 16.5-.9.4" />
-                <path d="m15.2 19.1-.9.4" />
-                <path d="m19.5 21.7-.4-.9" />
-                <path d="m16.9 15.2-.4-.9" />
-              </svg>
+              <EditRoleIcon/>
             </button>
 
             <button className='edit' onClick={() => handleEdit(user)}>
-              {/*ICONO DE EDITAR*/}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M11.5 15H7a4 4 0 0 0-4 4v2" />
-                <path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" />
-                <circle cx="10" cy="7" r="4" />
-              </svg>
+              <EditIcon/>
             </button>
 
             <button className='delete' onClick={() => setShowDeletionModalFor(user.id || "")}>
-              {/*ICONO DE BASURA*/}
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                <line x1="10" x2="10" y1="11" y2="17" />
-                <line x1="14" x2="14" y1="11" y2="17" />
-              </svg>
+              <TrashIcon/>
             </button>
 
             {showDeletionModalFor === user.id &&
@@ -299,8 +99,6 @@ function ReturnUsers() {
     </div>
   );
 }
-
-
 
 function ContentMainPage() {
     const location = useLocation();
