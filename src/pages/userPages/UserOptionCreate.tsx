@@ -2,27 +2,14 @@ import React, { useEffect, useState } from "react";
 import HeaderApp from "../../layouts/HeaderApp";
 import BasePage from "../../layouts/BasePage";
 import HeaderTitle from "../../components/HeaderTitle";
-import { transformUserDataBack, UserDataBackend } from "../../adapter";
-import axios from "axios";
 import "../css/UserOptionsCreate.css";
 import { useUserRoles } from "../../hooks/useUserRoles";
 import { UserRole } from "../../interfaces/UserRole";
 import FileUpload from "../../components/FileUpload";
-import useErrorHandling from "../../hooks/useErrorHandling";
-import useSuccessHandling from "../../hooks/useSuccessHandling";
 import ErrorMessage from "../../components/ErrorMessage";
 import SuccessMessage from "../../components/SuccessMessage";
 import usePasswordGenerator from "../../hooks/usePasswordGenerator";
-
-interface RegisterResponse {
-  token: string;
-  user: UserDataBackend;
-}
-
-interface ValidationError {
-  message: string[];
-}
-
+import useUserCreate from "../../hooks/useUserCreate";
 
 function CreateUserForm() {
   const [email, setEmail] = useState("");
@@ -30,27 +17,11 @@ function CreateUserForm() {
   const [name, setName] = useState("");
   const { password, generatePassword } = usePasswordGenerator({});
   const [roles, setRoles] = useState("Elige un rol");
-  const { errorLog,showError } = useErrorHandling();
-  const { successLog,showSuccess } = useSuccessHandling();
-  
-  const { userRoles: roleOptions } = useUserRoles(); /* recuperar roles */
+  const { errorLog, successLog, createUser } = useUserCreate();
+  const { userRoles: roleOptions } = useUserRoles();
 
   useEffect(() => {
   }, [imageUrl])
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    switch (id) {
-      case "name":
-        setName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      default:
-        break;
-    }
-  };
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRoles(e.target.value);
@@ -59,20 +30,9 @@ function CreateUserForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post<RegisterResponse>("http://localhost:4000/auth/register", transformUserDataBack({ email, password, name, roles, imageUrl }));
-      const { user } = response.data;
-      console.log(user);
-      showSuccess("Usuario Creado Con Éxito");
+      await createUser({password, imageUrl, email, name, roles});
     } catch (error) {
-      if (!axios.isAxiosError<ValidationError>(error)) {
-        console.error("Registration failed", error);
-        return;
-      }
-      if (!error.response) return;
-      console.log(error);
-      const errorMessage = error.response.data.message;
-      const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
-      showError(message);
+      console.error('Error actualizando usuario:', error);
     }
   };
 
@@ -83,14 +43,28 @@ function CreateUserForm() {
 
       <div className="register">
         <form onSubmit={handleSubmit}>
-          <FileUpload setImageUrl={setImageUrl} />
-          
+        <FileUpload setImageUrl={setImageUrl} />
+          <p style={{ color: 'red' }}>
+            {imageUrl === '' ? 'No ha subido una imagen, ¿Quiere continuar?' : ''}
+          </p>
           <label htmlFor="name">Nombre:</label>
-          <input id="name" type="text" placeholder="Introduce tu nombre" value={name} onChange={handleInputChange} required />
-
+          <input
+            id="name"
+            type="text"
+            placeholder="Introduce tu nombre completo"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
           <label htmlFor="email">Correo electrónico:</label>
-          <input id="email" type="email" placeholder="Introduce tu correo electrónico" value={email} onChange={handleInputChange} required />
-
+          <input
+            id="email"
+            type="email"
+            placeholder="Introduce tu correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
           <label htmlFor="password">Contraseña:</label>
           <div className="passwordgenerator">
             <input id="password" type="button" onClick={generatePassword} value="Generar contraseña" />
@@ -106,9 +80,7 @@ function CreateUserForm() {
             ))}
           </select>
           
-          <p style={{ color: 'red' }}>
-            {imageUrl === '' ? 'No ha subido una imagen, ¿Quiere continuar?' : ''}
-          </p>
+          
 
           <button type="submit">Crear usuario</button>
         </form>
