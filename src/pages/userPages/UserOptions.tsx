@@ -6,128 +6,9 @@ import ActionCard from '../../components/ActionCard';
 import HeaderTitle from '../../components/HeaderTitle';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { UserDataBackend,UserDataFrontend, transformUserDataBack,transformUserData } from '../../adapter';
-import { useUserRoles } from '../../hooks/useUserRoles';
-import { UserRole } from '../../interfaces/UserRole';
-import ErrorMessage from '../../components/ErrorMessage';
-import useErrorHandling from '../../hooks/useErrorHandling';
-
-interface RegisterResponse {
-  token: string;
-  user: UserDataBackend;
-}
-interface ValidationError {
-  message: string[];
-}
-
-function RoleChangeModal( {userToEdit, onCloseModal, onUpdateList}
-  :{userToEdit:UserDataFrontend, onCloseModal: () => void, onUpdateList: () => void}){
-  const { userRoles: roleOptions } = useUserRoles();
-  const [roles, setRoles] = useState(userToEdit.roles);
-  const { errorLog,showError } = useErrorHandling();
-  
-  const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setRoles(e.target.value);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-   try {
-      const response = await axios.put<RegisterResponse>(`http://localhost:4000/auth/update/${userToEdit.id}`, transformUserDataBack({
-        ...userToEdit,
-        roles,
-      }));
-      const { user } = response.data;
-      console.log(user);
-      onUpdateList();
-      onCloseModal();
-    } catch (error) {
-      if (!axios.isAxiosError<ValidationError>(error)) {
-        console.error("Edition failed", error);
-        return;
-      }
-      console.log(userToEdit.id)
-      if (!error.response) return;
-      console.log(error);
-      const errorMessage = error.response.data.message;
-      const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
-      showError(message);
-    }
-  };
-
-  
-  return(<>
-  {errorLog.isError && <ErrorMessage message={errorLog.message} />}
-  <form onSubmit={handleSubmit} className='choserol'>
-
-  <label htmlFor="options">Nuevo rol:</label>
-    <select id="options" value={roles} onChange={handleOptionChange}>
-      {roleOptions.map((roleOption: UserRole, index) => (
-        <option key={index} value={roleOption.name}>
-          {roleOption.name}
-        </option>
-      ))}
-      
-    </select>
-    <button type='submit'>Cambiar</button>
-  </form>
-    
-    
-  </>);
-}
-
-function DeletionModal({
-  userid,
-  username,
-  userimage,
-  onClose,
-  onCloseDelete,
-  onDelete,
-  message
-}: {
-  userid: string | null;
-  username: string | null;
-  userimage: string;
-  onClose: () => void;
-  onCloseDelete: () => void;
-  onDelete: () => void;
-  message: string | null;
-}) {
-  const handleDeleteClick = () => {
-    if (userid && username) {
-      onDelete(); // Llama a onDelete para eliminar al usuario del servidor
-    }
-  };
-  const handleContinueClick = (mensaje : string) =>{
-    onClose();
-    if (!mensaje.includes("No se ha podido eliminar")){
-      onCloseDelete();
-    }
-  }
-  return (
-    <div>
-      <div className="deletionmodal">
-        {message ? (
-          <div>
-            <p>{message}</p>
-            <button className="continue" onClick={() => handleContinueClick(message)}>Continuar</button>
-          </div>
-        ) : (
-          <>
-            <h2>Confirmación de Eliminación</h2>
-            <p>¿Estás seguro de que deseas eliminar a {username}?</p>
-            <img src={userimage} alt='usuario a eliminar' />
-            <h4>{userid}</h4>
-            <div className="buttons">
-              <button className="cancel" onClick={onClose}>Cancelar</button>
-              <button className="delete" onClick={handleDeleteClick}>Eliminar</button>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
+import { UserDataBackend,UserDataFrontend,transformUserData } from '../../adapter';
+import RoleChangeModal from '../../components/RoleChangeModal';
+import DeletionModal from '../../components/DeletionModal';
 
 function ReturnUsers() {
   const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
@@ -135,7 +16,7 @@ function ReturnUsers() {
   const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
   const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null);
   const [showModalFor, setShowModalFor] = useState<string | null>(null);
-  const [deletionMessage, setDeletionMessage] = useState<string | null>(null); // Nuevo state para el mensaje de eliminación
+  const [deletionMessage, setDeletionMessage] = useState<string | null>(null);
   const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();

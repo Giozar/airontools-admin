@@ -1,0 +1,46 @@
+.deletionmodal{
+    z-index: 100;
+    background-color: #03121d;
+    position: absolute;
+    top: 150px;
+    left: 30%;
+    padding: 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.deletionmodal img,h4{
+    align-self: center;
+}
+.deletionmodal h4{
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: normal;
+    font-weight: 100;
+    text-decoration: none;
+    opacity: 0.6;
+}
+.deletionmodal img{
+    height: 12rem;
+    border-radius: 20px;
+}
+.deletionmodal .buttons{
+    display: flex;
+    justify-content: space-between;
+}
+.deletionmodal .buttons .cancel{
+    width: fit-content;
+    border: 0px;
+    padding: 10px;
+    border-radius: 10px;
+    margin: auto;
+    background-color: rgba(0, 89, 255, 0.521);
+}
+.deletionmodal .buttons .delete{
+    width: fit-content;
+    border: 0px;
+    padding: 10px;
+    border-radius: 10px;
+    margin: auto;
+    background-color: rgba(255, 0, 0, 0.521);
+}
