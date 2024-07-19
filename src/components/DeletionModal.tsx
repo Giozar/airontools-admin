@@ -1,9 +1,9 @@
 import './css/deletionModal.css';
 
 interface DeletionModalProps {
-    userid: string | null;
-    username: string | null;
-    userimage: string;
+    id: string | null;
+    name: string | null;
+    image?: string;
     onClose: () => void;
     onCloseDelete: () => void;
     onDelete: () => void;
@@ -11,9 +11,9 @@ interface DeletionModalProps {
 }
 
 function DeletionModal({
-    userid,
-    username,
-    userimage,
+    id,
+    name,
+    image,
     onClose,
     onCloseDelete,
     onDelete,
@@ -21,8 +21,8 @@ function DeletionModal({
   }: DeletionModalProps) {
 
     const handleDeleteClick = () => {
-      if (userid && username) {
-        onDelete(); // Llama a onDelete para eliminar al usuario del servidor
+      if (id && name) {
+        onDelete();
       }
     };
 
@@ -44,9 +44,9 @@ function DeletionModal({
           ) : (
             <>
               <h2>Confirmación de Eliminación</h2>
-              <p>¿Estás seguro de que deseas eliminar a {username}?</p>
-              <img src={userimage} alt='usuario a eliminar' />
-              <h4>{userid}</h4>
+              <p>¿Estás seguro de que deseas eliminar a {name}?</p>
+              {image? <img src={image} alt='elemento a eliminar' />:''}
+              <h4>{id}</h4>
               <div className="buttons">
                 <button className="cancel" onClick={onClose}>Cancelar</button>
                 <button className="delete" onClick={handleDeleteClick}>Eliminar</button>

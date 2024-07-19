@@ -63,6 +63,16 @@
   .role-list ul{
     list-style-type: none;
   }
+  .role-list ul li {
+    display: grid;
+  }
+  .role-list ul li button {
+    margin-left: 50%;
+    background-color: #031724;
+    border: 0px;
+    border-radius: 10px;
+    padding: 10px;
+  }
   .role-list ul li .combobox{
     background-color:#093f63;
     margin: 10px 0;
@@ -75,4 +85,6 @@
   .role-list ul li .comboboxOptions{
     background-color:#093f63;
     margin-top: -10px;
+    padding-bottom: 20px;
+    border-radius: 10px;
   }

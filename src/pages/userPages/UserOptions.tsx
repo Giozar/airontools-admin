@@ -76,9 +76,9 @@ function ReturnUsers() {
 
             {showDeletionModalFor === user.id &&
               <DeletionModal
-                userid={user.id}
-                username={user.name}
-                userimage={user.imageUrl || ""}
+                id={user.id}
+                name={user.name}
+                image={user.imageUrl || ""}
                 onClose={()=>handleCloseModal()}
                 onCloseDelete={()=>handleCloseModalDeletion(user.id || "")}
                 onDelete={() => handleDelete(user.id || "",user.name)}
