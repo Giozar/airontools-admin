@@ -1,89 +1,42 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import HeaderApp from '../../layouts/HeaderApp';
 import '../css/UserOptions.css';
 import BasePage from '../../layouts/BasePage';
 import ActionCard from '../../components/ActionCard';
 import HeaderTitle from '../../components/HeaderTitle';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { UserDataBackend,UserDataFrontend,transformUserData } from '../../adapter';
+import { useState } from 'react';
 import RoleChangeModal from '../../components/RoleChangeModal';
 import DeletionModal from '../../components/DeletionModal';
 import EditIcon from '../../components/svg/EditIcon';
 import EditRoleIcon from '../../components/svg/EditRoleIcon';
 import TrashIcon from '../../components/svg/TrashIcon';
+import useFetchUsers from '../../hooks/useFetchUsers';
+import useUserManagement from '../../hooks/useUserManagement';
 
 function ReturnUsers() {
-  const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
-  const [showDeletionModalFor, setShowDeletionModalFor] = useState<string | null>(null);
-  const [showModalFor, setShowModalFor] = useState<string | null>(null);
-  const [deletionMessage, setDeletionMessage] = useState<string | null>(null);
+  const {
+    showDeletionModalFor,
+    setShowDeletionModalFor,
+    showModalFor,
+    setShowModalFor,
+    deletionMessage,
+    handleEdit,
+    handleCloseModal,
+    handleDelete
+  } = useUserManagement();
+
   const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { usersList,setUsersList, filteredUsers, setFilteredUsers,handleSearch } = useFetchUsers(updateListFlag);
   
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get<UserDataBackend[]>('http://localhost:4000/auth/users');
-        const transformedUsers = response.data.map((user) => ({
-          ...transformUserData(user)
-        }));
-        setUsersList(transformedUsers);
-        setFilteredUsers(transformedUsers);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
-    fetchUsers();
-
-  }, [updateListFlag]);
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const term = event.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = usersList.filter(user =>
-      user.name.toLowerCase().includes(term)
-    );
-    setFilteredUsers(filtered);
+  const handleUpdateList = () => {
+    setUpdateListFlag(prevFlag => !prevFlag);
   };
-  
-
-  const handleEdit = (user: UserDataFrontend) => {
-    navigate(location.pathname + `/editar-usuario`,{state:{user}});
-  };
-
-  const handleCloseModal = () =>{
-    setShowDeletionModalFor(null);
-    setDeletionMessage(null);
-  }
-
   const handleCloseModalDeletion = (userid : string)=>{
     setUsersList(usersList.filter(user => user.id !== userid));
     setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
   }
 
-  const handleDelete = async (userid: string, username: string) => {
-    try {
-      await axios.delete(`http://localhost:4000/auth/delete/${userid}`);
-      // Cierra el modal
-      setDeletionMessage(`Usuario ${username} (${userid}) ha sido eliminado correctamente.`);
-      // Quita el usuario de la lista
-      console.log(`Usuario ${userid} eliminado correctamente.`);
-    } catch (error) {
-      setDeletionMessage(`No se ha podido eliminar al usuario ${userid}.`);
-      console.error(`Error al eliminar usuario ${userid}:`, error);
-      
-    }
-  };
-  const handleUpdateList = () => {
-    // Cambia el estado para activar el useEffect
-    setUpdateListFlag(prevFlag => !prevFlag);
-  };
-  
   return (
     <div className='userlist'>
       <h2>Lista de usuarios</h2>
@@ -91,7 +44,7 @@ function ReturnUsers() {
         type="text"
         placeholder="Buscar usuarios..."
         value={searchTerm}
-        onChange={handleSearch}
+        onChange={(e) => {handleSearch(e.target.value);setSearchTerm(e.target.value)}}
       />
 
       <ul>
@@ -148,8 +101,6 @@ function ReturnUsers() {
     </div>
   );
 }
-
-
 
 function ContentMainPage() {
     const location = useLocation();
