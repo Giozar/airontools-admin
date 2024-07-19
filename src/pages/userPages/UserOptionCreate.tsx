@@ -8,6 +8,10 @@ import "../css/UserOptionsCreate.css";
 import { useUserRoles } from "../../hooks/useUserRoles";
 import { UserRole } from "../../interfaces/UserRole";
 import FileUpload from "../../components/FileUpload";
+import useErrorHandling from "../../hooks/useErrorHandling";
+import useSuccessHandling from "../../hooks/useSuccessHandling";
+import ErrorMessage from "../../components/ErrorMessage";
+import SuccessMessage from "../../components/SuccessMessage";
 
 interface RegisterResponse {
   token: string;
@@ -18,18 +22,6 @@ interface ValidationError {
   message: string[];
 }
 
-interface FormError {
-  isError: boolean;
-  message: string;
-}
-
-function ErrorLogin({ message }: { message: string }) {
-  return <p className="errorLogin">{message}</p>;
-}
-
-function SuccessLogin({ message }: { message: string }) {
-  return <p className="success">{message}</p>;
-}
 
 function CreateUserForm() {
   const [email, setEmail] = useState("");
@@ -37,8 +29,8 @@ function CreateUserForm() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [roles, setRoles] = useState("Elige un rol");
-  const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
-  const [successLog, setSuccessLog] = useState<FormError>({ isError: false, message: "" });
+  const { errorLog,showError } = useErrorHandling();
+  const { successLog,showSuccess } = useSuccessHandling();
   
   const { userRoles: roleOptions } = useUserRoles(); /* recuperar roles */
 
@@ -83,8 +75,7 @@ function CreateUserForm() {
       const response = await axios.post<RegisterResponse>("http://localhost:4000/auth/register", transformUserDataBack({ email, password, name, roles, imageUrl }));
       const { user } = response.data;
       console.log(user);
-      setSuccessLog({ isError: true, message: "Usuario Creado Con Éxito" });
-      handleShowMessageModal();
+      showSuccess("Usuario Creado Con Éxito");
     } catch (error) {
       if (!axios.isAxiosError<ValidationError>(error)) {
         console.error("Registration failed", error);
@@ -94,24 +85,14 @@ function CreateUserForm() {
       console.log(error);
       const errorMessage = error.response.data.message;
       const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
-      setErrorLog({ isError: true, message });
-      handleShowMessageModal();
+      showError(message);
     }
   };
 
-  const handleShowMessageModal = () => {
-    setTimeout(() => {
-      setErrorLog({ isError: false, message: "" })
-      setSuccessLog({ isError: false, message: "" })
-
-    }, 2000)
-  }
-  
-
   return (
     <>
-      {successLog.isError && <SuccessLogin message={successLog.message} />}
-      {errorLog.isError && <ErrorLogin message={errorLog.message} />}
+      {successLog.isSuccess && <SuccessMessage message={successLog.message} />}
+      {errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
       <div className="register">
         <form onSubmit={handleSubmit}>

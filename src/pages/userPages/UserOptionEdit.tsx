@@ -8,6 +8,10 @@ import { UserRole } from "../../interfaces/UserRole";
 import FileUpload from "../../components/FileUpload";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import useErrorHandling from '../../hooks/useErrorHandling';
+import useSuccessHandling from '../../hooks/useSuccessHandling';
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessMessage from '../../components/SuccessMessage';
 
 interface RegisterResponse {
   token: string;
@@ -18,19 +22,6 @@ interface ValidationError {
   message: string[];
 }
 
-interface FormError {
-  isError: boolean;
-  message: string;
-}
-
-function ErrorLogin({ message }: { message: string }) {
-  return <p className="errorLogin">{message}</p>;
-}
-
-function SuccessLogin({ message }: { message: string }) {
-  return <p className="success">{message}</p>;
-}
-
 function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
   const [email, setEmail] = useState(userToEdit.email);
   const [pastImageUrl,setPastImageUrl] = useState(userToEdit.imageUrl);
@@ -38,8 +29,10 @@ function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
   const [name, setName] = useState(userToEdit.name);
   const [password, setPassword] = useState(userToEdit.password);
   const [roles, setRoles] = useState(userToEdit.roles);
-  const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
-  const [successLog, setSuccessLog] = useState<FormError>({ isError: false, message: "" });
+
+  const { errorLog,showError } = useErrorHandling();
+  const { successLog,showSuccess } = useSuccessHandling();
+  
   const [isEditingImage, setIsEditingImage] = useState(false);
   const { userRoles: roleOptions } = useUserRoles(); /* recuperar roles */
 
@@ -73,7 +66,7 @@ function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
       const response = await axios.put<RegisterResponse>(`http://localhost:4000/auth/update/${userToEdit.id}`, transformUserDataBack({ email, password, name, roles, imageUrl }));
       const { user } = response.data;
       console.log(user);
-      setSuccessLog({ isError: true, message: "Usuario Editado Con Éxito" });
+      showSuccess("Usuario Editado Con Éxito" );
     } catch (error) {
       if (!axios.isAxiosError<ValidationError>(error)) {
         console.error("Edition failed", error);
@@ -84,14 +77,14 @@ function EditUserForm({userToEdit}:{userToEdit:UserDataFrontend} ) {
       console.log(error);
       const errorMessage = error.response.data.message;
       const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
-      setErrorLog({ isError: true, message });
+      showError(message);
     }
   };
 
   return (
     <>
-      {successLog.isError && <SuccessLogin message={successLog.message} />}
-      {errorLog.isError && <ErrorLogin message={errorLog.message} />}
+      {successLog.isSuccess && <SuccessMessage message={successLog.message} />}
+      {errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
       <div className="register">
         <form onSubmit={handleSubmit}>

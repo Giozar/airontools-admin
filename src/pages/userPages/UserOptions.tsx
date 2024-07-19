@@ -9,6 +9,8 @@ import axios from 'axios';
 import { UserDataBackend,UserDataFrontend, transformUserDataBack,transformUserData } from '../../adapter';
 import { useUserRoles } from '../../hooks/useUserRoles';
 import { UserRole } from '../../interfaces/UserRole';
+import ErrorMessage from '../../components/ErrorMessage';
+import useErrorHandling from '../../hooks/useErrorHandling';
 
 interface RegisterResponse {
   token: string;
@@ -17,19 +19,13 @@ interface RegisterResponse {
 interface ValidationError {
   message: string[];
 }
-interface FormError {
-  isError: boolean;
-  message: string;
-}
-function ErrorLogin({ message }: { message: string }) {
-  return <p className="errorLogin">{message}</p>;
-}
 
 function RoleChangeModal( {userToEdit, onCloseModal, onUpdateList}
   :{userToEdit:UserDataFrontend, onCloseModal: () => void, onUpdateList: () => void}){
   const { userRoles: roleOptions } = useUserRoles();
   const [roles, setRoles] = useState(userToEdit.roles);
-  const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: "" });
+  const { errorLog,showError } = useErrorHandling();
+  
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRoles(e.target.value);
   };
@@ -55,19 +51,13 @@ function RoleChangeModal( {userToEdit, onCloseModal, onUpdateList}
       console.log(error);
       const errorMessage = error.response.data.message;
       const message = Array.isArray(errorMessage) ? errorMessage.join(", ") : errorMessage;
-      setErrorLog({ isError: true, message });
-      handleShowErrorLog();
+      showError(message);
     }
   };
 
-  const handleShowErrorLog = () => {
-    setTimeout(() => {
-      setErrorLog({ isError: false, message: "" })
-    }, 2000)
-  }
   
   return(<>
-  {errorLog.isError && <ErrorLogin message={errorLog.message} />}
+  {errorLog.isError && <ErrorMessage message={errorLog.message} />}
   <form onSubmit={handleSubmit} className='choserol'>
 
   <label htmlFor="options">Nuevo rol:</label>

@@ -7,26 +7,18 @@ import axios from 'axios';
 import '../css/UserOptionsCreateRole.css'
 import { AuthContext } from '../../App';
 import ComboBox from '../../components/ComboBox';
-interface FormError {
-  isError: boolean;
-  message: string;
-}
-
-function ErrorMessage({ message }: { message: string }) {
-  return <p className="error-message">{message}</p>;
-}
-
-function SuccessMessage({ message }: { message: string }) {
-  return <p className="success-message">{message}</p>;
-}
+import useErrorHandling from '../../hooks/useErrorHandling';
+import useSuccessHandling from '../../hooks/useSuccessHandling';
+import SuccessMessage from '../../components/SuccessMessage';
+import ErrorMessage from '../../components/ErrorMessage';
 
 function CreateRoleForm () {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const authContext = useContext(AuthContext);
   const createdBy = authContext?.user?.name;
-  const [errorLog, setErrorLog] = useState<FormError>({ isError: false, message: '' });
-  const [successLog, setSuccessLog] = useState<FormError>({ isError: false, message: '' });
+  const { errorLog,showError } = useErrorHandling();
+  const { successLog,showSuccess } = useSuccessHandling();
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -51,16 +43,16 @@ function CreateRoleForm () {
         createdBy
       });
       console.log('Role created successfully:', response.data);
-      setSuccessLog({ isError: false, message: 'Rol creado con éxito' });
+      showSuccess('Rol creado con éxito');
       // Optionally reset form fields
       setName('');
       setDescription('');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || 'Error desconocido';
-        setErrorLog({ isError: true, message: errorMessage });
+        showError(errorMessage);
       } else {
-        setErrorLog({ isError: true, message: 'Error desconocido' });
+        showError('Error desconocido');
       }
       console.error('Error creating role:', error);
     }
@@ -68,7 +60,7 @@ function CreateRoleForm () {
 
   return (
     <div className="create-role-form">
-      {successLog.isError && <SuccessMessage message={successLog.message} />}
+      {successLog.isSuccess && <SuccessMessage message={successLog.message} />}
       {errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
       <h2>Crear Nuevo Rol</h2>
