@@ -34,10 +34,14 @@ function App() {
         <Route element={<PrivateRoute/>}>
           <Route path="/home" element={<Home/>}/>  
             <Route element={<PrivateRouteOptionUser/>}>
-            <Route path="/home/usuarios" element={<UserOptions/>}/> 
+              <Route path="/home/usuarios" element={<UserOptions/>}/> 
               <Route path="/home/usuarios/crear-usuario" element={<UserOptionCreate/>}/>  
               <Route path="/home/usuarios/editar-usuario" element={<UserOptionEdit/>}/>
               <Route path="/home/usuarios/crear-rol" element={<UserOptionCreateRole/>}/>
+
+              <Route path="/home/especificaciones/crear-familia" element={<UserOptionCreateRole/>}/>
+              <Route path="/home/especificaciones/crear-rol" element={<UserOptionCreateRole/>}/>
+              <Route path="/home/especificaciones/crear-rol" element={<UserOptionCreateRole/>}/>
             </Route>
         </Route>
       </Routes>

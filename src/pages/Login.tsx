@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import aironLogo from '/Logo-Blanco.png';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -12,12 +12,8 @@ import useErrorHandling from '../hooks/useErrorHandling';
 interface LoginResponse {
   token: string;
   user: UserDataBackend;
-}
-
-interface DecodedToken {
-    id: string;
-    iat: number;
-    exp: number;
+  exp : number;
+  iat : number;
 }
 
 interface ValidationError{
@@ -39,22 +35,16 @@ function HeaderLogin(){
 function Login(){
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    const authContext = useContext(AuthContext);
     const { errorLog,showError } = useErrorHandling();
-/*
+    const authContext = useContext(AuthContext);
     useEffect(() => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const decodedToken = jwtDecode<DecodedToken>(token);
+          const decodedToken = jwtDecode<LoginResponse>(token);
           const now = Math.floor(Date.now() / 1000);
-          // Check if token is expired
           if (decodedToken.exp > now) {
-            authContext?.setAuth({ isAuthenticated: true, user: transformUserData({
-              _id: decodedToken.id,
-              fullName: "Hola",
-              roles: "employee"
-            }) });
+            authContext?.setAuth({ isAuthenticated: true, user: transformUserData(decodedToken.user) });
          } else {
             localStorage.removeItem('token');
           }
@@ -64,21 +54,19 @@ function Login(){
         }
       }
     }, [authContext]);
-    */
+    
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             const response = await axios.post<LoginResponse>('http://localhost:4000/auth/login', { email, password });
             
-            const { token, user } = response.data;
+            const { token } = response.data;
 
             localStorage.setItem('token', token);
             
-            const decodedToken = jwtDecode<DecodedToken>(token);
-
-            user._id = decodedToken.id;
-
-            authContext?.setAuth({ isAuthenticated: true, user: transformUserData(user) });
+            const decodedToken = jwtDecode<LoginResponse>(token);
+            console.log(decodedToken);
+            authContext?.setAuth({ isAuthenticated: true, user: transformUserData(decodedToken.user) });
              
           } catch (error) {
             if (!axios.isAxiosError<ValidationError>(error)) {

@@ -13,6 +13,7 @@ function ContentMainPage() {
           <HeaderTitle title="Acciones" />
           <div className="options">
             <ActionCard title="Usuarios" path={location.pathname + '/usuarios'} />
+            <ActionCard title="Especificaciones" path={location.pathname + '/especificaciones'} />
           </div>
         </main>
       </BasePage>
