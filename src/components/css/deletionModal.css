@@ -1,47 +1,48 @@
-.deletionmodal{
-    z-index: 100;
-    background-color: #03121d;
-    position: absolute;
-    top: 150px;
-    left: 30%;
-    padding: 30px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    color: white;
+.deletionmodal {
+	display: flex;
+	position: absolute;
+	top: 150px;
+	left: 30%;
+	flex-direction: column;
+	z-index: 100;
+	border-radius: 10px;
+	background-color: #03121d;
+	padding: 30px;
+	color: white;
 }
-.deletionmodal img,h4{
-    align-self: center;
+.deletionmodal img,
+h4 {
+	align-self: center;
 }
-.deletionmodal h4{
-    margin-top: 0;
-    margin-bottom: 2rem;
-    font-size: normal;
-    font-weight: 100;
-    text-decoration: none;
-    opacity: 0.6;
+.deletionmodal h4 {
+	opacity: 0.6;
+	margin-top: 0;
+	margin-bottom: 2rem;
+	font-weight: 100;
+	font-size: normal;
+	text-decoration: none;
 }
-.deletionmodal img{
-    height: 12rem;
-    border-radius: 20px;
+.deletionmodal img {
+	border-radius: 20px;
+	height: 12rem;
 }
-.deletionmodal .buttons{
-    display: flex;
-    justify-content: space-between;
+.deletionmodal .buttons {
+	display: flex;
+	justify-content: space-between;
 }
-.deletionmodal .buttons .cancel{
-    width: fit-content;
-    border: 0px;
-    padding: 10px;
-    border-radius: 10px;
-    margin: auto;
-    background-color: rgba(0, 89, 255, 0.521);
+.deletionmodal .buttons .cancel {
+	margin: auto;
+	border: 0px;
+	border-radius: 10px;
+	background-color: rgba(0, 89, 255, 0.521);
+	padding: 10px;
+	width: fit-content;
 }
-.deletionmodal .buttons .delete{
-    width: fit-content;
-    border: 0px;
-    padding: 10px;
-    border-radius: 10px;
-    margin: auto;
-    background-color: rgba(255, 0, 0, 0.521);
+.deletionmodal .buttons .delete {
+	margin: auto;
+	border: 0px;
+	border-radius: 10px;
+	background-color: rgba(255, 0, 0, 0.521);
+	padding: 10px;
+	width: fit-content;
 }

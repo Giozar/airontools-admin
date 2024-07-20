@@ -2,13 +2,16 @@
 TODO: que tenga un css consistente durante todas las paginas
 */
 
-import { Link, useNavigate } from 'react-router-dom';
-import ComboBox from '../components/ComboBox';
-import aironLogo from '/Logo-Blanco.png';
-import { AuthContext } from '../App';
 import { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import aironLogo from '../../../Logo-Blanco.png';
+import { AuthContext } from '../App';
+import ComboBox from '../components/ComboBox';
 import BellIcon from '../components/svg/BellIcon';
 
+function Sidebar() {
+	const navigate = useNavigate();
+	const authContext = useContext(AuthContext);
 
 function Sidebar(){
     const navigate = useNavigate();
@@ -57,5 +60,6 @@ function Sidebar(){
             </div>
         </div>
     );
+
 }
 export default Sidebar;

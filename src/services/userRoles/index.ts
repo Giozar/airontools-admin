@@ -1,1 +1,1 @@
-export * from './getUserRoles.service'
+export * from './getUserRoles.service';

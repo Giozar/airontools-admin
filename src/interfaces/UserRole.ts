@@ -1,3 +1,3 @@
 export interface UserRole {
-    name:string;
+	name: string;
 }

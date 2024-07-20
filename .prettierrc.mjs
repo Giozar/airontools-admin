@@ -7,6 +7,7 @@ export default {
 	tabWidth: 2,
 	trailingComma: 'all',
 	arrowParens: 'avoid',
-    jsxSingleQuote: true,
-    endOfLine: 'auto',
+	jsxSingleQuote: true,
+	endOfLine: 'auto',
+	plugins: ['prettier-plugin-css-order', 'prettier-plugin-organize-imports'],
 };

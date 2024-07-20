@@ -1,99 +1,96 @@
-.register{
-    border-top: 1rem;
-    display: flex;
-    color: white;
-    
+.register {
+	display: flex;
+	border-top: 1rem;
+	color: white;
 }
 
-.register form{
-    display: grid;
-    row-gap: 1rem;
-    margin: 0 2rem;
+.register form {
+	display: grid;
+	row-gap: 1rem;
+	margin: 0 2rem;
 }
-.register form label{
-    color: white;
+.register form label {
+	color: white;
 }
-.register form input{
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-    color: black;
+.register form input {
+	border-radius: 10px;
+	background-color: white;
+	padding: 10px;
+	color: black;
 }
 
 .register form .profileimage {
-    background-color: white;
-    width: 10rem;
-    height: 10rem;
-    border-radius: 50%;
-    object-fit: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    background-color: #046DB5;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 10rem;
-    margin-right: 1.5rem;
+	vertical-align: middle;
+	margin-right: 1.5rem;
+	border-radius: 50%;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-color: white;
+	background-color: #046db5;
+	width: 10rem;
+	height: 10rem;
+	object-fit: cover;
+	line-height: 10rem;
+	text-align: center;
 }
 
-
-.register form .passwordgenerator{
-    display: flex;
-    justify-content: start;
+.register form .passwordgenerator {
+	display: flex;
+	justify-content: start;
 }
-.register form .passwordgenerator p{
-    background-color: white;
-    width: 100px;
-    height: 20px;
-    padding: 10px;
-    border-radius: 10px;
-    color: black;
-}
-
-.register form .passwordgenerator input{
-    background-color: #046DB5;
-    padding: 0 10px;
-    border-radius: 10px;
-    border: 0px;
-    margin-right: 1rem;
-    cursor: pointer;
-    transition: 100ms ease-in-out opacity;
-    color: white;
-}
-.register form .passwordgenerator input:hover{
-    opacity: 0.60;
+.register form .passwordgenerator p {
+	border-radius: 10px;
+	background-color: white;
+	padding: 10px;
+	width: 100px;
+	height: 20px;
+	color: black;
 }
 
-.register form button{
-    margin-top: 1.5rem;
-    background-color: #046DB5;
-    padding: 15px;
-    border-radius: 15px;
-    border: 0px;   
-    border-bottom: 4px #093f63 solid;
+.register form .passwordgenerator input {
+	transition: 100ms ease-in-out opacity;
+	cursor: pointer;
+	margin-right: 1rem;
+	border: 0px;
+	border-radius: 10px;
+	background-color: #046db5;
+	padding: 0 10px;
+	color: white;
 }
-.register form select{
-    margin: 0;
-    border: 0px;
-    padding: 10px;
-    background-color: #046DB5;
-    border-radius: 15px;
+.register form .passwordgenerator input:hover {
+	opacity: 0.6;
 }
 
-.register form select option{
-    background-color: #046DB5;
-    opacity: 0.7;
-    padding: 5px;
-    border-bottom: 1px #093f63 solid;
+.register form button {
+	margin-top: 1.5rem;
+	border: 0px;
+	border-bottom: 4px #093f63 solid;
+	border-radius: 15px;
+	background-color: #046db5;
+	padding: 15px;
+}
+.register form select {
+	margin: 0;
+	border: 0px;
+	border-radius: 15px;
+	background-color: #046db5;
+	padding: 10px;
+}
+
+.register form select option {
+	opacity: 0.7;
+	border-bottom: 1px #093f63 solid;
+	background-color: #046db5;
+	padding: 5px;
 }
 
 .custom-file-upload {
-    cursor: pointer;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    display: inline-block;
-    margin-right: 10px;
-  }
-  
+	display: inline-block;
+	cursor: pointer;
+	margin-right: 10px;
+	border-radius: 5px;
+	background-color: #007bff;
+	padding: 10px;
+	color: #fff;
+}

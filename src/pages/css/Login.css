@@ -1,72 +1,79 @@
-body{
-  background-color: #092B48;
+body {
+	background-color: #092b48;
 }
-header{
-  top: 0;
-  position: absolute;
-  background-color: #18181B;
-  width: 100%;
-  display: grid;
-  padding: 20px 0;
-  grid-template-columns: repeat(2, 200px);
+
+header {
+	display: grid;
+	position: absolute;
+	top: 0;
+	grid-template-columns: repeat(2, 200px);
+	background-color: #18181b;
+	padding: 20px 0;
+	width: 100%;
 }
-header .logoimg{
-  width: 100px;
-  margin-left: 30px;
-  padding: 0 20px;
-  margin: 0;
+
+header .logoimg {
+	margin-left: 30px;
+	margin: 0;
+	padding: 0 20px;
+	width: 100px;
 }
-header h1{
-  font-size: medium;
+
+header h1 {
+	font-size: medium;
 }
 
 .login {
-  margin-top: 60px;
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
-}
-.login form{
-  display: grid;
-}
-.login form img{
-  width: 200px;
-  padding: 0;
-  margin: 0;
+	display: flex;
+	flex-grow: 1;
+	justify-content: center;
+	align-items: center;
+	margin-top: 60px;
 }
 
-.login h2{
-  font-size: 2em;
-  margin-top: 0;
-  font-weight: normal;
-  border-bottom: 2px solid white;
+.login form {
+	display: grid;
 }
 
-.login form label{
-  color: white;
-  font-size: large;
-  padding: 10px 0;
+.login form img {
+	margin: 0;
+	padding: 0;
+	width: 200px;
 }
-.login form input{
-  background-color: white;
-  color: #18181B;
-  padding: 15px;
-  border: 2px solid white;
-  border-radius: 20px;
-  margin: 2px;
+
+.login h2 {
+	margin-top: 0;
+	border-bottom: 2px solid white;
+	font-weight: normal;
+	font-size: 2em;
 }
-.login form input:focus{
-  background-color: #1196E6;
-  
+
+.login form label {
+	padding: 10px 0;
+	color: white;
+	font-size: large;
 }
-.login form button{
-  background-color: #1196E6;
-  color: white;
-  padding: 15px;
-  border: 0px;
-  border-radius: 30px;
-  font-weight: bold;
-  font-size:medium;
-  margin-top: 10px;
+
+.login form input {
+	margin: 2px;
+	border: 2px solid white;
+	border-radius: 20px;
+	background-color: white;
+	padding: 15px;
+	color: #18181b;
+}
+
+.login form input:focus {
+	background-color: #1196e6;
+}
+
+.login form button {
+	margin-top: 10px;
+	border: 0px;
+	border-radius: 30px;
+	background-color: #1196e6;
+	padding: 15px;
+	color: white;
+	font-weight: bold;
+	font-size: medium;
 }

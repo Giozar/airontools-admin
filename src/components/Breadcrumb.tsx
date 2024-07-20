@@ -3,13 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import RightArrow from './svg/RightArrow';
 import '@components/css/breadcrumb.css';
 
-function Breadcrumb({ separator = (
-    <RightArrow/>
-) }: {
-    separator?: React.ReactNode; 
+function Breadcrumb({
+	separator = <RightArrow />,
+}: {
+	separator?: React.ReactNode;
 }) {
-  const location = useLocation();
-  const pathnames = location.pathname.split('/').filter((x) => x); // Obtener las partes de la ruta y filtrar las partes vacías
+	const location = useLocation();
+	const pathnames = location.pathname.split('/').filter(x => x); // Obtener las partes de la ruta y filtrar las partes vacías
 
   const renderBreadcrumbs = () => {
       let fullPath = '';
@@ -39,12 +39,13 @@ function Breadcrumb({ separator = (
       );
   };
 
-  return (
-    <div className="breadcrumb">
-      {pathnames.length > 0 && <span className="separator">{separator}</span>}
-      {renderBreadcrumbs()}
-    </div>
-  );
+
+	return (
+		<div className='breadcrumb'>
+			{pathnames.length > 0 && <span className='separator'>{separator}</span>}
+			{renderBreadcrumbs()}
+		</div>
+	);
 }
 
 export default Breadcrumb;

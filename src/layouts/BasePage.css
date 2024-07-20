@@ -1,233 +1,237 @@
 /* Estilos generales */
 .mainPage {
-    display: flex;
-    height: 100vh;
-    color: #040b16;
-    background-color: #ffffff;
+	display: flex;
+	background-color: #ffffff;
+	height: 100vh;
+	color: #040b16;
 }
 
 /* Estilos de la barra lateral */
 .sidebar {
-    width: 16rem;
-    padding: 1.5rem;
-    background-color: #18181B;
-    font-size: medium;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: #18181b;
+	padding: 1.5rem;
+	width: 16rem;
+	font-size: medium;
 }
 
 .sidebar .title {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2rem;
+	display: flex;
+	align-items: center;
+	margin-bottom: 2rem;
 }
 
 .sidebar .title img {
-    margin-right: 0.5rem;
-    width: 4rem;
+	margin-right: 0.5rem;
+	width: 4rem;
 }
 
 .sidebar .title h1 {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #046DB5;
+	color: #046db5;
+	font-weight: bold;
+	font-size: 1.25rem;
 }
 
-.sidebar a, .sidebar .comboboxOptions li span {
-    display: flex;
-    padding: 0.5rem;
-    align-items: center;
-    border-radius: 0.25rem;
-    text-decoration: none;
-    color: #F3F4F6;
+.sidebar a,
+.sidebar .comboboxOptions li span {
+	display: flex;
+	align-items: center;
+	border-radius: 0.25rem;
+	padding: 0.5rem;
+	color: #f3f4f6;
+	text-decoration: none;
 }
-.sidebar a svg{
-    margin-right: 1rem;
-}
-
-.sidebar a:hover,.sidebar .comboboxOptions li span:hover  {
-    background-color: #F3F4F6;
-    color: black;
+.sidebar a svg {
+	margin-right: 1rem;
 }
 
-.sidebar .combobox{
-    color: #F3F4F6;
-    font-size: 1rem;
+.sidebar a:hover,
+.sidebar .comboboxOptions li span:hover {
+	background-color: #f3f4f6;
+	color: black;
+}
+
+.sidebar .combobox {
+	color: #f3f4f6;
+	font-size: 1rem;
 }
 
 /* Estilos del combo box */
 .combobox {
-    background-color: transparent;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 0.25rem;
-    border: 0px;
-    width: 100%;
-    padding: 0.5rem;
-    font-size: normal;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 0px;
+	border-radius: 0.25rem;
+	background-color: transparent;
+	padding: 0.5rem;
+	width: 100%;
+	font-size: normal;
 }
 
 .combobox:hover {
-    background-color: #F3F4F6;
-    color: black;
+	background-color: #f3f4f6;
+	color: black;
 }
 
 .combobox .icon {
-    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+	transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .combobox .animate {
-    transform: rotate(-180deg);
+	transform: rotate(-180deg);
 }
 
 .comboboxOptions {
-    margin: auto;
-    list-style-type: none;
+	margin: auto;
+	list-style-type: none;
 }
 
 .comboboxOptions li {
-    display: block;
-    padding: 0.1rem;
-    border-radius: 0.25rem;
+	display: block;
+	border-radius: 0.25rem;
+	padding: 0.1rem;
 }
-.comboboxOptions li span{
-    color: white;
-    text-transform: capitalize;
-    cursor: pointer;
+.comboboxOptions li span {
+	cursor: pointer;
+	color: white;
+	text-transform: capitalize;
 }
 /* Estilos del contenido principal */
 .content {
-    flex: 1 1 0%;
-    overflow: auto;
+	flex: 1 1 0%;
+	overflow: auto;
 }
 
 header {
-    display: flex;
-    align-items: center;
-    background-color: #18181B;
-    color: #F3F4F6;
-    top: 0;
-    position: sticky;
+	display: flex;
+	position: sticky;
+	top: 0;
+	align-items: center;
+	background-color: #18181b;
+	color: #f3f4f6;
 }
 
 .content header {
-    padding: 1rem 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 0;
 }
 
 .content .userinfo {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-    margin-right: 2.5rem;
+	display: flex;
+	align-items: center;
+	margin-right: 2.5rem;
+	margin-left: 1rem;
 }
 
 .content .userinfo .userpic {
-    display: inline-block;
-    border-radius: 50%;
-    width: 2rem;
-    height: 2rem;
-    object-fit: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    background-color: #046DB5;
+	display: inline-block;
+	border-radius: 50%;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-color: #046db5;
+	width: 2rem;
+	height: 2rem;
+	object-fit: cover;
 }
 
 .content .userinfo p {
-    margin: 0 1rem;
+	margin: 0 1rem;
 }
 
-.content .userinfo p span{
-    color:yellow;
+.content .userinfo p span {
+	color: yellow;
 }
 
 .content .userinfo button {
-    padding: 0.5rem;
-    border-radius: 50%;
-    background-color: transparent;
-    border: 0px;
+	border: 0px;
+	border-radius: 50%;
+	background-color: transparent;
+	padding: 0.5rem;
 }
 
 .content .userinfo button:hover {
-    background-color: cornflowerblue;
+	background-color: cornflowerblue;
 }
 
 .content main {
-    padding: 1.5rem;
-    background-color: #092B48;
-    min-height: 100vh;
+	background-color: #092b48;
+	padding: 1.5rem;
+	min-height: 100vh;
 }
 
 .content main .options {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-    justify-content: start;
+	display: grid;
+	grid-template-columns: repeat(1, minmax(0, 1fr));
+	justify-content: start;
+	gap: 2rem;
+	padding: 2rem;
 }
 
 .content main .options .card {
-    overflow: hidden;
-    border-radius: 0.5rem;
-    background-color: #046DB5;
-    padding: 2em;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    border: 0px;
-    transition: background-color 200ms ease-in-out;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
+	transition: background-color 200ms ease-in-out;
+	box-shadow:
+		0 1px 3px 0 rgba(0, 0, 0, 0.1),
+		0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	border: 0px;
+	border-radius: 0.5rem;
+	background-color: #046db5;
+	padding: 2em;
+	overflow: hidden;
+	text-align: center;
 }
 
 .content main .options .card:hover {
-    background-color: #046eb57c;
+	background-color: #046eb57c;
 }
 
 .content main .options .card svg {
-    width: 6rem; 
-    height: 6rem; 
-    color: #092B48;
-    text-align: center;
-    align-self: center;
-    margin: 1rem 0;
+	align-self: center;
+	margin: 1rem 0;
+	width: 6rem;
+	height: 6rem;
+	color: #092b48;
+	text-align: center;
 }
-.content main .options .card dl{
-   align-self: center; 
+.content main .options .card dl {
+	align-self: center;
 }
 .content main .options .card dl dt {
-    
-    font-size: 1.5rem;
-    font-weight:lighter;
-    color: #ffffff;
-    overflow: hidden;
-    line-break: auto;
-    text-align: left;
+	overflow: hidden;
+	color: #ffffff;
+	font-weight: lighter;
+
+	font-size: 1.5rem;
+	line-break: auto;
+	text-align: left;
 }
 
 /* Media queries */
 @media (min-width: 640px) {
-    .content main {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
+	.content main {
+		padding-right: 1.5rem;
+		padding-left: 1.5rem;
+	}
 
-    .content main .options {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+	.content main .options {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }
 
 @media (min-width: 1024px) {
-    .content main {
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
+	.content main {
+		padding-right: 2rem;
+		padding-left: 2rem;
+	}
 
-    .content main .options {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+	.content main .options {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
 }

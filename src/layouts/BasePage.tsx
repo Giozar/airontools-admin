@@ -4,10 +4,11 @@ import Sidebar from './Sidebar';
 import { useLocation } from 'react-router-dom';
 
 type BasePageProps = {
-  children: ReactNode;
+	children: ReactNode;
 };
 
 function BasePage({ children }: BasePageProps) {
+
   const location = useLocation();
   localStorage.setItem('location', location.pathname);
   return (
@@ -18,6 +19,7 @@ function BasePage({ children }: BasePageProps) {
       </div>
     </div>
   );
+
 }
 
 export default BasePage;
