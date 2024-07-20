@@ -3,18 +3,16 @@ import './BasePage.css';
 import Sidebar from './Sidebar';
 
 type BasePageProps = {
-  children: ReactNode;
+	children: ReactNode;
 };
 
 function BasePage({ children }: BasePageProps) {
-  return (
-    <div className='mainPage'>
-      <Sidebar />
-      <div className='content'>
-        {children}
-      </div>
-    </div>
-  );
+	return (
+		<div className='mainPage'>
+			<Sidebar />
+			<div className='content'>{children}</div>
+		</div>
+	);
 }
 
 export default BasePage;

@@ -1,98 +1,97 @@
-.content main h3 span{
-    padding-right: 100px;
+.content main h3 span {
+	padding-right: 100px;
 }
-.content main h3{
-    font-size: xx-large;
-    color: white;
-    border-bottom: 2px solid white;
-    width: fit-content;
-}
-
-.content main .options.users .card{
-    justify-content: space-between;
-    flex-direction: row;
-    height: 4rem;
+.content main h3 {
+	border-bottom: 2px solid white;
+	width: fit-content;
+	color: white;
+	font-size: xx-large;
 }
 
-.userlist h2{
-    color: white;
-    border-bottom: 1px solid white;
+.content main .options.users .card {
+	flex-direction: row;
+	justify-content: space-between;
+	height: 4rem;
 }
-.userlist input{
-    color: #102e42;
-    background-color: aliceblue;
-    padding: 10px;
-    border: 0px;
-    border-radius: 10px;
+
+.userlist h2 {
+	border-bottom: 1px solid white;
+	color: white;
 }
-.userlist ul{
-    list-style-type: none;
-    background-color: #046eb548;
-    color: white;
-    padding: 0;
+.userlist input {
+	border: 0px;
+	border-radius: 10px;
+	background-color: aliceblue;
+	padding: 10px;
+	color: #102e42;
 }
-.userlist ul .title{
-    background-color: #046eb556;
+.userlist ul {
+	background-color: #046eb548;
+	padding: 0;
+	color: white;
+	list-style-type: none;
 }
-.userlist ul li{
-    display: grid;
-    margin: 0;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) repeat(3,130px);
-    border-bottom: 2px solid #102e42;
-    overflow: hidden;
-    padding: 5px;
+.userlist ul .title {
+	background-color: #046eb556;
 }
-.userlist ul li p,.userpicture{
-    margin: auto;
-    padding: 10px 0;
+.userlist ul li {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr)) repeat(3, 130px);
+	margin: 0;
+	border-bottom: 2px solid #102e42;
+	padding: 5px;
+	overflow: hidden;
+}
+.userlist ul li p,
+.userpicture {
+	margin: auto;
+	padding: 10px 0;
 }
 .userpicture {
-    width: 50px;
-    border-radius: 10px;
-    width: 3rem;
-    height: 2rem;
-    object-fit: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    background-color: #046DB5;
-    
+	border-radius: 10px;
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-color: #046db5;
+	width: 50px;
+	width: 3rem;
+	height: 2rem;
+	object-fit: cover;
 }
-.userlist ul li p:first-child{
-    padding-left: 15px;
+.userlist ul li p:first-child {
+	padding-left: 15px;
 }
-.userlist ul li p{
-    word-break: break-all;
+.userlist ul li p {
+	word-break: break-all;
 }
-.userlist ul li button{
-    width: fit-content;
-    border: 0px;
-    padding: 10px;
-    border-radius: 10px;
-    margin: auto;
+.userlist ul li button {
+	margin: auto;
+	border: 0px;
+	border-radius: 10px;
+	padding: 10px;
+	width: fit-content;
 }
-.userlist ul li .delete{
-    background-color: rgba(255, 0, 0, 0.521);
+.userlist ul li .delete {
+	background-color: rgba(255, 0, 0, 0.521);
 }
-.userlist ul li .edit{
-    background-color: rgba(255, 166, 0, 0.521);
+.userlist ul li .edit {
+	background-color: rgba(255, 166, 0, 0.521);
 }
-.userlist ul li .editrol{
-    background-color: rgba(255, 0, 157, 0.521);
+.userlist ul li .editrol {
+	background-color: rgba(255, 0, 157, 0.521);
 }
 @media (max-width: 1024px) {
-    .userlist ul li{
-        grid-template-columns: repeat(7, minmax(0, 1fr));
-    }
-    .userlist ul li p{
-        font-size: small;
-    }
-    .userlist ul li button{
-        padding: 5px;
-    }
+	.userlist ul li {
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+	}
+	.userlist ul li p {
+		font-size: small;
+	}
+	.userlist ul li button {
+		padding: 5px;
+	}
 }
 
-.images{
-    display: flex;
+.images {
+	display: flex;
 }
-

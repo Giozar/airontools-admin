@@ -4,8 +4,8 @@ process.env.ESLINT_TSCONFIG = 'tsconfig.json';
  * @type {import("eslint").Linter.Config}
  */
 module.exports = {
-  root: true,
-  globals: {
+	root: true,
+	globals: {
 		NodeJS: true,
 		NodeListOf: true,
 	},
@@ -15,18 +15,19 @@ module.exports = {
 		browser: true,
 	},
 
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'standard',
-    'plugin:prettier/recommended',
-    'eslint-config-prettier',
-  ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', '.prettierrc.mjs', 'node_modules',],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
+	extends: [
+		'eslint:recommended',
+		'plugin:@typescript-eslint/recommended',
+		'plugin:react/recommended',
+		'plugin:react-hooks/recommended',
+		'standard',
+		'plugin:react/jsx-runtime',
+		'plugin:prettier/recommended',
+		'eslint-config-prettier',
+	],
+	ignorePatterns: ['dist', '.eslintrc.cjs', '.prettierrc.mjs', 'node_modules'],
+	parser: '@typescript-eslint/parser',
+	parserOptions: {
 		ecmaFeatures: {
 			jsx: true,
 		},
@@ -39,22 +40,22 @@ module.exports = {
 		},
 	},
 
-  plugins: [
-    'react-refresh',
+	plugins: [
+		'react-refresh',
 		'react',
 		'react-hooks',
 		'@typescript-eslint',
 		'prettier',
 	],
 
-  rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    'react-hooks/rules-of-hooks': 'error',
+	rules: {
+		'react-refresh/only-export-components': [
+			'warn',
+			{ allowConstantExport: true },
+		],
+		'react-hooks/rules-of-hooks': 'error',
 		'@typescript-eslint/no-explicit-any': 'warn',
 		'@typescript-eslint/ban-types': 'warn',
 		'@typescript-eslint/triple-slash-reference': 'warn',
-  },
-}
+	},
+};

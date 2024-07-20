@@ -1,127 +1,148 @@
-import { useLocation} from 'react-router-dom';
-import HeaderApp from '../../layouts/HeaderApp';
-import '../css/UserOptions.css';
-import BasePage from '../../layouts/BasePage';
-import ActionCard from '../../components/ActionCard';
-import HeaderTitle from '../../components/HeaderTitle';
 import { useState } from 'react';
-import RoleChangeModal from '../../components/RoleChangeModal';
+import { useLocation } from 'react-router-dom';
+import ActionCard from '../../components/ActionCard';
 import DeletionModal from '../../components/DeletionModal';
+import HeaderTitle from '../../components/HeaderTitle';
+import RoleChangeModal from '../../components/RoleChangeModal';
 import EditIcon from '../../components/svg/EditIcon';
 import EditRoleIcon from '../../components/svg/EditRoleIcon';
 import TrashIcon from '../../components/svg/TrashIcon';
 import useFetchUsers from '../../hooks/useFetchUsers';
 import useUserManagement from '../../hooks/useUserManagement';
+import BasePage from '../../layouts/BasePage';
+import HeaderApp from '../../layouts/HeaderApp';
+import '../css/UserOptions.css';
 
 /* No se que hice con los custom hooks pero parece funcionar si puedes hacerlo mejor estaría chido */
 function ReturnUsers() {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const {
-    showDeletionModalFor,
-    setShowDeletionModalFor,
-    showModalFor,
-    setShowModalFor,
-    deletionMessage,
-    handleEdit,
-    handleCloseModal,
-    handleDelete,
-    handleUpdateList,
-    updateListFlag
-  } = useUserManagement();
-  const { usersList,setUsersList, filteredUsers, setFilteredUsers,handleSearch } = useFetchUsers(updateListFlag);
-  
-  const handleCloseModalDeletion = (userid : string)=>{
-    setUsersList(usersList.filter(user => user.id !== userid));
-    setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
-  }
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		showModalFor,
+		setShowModalFor,
+		deletionMessage,
+		handleEdit,
+		handleCloseModal,
+		handleDelete,
+		handleUpdateList,
+		updateListFlag,
+	} = useUserManagement();
+	const {
+		usersList,
+		setUsersList,
+		filteredUsers,
+		setFilteredUsers,
+		handleSearch,
+	} = useFetchUsers(updateListFlag);
 
-  return (
-    <div className='userlist'>
-      <h2>Lista de usuarios</h2>
-      <input
-        type="text"
-        placeholder="Buscar usuarios..."
-        value={searchTerm}
-        onChange={(e) => {handleSearch(e.target.value);setSearchTerm(e.target.value)}}
-      />
+	const handleCloseModalDeletion = (userid: string) => {
+		setUsersList(usersList.filter(user => user.id !== userid));
+		setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
+	};
 
-      <ul>
-        <li className='title'>
-          <p>Id</p>
-          <p>Nombre</p>
-          <p>Foto</p>
-          <p>Rol</p>
-          <p>Cambiar Rol</p>
-          <p>Editar</p>
-          <p>Borrar</p>
-        </li>
-        {filteredUsers.map((user, index) => (
-          <li key={index}>
-            <p>{user.id}</p>
-            <p>{user.name}</p>
-            <div className='userpicture' style={{ backgroundImage: `url(${user.imageUrl})`}}></div>
-            
-            <p>{user.roles}</p>
-            
-            <button className='editrol' onClick={() => setShowModalFor(user.id || "")}>
-              <EditRoleIcon/>
-            </button>
+	return (
+		<div className='userlist'>
+			<h2>Lista de usuarios</h2>
+			<input
+				type='text'
+				placeholder='Buscar usuarios...'
+				value={searchTerm}
+				onChange={e => {
+					handleSearch(e.target.value);
+					setSearchTerm(e.target.value);
+				}}
+			/>
 
-            <button className='edit' onClick={() => handleEdit(user)}>
-              <EditIcon/>
-            </button>
+			<ul>
+				<li className='title'>
+					<p>Id</p>
+					<p>Nombre</p>
+					<p>Foto</p>
+					<p>Rol</p>
+					<p>Cambiar Rol</p>
+					<p>Editar</p>
+					<p>Borrar</p>
+				</li>
+				{filteredUsers.map((user, index) => (
+					<li key={index}>
+						<p>{user.id}</p>
+						<p>{user.name}</p>
+						<div
+							className='userpicture'
+							style={{ backgroundImage: `url(${user.imageUrl})` }}
+						></div>
 
-            <button className='delete' onClick={() => setShowDeletionModalFor(user.id || "")}>
-              <TrashIcon/>
-            </button>
+						<p>{user.roles}</p>
 
-            {showDeletionModalFor === user.id &&
-              <DeletionModal
-                id={user.id}
-                name={user.name}
-                image={user.imageUrl || ""}
-                onClose={()=>handleCloseModal()}
-                onCloseDelete={()=>handleCloseModalDeletion(user.id || "")}
-                onDelete={() => handleDelete(user.id || "",user.name)}
-                message={deletionMessage}
-              />
-            }
-            {showModalFor === user.id &&
-            <RoleChangeModal
-              userToEdit = {user}
-              onCloseModal={() => setShowModalFor(null)}
-              onUpdateList={handleUpdateList}
-            />
-            }
+						<button
+							className='editrol'
+							onClick={() => setShowModalFor(user.id || '')}
+						>
+							<EditRoleIcon />
+						</button>
 
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+						<button className='edit' onClick={() => handleEdit(user)}>
+							<EditIcon />
+						</button>
+
+						<button
+							className='delete'
+							onClick={() => setShowDeletionModalFor(user.id || '')}
+						>
+							<TrashIcon />
+						</button>
+
+						{showDeletionModalFor === user.id && (
+							<DeletionModal
+								id={user.id}
+								name={user.name}
+								image={user.imageUrl || ''}
+								onClose={() => handleCloseModal()}
+								onCloseDelete={() => handleCloseModalDeletion(user.id || '')}
+								onDelete={() => handleDelete(user.id || '', user.name)}
+								message={deletionMessage}
+							/>
+						)}
+						{showModalFor === user.id && (
+							<RoleChangeModal
+								userToEdit={user}
+								onCloseModal={() => setShowModalFor(null)}
+								onUpdateList={handleUpdateList}
+							/>
+						)}
+					</li>
+				))}
+			</ul>
+		</div>
+	);
 }
 
 function ContentMainPage() {
-    const location = useLocation();
-    return (
-        <BasePage>
-        <HeaderApp/>
-        <main>
-          <HeaderTitle title="Usuarios" />
-          <div className='options users'>
-            <ActionCard title='Crear Usuario' path={location.pathname+'/crear-usuario'}/>
-            <ActionCard title='Crear Rol' path={location.pathname+'/crear-rol'}/>
-          </div>
-          <ReturnUsers/>
-        </main>
-      </BasePage>
-    );
+	const location = useLocation();
+	return (
+		<BasePage>
+			<HeaderApp />
+			<main>
+				<HeaderTitle title='Usuarios' />
+				<div className='options users'>
+					<ActionCard
+						title='Crear Usuario'
+						path={location.pathname + '/crear-usuario'}
+					/>
+					<ActionCard
+						title='Crear Rol'
+						path={location.pathname + '/crear-rol'}
+					/>
+				</div>
+				<ReturnUsers />
+			</main>
+		</BasePage>
+	);
 }
 
-function UserOptions(){
-    return (
-        <ContentMainPage/>
-    );
+function UserOptions() {
+	return <ContentMainPage />;
 }
 
 export default UserOptions;
