@@ -1,0 +1,33 @@
+# Node modules
+node_modules/
+
+# pnpm files
+.pnpm
+pnpm-lock.yaml
+
+# npm lock file
+npm-lock.yaml
+
+# package lock file
+package-lock.json
+
+# yarn lock file
+yarn.lock
+
+# Build outputs
+dist/
+output/
+public/
+
+# Logs
+*.log
+
+# Git folder
+.git
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
