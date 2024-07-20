@@ -121,18 +121,6 @@ header {
 	padding: 1rem 0;
 }
 
-.content header h2 {
-	margin-left: 2.5rem;
-}
-.content header h2 span a {
-	color: white;
-	text-decoration: none;
-	text-transform: capitalize;
-}
-
-.content header h2 .separator {
-	padding: 10px;
-}
 .content .userinfo {
 	display: flex;
 	align-items: center;

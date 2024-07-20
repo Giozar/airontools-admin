@@ -69,19 +69,23 @@ function Login() {
 			const { token } = response.data;
 
 			localStorage.setItem('token', token);
+          }
+    }
+    if (authContext?.isAuthenticated){
+       return <Navigate to={localStorage.getItem('location') || '/home'}/>;
+    }
+    return( 
+    <>
+    <HeaderLogin/>
+    
+    {errorLog.isError? <ErrorMessage message={errorLog.message}/>:''}
+    
+    <div className='login'>
+      <form onSubmit={handleLogin}>
+        
+        <img src={aironLogo} alt='logo de airon tools'></img>
+        <h2>Inicio de Sesión</h2>
 
-			const decodedToken = jwtDecode<LoginResponse>(token);
-			console.log(decodedToken);
-			authContext?.setAuth({
-				isAuthenticated: true,
-				user: transformUserData(decodedToken.user),
-			});
-		} catch (error) {
-			if (!axios.isAxiosError<ValidationError>(error)) {
-				console.error('Login failed', error);
-				return;
-			}
-			if (!error.response) return;
 
 			const errorMessage = error.response.data.message;
 			if (typeof errorMessage === 'string') showError(errorMessage);
