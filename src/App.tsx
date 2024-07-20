@@ -14,6 +14,7 @@ import UserOptions from '@pages/userPages/UserOptions';
 
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
+import EspecificationsMenu from '@pages/specificationsPages/EspecificationsMenu';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 
 interface AuthContextType {
@@ -60,7 +61,10 @@ function App() {
 									path='/home/usuarios/crear-rol'
 									element={<UserOptionCreateRole />}
 								/>
-
+								<Route
+									path='/home/especificaciones'
+									element={<EspecificationsMenu />}
+								/>
 								<Route
 									path='/home/especificaciones/crear-familia'
 									element={<UserOptionCreateRole />}

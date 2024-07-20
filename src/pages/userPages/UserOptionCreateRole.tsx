@@ -68,9 +68,8 @@ function CreateRoleForm() {
 					/>
 
 					<label htmlFor='description'>Descripción:</label>
-					<input
+					<textarea
 						id='description'
-						type='text'
 						placeholder='Introduce la descripción del rol'
 						value={description}
 						onChange={e => setDescription(e.target.value)}
