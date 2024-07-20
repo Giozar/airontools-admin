@@ -85,7 +85,7 @@ function Login(){
           }
     }
     if (authContext?.isAuthenticated){
-      return <Navigate to='/home'/>;
+       return <Navigate to={localStorage.getItem('location') || '/home'}/>;
     }
     return( 
     <>

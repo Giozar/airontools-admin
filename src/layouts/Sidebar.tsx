@@ -20,6 +20,7 @@ function Sidebar(){
     const handleClose = () => {
         authContext?.setAuth({ isAuthenticated: false, user: null });
         localStorage.setItem('token', '');
+        localStorage.setItem('location','');
         navigate('/login');
     }
     return (
