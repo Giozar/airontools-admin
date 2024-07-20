@@ -4,7 +4,6 @@ body {
 
 header {
 	display: grid;
-	position: absolute;
 	top: 0;
 	grid-template-columns: repeat(2, 200px);
 	background-color: #18181b;

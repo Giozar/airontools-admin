@@ -2,7 +2,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import aironLogo from '../../../Logo-Blanco.png';
+import aironLogo from '../../public/Logo-Blanco.png';
 import { AuthContext } from '../App';
 import { UserDataBackend, transformUserData } from '../adapter';
 import ErrorMessage from '../components/ErrorMessage';
@@ -16,17 +16,10 @@ interface LoginResponse {
 	iat: number;
 }
 
-interface ValidationError {
-	error: string;
-	response: string;
-	data: string;
-	message: string[];
-}
-
 function HeaderLogin() {
 	return (
 		<header>
-			<img src={aironLogo} alt='logo de airon tools' className='logoimg'></img>
+			<img src={aironLogo} alt='logo de airon tools' className='logoimg' />
 			<h1>Administrador de Herramientas AironTools</h1>
 		</header>
 	);
@@ -37,6 +30,7 @@ function Login() {
 	const [password, setPassword] = useState('');
 	const { errorLog, showError } = useErrorHandling();
 	const authContext = useContext(AuthContext);
+
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 		if (token) {
@@ -63,47 +57,44 @@ function Login() {
 		try {
 			const response = await axios.post<LoginResponse>(
 				'http://localhost:4000/auth/login',
-				{ email, password },
+				{
+					email,
+					password,
+				},
 			);
 
 			const { token } = response.data;
-
 			localStorage.setItem('token', token);
-          }
-    }
-    if (authContext?.isAuthenticated){
-       return <Navigate to={localStorage.getItem('location') || '/home'}/>;
-    }
-    return( 
-    <>
-    <HeaderLogin/>
-    
-    {errorLog.isError? <ErrorMessage message={errorLog.message}/>:''}
-    
-    <div className='login'>
-      <form onSubmit={handleLogin}>
-        
-        <img src={aironLogo} alt='logo de airon tools'></img>
-        <h2>Inicio de Sesión</h2>
 
-
-			const errorMessage = error.response.data.message;
-			if (typeof errorMessage === 'string') showError(errorMessage);
-			else showError(errorMessage.join(', '));
+			authContext?.setAuth({
+				isAuthenticated: true,
+				user: transformUserData(response.data.user),
+			});
+		} catch (error) {
+			const errorMessage = error.response?.data?.message;
+			if (typeof errorMessage === 'string') {
+				showError(errorMessage);
+			} else if (Array.isArray(errorMessage)) {
+				showError(errorMessage.join(', '));
+			} else {
+				showError('Error desconocido al intentar iniciar sesión.');
+			}
 		}
 	};
+
 	if (authContext?.isAuthenticated) {
-		return <Navigate to='/home' />;
+		return <Navigate to={localStorage.getItem('location') || '/home'} />;
 	}
+
 	return (
 		<>
 			<HeaderLogin />
 
-			{errorLog.isError ? <ErrorMessage message={errorLog.message} /> : ''}
+			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
 			<div className='login'>
 				<form onSubmit={handleLogin}>
-					<img src={aironLogo} alt='logo de airon tools'></img>
+					<img src={aironLogo} alt='logo de airon tools' />
 					<h2>Inicio de Sesión</h2>
 
 					<label htmlFor='email'>Correo electrónico</label>
@@ -124,7 +115,7 @@ function Login() {
 						onChange={e => setPassword(e.target.value)}
 						required
 					/>
-					<p>¿No tiene una cuenta? Hable con el administrador.</p>
+					<p>¿No tienes una cuenta? Hable con el administrador.</p>
 					<button type='submit'>Entrar</button>
 				</form>
 			</div>

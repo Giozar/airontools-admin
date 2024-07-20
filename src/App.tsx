@@ -7,13 +7,14 @@ import {
 	Routes,
 } from 'react-router-dom';
 import { UserDataFrontend } from './adapter';
-import Login from './pages/Login';
-import Home from './pages/MainPage';
-import UserOptionCreate from './pages/userPages/UserOptionCreate';
-import UserOptionEdit from './pages/userPages/UserOptionEdit';
-import UserOptions from './pages/userPages/UserOptions';
 
-import UserOptionCreateRole from './pages/userPages/UserOptionCreateRole';
+import UserOptionCreate from '@pages/userPages/UserOptionCreate';
+import UserOptionEdit from '@pages/userPages/UserOptionEdit';
+import UserOptions from '@pages/userPages/UserOptions';
+
+import Login from '@pages/Login';
+import Home from '@pages/MainPage';
+import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 
 interface AuthContextType {
 	isAuthenticated: boolean;
