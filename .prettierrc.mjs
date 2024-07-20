@@ -9,4 +9,5 @@ export default {
 	arrowParens: 'avoid',
     jsxSingleQuote: true,
     endOfLine: 'auto',
+	plugins: ["prettier-plugin-css-order",],
 };
