@@ -1,11 +1,11 @@
-.successMessage{
-    background-color: #2ed136a6;
-    color: #a8ff97;
-    padding: 15px;
-    border-radius: 20px;
-    z-index: 10;
-    position: fixed;
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%);
+.successMessage {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+	border-radius: 20px;
+	background-color: #2ed136a6;
+	padding: 15px;
+	color: #a8ff97;
 }

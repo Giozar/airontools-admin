@@ -1,47 +1,47 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import uploadFile from '../services/fileUpload/fileUpload.service';
 
 const useFileUpload = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [fileUrl, setFileUrl] = useState<string>('');
-  const [fileName, setFileName] = useState('No hay archivo seleccionado');
-  //Para tener una imagen de preview
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const [fileUrl, setFileUrl] = useState<string>('');
+	const [fileName, setFileName] = useState('No hay archivo seleccionado');
+	// Para tener una imagen de preview
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      setSelectedFile(file);
-      setFileName(file.name);
-      //Imagen preview
-      const objectUrl = URL.createObjectURL(file);
-      setPreviewUrl(objectUrl);
-    } else {
-      setFileName('No hay archivo seleccionado');
-      setPreviewUrl(null);
-    }
-  };
+	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			const file = event.target.files[0];
+			setSelectedFile(file);
+			setFileName(file.name);
+			// Imagen preview
+			const objectUrl = URL.createObjectURL(file);
+			setPreviewUrl(objectUrl);
+		} else {
+			setFileName('No hay archivo seleccionado');
+			setPreviewUrl(null);
+		}
+	};
 
-  const handleFileUpload = async () => {
-    await getFileUrl();
-  };
+	const handleFileUpload = async () => {
+		await getFileUrl();
+	};
 
-  const getFileUrl = async() => {
-    if (selectedFile) {
-        const url = await uploadFile(selectedFile);
-        setFileUrl(url);
-      }
-  }
+	const getFileUrl = async () => {
+		if (selectedFile) {
+			const url = await uploadFile(selectedFile);
+			setFileUrl(url);
+		}
+	};
 
-  return {
-    selectedFile,
-    fileUrl,
-    getFileUrl,
-    fileName,
-    previewUrl,
-    handleFileSelect,
-    handleFileUpload,
-  };
+	return {
+		selectedFile,
+		fileUrl,
+		getFileUrl,
+		fileName,
+		previewUrl,
+		handleFileSelect,
+		handleFileUpload,
+	};
 };
 
 export default useFileUpload;
