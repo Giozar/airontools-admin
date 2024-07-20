@@ -110,6 +110,7 @@ header {
 	position: sticky;
 	top: 0;
 	align-items: center;
+	z-index: 100;
 	background-color: #18181b;
 	color: #f3f4f6;
 }

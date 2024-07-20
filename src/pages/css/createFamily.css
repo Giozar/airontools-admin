@@ -1,0 +1,55 @@
+.createfamilyform {
+	width: 100%;
+}
+.createfamilyform form {
+	margin: 0 auto;
+	width: 60%;
+}
+.createfamilyform form h2 {
+	color: white;
+}
+.categories {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	border: 1px solid rgba(255, 255, 255, 0.226);
+	border-radius: 10px;
+	padding: 20px;
+}
+.categories .delete {
+	margin-top: 0;
+	margin: 5px;
+	border-color: rgb(58, 11, 11);
+	background-color: rgba(165, 42, 42, 0.637);
+	padding: 5px;
+	width: 50px;
+}
+.add {
+	display: flex;
+	align-items: center;
+	margin-top: 0;
+	margin: 5px;
+	border-color: rgb(20, 58, 11);
+	background-color: rgba(42, 165, 79, 0.637);
+	padding: 10px;
+	width: fit-content;
+}
+.categories .add {
+	display: flex;
+	align-items: center;
+	margin-top: 0;
+	margin: 5px;
+	border-color: rgb(20, 58, 11);
+	background-color: rgba(138, 165, 42, 0.637);
+	padding: 10px;
+	width: fit-content;
+}
+.categories .info {
+	display: flex;
+	flex-direction: column;
+	width: 90%;
+}
+.categories .info textarea {
+	opacity: 0.8;
+	height: 2rem;
+}
