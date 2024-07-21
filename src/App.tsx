@@ -14,6 +14,10 @@ import UserOptions from '@pages/userPages/UserOptions';
 
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
+
+import CategorizationMenu from '@pages/specificationsPages/CategorizationMenu';
+import CreateFamily from '@pages/specificationsPages/CreateFamily';
+import EditFamily from '@pages/specificationsPages/EditFamily';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 
 interface AuthContextType {
@@ -60,14 +64,17 @@ function App() {
 									path='/home/usuarios/crear-rol'
 									element={<UserOptionCreateRole />}
 								/>
-
 								<Route
-									path='/home/especificaciones/crear-familia'
-									element={<UserOptionCreateRole />}
+									path='/home/categorizacion'
+									element={<CategorizationMenu />}
 								/>
 								<Route
-									path='/home/especificaciones/crear-rol'
-									element={<UserOptionCreateRole />}
+									path='/home/categorizacion/crear-familia'
+									element={<CreateFamily />}
+								/>
+								<Route
+									path='/home/categorizacion/editar-familia'
+									element={<EditFamily />}
 								/>
 								<Route
 									path='/home/especificaciones/crear-rol'

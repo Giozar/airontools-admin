@@ -14,8 +14,8 @@ function ContentMainPage() {
 				<div className='options'>
 					<ActionCard title='Usuarios' path={location.pathname + '/usuarios'} />
 					<ActionCard
-						title='Especificaciones'
-						path={location.pathname + '/especificaciones'}
+						title='Categorización'
+						path={location.pathname + '/categorizacion'}
 					/>
 				</div>
 			</main>

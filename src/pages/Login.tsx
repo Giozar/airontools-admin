@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -71,11 +71,15 @@ function Login() {
 				user: transformUserData(response.data.user),
 			});
 		} catch (error) {
-			const errorMessage = error.response?.data?.message;
-			if (typeof errorMessage === 'string') {
-				showError(errorMessage);
-			} else if (Array.isArray(errorMessage)) {
-				showError(errorMessage.join(', '));
+			if (error instanceof AxiosError) {
+				const errorMessage = error.response?.data?.message;
+				if (typeof errorMessage === 'string') {
+					showError(errorMessage);
+				} else if (Array.isArray(errorMessage)) {
+					showError(errorMessage.join(', '));
+				} else {
+					showError('Error desconocido al intentar iniciar sesión.');
+				}
 			} else {
 				showError('Error desconocido al intentar iniciar sesión.');
 			}

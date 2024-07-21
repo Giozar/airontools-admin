@@ -4,21 +4,6 @@
 	color: white;
 }
 
-.register form {
-	display: grid;
-	row-gap: 1rem;
-	margin: 0 2rem;
-}
-.register form label {
-	color: white;
-}
-.register form input {
-	border-radius: 10px;
-	background-color: white;
-	padding: 10px;
-	color: black;
-}
-
 .register form .profileimage {
 	vertical-align: middle;
 	margin-right: 1.5rem;
@@ -60,29 +45,6 @@
 }
 .register form .passwordgenerator input:hover {
 	opacity: 0.6;
-}
-
-.register form button {
-	margin-top: 1.5rem;
-	border: 0px;
-	border-bottom: 4px #093f63 solid;
-	border-radius: 15px;
-	background-color: #046db5;
-	padding: 15px;
-}
-.register form select {
-	margin: 0;
-	border: 0px;
-	border-radius: 15px;
-	background-color: #046db5;
-	padding: 10px;
-}
-
-.register form select option {
-	opacity: 0.7;
-	border-bottom: 1px #093f63 solid;
-	background-color: #046db5;
-	padding: 5px;
 }
 
 .custom-file-upload {
