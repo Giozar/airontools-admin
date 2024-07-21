@@ -4,7 +4,7 @@ import {
 	transformUserData,
 	UserDataBackend,
 	UserDataFrontend,
-} from '../adapter';
+} from '../adapters/user.adapter';
 
 const useFetchUsers = (updateListFlag: boolean) => {
 	const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);

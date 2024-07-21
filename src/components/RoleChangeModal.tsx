@@ -4,7 +4,7 @@ import {
 	transformUserDataBack,
 	UserDataBackend,
 	UserDataFrontend,
-} from '../adapter';
+} from '../adapters/user.adapter';
 import useErrorHandling from '../hooks/useErrorHandling';
 import { useUserRoles } from '../hooks/useUserRoles';
 import { UserRole } from '../interfaces/UserRole';

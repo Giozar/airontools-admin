@@ -3,7 +3,7 @@ import {
 	transformUserDataBack,
 	UserDataBackend,
 	UserDataFrontend,
-} from '../adapter';
+} from '../adapters/user.adapter';
 import useErrorHandling from './useErrorHandling';
 import useSuccessHandling from './useSuccessHandling';
 

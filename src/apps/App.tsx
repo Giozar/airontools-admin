@@ -6,7 +6,7 @@ import {
 	Route,
 	Routes,
 } from 'react-router-dom';
-import { UserDataFrontend } from './adapter';
+import { UserDataFrontend } from '../adapters/user.adapter';
 
 import UserOptionCreate from '@pages/userPages/UserOptionCreate';
 import UserOptionEdit from '@pages/userPages/UserOptionEdit';
