@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { UserDataFrontend } from '../../adapter';
+import { UserDataFrontend } from '../../adapters/user.adapter';
 import ErrorMessage from '../../components/ErrorMessage';
 import FileUpload from '../../components/FileUpload';
 import HeaderTitle from '../../components/HeaderTitle';
