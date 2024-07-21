@@ -46,6 +46,7 @@ module.exports = {
 		'react-hooks',
 		'@typescript-eslint',
 		'prettier',
+		'no-relative-import-paths',
 	],
 
 	rules: {
@@ -57,5 +58,9 @@ module.exports = {
 		'@typescript-eslint/no-explicit-any': 'warn',
 		'@typescript-eslint/ban-types': 'warn',
 		'@typescript-eslint/triple-slash-reference': 'warn',
+		"no-relative-import-paths/no-relative-import-paths": [
+			"warn",
+			{ "allowSameFolder": true, "rootDir": "src", "prefix": "@" }
+		]
 	},
 };
