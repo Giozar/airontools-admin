@@ -5,8 +5,8 @@ import RoleChangeModal from '@components/RoleChangeModal';
 import EditIcon from '@components/svg/EditIcon';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import useFetchUsers from '@hooks/useFetchUsers';
 import useUserManagement from '@hooks/useUserManagement';
+import useUsers from '@hooks/useUsers';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/UserOptions.css';
@@ -34,7 +34,7 @@ function ReturnUsers() {
 		filteredUsers,
 		setFilteredUsers,
 		handleSearch,
-	} = useFetchUsers(updateListFlag);
+	} = useUsers(updateListFlag);
 
 	const handleCloseModalDeletion = (userid: string) => {
 		setUsersList(usersList.filter(user => user.id !== userid));

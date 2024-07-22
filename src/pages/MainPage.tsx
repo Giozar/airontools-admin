@@ -1,8 +1,8 @@
+import { AuthContext } from '@apps/App';
 import ActionCard from '@components/ActionCard';
 import HeaderTitle from '@components/HeaderTitle';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
-import { AuthContext } from '@src/apps/App';
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
