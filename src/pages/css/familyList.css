@@ -1,0 +1,13 @@
+.familylist {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	padding: 20px;
+	color: white;
+	list-style-type: none;
+}
+.familylist .family {
+	margin: 10px;
+	border: #06131f 2px solid;
+	background-color: #0e2439;
+	padding: 10px;
+}

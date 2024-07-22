@@ -3,12 +3,12 @@ import HeaderTitle from '@components/HeaderTitle';
 import SuccessMessage from '@components/SuccessMessage';
 import PlusIcon from '@components/svg/PlusIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import useErrorHandling from '@hooks/useErrorHandling';
-import useSuccessHandling from '@hooks/useSuccessHandling';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/createFamily.css';
-import { useState } from 'react';
+import { AuthContext } from '@src/apps/App';
+import useFamilyCreate from '@src/hooks/useFamilyCreate';
+import { useContext, useState } from 'react';
 
 interface Subcategory {
 	name: string;
@@ -23,16 +23,14 @@ interface Category {
 function CreateFamilyForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
-	// const authContext = useContext(AuthContext);
-	// const createdBy = authContext?.user?.name;
-	const { errorLog /*, showError */ } = useErrorHandling();
-	const { successLog /*, showSuccess */ } = useSuccessHandling();
-	// const [updateRole, setUpdateRole] = useState(false);
+	const authContext = useContext(AuthContext);
+	const createdBy = authContext?.user?.name || 'user';
+	const { errorLog, successLog, createFamily } = useFamilyCreate();
 	const [categories, setCategories] = useState<Category[]>([]);
 
-	const handleSubmit = (e: { preventDefault: () => void }) => {
+	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-
+		await createFamily({ name, description, createdBy });
 		console.log('Form submitted with:', { name, description, categories });
 	};
 
