@@ -1,17 +1,17 @@
-import HeaderApp from '../../layouts/HeaderApp';
+import HeaderApp from '@layouts/HeaderApp';
 // import {useLocation} from 'react-router-dom';
+import { AuthContext } from '@apps/App';
+import HeaderTitle from '@components/HeaderTitle';
+import BasePage from '@layouts/BasePage';
+import '@pages/css/UserOptionsCreateRole.css';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../apps/App';
-import HeaderTitle from '../../components/HeaderTitle';
-import BasePage from '../../layouts/BasePage';
-import '../css/UserOptionsCreateRole.css';
 
-import ErrorMessage from '../../components/ErrorMessage';
-import RoleList from '../../components/RoleList';
-import SuccessMessage from '../../components/SuccessMessage';
-import useErrorHandling from '../../hooks/useErrorHandling';
-import useSuccessHandling from '../../hooks/useSuccessHandling';
+import ErrorMessage from '@components/ErrorMessage';
+import RoleList from '@components/RoleList';
+import SuccessMessage from '@components/SuccessMessage';
+import useErrorHandling from '@hooks/useErrorHandling';
+import useSuccessHandling from '@hooks/useSuccessHandling';
 
 function CreateRoleForm() {
 	const [name, setName] = useState('');

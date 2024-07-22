@@ -1,6 +1,6 @@
+import { ErrorResponse } from '@interfaces/ErrorResponse';
+import { getUserRoles } from '@services/userRoles';
 import { useEffect, useState } from 'react';
-import { ErrorResponse } from '../interfaces/ErrorResponse';
-import { getUserRoles } from '../services/userRoles';
 
 export const useUserRoles = () => {
 	const [userRoles, setUserRoles] = useState([]);

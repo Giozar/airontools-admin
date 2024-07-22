@@ -1,8 +1,8 @@
+import ActionCard from '@components/ActionCard';
+import HeaderTitle from '@components/HeaderTitle';
+import BasePage from '@layouts/BasePage';
+import HeaderApp from '@layouts/HeaderApp';
 import { useLocation } from 'react-router-dom';
-import ActionCard from '../components/ActionCard';
-import HeaderTitle from '../components/HeaderTitle';
-import BasePage from '../layouts/BasePage';
-import HeaderApp from '../layouts/HeaderApp';
 
 function ContentMainPage() {
 	const location = useLocation();

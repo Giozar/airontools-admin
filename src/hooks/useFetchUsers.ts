@@ -1,10 +1,10 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import {
 	transformUserData,
 	UserDataBackend,
 	UserDataFrontend,
-} from '../adapters/user.adapter';
+} from '@adapters/user.adapter';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const useFetchUsers = (updateListFlag: boolean) => {
 	const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);

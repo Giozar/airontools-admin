@@ -1,17 +1,17 @@
+import ActionCard from '@components/ActionCard';
+import DeletionModal from '@components/DeletionModal';
+import HeaderTitle from '@components/HeaderTitle';
+import RoleChangeModal from '@components/RoleChangeModal';
+import EditIcon from '@components/svg/EditIcon';
+import EditRoleIcon from '@components/svg/EditRoleIcon';
+import TrashIcon from '@components/svg/TrashIcon';
+import useFetchUsers from '@hooks/useFetchUsers';
+import useUserManagement from '@hooks/useUserManagement';
+import BasePage from '@layouts/BasePage';
+import HeaderApp from '@layouts/HeaderApp';
+import '@pages/css/UserOptions.css';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import ActionCard from '../../components/ActionCard';
-import DeletionModal from '../../components/DeletionModal';
-import HeaderTitle from '../../components/HeaderTitle';
-import RoleChangeModal from '../../components/RoleChangeModal';
-import EditIcon from '../../components/svg/EditIcon';
-import EditRoleIcon from '../../components/svg/EditRoleIcon';
-import TrashIcon from '../../components/svg/TrashIcon';
-import useFetchUsers from '../../hooks/useFetchUsers';
-import useUserManagement from '../../hooks/useUserManagement';
-import BasePage from '../../layouts/BasePage';
-import HeaderApp from '../../layouts/HeaderApp';
-import '../css/UserOptions.css';
 
 /* No se que hice con los custom hooks pero parece funcionar si puedes hacerlo mejor estaría chido */
 function ReturnUsers() {

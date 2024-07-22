@@ -1,16 +1,16 @@
+import { UserDataFrontend } from '@adapters/user.adapter';
+import ErrorMessage from '@components/ErrorMessage';
+import FileUpload from '@components/FileUpload';
+import HeaderTitle from '@components/HeaderTitle';
+import SuccessMessage from '@components/SuccessMessage';
+import usePasswordGenerator from '@hooks/usePasswordGenerator';
+import { useUserRoles } from '@hooks/useUserRoles';
+import useUserUpdate from '@hooks/useUserUpdate';
+import { UserRole } from '@interfaces/UserRole';
+import BasePage from '@layouts/BasePage';
+import HeaderApp from '@layouts/HeaderApp';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { UserDataFrontend } from '../../adapters/user.adapter';
-import ErrorMessage from '../../components/ErrorMessage';
-import FileUpload from '../../components/FileUpload';
-import HeaderTitle from '../../components/HeaderTitle';
-import SuccessMessage from '../../components/SuccessMessage';
-import usePasswordGenerator from '../../hooks/usePasswordGenerator';
-import { useUserRoles } from '../../hooks/useUserRoles';
-import useUserUpdate from '../../hooks/useUserUpdate';
-import { UserRole } from '../../interfaces/UserRole';
-import BasePage from '../../layouts/BasePage';
-import HeaderApp from '../../layouts/HeaderApp';
 
 function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 	const [email, setEmail] = useState(userToEdit.email);

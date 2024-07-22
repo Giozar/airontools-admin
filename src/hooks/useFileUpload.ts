@@ -1,5 +1,5 @@
+import uploadFile from '@services/fileUpload/fileUpload.service';
 import { ChangeEvent, useState } from 'react';
-import uploadFile from '../services/fileUpload/fileUpload.service';
 
 const useFileUpload = () => {
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);

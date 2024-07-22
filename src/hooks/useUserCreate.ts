@@ -1,9 +1,9 @@
-import axios from 'axios';
 import {
 	transformUserDataBack,
 	UserDataBackend,
 	UserDataFrontend,
-} from '../adapters/user.adapter';
+} from '@adapters/user.adapter';
+import axios from 'axios';
 import useErrorHandling from './useErrorHandling';
 import useSuccessHandling from './useSuccessHandling';
 

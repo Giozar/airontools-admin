@@ -1,5 +1,5 @@
+import useFileUpload from '@hooks/useFileUpload';
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import useFileUpload from '../hooks/useFileUpload';
 
 export default function FileUpload({
 	setImageUrl,

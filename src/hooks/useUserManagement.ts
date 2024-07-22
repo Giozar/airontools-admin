@@ -1,7 +1,7 @@
+import { UserDataFrontend } from '@adapters/user.adapter';
 import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { UserDataFrontend } from '../adapters/user.adapter';
 
 const useUserManagement = () => {
 	const navigate = useNavigate();
