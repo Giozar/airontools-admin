@@ -7,6 +7,7 @@ export interface FamilyBackend {
 	createdAt: string;
 	updatedAt: string;
 	__v: number;
+	path: string;
 }
 
 export interface FamilyFrontend {
@@ -18,6 +19,7 @@ export interface FamilyFrontend {
 	createdAt: string;
 	updatedAt: string;
 	__v: number;
+	path: string;
 }
 
 // el mapeo de los datos de usuario
@@ -30,6 +32,7 @@ const familyMapping: Record<keyof FamilyBackend, keyof FamilyFrontend> = {
 	createdAt: 'createdAt',
 	updatedAt: 'updatedAt',
 	__v: '__v',
+	path: 'path',
 };
 const familyMappingBack: Record<keyof FamilyFrontend, keyof FamilyBackend> = {
 	id: '_id',
@@ -40,6 +43,7 @@ const familyMappingBack: Record<keyof FamilyFrontend, keyof FamilyBackend> = {
 	createdAt: 'createdAt',
 	updatedAt: 'updatedAt',
 	__v: '__v',
+	path: 'path',
 };
 
 // Transform data generico, este se podra usar para transformar otros datos que vengan del backend

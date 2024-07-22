@@ -12,20 +12,20 @@ interface ValidationError {
 	message: string[];
 }
 
-const useFamilyCreate = () => {
+const useFamilyUpdate = () => {
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 
-	const createFamily = async (familyData: FamilyFrontend) => {
+	const updateFamily = async (familyData: FamilyFrontend) => {
 		try {
-			await axios.post(
-				'http://localhost:4000/families',
+			await axios.patch(
+				`http://localhost:4000/families/${familyData.id}`,
 				transformFamilyDataBack({
 					...familyData,
 					path: cleanNameURL(familyData.name),
 				}),
 			);
-			showSuccess('Familia Creada Con Éxito');
+			showSuccess('Familia Actualizada Con Éxito');
 		} catch (error) {
 			if (!axios.isAxiosError<ValidationError>(error)) {
 				console.error('Registration failed', error);
@@ -40,7 +40,7 @@ const useFamilyCreate = () => {
 			showError(message);
 		}
 	};
-	return { errorLog, successLog, createFamily };
+	return { errorLog, successLog, updateFamily };
 };
 
-export default useFamilyCreate;
+export default useFamilyUpdate;

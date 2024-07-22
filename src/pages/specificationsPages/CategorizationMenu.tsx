@@ -123,10 +123,11 @@ function ListofFamilies() {
 	if (errorLog.isError) {
 		return <ErrorMessage message={errorLog.message} />;
 	}
-
+	/*family id categories*/
+	/*category id categories*/
 	return (
 		<div>
-			<h3>Lista de Familias</h3>
+			<h2 className='listtitle'>Lista de familias</h2>
 			<input
 				type='text'
 				placeholder='Buscar familias...'
@@ -135,6 +136,7 @@ function ListofFamilies() {
 					handleSearch(e.target.value);
 					setSearchTerm(e.target.value);
 				}}
+				className='search'
 			/>
 
 			<ul className='familylist'>
