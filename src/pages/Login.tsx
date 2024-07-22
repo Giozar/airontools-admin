@@ -1,13 +1,14 @@
+import { UserDataBackend, transformUserData } from '@adapters/user.adapter';
+import { AuthContext } from '@apps/App';
+import ErrorMessage from '@components/ErrorMessage';
+import useErrorHandling from '@hooks/useErrorHandling';
 import axios, { AxiosError } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import aironLogo from '../../public/Logo-Blanco.png';
-import { AuthContext } from '../apps/App';
-import { UserDataBackend, transformUserData } from '../adapters/user.adapter';
-import ErrorMessage from '../components/ErrorMessage';
-import useErrorHandling from '../hooks/useErrorHandling';
 import './css/Login.css';
+// eslint-disable-next-line import/no-absolute-path
+import aironLogo from '/Logo-Blanco.png';
 
 interface LoginResponse {
 	token: string;

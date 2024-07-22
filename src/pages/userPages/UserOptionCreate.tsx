@@ -1,15 +1,15 @@
+import ErrorMessage from '@components/ErrorMessage';
+import FileUpload from '@components/FileUpload';
+import HeaderTitle from '@components/HeaderTitle';
+import SuccessMessage from '@components/SuccessMessage';
+import usePasswordGenerator from '@hooks/usePasswordGenerator';
+import useUserCreate from '@hooks/useUserCreate';
+import { useUserRoles } from '@hooks/useUserRoles';
+import { UserRole } from '@interfaces/UserRole';
+import BasePage from '@layouts/BasePage';
+import HeaderApp from '@layouts/HeaderApp';
+import '@pages/css/UserOptionsCreate.css';
 import React, { useEffect, useState } from 'react';
-import ErrorMessage from '../../components/ErrorMessage';
-import FileUpload from '../../components/FileUpload';
-import HeaderTitle from '../../components/HeaderTitle';
-import SuccessMessage from '../../components/SuccessMessage';
-import usePasswordGenerator from '../../hooks/usePasswordGenerator';
-import useUserCreate from '../../hooks/useUserCreate';
-import { useUserRoles } from '../../hooks/useUserRoles';
-import { UserRole } from '../../interfaces/UserRole';
-import BasePage from '../../layouts/BasePage';
-import HeaderApp from '../../layouts/HeaderApp';
-import '../css/UserOptionsCreate.css';
 
 function CreateUserForm() {
 	const [email, setEmail] = useState('');

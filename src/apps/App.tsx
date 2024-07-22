@@ -1,3 +1,4 @@
+import { UserDataFrontend } from '@adapters/user.adapter';
 import React, { createContext, useState } from 'react';
 import {
 	BrowserRouter,
@@ -6,7 +7,6 @@ import {
 	Route,
 	Routes,
 } from 'react-router-dom';
-import { UserDataFrontend } from '../adapters/user.adapter';
 
 import UserOptionCreate from '@pages/userPages/UserOptionCreate';
 import UserOptionEdit from '@pages/userPages/UserOptionEdit';

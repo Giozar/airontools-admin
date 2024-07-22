@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { ChangeEvent, FormEvent, useState } from 'react';
 import {
 	transformUserDataBack,
 	UserDataBackend,
 	UserDataFrontend,
-} from '../adapters/user.adapter';
-import useErrorHandling from '../hooks/useErrorHandling';
-import { useUserRoles } from '../hooks/useUserRoles';
-import { UserRole } from '../interfaces/UserRole';
+} from '@adapters/user.adapter';
+import useErrorHandling from '@hooks/useErrorHandling';
+import { useUserRoles } from '@hooks/useUserRoles';
+import { UserRole } from '@interfaces/UserRole';
+import axios from 'axios';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import './css/roleChangeModal.css';
 import ErrorMessage from './ErrorMessage';
 
