@@ -49,37 +49,36 @@ function App() {
 					<Routes>
 						<Route path='/login' element={<Login />} />
 						<Route element={<PrivateRoute />}>
-							<Route path='/home' element={<Home />} />
 							<Route element={<PrivateRouteOptionUser />}>
-								<Route path='/home/usuarios' element={<UserOptions />} />
-								<Route
-									path='/home/usuarios/crear-usuario'
-									element={<UserOptionCreate />}
-								/>
-								<Route
-									path='/home/usuarios/editar-usuario'
-									element={<UserOptionEdit />}
-								/>
-								<Route
-									path='/home/usuarios/crear-rol'
-									element={<UserOptionCreateRole />}
-								/>
-								<Route
-									path='/home/categorizacion'
-									element={<CategorizationMenu />}
-								/>
-								<Route
-									path='/home/categorizacion/crear-familia'
-									element={<CreateFamily />}
-								/>
-								<Route
-									path='/home/categorizacion/editar-familia'
-									element={<EditFamily />}
-								/>
-								<Route
-									path='/home/especificaciones/crear-rol'
-									element={<UserOptionCreateRole />}
-								/>
+								<Route path='/home' element={<Home />} />
+								<Route path='/home/solo-editor' element={<Home />} />
+								<Route element={<PrivateRouteOptionUserAdmin />}>
+									<Route path='/home/usuarios' element={<UserOptions />} />
+									<Route
+										path='/home/usuarios/crear-usuario'
+										element={<UserOptionCreate />}
+									/>
+									<Route
+										path='/home/usuarios/editar-usuario'
+										element={<UserOptionEdit />}
+									/>
+									<Route
+										path='/home/usuarios/crear-rol'
+										element={<UserOptionCreateRole />}
+									/>
+									<Route
+										path='/home/categorizacion'
+										element={<CategorizationMenu />}
+									/>
+									<Route
+										path='/home/categorizacion/crear-familia'
+										element={<CreateFamily />}
+									/>
+									<Route
+										path='/home/categorizacion/editar-familia'
+										element={<EditFamily />}
+									/>
+								</Route>
 							</Route>
 						</Route>
 					</Routes>
@@ -99,6 +98,17 @@ const PrivateRouteOptionUser = () => {
 	const authContext = React.useContext(AuthContext);
 	if (!authContext) return null;
 	return authContext.isAuthenticated ? <Outlet /> : <Navigate to='/home' />;
+};
+
+const PrivateRouteOptionUserAdmin = () => {
+	const authContext = React.useContext(AuthContext);
+	if (!authContext) return null;
+	return authContext.isAuthenticated &&
+		authContext.user?.roles === 'Administrador' ? (
+		<Outlet />
+	) : (
+		<Navigate to='/home' />
+	);
 };
 
 export default App;
