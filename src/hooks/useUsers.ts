@@ -1,9 +1,5 @@
-import {
-	transformUserData,
-	UserDataBackend,
-	UserDataFrontend,
-} from '@adapters/user.adapter';
-import axios from 'axios';
+import { UserDataFrontend } from '@adapters/user.adapter';
+import { getUsers } from '@services/users';
 import { useEffect, useState } from 'react';
 
 const useFetchUsers = (updateListFlag: boolean) => {
@@ -12,22 +8,7 @@ const useFetchUsers = (updateListFlag: boolean) => {
 	const [, setSearchTerm] = useState<string>('');
 
 	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const response = await axios.get<UserDataBackend[]>(
-					'http://localhost:4000/auth/users',
-				);
-				const transformedUsers = response.data.map(user => ({
-					...transformUserData(user),
-				}));
-				setUsersList(transformedUsers);
-				setFilteredUsers(transformedUsers);
-			} catch (error) {
-				console.error('Error fetching users:', error);
-			}
-		};
-
-		fetchUsers();
+		getUsers({ setUsersList, setFilteredUsers });
 	}, [updateListFlag]);
 
 	const handleSearch = (searchTerm: string) => {
