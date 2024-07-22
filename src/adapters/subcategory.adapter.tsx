@@ -1,4 +1,4 @@
-export interface FamilyBackend {
+export interface SubcategoryBackend {
 	_id: string;
 	name: string;
 	description: string;
@@ -8,9 +8,11 @@ export interface FamilyBackend {
 	updatedAt?: string;
 	__v?: number;
 	path: string;
+	familyId: string;
+	categoryId: string;
 }
 
-export interface FamilyFrontend {
+export interface SubcategoryFrontend {
 	id?: string;
 	name: string;
 	description: string;
@@ -20,10 +22,15 @@ export interface FamilyFrontend {
 	updatedAt?: string;
 	__v?: number;
 	path: string;
+	familyId: string;
+	categoryId: string;
 }
 
 // el mapeo de los datos de usuario
-const familyMapping: Record<keyof FamilyBackend, keyof FamilyFrontend> = {
+const subcategoryMapping: Record<
+	keyof SubcategoryBackend,
+	keyof SubcategoryFrontend
+> = {
 	_id: 'id',
 	name: 'name',
 	description: 'description',
@@ -33,8 +40,13 @@ const familyMapping: Record<keyof FamilyBackend, keyof FamilyFrontend> = {
 	updatedAt: 'updatedAt',
 	__v: '__v',
 	path: 'path',
+	familyId: 'familyId',
+	categoryId: 'categoryId',
 };
-const familyMappingBack: Record<keyof FamilyFrontend, keyof FamilyBackend> = {
+const subcategoryMappingBack: Record<
+	keyof SubcategoryFrontend,
+	keyof SubcategoryBackend
+> = {
 	id: '_id',
 	name: 'name',
 	description: 'description',
@@ -44,6 +56,8 @@ const familyMappingBack: Record<keyof FamilyFrontend, keyof FamilyBackend> = {
 	updatedAt: 'updatedAt',
 	__v: '__v',
 	path: 'path',
+	familyId: 'familyId',
+	categoryId: 'categoryId',
 };
 
 // Transform data generico, este se podra usar para transformar otros datos que vengan del backend
@@ -68,18 +82,20 @@ const transformData = <T extends object, U extends object>(
 };
 
 // Funcion especifica para transformar datos de usuario
-export const transformFamilyData = (data: FamilyBackend): FamilyFrontend => {
-	return transformData<FamilyBackend, FamilyFrontend>(
+export const transformSubcategoryData = (
+	data: SubcategoryBackend,
+): SubcategoryFrontend => {
+	return transformData<SubcategoryBackend, SubcategoryFrontend>(
 		data,
-		familyMapping,
-	) as FamilyFrontend;
+		subcategoryMapping,
+	) as SubcategoryFrontend;
 };
 
-export const transformFamilyDataBack = (
-	data: FamilyFrontend,
-): FamilyBackend => {
-	return transformData<FamilyFrontend, FamilyBackend>(
+export const transformSubategoryDataBack = (
+	data: SubcategoryFrontend,
+): SubcategoryBackend => {
+	return transformData<SubcategoryFrontend, SubcategoryBackend>(
 		data,
-		familyMappingBack,
-	) as FamilyBackend;
+		subcategoryMappingBack,
+	) as SubcategoryBackend;
 };

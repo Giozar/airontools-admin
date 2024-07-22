@@ -8,7 +8,9 @@ import ErrorMessage from '@src/components/ErrorMessage';
 import EditIcon from '@src/components/svg/EditIcon';
 import TrashIcon from '@src/components/svg/TrashIcon';
 import useFamilyManagement from '@src/hooks/useFamilyManagement';
+import useFetchCategories from '@src/hooks/useFetchCategories';
 import useFetchFamilies from '@src/hooks/useFetchFamilies';
+import useFetchSubcategories from '@src/hooks/useFetchSubcategories';
 import { useState } from 'react';
 //import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -109,6 +111,8 @@ function ListofFamilies() {
 		setFilteredFamilies,
 		handleSearch,
 	} = useFetchFamilies(updateListFlag);
+	const { filteredCategories } = useFetchCategories();
+	const { filteredSubcategories } = useFetchSubcategories();
 
 	const handleCloseModalDeletion = (familyid: string) => {
 		setFamilies(families.filter(family => family.id !== familyid));
@@ -123,8 +127,7 @@ function ListofFamilies() {
 	if (errorLog.isError) {
 		return <ErrorMessage message={errorLog.message} />;
 	}
-	/*family id categories*/
-	/*category id categories*/
+
 	return (
 		<div>
 			<h2 className='listtitle'>Lista de familias</h2>
@@ -142,19 +145,21 @@ function ListofFamilies() {
 			<ul className='familylist'>
 				{filteredFamilies.map(family => (
 					<li key={family.id} className='family'>
+						<div className='buttons'>
+							<button className='edit' onClick={() => handleEdit(family)}>
+								<EditIcon />
+							</button>
+							<button
+								className='delete'
+								onClick={() => setShowDeletionModalFor(family.id || '')}
+							>
+								<TrashIcon />
+							</button>
+						</div>
 						<h2>{family.name}</h2>
+						<span className='id'>({family.id})</span>
+						<span>Descripción:</span>
 						<p>{family.description}</p>
-						<button className='edit' onClick={() => handleEdit(family)}>
-							<EditIcon />
-						</button>
-
-						<button
-							className='delete'
-							onClick={() => setShowDeletionModalFor(family.id || '')}
-						>
-							<TrashIcon />
-						</button>
-
 						{showDeletionModalFor === family.id && (
 							<DeletionModal
 								id={family.id}
@@ -165,6 +170,28 @@ function ListofFamilies() {
 								message={deletionMessage}
 							/>
 						)}
+						<span>Categorias:</span>
+						<ul>
+							{filteredCategories
+								.filter(category => category.familyId === family.id)
+								.map(category => (
+									<>
+										<li key={category.id}>{category.name}</li>
+										<span>Subcategorias:</span>
+										<ul>
+											{filteredSubcategories
+												.filter(
+													subcategory => subcategory.categoryId === category.id,
+												)
+												.map(subcategory => (
+													<>
+														<li key={subcategory.id}>{subcategory.name}</li>
+													</>
+												))}
+										</ul>
+									</>
+								))}
+						</ul>
 					</li>
 				))}
 			</ul>

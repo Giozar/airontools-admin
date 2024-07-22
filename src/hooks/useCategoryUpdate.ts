@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 import {
-	FamilyFrontend,
-	transformFamilyDataBack,
-} from '@src/adapters/family.adapter';
-import { useState } from 'react';
+	CategoryFrontend,
+	transformCategoryDataBack,
+} from '@src/adapters/category.adapter';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './useErrorHandling';
 import useSuccessHandling from './useSuccessHandling';
@@ -13,23 +12,20 @@ interface ValidationError {
 	message: string[];
 }
 
-const useFamilyCreate = () => {
+const useCategoryUpdate = () => {
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
-	let [familyId, setFamilyId] = useState<string>('');
 
-	const createFamily = async (familyData: FamilyFrontend) => {
+	const updateCategory = async (categoryData: CategoryFrontend) => {
 		try {
-			const response = await axios.post(
-				'http://localhost:4000/families',
-				transformFamilyDataBack({
-					...familyData,
-					path: cleanNameURL(familyData.name),
+			await axios.patch(
+				`http://localhost:4000/categories/${categoryData.id}`,
+				transformCategoryDataBack({
+					...categoryData,
+					path: cleanNameURL(categoryData.name),
 				}),
 			);
-			setFamilyId(response.data._id);
-			showSuccess('Familia Creada Con Éxito');
-			return response.data._id;
+			showSuccess('Categoria actualizada Con Éxito');
 		} catch (error) {
 			if (!axios.isAxiosError<ValidationError>(error)) {
 				console.error('Registration failed', error);
@@ -44,7 +40,7 @@ const useFamilyCreate = () => {
 			showError(message);
 		}
 	};
-	return { errorLog, successLog, createFamily, familyId };
+	return { errorLog, successLog, updateCategory };
 };
 
-export default useFamilyCreate;
+export default useCategoryUpdate;

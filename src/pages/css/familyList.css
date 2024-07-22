@@ -7,7 +7,38 @@
 }
 .familylist .family {
 	margin: 10px;
-	border: #06131f 2px solid;
+	border: #0e1822 2px solid;
+	border-radius: 10px;
 	background-color: #0e2439;
 	padding: 10px;
+}
+.familylist .family h2 {
+	margin: 0px;
+	padding-bottom: 0px;
+}
+.familylist .buttons {
+	float: right;
+	transform: scale(0.7);
+}
+.familylist .buttons button {
+	margin-left: 10px;
+}
+.familylist span {
+	display: block;
+	margin: 10px 0;
+	border-bottom: #35485a 2px solid;
+	padding: 10px 0;
+	width: 100%;
+	color: #909da8;
+	font-weight: bold;
+}
+.familylist .family p {
+	padding: 10px;
+	text-align: justify;
+	word-break: break-word;
+}
+.familylist .id {
+	border: 0px;
+	width: 100%;
+	color: #35485a;
 }

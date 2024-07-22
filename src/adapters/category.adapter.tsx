@@ -1,4 +1,4 @@
-export interface FamilyBackend {
+export interface CategoryBackend {
 	_id: string;
 	name: string;
 	description: string;
@@ -8,9 +8,10 @@ export interface FamilyBackend {
 	updatedAt?: string;
 	__v?: number;
 	path: string;
+	familyId: string;
 }
 
-export interface FamilyFrontend {
+export interface CategoryFrontend {
 	id?: string;
 	name: string;
 	description: string;
@@ -20,10 +21,11 @@ export interface FamilyFrontend {
 	updatedAt?: string;
 	__v?: number;
 	path: string;
+	familyId: string;
 }
 
 // el mapeo de los datos de usuario
-const familyMapping: Record<keyof FamilyBackend, keyof FamilyFrontend> = {
+const categoryMapping: Record<keyof CategoryBackend, keyof CategoryFrontend> = {
 	_id: 'id',
 	name: 'name',
 	description: 'description',
@@ -33,8 +35,12 @@ const familyMapping: Record<keyof FamilyBackend, keyof FamilyFrontend> = {
 	updatedAt: 'updatedAt',
 	__v: '__v',
 	path: 'path',
+	familyId: 'familyId',
 };
-const familyMappingBack: Record<keyof FamilyFrontend, keyof FamilyBackend> = {
+const categoryMappingBack: Record<
+	keyof CategoryFrontend,
+	keyof CategoryBackend
+> = {
 	id: '_id',
 	name: 'name',
 	description: 'description',
@@ -44,6 +50,7 @@ const familyMappingBack: Record<keyof FamilyFrontend, keyof FamilyBackend> = {
 	updatedAt: 'updatedAt',
 	__v: '__v',
 	path: 'path',
+	familyId: 'familyId',
 };
 
 // Transform data generico, este se podra usar para transformar otros datos que vengan del backend
@@ -68,18 +75,20 @@ const transformData = <T extends object, U extends object>(
 };
 
 // Funcion especifica para transformar datos de usuario
-export const transformFamilyData = (data: FamilyBackend): FamilyFrontend => {
-	return transformData<FamilyBackend, FamilyFrontend>(
+export const transformCategoryData = (
+	data: CategoryBackend,
+): CategoryFrontend => {
+	return transformData<CategoryBackend, CategoryFrontend>(
 		data,
-		familyMapping,
-	) as FamilyFrontend;
+		categoryMapping,
+	) as CategoryFrontend;
 };
 
-export const transformFamilyDataBack = (
-	data: FamilyFrontend,
-): FamilyBackend => {
-	return transformData<FamilyFrontend, FamilyBackend>(
+export const transformCategoryDataBack = (
+	data: CategoryFrontend,
+): CategoryBackend => {
+	return transformData<CategoryFrontend, CategoryBackend>(
 		data,
-		familyMappingBack,
-	) as FamilyBackend;
+		categoryMappingBack,
+	) as CategoryBackend;
 };

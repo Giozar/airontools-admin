@@ -6,18 +6,17 @@ import TrashIcon from '@components/svg/TrashIcon';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/createFamily.css';
+import { CategoryFrontend } from '@src/adapters/category.adapter';
+import { SubcategoryFrontend } from '@src/adapters/subcategory.adapter';
 import { AuthContext } from '@src/apps/App';
+import useCategoryCreate from '@src/hooks/useCategoryCreate';
 import useFamilyCreate from '@src/hooks/useFamilyCreate';
+import useSubcategoryCreate from '@src/hooks/useSubcategoryCreate';
 import { useContext, useState } from 'react';
 
-interface Subcategory {
-	name: string;
-	description: string;
-}
-interface Category {
-	name: string;
-	description: string;
-	subcategories: Subcategory[];
+interface SubcategoryAux {
+	categoryIndex: number;
+	subcategory: SubcategoryFrontend;
 }
 
 function CreateFamilyForm() {
@@ -26,11 +25,46 @@ function CreateFamilyForm() {
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
 	const { errorLog, successLog, createFamily } = useFamilyCreate();
-	const [categories, setCategories] = useState<Category[]>([]);
+	const { createCategory } = useCategoryCreate();
+	const { createSubategory } = useSubcategoryCreate();
+	const [categories, setCategories] = useState<CategoryFrontend[]>([]);
+	const [subcategories, setSubcategories] = useState<SubcategoryAux[]>([]);
 
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-		await createFamily({ name, description, createdBy });
+		await createFamily({
+			name,
+			description,
+			createdBy,
+			path: '',
+		})
+			.then(async familyId => {
+				console.log('Family ID:', familyId);
+				const createdCategoryPromises = categories.map(async category => {
+					return await createCategory({ ...category, familyId });
+				});
+				return Promise.all(createdCategoryPromises);
+			})
+			.then(createdCategories => {
+				console.log('Created categories:', createdCategories);
+				console.log();
+				const createdSubcategoryPromises = subcategories.map(
+					async subcategory => {
+						return await createSubategory({
+							...subcategory.subcategory,
+							categoryId: createdCategories[subcategory.categoryIndex]._id,
+						});
+					},
+				);
+				return Promise.all(createdSubcategoryPromises);
+			})
+			.then(createdSubcategories => {
+				console.log('Created subcategories:', createdSubcategories);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+
 		console.log('Form submitted with:', { name, description, categories });
 	};
 
@@ -40,18 +74,30 @@ function CreateFamilyForm() {
 			{
 				name: '',
 				description: '',
-				subcategories: [],
+				createdBy: createdBy,
+				path: '',
+				familyId: '',
 			},
 		]);
 	};
 
 	const addSubcategoryInput = (categoryIndex: number) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].subcategories.push({
+		const newSubcategory: SubcategoryFrontend = {
 			name: '',
 			description: '',
-		});
-		setCategories(updatedCategories);
+			createdBy: createdBy,
+			path: '',
+			familyId: '',
+			categoryId: '',
+		};
+
+		setSubcategories([
+			...subcategories,
+			{
+				categoryIndex,
+				subcategory: newSubcategory,
+			},
+		]);
 	};
 
 	const handleCategoryNameChange = (categoryIndex: number, value: string) => {
@@ -69,27 +115,31 @@ function CreateFamilyForm() {
 		setCategories(updatedCategories);
 	};
 
-	const handleSubcategoryNameChange = (
-		categoryIndex: number,
-		subcategoryIndex: number,
-		value: string,
-	) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].subcategories[subcategoryIndex].name =
-			value;
-		setCategories(updatedCategories);
+	const handleSubcategoryNameChange = (index: number, newName: string) => {
+		const updatedSubcategories = [...subcategories];
+		updatedSubcategories[index] = {
+			...updatedSubcategories[index],
+			subcategory: {
+				...updatedSubcategories[index].subcategory,
+				name: newName,
+			},
+		};
+		setSubcategories(updatedSubcategories);
 	};
 
 	const handleSubcategoryDescriptionChange = (
-		categoryIndex: number,
-		subcategoryIndex: number,
-		value: string,
+		index: number,
+		newDescription: string,
 	) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].subcategories[
-			subcategoryIndex
-		].description = value;
-		setCategories(updatedCategories);
+		const updatedSubcategories = [...subcategories];
+		updatedSubcategories[index] = {
+			...updatedSubcategories[index],
+			subcategory: {
+				...updatedSubcategories[index].subcategory,
+				description: newDescription,
+			},
+		};
+		setSubcategories(updatedSubcategories);
 	};
 
 	const removeCategoryInput = (categoryIndex: number) => {
@@ -97,14 +147,9 @@ function CreateFamilyForm() {
 		updatedCategories.splice(categoryIndex, 1);
 		setCategories(updatedCategories);
 	};
-
-	const removeSubcategoryInput = (
-		categoryIndex: number,
-		subcategoryIndex: number,
-	) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].subcategories.splice(subcategoryIndex, 1);
-		setCategories(updatedCategories);
+	const removeSubcategoryInput = (index: number) => {
+		const updatedSubcategories = subcategories.filter((_, i) => i !== index);
+		setSubcategories(updatedSubcategories);
 	};
 
 	return (
@@ -133,10 +178,7 @@ function CreateFamilyForm() {
 					required
 				/>
 				<label htmlFor='addCategory'>Categorías:</label>
-				<button type='button' className='add' onClick={addCategoryInput}>
-					<PlusIcon />
-					Añadir categoría
-				</button>
+
 				{categories.map((category, categoryIndex) => (
 					<div key={categoryIndex} className='categories'>
 						<div className='info'>
@@ -156,6 +198,46 @@ function CreateFamilyForm() {
 									handleCategoryDescriptionChange(categoryIndex, e.target.value)
 								}
 							/>
+
+							{subcategories
+								.filter(
+									subcategory => subcategory.categoryIndex === categoryIndex,
+								)
+								.map((subcategory, subcategoryIndex) => (
+									<div key={subcategoryIndex} className='categories'>
+										<div className='info'>
+											<input
+												type='text'
+												placeholder={`Subcategoría ${subcategoryIndex + 1} Nombre`}
+												value={subcategory.subcategory.name}
+												onChange={e =>
+													handleSubcategoryNameChange(
+														subcategories.indexOf(subcategory),
+														e.target.value,
+													)
+												}
+												required
+											/>
+											<textarea
+												placeholder={`Subcategoría ${subcategoryIndex + 1} Descripción (opcional)`}
+												value={subcategory.subcategory.description}
+												onChange={e =>
+													handleSubcategoryDescriptionChange(
+														subcategories.indexOf(subcategory),
+														e.target.value,
+													)
+												}
+											/>
+										</div>
+										<button
+											type='button'
+											className='delete'
+											onClick={() => removeSubcategoryInput(subcategoryIndex)}
+										>
+											<TrashIcon />
+										</button>
+									</div>
+								))}
 							<button
 								type='button'
 								className='add'
@@ -164,45 +246,6 @@ function CreateFamilyForm() {
 								<PlusIcon />
 								Añadir subcategoría
 							</button>
-							{category.subcategories.map((subcategory, subcategoryIndex) => (
-								<div key={subcategoryIndex} className='categories'>
-									<div className='info'>
-										<input
-											type='text'
-											placeholder={`Subcategoría ${subcategoryIndex + 1} Nombre`}
-											value={subcategory.name}
-											onChange={e =>
-												handleSubcategoryNameChange(
-													categoryIndex,
-													subcategoryIndex,
-													e.target.value,
-												)
-											}
-											required
-										/>
-										<textarea
-											placeholder={`Subcategoría ${subcategoryIndex + 1} Descripción (opcional)`}
-											value={subcategory.description}
-											onChange={e =>
-												handleSubcategoryDescriptionChange(
-													categoryIndex,
-													subcategoryIndex,
-													e.target.value,
-												)
-											}
-										/>
-									</div>
-									<button
-										type='button'
-										className='delete'
-										onClick={() =>
-											removeSubcategoryInput(categoryIndex, subcategoryIndex)
-										}
-									>
-										<TrashIcon />
-									</button>
-								</div>
-							))}
 						</div>
 
 						<button
@@ -214,6 +257,10 @@ function CreateFamilyForm() {
 						</button>
 					</div>
 				))}
+				<button type='button' className='add' onClick={addCategoryInput}>
+					<PlusIcon />
+					Añadir categoría
+				</button>
 
 				<button type='submit'>Crear familia</button>
 			</form>
