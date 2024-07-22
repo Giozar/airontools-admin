@@ -1,29 +1,29 @@
+import {
+	FamilyBackend,
+	FamilyFrontend,
+	transformFamilyData,
+} from '@src/adapters/family.adapter';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import useErrorHandling from './useErrorHandling';
 
-interface Family {
-	_id: string;
-	name: string;
-	description: string;
-	createdBy: string;
-	updatedBy?: string;
-	createdAt: string;
-	updatedAt: string;
-	__v: number;
-}
-function useFetchFamilies() {
+function useFetchFamilies(updateListFlag: boolean) {
 	const { errorLog, showError } = useErrorHandling();
-	const [families, setFamilies] = useState<Family[]>([]);
+	const [families, setFamilies] = useState<FamilyFrontend[]>([]);
+	const [filteredFamilies, setFilteredFamilies] = useState<FamilyFrontend[]>(
+		[],
+	);
+	const [, setSearchTerm] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		const fetchFamilies = async () => {
 			try {
-				const response = await axios.get<Family[]>(
+				const response = await axios.get<FamilyBackend[]>(
 					'http://localhost:4000/families',
 				);
-				setFamilies(response.data);
+				setFamilies(response.data.map(transformFamilyData));
+				setFilteredFamilies(response.data.map(transformFamilyData));
 				setLoading(false);
 			} catch (error) {
 				console.error('Failed to fetch families:', error);
@@ -33,9 +33,26 @@ function useFetchFamilies() {
 		};
 
 		fetchFamilies();
-	}, []); // Empty dependency array ensures this effect runs only once
+	}, [updateListFlag]); // Empty dependency array ensures this effect runs only once
 
-	return { families, loading, errorLog };
+	const handleSearch = (searchTerm: string) => {
+		const term = searchTerm.toLowerCase();
+		setSearchTerm(term);
+		const filtered = families.filter(family =>
+			family.name.toLowerCase().includes(term),
+		);
+		setFilteredFamilies(filtered);
+	};
+
+	return {
+		families,
+		loading,
+		errorLog,
+		setFamilies,
+		filteredFamilies,
+		setFilteredFamilies,
+		handleSearch,
+	};
 }
 
 export default useFetchFamilies;

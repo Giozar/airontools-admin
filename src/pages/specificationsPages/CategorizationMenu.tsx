@@ -3,11 +3,16 @@ import HeaderTitle from '@components/HeaderTitle';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/familyList.css';
+import DeletionModal from '@src/components/DeletionModal';
 import ErrorMessage from '@src/components/ErrorMessage';
+import EditIcon from '@src/components/svg/EditIcon';
+import TrashIcon from '@src/components/svg/TrashIcon';
+import useFamilyManagement from '@src/hooks/useFamilyManagement';
 import useFetchFamilies from '@src/hooks/useFetchFamilies';
-import React, { useState } from 'react';
+import { useState } from 'react';
+//import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-interface Subcategory {
+/*interface Subcategory {
 	name: string;
 }
 
@@ -83,10 +88,34 @@ function Collapsible({ trigger, children }: CollapsibleProps) {
 		</>
 	);
 }
-
+*/
 function ListofFamilies() {
-	const { families, loading, errorLog } = useFetchFamilies();
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleEdit,
+		handleCloseModal,
+		handleDelete,
+		updateListFlag,
+	} = useFamilyManagement();
+	const {
+		families,
+		loading,
+		errorLog,
+		setFamilies,
+		filteredFamilies,
+		setFilteredFamilies,
+		handleSearch,
+	} = useFetchFamilies(updateListFlag);
 
+	const handleCloseModalDeletion = (familyid: string) => {
+		setFamilies(families.filter(family => family.id !== familyid));
+		setFilteredFamilies(
+			filteredFamilies.filter(family => family.id !== familyid),
+		);
+	};
 	if (loading) {
 		return <p>Cargando...</p>;
 	}
@@ -94,16 +123,46 @@ function ListofFamilies() {
 	if (errorLog.isError) {
 		return <ErrorMessage message={errorLog.message} />;
 	}
+
 	return (
 		<div>
 			<h3>Lista de Familias</h3>
+			<input
+				type='text'
+				placeholder='Buscar familias...'
+				value={searchTerm}
+				onChange={e => {
+					handleSearch(e.target.value);
+					setSearchTerm(e.target.value);
+				}}
+			/>
+
 			<ul className='familylist'>
-				{families.map(family => (
-					<li key={family._id} className='family'>
+				{filteredFamilies.map(family => (
+					<li key={family.id} className='family'>
 						<h2>{family.name}</h2>
 						<p>{family.description}</p>
-						<button>Editar</button>
-						<button>Borrar</button>
+						<button className='edit' onClick={() => handleEdit(family)}>
+							<EditIcon />
+						</button>
+
+						<button
+							className='delete'
+							onClick={() => setShowDeletionModalFor(family.id || '')}
+						>
+							<TrashIcon />
+						</button>
+
+						{showDeletionModalFor === family.id && (
+							<DeletionModal
+								id={family.id}
+								name={family.name}
+								onClose={() => handleCloseModal()}
+								onCloseDelete={() => handleCloseModalDeletion(family.id || '')}
+								onDelete={() => handleDelete(family.id || '', family.name)}
+								message={deletionMessage}
+							/>
+						)}
 					</li>
 				))}
 			</ul>
