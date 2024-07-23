@@ -2,7 +2,7 @@ import {
 	SubcategoryBackend,
 	SubcategoryFrontend,
 	transformSubcategoryData,
-} from '@src/adapters/subcategory.adapter';
+} from '@adapters/subcategory.adapter';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import useErrorHandling from './useErrorHandling';

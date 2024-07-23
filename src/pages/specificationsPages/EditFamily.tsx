@@ -17,16 +17,16 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
-	//Datos recuperados y que se pueden modificar
+	// Datos recuperados y que se pueden modificar
 	const [name, setName] = useState(familyToEdit.name);
 	const [description, setDescription] = useState(familyToEdit.description);
 	const familyId = familyToEdit.id;
-	//Datos para actualizar
+	// Datos para actualizar
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const { errorLogCategory, successLogCategory, updateCategory } =
 		useCategoryUpdate();
 
-	/*METODOS PARA RECUPERAR DATOS */
+	/* METODOS PARA RECUPERAR DATOS */
 	const { categories, setCategories, fetchCategories } =
 		useFetchCategoriesFromFamily();
 
@@ -35,7 +35,7 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 			fetchCategories(familyId);
 		}
 	}, [familyId]);
-	/*METODOS PARA MANEJAR LOS CAMBIOS DENTRO DEL 'FORMULARIO' */
+	/* METODOS PARA MANEJAR LOS CAMBIOS DENTRO DEL 'FORMULARIO' */
 	const handleNameUpdate = (newValue: string) => {
 		setName(newValue);
 	};
@@ -57,7 +57,7 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 		updatedCategories[categoryIndex - 1].description = value;
 		setCategories(updatedCategories);
 	};
-	/*METODOS PARA ACTUALIZAR */
+	/* METODOS PARA ACTUALIZAR */
 	const handleUpdateFamily = async () => {
 		try {
 			if (

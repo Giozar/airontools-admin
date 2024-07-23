@@ -97,7 +97,7 @@ function SubcategoryModal({
 						)}
 						<div id='subcategoriesList'>
 							{subcategories.map((subcategory, subcategoryIndex) => (
-								<div className='category'>
+								<div key={subcategoryIndex} className='category'>
 									<button className='delete'>
 										<TrashIcon />
 									</button>

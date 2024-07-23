@@ -1,6 +1,6 @@
 export function cleanNameURL(name: string) {
 	// Replaces special characters with their non-accented equivalents
-	let cleanedName = name
+	const cleanedName = name
 		.trim()
 		.normalize('NFD') // Normalize characters with diacritics
 		.replace(/[\u0300-\u036f]/g, '') // Remove diacritics

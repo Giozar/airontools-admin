@@ -12,9 +12,9 @@ import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/familyList.css';
 import { useState } from 'react';
-//import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-/*interface Subcategory {
+/* interface Subcategory {
 	name: string;
 }
 

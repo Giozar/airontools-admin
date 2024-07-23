@@ -2,7 +2,7 @@ import {
 	CategoryBackend,
 	CategoryFrontend,
 	transformCategoryData,
-} from '@src/adapters/category.adapter';
+} from '@adapters/category.adapter';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import useErrorHandling from './useErrorHandling';

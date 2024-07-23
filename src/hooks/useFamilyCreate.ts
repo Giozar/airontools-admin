@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
 	FamilyFrontend,
 	transformFamilyDataBack,
-} from '@src/adapters/family.adapter';
+} from '@adapters/family.adapter';
 import { useState } from 'react';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './useErrorHandling';
@@ -16,7 +16,7 @@ interface ValidationError {
 const useFamilyCreate = () => {
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
-	let [familyId, setFamilyId] = useState<string>('');
+	const [familyId, setFamilyId] = useState<string>('');
 
 	const createFamily = async (familyData: FamilyFrontend) => {
 		try {

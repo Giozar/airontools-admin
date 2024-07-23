@@ -58,9 +58,9 @@ module.exports = {
 		'@typescript-eslint/no-explicit-any': 'warn',
 		'@typescript-eslint/ban-types': 'warn',
 		'@typescript-eslint/triple-slash-reference': 'warn',
-		"no-relative-import-paths/no-relative-import-paths": [
-			"warn",
-			{ "allowSameFolder": true, "rootDir": "src", "prefix": "@" }
-		]
+		'no-relative-import-paths/no-relative-import-paths': [
+			'warn',
+			{ allowSameFolder: true, rootDir: 'src', prefix: '@' },
+		],
 	},
 };

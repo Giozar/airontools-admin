@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
 	FamilyFrontend,
 	transformFamilyDataBack,
-} from '@src/adapters/family.adapter';
+} from '@adapters/family.adapter';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './useErrorHandling';
 import useSuccessHandling from './useSuccessHandling';
