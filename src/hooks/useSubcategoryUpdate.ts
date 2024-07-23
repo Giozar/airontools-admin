@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
 	SubcategoryFrontend,
 	transformSubategoryDataBack,
-} from '@src/adapters/subcategory.adapter';
+} from '@adapters/subcategory.adapter';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './useErrorHandling';
 import useSuccessHandling from './useSuccessHandling';
