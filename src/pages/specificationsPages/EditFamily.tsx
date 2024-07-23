@@ -2,23 +2,23 @@ import HeaderTitle from '@components/HeaderTitle';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { FamilyFrontend } from '@src/adapters/family.adapter';
+import { SubcategoryFrontend } from '@src/adapters/subcategory.adapter';
 import { AuthContext } from '@src/apps/App';
 import ErrorMessage from '@src/components/ErrorMessage';
 import SuccessMessage from '@src/components/SuccessMessage';
 import PlusIcon from '@src/components/svg/PlusIcon';
 import TrashIcon from '@src/components/svg/TrashIcon';
+import useCategoryUpdate from '@src/hooks/useCategoryUpdate';
 import useFamilyUpdate from '@src/hooks/useFamilyUpdate';
-import { useContext, useState } from 'react';
+import useFetchCategoriesFromFamily from '@src/hooks/useFetchCategoriesFromFamily';
+import useFetchSubcategoriesFromFamily from '@src/hooks/useFetchSubcategoriesFromFamily';
+import useSubcategoryUpdate from '@src/hooks/useSubcategoryUpdate';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-interface Subcategory {
-	name: string;
-	description: string;
-}
-interface Category {
-	name: string;
-	description: string;
-	subcategories: Subcategory[];
+interface SubcategoryAux {
+	categoryIndex: number;
+	subcategory: SubcategoryFrontend;
 }
 
 function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
@@ -26,18 +26,68 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 	const [description, setDescription] = useState(familyToEdit.description);
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
+	const familyId = familyToEdit.id;
 	const { errorLog, successLog, updateFamily } = useFamilyUpdate();
-	const [categories, setCategories] = useState<Category[]>([]);
+	const { updateCategory } = useCategoryUpdate();
+	const { updateSubategory } = useSubcategoryUpdate();
+
+	const { categories, setCategories, fetchCategories } =
+		useFetchCategoriesFromFamily();
+	const { subcategories, setSubcategories, fetchSubcategories } =
+		useFetchSubcategoriesFromFamily();
+
+	useEffect(() => {
+		if (familyId) {
+			fetchCategories(familyId);
+		}
+	}, [familyId]);
+
+	useEffect(() => {
+		if (categories.length > 0) {
+			fetchSubcategories(categories[0].id || '');
+		}
+	}, [categories]);
 
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
-		e.preventDefault();
-		await updateFamily({
-			...familyToEdit,
-			name,
-			description,
-			createdBy,
-		});
-		console.log('Form submitted with:', { name, description, categories });
+		try {
+			e.preventDefault();
+
+			// Update family
+			await updateFamily({
+				...familyToEdit,
+				name,
+				description,
+				createdBy,
+			});
+
+			// Create category promises
+			const createdCategoryPromises = categories.map(async category => {
+				return updateCategory({ ...category, familyId: familyToEdit.id || '' });
+			});
+
+			// Wait for all category promises to resolve
+			const createdCategories = await Promise.all(createdCategoryPromises);
+			console.log('Created categories:', createdCategories);
+
+			// Create subcategory promises
+			const createdSubcategoryPromises = subcategories.map(
+				async subcategory => {
+					return updateSubategory({
+						...subcategory,
+					});
+				},
+			);
+
+			// Wait for all subcategory promises to resolve
+			const createdSubcategories = await Promise.all(
+				createdSubcategoryPromises,
+			);
+			console.log('Created subcategories:', createdSubcategories);
+
+			console.log('Form submitted with:', { name, description, categories });
+		} catch (error) {
+			console.error('Error:', error);
+		}
 	};
 
 	const addCategoryInput = () => {
@@ -46,18 +96,29 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 			{
 				name: '',
 				description: '',
-				subcategories: [],
+				createdBy: createdBy,
+				path: '',
+				familyId: '',
 			},
 		]);
 	};
 
 	const addSubcategoryInput = (categoryIndex: number) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].subcategories.push({
+		const newSubcategory: SubcategoryFrontend = {
 			name: '',
 			description: '',
-		});
-		setCategories(updatedCategories);
+			createdBy: createdBy,
+			path: '',
+			familyId: '',
+			categoryId: '',
+		};
+
+		setSubcategories([
+			...subcategories,
+			{
+				...newSubcategory,
+			},
+		]);
 	};
 
 	const handleCategoryNameChange = (categoryIndex: number, value: string) => {
@@ -75,27 +136,25 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 		setCategories(updatedCategories);
 	};
 
-	const handleSubcategoryNameChange = (
-		categoryIndex: number,
-		subcategoryIndex: number,
-		value: string,
-	) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].subcategories[subcategoryIndex].name =
-			value;
-		setCategories(updatedCategories);
+	const handleSubcategoryNameChange = (index: number, newName: string) => {
+		const updatedSubcategories = [...subcategories];
+		updatedSubcategories[index] = {
+			...updatedSubcategories[index],
+			name: newName,
+		};
+		setSubcategories(updatedSubcategories);
 	};
 
 	const handleSubcategoryDescriptionChange = (
-		categoryIndex: number,
-		subcategoryIndex: number,
-		value: string,
+		index: number,
+		newDescription: string,
 	) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].subcategories[
-			subcategoryIndex
-		].description = value;
-		setCategories(updatedCategories);
+		const updatedSubcategories = [...subcategories];
+		updatedSubcategories[index] = {
+			...updatedSubcategories[index],
+			description: newDescription,
+		};
+		setSubcategories(updatedSubcategories);
 	};
 
 	const removeCategoryInput = (categoryIndex: number) => {
@@ -103,14 +162,9 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 		updatedCategories.splice(categoryIndex, 1);
 		setCategories(updatedCategories);
 	};
-
-	const removeSubcategoryInput = (
-		categoryIndex: number,
-		subcategoryIndex: number,
-	) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].subcategories.splice(subcategoryIndex, 1);
-		setCategories(updatedCategories);
+	const removeSubcategoryInput = (index: number) => {
+		const updatedSubcategories = subcategories.filter((_, i) => i !== index);
+		setSubcategories(updatedSubcategories);
 	};
 
 	return (
@@ -119,7 +173,7 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
 			<form onSubmit={handleSubmit}>
-				<h2>Modificar familia de herramientas</h2>
+				<h2>Actualizar familia de herramientas</h2>
 				<label htmlFor='name'>Nombre de familia:</label>
 				<input
 					id='name'
@@ -139,10 +193,7 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 					required
 				/>
 				<label htmlFor='addCategory'>Categorías:</label>
-				<button type='button' className='add' onClick={addCategoryInput}>
-					<PlusIcon />
-					Añadir categoría
-				</button>
+
 				{categories.map((category, categoryIndex) => (
 					<div key={categoryIndex} className='categories'>
 						<div className='info'>
@@ -162,6 +213,44 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 									handleCategoryDescriptionChange(categoryIndex, e.target.value)
 								}
 							/>
+
+							{subcategories
+								.filter(subcategory => subcategory.categoryId === category.id)
+								.map((subcategory, subcategoryIndex) => (
+									<div key={subcategoryIndex} className='categories'>
+										<div className='info'>
+											<input
+												type='text'
+												placeholder={`Subcategoría ${subcategoryIndex + 1} Nombre`}
+												value={subcategory.name}
+												onChange={e =>
+													handleSubcategoryNameChange(
+														subcategories.indexOf(subcategory),
+														e.target.value,
+													)
+												}
+												required
+											/>
+											<textarea
+												placeholder={`Subcategoría ${subcategoryIndex + 1} Descripción (opcional)`}
+												value={subcategory.description}
+												onChange={e =>
+													handleSubcategoryDescriptionChange(
+														subcategories.indexOf(subcategory),
+														e.target.value,
+													)
+												}
+											/>
+										</div>
+										<button
+											type='button'
+											className='delete'
+											onClick={() => removeSubcategoryInput(subcategoryIndex)}
+										>
+											<TrashIcon />
+										</button>
+									</div>
+								))}
 							<button
 								type='button'
 								className='add'
@@ -170,45 +259,6 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 								<PlusIcon />
 								Añadir subcategoría
 							</button>
-							{category.subcategories.map((subcategory, subcategoryIndex) => (
-								<div key={subcategoryIndex} className='categories'>
-									<div className='info'>
-										<input
-											type='text'
-											placeholder={`Subcategoría ${subcategoryIndex + 1} Nombre`}
-											value={subcategory.name}
-											onChange={e =>
-												handleSubcategoryNameChange(
-													categoryIndex,
-													subcategoryIndex,
-													e.target.value,
-												)
-											}
-											required
-										/>
-										<textarea
-											placeholder={`Subcategoría ${subcategoryIndex + 1} Descripción (opcional)`}
-											value={subcategory.description}
-											onChange={e =>
-												handleSubcategoryDescriptionChange(
-													categoryIndex,
-													subcategoryIndex,
-													e.target.value,
-												)
-											}
-										/>
-									</div>
-									<button
-										type='button'
-										className='delete'
-										onClick={() =>
-											removeSubcategoryInput(categoryIndex, subcategoryIndex)
-										}
-									>
-										<TrashIcon />
-									</button>
-								</div>
-							))}
 						</div>
 
 						<button
@@ -220,8 +270,12 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 						</button>
 					</div>
 				))}
+				<button type='button' className='add' onClick={addCategoryInput}>
+					<PlusIcon />
+					Añadir categoría
+				</button>
 
-				<button type='submit'>Modificar familia</button>
+				<button type='submit'>Actualizar familia</button>
 			</form>
 		</div>
 	);

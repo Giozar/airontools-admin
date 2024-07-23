@@ -170,14 +170,20 @@ function ListofFamilies() {
 								message={deletionMessage}
 							/>
 						)}
-						<span>Categorias:</span>
+						{filteredCategories.filter(
+							category => category.familyId === family.id,
+						).length !== 0 && <span>Categorias:</span>}
+
 						<ul>
 							{filteredCategories
 								.filter(category => category.familyId === family.id)
 								.map(category => (
 									<>
 										<li key={category.id}>{category.name}</li>
-										<span>Subcategorias:</span>
+										{filteredSubcategories.filter(
+											subcategory => subcategory.categoryId === category.id,
+										).length !== 0 && <span>Subcategorias:</span>}
+
 										<ul>
 											{filteredSubcategories
 												.filter(
