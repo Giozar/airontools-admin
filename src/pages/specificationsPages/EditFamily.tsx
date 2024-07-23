@@ -1,286 +1,291 @@
-import HeaderTitle from '@components/HeaderTitle';
-import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
+import '@pages/css/editFamily.css';
+import { CategoryFrontend } from '@src/adapters/category.adapter';
 import { FamilyFrontend } from '@src/adapters/family.adapter';
 import { SubcategoryFrontend } from '@src/adapters/subcategory.adapter';
-import { AuthContext } from '@src/apps/App';
+import Editables from '@src/components/Editables';
 import ErrorMessage from '@src/components/ErrorMessage';
+import HeaderTitle from '@src/components/HeaderTitle';
 import SuccessMessage from '@src/components/SuccessMessage';
-import PlusIcon from '@src/components/svg/PlusIcon';
+import CloseIcon from '@src/components/svg/CloseIcon';
 import TrashIcon from '@src/components/svg/TrashIcon';
 import useCategoryUpdate from '@src/hooks/useCategoryUpdate';
 import useFamilyUpdate from '@src/hooks/useFamilyUpdate';
 import useFetchCategoriesFromFamily from '@src/hooks/useFetchCategoriesFromFamily';
 import useFetchSubcategoriesFromFamily from '@src/hooks/useFetchSubcategoriesFromFamily';
 import useSubcategoryUpdate from '@src/hooks/useSubcategoryUpdate';
-import { useContext, useEffect, useState } from 'react';
+import BasePage from '@src/layouts/BasePage';
+import HeaderApp from '@src/layouts/HeaderApp';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-interface SubcategoryAux {
-	categoryIndex: number;
-	subcategory: SubcategoryFrontend;
+function SubcategoryModal({
+	categoryId,
+	categoryName,
+}: {
+	categoryId: string;
+	categoryName: string;
+}) {
+	const { subcategories, setSubcategories, fetchSubcategories } =
+		useFetchSubcategoriesFromFamily();
+	const { errorLogSubcategory, successLogSubcategory, updateSubategory } =
+		useSubcategoryUpdate();
+
+	useEffect(() => {
+		fetchSubcategories(categoryId || '');
+	}, []);
+
+	const handleUpdateSubcategory = async (subcategory: SubcategoryFrontend) => {
+		try {
+			await updateSubategory({
+				...subcategory,
+			});
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+	const [modalVisible, setModalVisible] = useState(false);
+
+	const openModal = () => {
+		setModalVisible(true);
+	};
+
+	const closeModal = () => {
+		setModalVisible(false);
+	};
+
+	const addSubcategory = () => {
+		// Add your logic to add a new subcategory here
+		console.log('Adding new subcategory');
+	};
+	const handleSubcategoryNameChange = (
+		value: string,
+		categoryIndex: number,
+	) => {
+		const updatedCategories = [...subcategories];
+		updatedCategories[categoryIndex - 1].name = value;
+		setSubcategories(updatedCategories);
+	};
+
+	const handleSubcategoryDescriptionChange = (
+		value: string,
+		categoryIndex: number,
+	) => {
+		const updatedCategories = [...subcategories];
+		updatedCategories[categoryIndex - 1].description = value;
+		setSubcategories(updatedCategories);
+	};
+	return (
+		<>
+			{subcategories.length !== 0 && (
+				<>
+					<p>Subcategorias: </p>
+					<ul>
+						{subcategories.map(subcategory => (
+							<li key={subcategory.id}>{subcategory.name}</li>
+						))}
+					</ul>
+				</>
+			)}
+
+			<button onClick={openModal} className='edit'>
+				Editar subcategorias
+			</button>
+
+			{modalVisible && (
+				<div id='subcategoriesModal' className='modal'>
+					<div className='modal-content'>
+						<span className='close' onClick={closeModal}>
+							<CloseIcon />
+						</span>
+						<h2 id='modalTitle'>Subcategorías de {categoryName} </h2>
+						<p>({categoryId})</p>
+						{successLogSubcategory.isSuccess && (
+							<SuccessMessage message={successLogSubcategory.message} />
+						)}
+						{errorLogSubcategory.isError && (
+							<ErrorMessage message={errorLogSubcategory.message} />
+						)}
+						<div id='subcategoriesList'>
+							{subcategories.map((subcategory, subcategoryIndex) => (
+								<div className='category'>
+									<button className='delete'>
+										<TrashIcon />
+									</button>
+									<h2>Subcategoría: {subcategory.name} </h2>
+									<Editables
+										what='Nombre'
+										valueOf={subcategory.name}
+										type='input'
+										whichOne={subcategoryIndex + 1}
+										onUpdateOne={handleSubcategoryNameChange}
+									/>
+									<Editables
+										what='Descripción'
+										valueOf={subcategory.description}
+										type='textarea'
+										whichOne={subcategoryIndex + 1}
+										onUpdateOne={handleSubcategoryDescriptionChange}
+									/>
+									<button
+										className='save'
+										onClick={() => handleUpdateSubcategory(subcategory)}
+									>
+										Guardar Cambios
+									</button>
+								</div>
+							))}
+						</div>
+						<button onClick={addSubcategory}>Añadir subcategoría</button>
+					</div>
+				</div>
+			)}
+		</>
+	);
 }
 
 function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
+	//Datos recuperados y que se pueden modificar
 	const [name, setName] = useState(familyToEdit.name);
 	const [description, setDescription] = useState(familyToEdit.description);
-	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
 	const familyId = familyToEdit.id;
-	const { errorLog, successLog, updateFamily } = useFamilyUpdate();
-	const { updateCategory } = useCategoryUpdate();
-	const { updateSubategory } = useSubcategoryUpdate();
+	//Datos para actualizar
+	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
+	const { errorLogCategory, successLogCategory, updateCategory } =
+		useCategoryUpdate();
 
+	/*METODOS PARA RECUPERAR DATOS */
 	const { categories, setCategories, fetchCategories } =
 		useFetchCategoriesFromFamily();
-	const { subcategories, setSubcategories, fetchSubcategories } =
-		useFetchSubcategoriesFromFamily();
 
 	useEffect(() => {
 		if (familyId) {
 			fetchCategories(familyId);
 		}
 	}, [familyId]);
+	/*METODOS PARA MANEJAR LOS CAMBIOS DENTRO DEL 'FORMULARIO' */
+	const handleNameUpdate = (newValue: string) => {
+		setName(newValue);
+	};
 
-	useEffect(() => {
-		if (categories.length > 0) {
-			fetchSubcategories(categories[0].id || '');
-		}
-	}, [categories]);
+	const handleDescriptionUpdate = (newValue: string) => {
+		setDescription(newValue);
+	};
+	const handleCategoryNameChange = (value: string, categoryIndex: number) => {
+		const updatedCategories = [...categories];
+		updatedCategories[categoryIndex - 1].name = value;
+		setCategories(updatedCategories);
+	};
 
-	const handleSubmit = async (e: { preventDefault: () => void }) => {
+	const handleCategoryDescriptionChange = (
+		value: string,
+		categoryIndex: number,
+	) => {
+		const updatedCategories = [...categories];
+		updatedCategories[categoryIndex - 1].description = value;
+		setCategories(updatedCategories);
+	};
+	/*METODOS PARA ACTUALIZAR */
+	const handleUpdateFamily = async () => {
 		try {
-			e.preventDefault();
-
-			// Update family
+			if (
+				name === familyToEdit.name &&
+				description === familyToEdit.description
+			)
+				return;
 			await updateFamily({
 				...familyToEdit,
 				name,
 				description,
-				createdBy,
 			});
-
-			// Create category promises
-			const createdCategoryPromises = categories.map(async category => {
-				return updateCategory({ ...category, familyId: familyToEdit.id || '' });
+			console.log('Form submitted with:', { name, description, categories });
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+	const handleUpdateCategory = async (category: CategoryFrontend) => {
+		try {
+			await updateCategory({
+				...category,
 			});
-
-			// Wait for all category promises to resolve
-			const createdCategories = await Promise.all(createdCategoryPromises);
-			console.log('Created categories:', createdCategories);
-
-			// Create subcategory promises
-			const createdSubcategoryPromises = subcategories.map(
-				async subcategory => {
-					return updateSubategory({
-						...subcategory,
-					});
-				},
-			);
-
-			// Wait for all subcategory promises to resolve
-			const createdSubcategories = await Promise.all(
-				createdSubcategoryPromises,
-			);
-			console.log('Created subcategories:', createdSubcategories);
-
 			console.log('Form submitted with:', { name, description, categories });
 		} catch (error) {
 			console.error('Error:', error);
 		}
 	};
 
-	const addCategoryInput = () => {
-		setCategories([
-			...categories,
-			{
-				name: '',
-				description: '',
-				createdBy: createdBy,
-				path: '',
-				familyId: '',
-			},
-		]);
-	};
-
-	const addSubcategoryInput = (categoryIndex: number) => {
-		const newSubcategory: SubcategoryFrontend = {
-			name: '',
-			description: '',
-			createdBy: createdBy,
-			path: '',
-			familyId: '',
-			categoryId: '',
-		};
-
-		setSubcategories([
-			...subcategories,
-			{
-				...newSubcategory,
-			},
-		]);
-	};
-
-	const handleCategoryNameChange = (categoryIndex: number, value: string) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].name = value;
-		setCategories(updatedCategories);
-	};
-
-	const handleCategoryDescriptionChange = (
-		categoryIndex: number,
-		value: string,
-	) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].description = value;
-		setCategories(updatedCategories);
-	};
-
-	const handleSubcategoryNameChange = (index: number, newName: string) => {
-		const updatedSubcategories = [...subcategories];
-		updatedSubcategories[index] = {
-			...updatedSubcategories[index],
-			name: newName,
-		};
-		setSubcategories(updatedSubcategories);
-	};
-
-	const handleSubcategoryDescriptionChange = (
-		index: number,
-		newDescription: string,
-	) => {
-		const updatedSubcategories = [...subcategories];
-		updatedSubcategories[index] = {
-			...updatedSubcategories[index],
-			description: newDescription,
-		};
-		setSubcategories(updatedSubcategories);
-	};
-
-	const removeCategoryInput = (categoryIndex: number) => {
-		const updatedCategories = [...categories];
-		updatedCategories.splice(categoryIndex, 1);
-		setCategories(updatedCategories);
-	};
-	const removeSubcategoryInput = (index: number) => {
-		const updatedSubcategories = subcategories.filter((_, i) => i !== index);
-		setSubcategories(updatedSubcategories);
-	};
-
 	return (
-		<div className='createfamilyform'>
-			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
-			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-
-			<form onSubmit={handleSubmit}>
-				<h2>Actualizar familia de herramientas</h2>
-				<label htmlFor='name'>Nombre de familia:</label>
-				<input
-					id='name'
-					type='text'
-					placeholder='Introduce el nombre de la familia'
-					value={name}
-					onChange={e => setName(e.target.value)}
-					required
+		<div>
+			<div className='familyedit'>
+				{successLogFamily.isSuccess && (
+					<SuccessMessage message={successLogFamily.message} />
+				)}
+				{errorLogFamily.isError && (
+					<ErrorMessage message={errorLogFamily.message} />
+				)}
+				<button className='delete'>
+					<TrashIcon />
+				</button>
+				<h2>Editando la Familia: {name}</h2>
+				<Editables
+					what='Nombre'
+					valueOf={name}
+					type='input'
+					onUpdate={handleNameUpdate}
 				/>
-
-				<label htmlFor='description'>Descripción:</label>
-				<textarea
-					id='description'
-					placeholder='Introduce la descripción de la familia'
-					value={description}
-					onChange={e => setDescription(e.target.value)}
-					required
+				<Editables
+					what='Descripción'
+					valueOf={description}
+					type='textarea'
+					onUpdate={handleDescriptionUpdate}
 				/>
-				<label htmlFor='addCategory'>Categorías:</label>
-
+				<button className='save' onClick={handleUpdateFamily}>
+					Guardar Cambios
+				</button>
+			</div>
+			<div className='categoryedit'>
 				{categories.map((category, categoryIndex) => (
-					<div key={categoryIndex} className='categories'>
-						<div className='info'>
-							<input
-								type='text'
-								placeholder={`Categoría ${categoryIndex + 1}`}
-								value={category.name}
-								onChange={e =>
-									handleCategoryNameChange(categoryIndex, e.target.value)
-								}
-								required
-							/>
-							<textarea
-								placeholder={`Categoría ${categoryIndex + 1} Descripción (opcional)`}
-								value={category.description}
-								onChange={e =>
-									handleCategoryDescriptionChange(categoryIndex, e.target.value)
-								}
-							/>
-
-							{subcategories
-								.filter(subcategory => subcategory.categoryId === category.id)
-								.map((subcategory, subcategoryIndex) => (
-									<div key={subcategoryIndex} className='categories'>
-										<div className='info'>
-											<input
-												type='text'
-												placeholder={`Subcategoría ${subcategoryIndex + 1} Nombre`}
-												value={subcategory.name}
-												onChange={e =>
-													handleSubcategoryNameChange(
-														subcategories.indexOf(subcategory),
-														e.target.value,
-													)
-												}
-												required
-											/>
-											<textarea
-												placeholder={`Subcategoría ${subcategoryIndex + 1} Descripción (opcional)`}
-												value={subcategory.description}
-												onChange={e =>
-													handleSubcategoryDescriptionChange(
-														subcategories.indexOf(subcategory),
-														e.target.value,
-													)
-												}
-											/>
-										</div>
-										<button
-											type='button'
-											className='delete'
-											onClick={() => removeSubcategoryInput(subcategoryIndex)}
-										>
-											<TrashIcon />
-										</button>
-									</div>
-								))}
-							<button
-								type='button'
-								className='add'
-								onClick={() => addSubcategoryInput(categoryIndex)}
-							>
-								<PlusIcon />
-								Añadir subcategoría
-							</button>
-						</div>
-
-						<button
-							type='button'
-							className='delete'
-							onClick={() => removeCategoryInput(categoryIndex)}
-						>
+					<div className='category' key={categoryIndex}>
+						{successLogCategory.isSuccess && (
+							<SuccessMessage message={successLogCategory.message} />
+						)}
+						{errorLogCategory.isError && (
+							<ErrorMessage message={errorLogCategory.message} />
+						)}
+						<button className='delete'>
 							<TrashIcon />
+						</button>
+						<h2>Categoría: {category.name} </h2>
+						<Editables
+							what='Nombre'
+							valueOf={category.name}
+							type='input'
+							whichOne={categoryIndex + 1}
+							onUpdateOne={handleCategoryNameChange}
+						/>
+						<Editables
+							what='Descripción'
+							valueOf={category.description}
+							type='textarea'
+							whichOne={categoryIndex + 1}
+							onUpdateOne={handleCategoryDescriptionChange}
+						/>
+						<SubcategoryModal
+							categoryId={category.id || ''}
+							categoryName={category.name || ''}
+						/>
+						<button
+							className='save'
+							onClick={() => handleUpdateCategory(category)}
+						>
+							Guardar Cambios
 						</button>
 					</div>
 				))}
-				<button type='button' className='add' onClick={addCategoryInput}>
-					<PlusIcon />
-					Añadir categoría
-				</button>
-
-				<button type='submit'>Actualizar familia</button>
-			</form>
+				;
+			</div>
 		</div>
 	);
 }
-
 function ContentMainPage() {
 	const location = useLocation();
 	const { family } = location.state || {

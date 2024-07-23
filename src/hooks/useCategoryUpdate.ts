@@ -13,8 +13,10 @@ interface ValidationError {
 }
 
 const useCategoryUpdate = () => {
-	const { errorLog, showError } = useErrorHandling();
-	const { successLog, showSuccess } = useSuccessHandling();
+	const { errorLog: errorLogCategory, showError: showErrorCategory } =
+		useErrorHandling();
+	const { successLog: successLogCategory, showSuccess: showSuccessCategory } =
+		useSuccessHandling();
 
 	const updateCategory = async (categoryData: CategoryFrontend) => {
 		try {
@@ -25,7 +27,7 @@ const useCategoryUpdate = () => {
 					path: cleanNameURL(categoryData.name),
 				}),
 			);
-			showSuccess('Categoria actualizada Con Éxito');
+			showSuccessCategory('Categoria actualizada Con Éxito');
 		} catch (error) {
 			if (!axios.isAxiosError<ValidationError>(error)) {
 				console.error('Registration failed', error);
@@ -37,10 +39,10 @@ const useCategoryUpdate = () => {
 			const message = Array.isArray(errorMessage)
 				? errorMessage.join(', ')
 				: errorMessage;
-			showError(message);
+			showErrorCategory(message);
 		}
 	};
-	return { errorLog, successLog, updateCategory };
+	return { errorLogCategory, successLogCategory, updateCategory };
 };
 
 export default useCategoryUpdate;

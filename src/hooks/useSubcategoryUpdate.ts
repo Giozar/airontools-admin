@@ -13,19 +13,23 @@ interface ValidationError {
 }
 
 const useSubcategoryUpdate = () => {
-	const { errorLog, showError } = useErrorHandling();
-	const { successLog, showSuccess } = useSuccessHandling();
+	const { errorLog: errorLogSubcategory, showError: showErrorSubcategory } =
+		useErrorHandling();
+	const {
+		successLog: successLogSubcategory,
+		showSuccess: showSuccessSubcategory,
+	} = useSuccessHandling();
 
 	const updateSubategory = async (subcategoryData: SubcategoryFrontend) => {
 		try {
-			const response = await axios.post(
-				`http://localhost:4000/categories/${subcategoryData.id}`,
+			const response = await axios.patch(
+				`http://localhost:4000/subcategories/${subcategoryData.id}`,
 				transformSubategoryDataBack({
 					...subcategoryData,
 					path: cleanNameURL(subcategoryData.name),
 				}),
 			);
-			showSuccess('Subcategoria actualizada Con Éxito');
+			showSuccessSubcategory('Subcategoria actualizada Con Éxito');
 			return response.data;
 		} catch (error) {
 			if (!axios.isAxiosError<ValidationError>(error)) {
@@ -38,10 +42,10 @@ const useSubcategoryUpdate = () => {
 			const message = Array.isArray(errorMessage)
 				? errorMessage.join(', ')
 				: errorMessage;
-			showError(message);
+			showErrorSubcategory(message);
 		}
 	};
-	return { errorLog, successLog, updateSubategory };
+	return { errorLogSubcategory, successLogSubcategory, updateSubategory };
 };
 
 export default useSubcategoryUpdate;

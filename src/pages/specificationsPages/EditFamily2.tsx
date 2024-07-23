@@ -1,94 +1,93 @@
-import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
-import SuccessMessage from '@components/SuccessMessage';
-import PlusIcon from '@components/svg/PlusIcon';
-import TrashIcon from '@components/svg/TrashIcon';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
-import '@pages/css/createFamily.css';
-import { CategoryFrontend } from '@src/adapters/category.adapter';
+import { FamilyFrontend } from '@src/adapters/family.adapter';
 import { SubcategoryFrontend } from '@src/adapters/subcategory.adapter';
 import { AuthContext } from '@src/apps/App';
-import useCategoryCreate from '@src/hooks/useCategoryCreate';
-import useFamilyCreate from '@src/hooks/useFamilyCreate';
-import useSubcategoryCreate from '@src/hooks/useSubcategoryCreate';
-import { useContext, useState } from 'react';
+import ErrorMessage from '@src/components/ErrorMessage';
+import SuccessMessage from '@src/components/SuccessMessage';
+import PlusIcon from '@src/components/svg/PlusIcon';
+import TrashIcon from '@src/components/svg/TrashIcon';
+import useCategoryUpdate from '@src/hooks/useCategoryUpdate';
+import useFamilyUpdate from '@src/hooks/useFamilyUpdate';
+import useFetchCategoriesFromFamily from '@src/hooks/useFetchCategoriesFromFamily';
+import useFetchSubcategoriesFromFamily from '@src/hooks/useFetchSubcategoriesFromFamily';
+import useSubcategoryUpdate from '@src/hooks/useSubcategoryUpdate';
+import { useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface SubcategoryAux {
 	categoryIndex: number;
 	subcategory: SubcategoryFrontend;
 }
 
-function capitalizeCategoryNames(category: CategoryFrontend) {
-	const capitalizedCategory: CategoryFrontend = {
-		name: '',
-		description: '',
-		createdBy: '',
-		path: '',
-		familyId: '',
-	};
-	for (const key in category) {
-		if (Object.prototype.hasOwnProperty.call(category, key)) {
-			if (key === 'name') {
-				capitalizedCategory[key] = category[key].toLowerCase();
-				console.log(capitalizedCategory[key]);
-			}
-		}
-	}
-	return capitalizedCategory;
-}
-
-function CreateFamilyForm() {
-	const [name, setName] = useState('');
-	const [description, setDescription] = useState('');
+function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
+	const [name, setName] = useState(familyToEdit.name);
+	const [description, setDescription] = useState(familyToEdit.description);
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
-	const { errorLog, successLog, createFamily } = useFamilyCreate();
-	const { createCategory } = useCategoryCreate();
-	const { createSubategory } = useSubcategoryCreate();
-	const [categories, setCategories] = useState<CategoryFrontend[]>([]);
-	const [subcategories, setSubcategories] = useState<SubcategoryAux[]>([]);
+	const familyId = familyToEdit.id;
+	const { errorLog, successLog, updateFamily } = useFamilyUpdate();
+	const { updateCategory } = useCategoryUpdate();
+	const { updateSubategory } = useSubcategoryUpdate();
+
+	const { categories, setCategories, fetchCategories } =
+		useFetchCategoriesFromFamily();
+	const { subcategories, setSubcategories, fetchSubcategories } =
+		useFetchSubcategoriesFromFamily();
+
+	useEffect(() => {
+		if (familyId) {
+			fetchCategories(familyId);
+		}
+	}, [familyId]);
+
+	useEffect(() => {
+		if (categories.length > 0) {
+			fetchSubcategories(categories[0].id || '');
+		}
+	}, [categories]);
 
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
-		e.preventDefault();
-		await createFamily({
-			name: name.toLowerCase(),
-			description,
-			createdBy,
-			path: '',
-		})
-			.then(async familyId => {
-				console.log('Family ID:', familyId);
-				const createdCategoryPromises = categories.map(async category => {
-					return await createCategory({
-						...capitalizeCategoryNames(category),
-						familyId,
-						createdBy,
-					});
-				});
-				return Promise.all(createdCategoryPromises);
-			})
-			.then(createdCategories => {
-				console.log('Created categories:', createdCategories);
-				console.log();
-				const createdSubcategoryPromises = subcategories.map(
-					async subcategory => {
-						return await createSubategory({
-							...subcategory.subcategory,
-							categoryId: createdCategories[subcategory.categoryIndex]._id,
-						});
-					},
-				);
-				return Promise.all(createdSubcategoryPromises);
-			})
-			.then(createdSubcategories => {
-				console.log('Created subcategories:', createdSubcategories);
-			})
-			.catch(error => {
-				console.error('Error:', error);
+		try {
+			e.preventDefault();
+
+			// Update family
+			await updateFamily({
+				...familyToEdit,
+				name,
+				description,
+				createdBy,
 			});
 
-		console.log('Form submitted with:', { name, description, categories });
+			// Create category promises
+			const createdCategoryPromises = categories.map(async category => {
+				return updateCategory({ ...category, familyId: familyToEdit.id || '' });
+			});
+
+			// Wait for all category promises to resolve
+			const createdCategories = await Promise.all(createdCategoryPromises);
+			console.log('Created categories:', createdCategories);
+
+			// Create subcategory promises
+			const createdSubcategoryPromises = subcategories.map(
+				async subcategory => {
+					return updateSubategory({
+						...subcategory,
+					});
+				},
+			);
+
+			// Wait for all subcategory promises to resolve
+			const createdSubcategories = await Promise.all(
+				createdSubcategoryPromises,
+			);
+			console.log('Created subcategories:', createdSubcategories);
+
+			console.log('Form submitted with:', { name, description, categories });
+		} catch (error) {
+			console.error('Error:', error);
+		}
 	};
 
 	const addCategoryInput = () => {
@@ -117,8 +116,7 @@ function CreateFamilyForm() {
 		setSubcategories([
 			...subcategories,
 			{
-				categoryIndex,
-				subcategory: newSubcategory,
+				...newSubcategory,
 			},
 		]);
 	};
@@ -142,10 +140,7 @@ function CreateFamilyForm() {
 		const updatedSubcategories = [...subcategories];
 		updatedSubcategories[index] = {
 			...updatedSubcategories[index],
-			subcategory: {
-				...updatedSubcategories[index].subcategory,
-				name: newName,
-			},
+			name: newName,
 		};
 		setSubcategories(updatedSubcategories);
 	};
@@ -157,10 +152,7 @@ function CreateFamilyForm() {
 		const updatedSubcategories = [...subcategories];
 		updatedSubcategories[index] = {
 			...updatedSubcategories[index],
-			subcategory: {
-				...updatedSubcategories[index].subcategory,
-				description: newDescription,
-			},
+			description: newDescription,
 		};
 		setSubcategories(updatedSubcategories);
 	};
@@ -181,7 +173,7 @@ function CreateFamilyForm() {
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
 			<form onSubmit={handleSubmit}>
-				<h2>Nueva familia de herramientas</h2>
+				<h2>Actualizar familia de herramientas</h2>
 				<label htmlFor='name'>Nombre de familia:</label>
 				<input
 					id='name'
@@ -223,16 +215,14 @@ function CreateFamilyForm() {
 							/>
 
 							{subcategories
-								.filter(
-									subcategory => subcategory.categoryIndex === categoryIndex,
-								)
+								.filter(subcategory => subcategory.categoryId === category.id)
 								.map((subcategory, subcategoryIndex) => (
 									<div key={subcategoryIndex} className='categories'>
 										<div className='info'>
 											<input
 												type='text'
 												placeholder={`Subcategoría ${subcategoryIndex + 1} Nombre`}
-												value={subcategory.subcategory.name}
+												value={subcategory.name}
 												onChange={e =>
 													handleSubcategoryNameChange(
 														subcategories.indexOf(subcategory),
@@ -243,7 +233,7 @@ function CreateFamilyForm() {
 											/>
 											<textarea
 												placeholder={`Subcategoría ${subcategoryIndex + 1} Descripción (opcional)`}
-												value={subcategory.subcategory.description}
+												value={subcategory.description}
 												onChange={e =>
 													handleSubcategoryDescriptionChange(
 														subcategories.indexOf(subcategory),
@@ -285,27 +275,29 @@ function CreateFamilyForm() {
 					Añadir categoría
 				</button>
 
-				<button type='submit'>Crear familia</button>
+				<button type='submit'>Actualizar familia</button>
 			</form>
 		</div>
 	);
 }
 
 function ContentMainPage() {
+	const location = useLocation();
+	const { family } = location.state || {
+		family: { id: 'N/A', name: 'Desconocido' },
+	};
 	return (
 		<BasePage>
 			<HeaderApp />
 			<main>
-				<HeaderTitle title='Categorización' />
-
-				<CreateFamilyForm />
+				<HeaderTitle title='Editar Familia' />
+				<EditFamilyForm familyToEdit={family} />
 			</main>
 		</BasePage>
 	);
 }
-
-function CreateFamily() {
+function CategorizationMenu() {
 	return <ContentMainPage />;
 }
 
-export default CreateFamily;
+export default CategorizationMenu;
