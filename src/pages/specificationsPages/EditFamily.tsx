@@ -11,6 +11,7 @@ import TrashIcon from '@components/svg/TrashIcon';
 import useCategoryCreate from '@hooks/useCategoryCreate';
 import useCategoryManagement from '@hooks/useCategoryManegement';
 import useCategoryUpdate from '@hooks/useCategoryUpdate';
+import useFamilyManagement from '@hooks/useFamilyManagement';
 import useFamilyUpdate from '@hooks/useFamilyUpdate';
 import useFetchCategoriesFromFamily from '@hooks/useFetchCategoriesFromFamily';
 import BasePage from '@layouts/BasePage';
@@ -18,7 +19,7 @@ import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/editFamily.css';
 
 import { useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 interface EditCategoryProps {
 	categories: CategoryFrontend[];
 	handleCategoryNameChange: (newName: string, index: number) => void;
@@ -119,6 +120,13 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 	/* METODOS PARA RECUPERAR DATOS */
 	const { categories, setCategories, fetchCategories } =
 		useFetchCategoriesFromFamily();
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleCloseModal,
+		handleDelete,
+	} = useFamilyManagement();
 
 	useEffect(() => {
 		if (familyId) {
@@ -223,16 +231,33 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 			console.error('Error:', error);
 		}
 	};
+	const navigate = useNavigate();
+	const handleCloseModalDeletion = () => {
+		navigate('/home/categorizacion');
+	};
 	return (
 		<div>
 			<div className='familyedit'>
+				{showDeletionModalFor === familyId && (
+					<DeletionModal
+						id={familyId}
+						name={name}
+						onClose={() => handleCloseModal()}
+						onCloseDelete={handleCloseModalDeletion}
+						onDelete={() => handleDelete(familyId || '', name)}
+						message={deletionMessage}
+					/>
+				)}
 				{successLogFamily.isSuccess && (
 					<SuccessMessage message={successLogFamily.message} />
 				)}
 				{errorLogFamily.isError && (
 					<ErrorMessage message={errorLogFamily.message} />
 				)}
-				<button className='delete'>
+				<button
+					className='delete'
+					onClick={() => setShowDeletionModalFor(familyId || '')}
+				>
 					<TrashIcon />
 				</button>
 				<h2>Editando la Familia: {name}</h2>
