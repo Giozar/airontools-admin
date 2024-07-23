@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 export default function FileUpload({
 	setImageUrl,
 }: {
-	setImageUrl?: Dispatch<SetStateAction<string | undefined>>;
+	setImageUrl?: Dispatch<SetStateAction<string>>;
 }) {
 	const { fileUrl, fileName, previewUrl, handleFileSelect, handleFileUpload } =
 		useFileUpload();
