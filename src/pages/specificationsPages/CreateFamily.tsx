@@ -97,7 +97,7 @@ function CreateFamilyForm() {
 			{
 				name: '',
 				description: '',
-				createdBy: createdBy,
+				createdBy,
 				path: '',
 				familyId: '',
 			},
@@ -108,7 +108,7 @@ function CreateFamilyForm() {
 		const newSubcategory: SubcategoryFrontend = {
 			name: '',
 			description: '',
-			createdBy: createdBy,
+			createdBy,
 			path: '',
 			familyId: '',
 			categoryId: '',

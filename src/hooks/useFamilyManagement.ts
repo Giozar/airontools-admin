@@ -1,4 +1,4 @@
-import { FamilyFrontend } from '@src/adapters/family.adapter';
+import { FamilyFrontend } from '@adapters/family.adapter';
 import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';

@@ -1,16 +1,16 @@
 .breadcrumb {
-    margin-left: 2.5rem;
+	margin-left: 2.5rem;
 }
-.breadcrumb  span{
-    color: white;
-    text-transform: capitalize;
-}
-
-.breadcrumb  span a{
-    color: white;
-    text-decoration: none;
+.breadcrumb span {
+	color: white;
+	text-transform: capitalize;
 }
 
-.breadcrumb .separator{
-    padding: 10px;
+.breadcrumb span a {
+	color: white;
+	text-decoration: none;
+}
+
+.breadcrumb .separator {
+	padding: 10px;
 }

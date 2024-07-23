@@ -2,7 +2,7 @@ import {
 	FamilyBackend,
 	FamilyFrontend,
 	transformFamilyData,
-} from '@src/adapters/family.adapter';
+} from '@adapters/family.adapter';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import useErrorHandling from './useErrorHandling';
