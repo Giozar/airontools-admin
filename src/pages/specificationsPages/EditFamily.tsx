@@ -1,6 +1,7 @@
 import { CategoryFrontend } from '@adapters/category.adapter';
 import { FamilyFrontend } from '@adapters/family.adapter';
 import { AuthContext } from '@apps/App';
+import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
@@ -8,6 +9,7 @@ import SubcategoryModal from '@components/SubcategoryModal';
 import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useCategoryCreate from '@hooks/useCategoryCreate';
+import useCategoryManagement from '@hooks/useCategoryManegement';
 import useCategoryUpdate from '@hooks/useCategoryUpdate';
 import useFamilyUpdate from '@hooks/useFamilyUpdate';
 import useFetchCategoriesFromFamily from '@hooks/useFetchCategoriesFromFamily';
@@ -25,7 +27,7 @@ interface EditCategoryProps {
 		index: number,
 	) => void;
 	handleUpdateCategory: (updatedCategory: CategoryFrontend) => void;
-	handleCategoryDelete: (updatedCategory: CategoryFrontend) => void;
+	handleCloseModalDeletion: (updatedCategory: CategoryFrontend) => void;
 }
 
 function EditCategory({
@@ -33,15 +35,37 @@ function EditCategory({
 	handleCategoryNameChange,
 	handleCategoryDescriptionChange,
 	handleUpdateCategory,
-	handleCategoryDelete,
+	handleCloseModalDeletion,
 }: EditCategoryProps) {
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleCloseModal,
+		handleDelete,
+	} = useCategoryManagement();
+
 	return (
 		<>
 			{categories.map((category, categoryIndex) => (
 				<div className='category' key={categoryIndex}>
+					{showDeletionModalFor === category.id && (
+						<DeletionModal
+							id={category.id}
+							name={category.name}
+							onClose={() => handleCloseModal()}
+							onCloseDelete={() => handleCloseModalDeletion(category)}
+							onDelete={() => handleDelete(category.id || '', category.name)}
+							message={deletionMessage}
+						/>
+					)}
 					<button
 						className='delete'
-						onClick={() => handleCategoryDelete(category)}
+						onClick={() =>
+							category.id
+								? setShowDeletionModalFor(category.id || '')
+								: handleCloseModalDeletion(category)
+						}
 					>
 						<TrashIcon />
 					</button>
@@ -106,8 +130,8 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 		setNewCategories([
 			...newCategories,
 			{
-				name: 'Nueva',
-				description: 'Nueva',
+				name: '',
+				description: '',
 				createdBy,
 				path: '',
 				familyId: '',
@@ -145,8 +169,9 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 			console.error('Error:', error);
 		}
 	};
-	const handleNewCategoryDelete = (category: CategoryFrontend) => {
+	const handleCategoryDeleteFromList = (category: CategoryFrontend) => {
 		setNewCategories(newCategories.filter(c => c !== category));
+		setUpdateCategoryList(!updateCategoryList);
 	};
 	/* METODOS PARA MANEJAR LOS CAMBIOS DENTRO DEL 'FORMULARIO' */
 	const handleNameUpdate = (newValue: string) => {
@@ -198,9 +223,6 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 			console.error('Error:', error);
 		}
 	};
-	const handleCategoryDelete = (category: CategoryFrontend) => {
-		setCategories(newCategories.filter(c => c !== category));
-	};
 	return (
 		<div>
 			<div className='familyedit'>
@@ -240,10 +262,10 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 				)}
 				<EditCategory
 					categories={categories}
-					handleCategoryDelete={handleCategoryDelete}
 					handleCategoryNameChange={handleCategoryNameChange}
 					handleCategoryDescriptionChange={handleCategoryDescriptionChange}
 					handleUpdateCategory={handleUpdateCategory}
+					handleCloseModalDeletion={handleCategoryDeleteFromList}
 				/>
 			</div>
 			<button onClick={addCategoryInput}>Agregar categorias</button>
@@ -256,10 +278,10 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 				)}
 				<EditCategory
 					categories={newCategories}
-					handleCategoryDelete={handleNewCategoryDelete}
 					handleCategoryNameChange={handleNewCategoryNameChange}
 					handleCategoryDescriptionChange={handleNewCategoryDescriptionChange}
 					handleUpdateCategory={handleCreateCategory}
+					handleCloseModalDeletion={handleCategoryDeleteFromList}
 				/>
 			</div>
 		</div>
