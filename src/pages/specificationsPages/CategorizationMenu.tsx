@@ -2,9 +2,19 @@ import ActionCard from '@components/ActionCard';
 import HeaderTitle from '@components/HeaderTitle';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
-import React from 'react';
+import '@pages/css/familyList.css';
+import DeletionModal from '@src/components/DeletionModal';
+import ErrorMessage from '@src/components/ErrorMessage';
+import EditIcon from '@src/components/svg/EditIcon';
+import TrashIcon from '@src/components/svg/TrashIcon';
+import useFamilyManagement from '@src/hooks/useFamilyManagement';
+import useFetchCategories from '@src/hooks/useFetchCategories';
+import useFetchFamilies from '@src/hooks/useFetchFamilies';
+import useFetchSubcategories from '@src/hooks/useFetchSubcategories';
+import { useState } from 'react';
+//import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-interface Subcategory {
+/*interface Subcategory {
 	name: string;
 }
 
@@ -22,7 +32,7 @@ interface Family {
 const SubcategoryList: React.FC<{ subcategories: Subcategory[] }> = ({
 	subcategories,
 }) => (
-	<ul className='ml-6 list-disc'>
+	<ul className='subcategory'>
 		{subcategories.map((subcategory, index) => (
 			<li key={index}>{subcategory.name}</li>
 		))}
@@ -30,7 +40,7 @@ const SubcategoryList: React.FC<{ subcategories: Subcategory[] }> = ({
 );
 
 const CategoryList: React.FC<{ categories: Category[] }> = ({ categories }) => (
-	<ul className='ml-4 list-disc'>
+	<ul className='category'>
 		{categories.map((category, index) => (
 			<li key={index}>
 				{category.name}
@@ -43,107 +53,155 @@ const CategoryList: React.FC<{ categories: Category[] }> = ({ categories }) => (
 );
 
 const FamilyList: React.FC<{ families: Family[] }> = ({ families }) => (
-	<div className='space-y-6'>
+	<div className='familylist'>
 		{families.map((family, index) => (
-			<div key={index} className='bg-white shadow rounded-lg p-6'>
-				<h2 className='text-xl font-bold mb-2'>{family.name}</h2>
-				<p className='text-sm text-gray-500 mb-4'>{family.description}</p>
-				<div className='space-y-4'>
-					{family.categories.map((category, catIndex) => (
-						<div key={catIndex}>
-							<Collapsible
-								trigger={isOpen => (
-									<div className='flex items-center py-2 cursor-pointer'>
-										<span className='mr-2'>{isOpen ? '▼' : '▶'}</span>
-										<span className='font-medium'>{category.name}</span>
-									</div>
-								)}
-							>
-								<CategoryList categories={category.subcategories || []} />
-							</Collapsible>
-						</div>
-					))}
-				</div>
+			<div key={index} className='family'>
+				<h2>{family.name}</h2>
+				<p>{family.description}</p>
+				{family.categories.map((category, catIndex) => (
+					<div key={catIndex}>
+						<Collapsible
+							trigger={isOpen => (
+								<div>
+									<span>{isOpen ? '▼' : '▶'}</span>
+									<span>{category.name}</span>
+								</div>
+							)}
+						>
+							<CategoryList categories={category.subcategories || []} />
+						</Collapsible>
+					</div>
+				))}
 			</div>
 		))}
 	</div>
 );
-
-const Collapsible: React.FC<{
+type CollapsibleProps = {
 	trigger: (isOpen: boolean) => React.ReactNode;
-}> = ({ trigger, children }) => {
-	const [isOpen, setIsOpen] = React.useState(false);
+	children: React.ReactNode;
+};
+
+function Collapsible({ trigger, children }: CollapsibleProps) {
+	const [isOpen, setIsOpen] = useState(false);
+	return (
+		<>
+			<div onClick={() => setIsOpen(!isOpen)}>{trigger(isOpen)}</div>
+			{isOpen && <div>{children}</div>}
+		</>
+	);
+}
+*/
+function ListofFamilies() {
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleEdit,
+		handleCloseModal,
+		handleDelete,
+		updateListFlag,
+	} = useFamilyManagement();
+	const {
+		families,
+		loading,
+		errorLog,
+		setFamilies,
+		filteredFamilies,
+		setFilteredFamilies,
+		handleSearch,
+	} = useFetchFamilies(updateListFlag);
+	const { filteredCategories } = useFetchCategories();
+	const { filteredSubcategories } = useFetchSubcategories();
+
+	const handleCloseModalDeletion = (familyid: string) => {
+		setFamilies(families.filter(family => family.id !== familyid));
+		setFilteredFamilies(
+			filteredFamilies.filter(family => family.id !== familyid),
+		);
+	};
+	if (loading) {
+		return <p>Cargando...</p>;
+	}
+
+	if (errorLog.isError) {
+		return <ErrorMessage message={errorLog.message} />;
+	}
 
 	return (
 		<div>
-			<div onClick={() => setIsOpen(!isOpen)}>{trigger(isOpen)}</div>
-			{isOpen && children}
-		</div>
-	);
-};
+			<h2 className='listtitle'>Lista de familias</h2>
+			<input
+				type='text'
+				placeholder='Buscar familias...'
+				value={searchTerm}
+				onChange={e => {
+					handleSearch(e.target.value);
+					setSearchTerm(e.target.value);
+				}}
+				className='search'
+			/>
 
-function ListofFamilies() {
-	const families = [
-		{
-			name: 'Power Tools',
-			description:
-				'A family of electric and battery-powered tools for construction and DIY projects.',
-			categories: [
-				{
-					name: 'Drills',
-					subcategories: [
-						{
-							name: 'Cordless Drills',
-							subcategories: [
-								{ name: '12V Drills' },
-								{ name: '18V Drills' },
-								{ name: '20V Drills' },
-							],
-						},
-						{ name: 'Hammer Drills' },
-						{ name: 'Impact Drivers' },
-					],
-				},
-				{
-					name: 'Saws',
-					subcategories: [
-						{ name: 'Circular Saws' },
-						{ name: 'Reciprocating Saws' },
-						{ name: 'Jigsaws' },
-					],
-				},
-			],
-		},
-		{
-			name: 'Hand Tools',
-			description: 'Traditional non-powered tools for various tasks.',
-			categories: [
-				{
-					name: 'Cutting Tools',
-					subcategories: [
-						{ name: 'Chisels' },
-						{ name: 'Knives' },
-						{ name: 'Scissors' },
-					],
-				},
-				{
-					name: 'Measuring Tools',
-					subcategories: [
-						{ name: 'Tape Measures' },
-						{ name: 'Calipers' },
-						{ name: 'Levels' },
-					],
-				},
-			],
-		},
-	];
-	return (
-		<>
-			<div>
-				<h3>Lista de familias</h3>
-				<FamilyList families={families} />
-			</div>
-		</>
+			<ul className='familylist'>
+				{filteredFamilies.map(family => (
+					<li key={family.id} className='family'>
+						<div className='buttons'>
+							<button className='edit' onClick={() => handleEdit(family)}>
+								<EditIcon />
+							</button>
+							<button
+								className='delete'
+								onClick={() => setShowDeletionModalFor(family.id || '')}
+							>
+								<TrashIcon />
+							</button>
+						</div>
+						<h2>{family.name}</h2>
+						<span className='id'>({family.id})</span>
+						<span>Descripción:</span>
+						<p>{family.description}</p>
+						{showDeletionModalFor === family.id && (
+							<DeletionModal
+								id={family.id}
+								name={family.name}
+								onClose={() => handleCloseModal()}
+								onCloseDelete={() => handleCloseModalDeletion(family.id || '')}
+								onDelete={() => handleDelete(family.id || '', family.name)}
+								message={deletionMessage}
+							/>
+						)}
+						{filteredCategories.filter(
+							category => category.familyId === family.id,
+						).length !== 0 && <span>Categorias:</span>}
+
+						<ul>
+							{filteredCategories
+								.filter(category => category.familyId === family.id)
+								.map(category => (
+									<>
+										<li key={category.id}>{category.name}</li>
+										{filteredSubcategories.filter(
+											subcategory => subcategory.categoryId === category.id,
+										).length !== 0 && <span>Subcategorias:</span>}
+
+										<ul>
+											{filteredSubcategories
+												.filter(
+													subcategory => subcategory.categoryId === category.id,
+												)
+												.map(subcategory => (
+													<>
+														<li key={subcategory.id}>{subcategory.name}</li>
+													</>
+												))}
+										</ul>
+									</>
+								))}
+						</ul>
+					</li>
+				))}
+			</ul>
+		</div>
 	);
 }
 

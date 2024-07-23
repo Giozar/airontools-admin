@@ -2,7 +2,6 @@ import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
 import HeaderTitle from '@components/HeaderTitle';
 import RoleChangeModal from '@components/RoleChangeModal';
-import EditIcon from '@components/svg/EditIcon';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useUserManagement from '@hooks/useUserManagement';
@@ -10,6 +9,7 @@ import useUsers from '@hooks/useUsers';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/UserOptions.css';
+import EditUserIcon from '@src/components/svg/EditUserIcon';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -43,7 +43,7 @@ function ReturnUsers() {
 
 	return (
 		<div className='userlist'>
-			<h2>Lista de usuarios</h2>
+			<h2 className='listtitle'>Lista de usuarios</h2>
 			<input
 				type='text'
 				placeholder='Buscar usuarios...'
@@ -52,6 +52,7 @@ function ReturnUsers() {
 					handleSearch(e.target.value);
 					setSearchTerm(e.target.value);
 				}}
+				className='search'
 			/>
 
 			<ul>
@@ -83,7 +84,7 @@ function ReturnUsers() {
 						</button>
 
 						<button className='edit' onClick={() => handleEdit(user)}>
-							<EditIcon />
+							<EditUserIcon />
 						</button>
 
 						<button
