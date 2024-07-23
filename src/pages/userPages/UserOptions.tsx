@@ -3,13 +3,13 @@ import DeletionModal from '@components/DeletionModal';
 import HeaderTitle from '@components/HeaderTitle';
 import RoleChangeModal from '@components/RoleChangeModal';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
+import EditUserIcon from '@components/svg/EditUserIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useUserManagement from '@hooks/useUserManagement';
 import useUsers from '@hooks/useUsers';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/UserOptions.css';
-import EditUserIcon from '@src/components/svg/EditUserIcon';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
