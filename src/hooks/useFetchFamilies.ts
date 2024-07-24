@@ -5,7 +5,7 @@ import {
 } from '@adapters/family.adapter';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import useErrorHandling from './useErrorHandling';
+import useErrorHandling from './common/useErrorHandling';
 
 function useFetchFamilies(updateListFlag: boolean) {
 	const { errorLog, showError } = useErrorHandling();

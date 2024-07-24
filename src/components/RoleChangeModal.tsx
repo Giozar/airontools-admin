@@ -3,8 +3,8 @@ import {
 	UserDataBackend,
 	UserDataFrontend,
 } from '@adapters/user.adapter';
-import useErrorHandling from '@hooks/useErrorHandling';
-import { useUserRoles } from '@hooks/useUserRoles';
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useUserRoles } from '@hooks/userRoles/useUserRoles';
 import { UserRole } from '@interfaces/UserRole';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';

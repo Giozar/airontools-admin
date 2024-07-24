@@ -5,7 +5,7 @@ import {
 } from '@adapters/subcategory.adapter';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import useErrorHandling from './useErrorHandling';
+import useErrorHandling from './common/useErrorHandling';
 
 function useFetchSubcategories() {
 	const { errorLog, showError } = useErrorHandling();

@@ -5,7 +5,7 @@ import {
 } from '@adapters/category.adapter';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import useErrorHandling from './useErrorHandling';
+import useErrorHandling from './common/useErrorHandling';
 
 function useFetchCategories() {
 	const { errorLog, showError } = useErrorHandling();
