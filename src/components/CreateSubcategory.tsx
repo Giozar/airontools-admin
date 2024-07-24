@@ -11,10 +11,12 @@ function CreateSubcategory({
 	createdBy,
 	familyId,
 	categoryId,
+	update,
 }: {
 	createdBy: string;
 	familyId: string;
 	categoryId: string;
+	update: () => void;
 }) {
 	const { errorLog, successLog, createSubategory } = useSubcategoryCreate();
 	const [newSubcategories, setNewSubcategories] = useState<
@@ -26,6 +28,8 @@ function CreateSubcategory({
 			await createSubategory({
 				...subcategory,
 			});
+			handleDelete(subcategory);
+			update();
 		} catch (error) {
 			console.error('Error:', error);
 		}
@@ -60,15 +64,21 @@ function CreateSubcategory({
 		updatedSubcategories[categoryIndex - 1].description = value;
 		setNewSubcategories(updatedSubcategories);
 	};
+	const handleDelete = (subcategory: SubcategoryFrontend) => {
+		setNewSubcategories(newSubcategories.filter(c => c !== subcategory));
+	};
 	return (
-		<>
+		<div className='categoryedit new'>
 			<button onClick={addSubcategory}>Añadir subcategoría</button>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 			<div id='subcategoriesList'>
 				{newSubcategories.map((subcategory, subcategoryIndex) => (
 					<div key={subcategoryIndex} className='category'>
-						<button className='delete'>
+						<button
+							className='delete'
+							onClick={() => handleDelete(subcategory)}
+						>
 							<TrashIcon />
 						</button>
 						<h2>Subcategoría: {subcategory.name} </h2>
@@ -95,7 +105,7 @@ function CreateSubcategory({
 					</div>
 				))}
 			</div>
-		</>
+		</div>
 	);
 }
 export default CreateSubcategory;

@@ -1,5 +1,7 @@
 import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
+import useSubcategoryManagement from '@hooks/useSubcategoryManagement';
 import useSubcategoryUpdate from '@hooks/useSubcategoryUpdate';
+import DeletionModal from './DeletionModal';
 import Editables from './Editables';
 import ErrorMessage from './ErrorMessage';
 import SuccessMessage from './SuccessMessage';
@@ -8,10 +10,19 @@ import TrashIcon from './svg/TrashIcon';
 function EditSubcategory({
 	subcategories,
 	setSubcategories,
+	update,
 }: {
 	subcategories: SubcategoryFrontend[];
 	setSubcategories: (subcategories: SubcategoryFrontend[]) => void;
+	update: () => void;
 }) {
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleCloseModal,
+		handleDelete,
+	} = useSubcategoryManagement();
 	const { errorLogSubcategory, successLogSubcategory, updateSubategory } =
 		useSubcategoryUpdate();
 
@@ -42,6 +53,7 @@ function EditSubcategory({
 		updatedSubcategories[categoryIndex - 1].description = value;
 		setSubcategories(updatedSubcategories);
 	};
+
 	return (
 		<>
 			{successLogSubcategory.isSuccess && (
@@ -53,7 +65,22 @@ function EditSubcategory({
 			<div id='subcategoriesList'>
 				{subcategories.map((subcategory, subcategoryIndex) => (
 					<div key={subcategoryIndex} className='category'>
-						<button className='delete'>
+						{showDeletionModalFor === subcategory.id && (
+							<DeletionModal
+								id={subcategory.id}
+								name={subcategory.name}
+								onClose={() => handleCloseModal()}
+								onCloseDelete={update}
+								onDelete={() =>
+									handleDelete(subcategory.id || '', subcategory.name)
+								}
+								message={deletionMessage}
+							/>
+						)}
+						<button
+							className='delete'
+							onClick={() => setShowDeletionModalFor(subcategory.id || '')}
+						>
 							<TrashIcon />
 						</button>
 						<h2>Subcategoría: {subcategory.name} </h2>

@@ -16,7 +16,7 @@ function SubcategoryModal({
 	categoryName: string;
 }) {
 	const [modalVisible, setModalVisible] = useState(false);
-
+	const [update, setUpdate] = useState(false);
 	const openModal = () => {
 		setModalVisible(true);
 	};
@@ -27,10 +27,14 @@ function SubcategoryModal({
 
 	const { subcategories, setSubcategories, fetchSubcategories } =
 		useFetchSubcategoriesFromFamily();
+
 	useEffect(() => {
 		fetchSubcategories(categoryId || '');
-	}, []);
+	}, [update]);
 
+	const updatedSubcategories = () => {
+		setUpdate(!update);
+	};
 	return (
 		<>
 			{subcategories.length !== 0 && (
@@ -59,11 +63,13 @@ function SubcategoryModal({
 						<EditSubcategory
 							subcategories={subcategories}
 							setSubcategories={setSubcategories}
+							update={updatedSubcategories}
 						/>
 						<CreateSubcategory
 							createdBy={createdBy}
 							familyId={familyId}
 							categoryId={categoryId}
+							update={updatedSubcategories}
 						/>
 					</div>
 				</div>
