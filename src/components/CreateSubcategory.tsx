@@ -68,11 +68,13 @@ function CreateSubcategory({
 		setNewSubcategories(newSubcategories.filter(c => c !== subcategory));
 	};
 	return (
-		<div className='categoryedit new'>
-			<button onClick={addSubcategory}>Añadir subcategoría</button>
+		<div>
+			<button onClick={addSubcategory} className='add'>
+				Añadir subcategoría
+			</button>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-			<div id='subcategoriesList'>
+			<div id='subcategoriesList' className='categoryedit new'>
 				{newSubcategories.map((subcategory, subcategoryIndex) => (
 					<div key={subcategoryIndex} className='category'>
 						<button

@@ -1,0 +1,81 @@
+.editable {
+	margin-bottom: 15px;
+	border-radius: 8px;
+	padding: 15px;
+	color: #e0e0e0;
+}
+
+.editable label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.editable .content {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-top: 10px; /* Adjust margin as needed */
+}
+
+.editable p {
+	flex-grow: 1;
+	margin: 0;
+}
+
+.editable form {
+	flex-grow: 1;
+	margin-right: 10px;
+}
+
+.editable input,
+.editable textarea {
+	margin: 0;
+	margin-left: -15px;
+	border-radius: 4px;
+	padding: 5px;
+	width: auto;
+}
+
+.editable textarea {
+	min-height: 100px;
+	resize: vertical;
+}
+
+.editable .buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-top: 10px; /* Adjust margin as needed */
+}
+
+.editable button {
+	transition: background-color 0.3s ease;
+	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	padding: 8px 12px;
+}
+
+.editable .edit {
+	margin: 0;
+	background-color: #34495e;
+	color: #ecf0f1;
+}
+
+.editable .edit:hover {
+	background-color: #2c3e50; /* Darken hover color */
+}
+
+.editable .save {
+	margin: 0;
+	background-color: #28742a;
+	color: #ecf0f1;
+}
+
+.editable .save:hover {
+	background-color: #1f5c1b; /* Darken hover color */
+}
+.editable .content {
+	flex-direction: column;
+}

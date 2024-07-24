@@ -67,7 +67,9 @@ function CreateCategory({
 	};
 	return (
 		<div className='categoryedit new'>
-			<button onClick={addCategoryInput}>Agregar categorias</button>
+			<button onClick={addCategoryInput} className='add'>
+				Agregar categorias
+			</button>
 
 			{successLogCategoryCreate.isSuccess && (
 				<SuccessMessage message={successLogCategoryCreate.message} />

@@ -70,17 +70,17 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 	};
 	return (
 		<div>
+			{showDeletionModalFor === familyId && (
+				<DeletionModal
+					id={familyId}
+					name={name}
+					onClose={() => handleCloseModal()}
+					onCloseDelete={handleCloseModalDeletion}
+					onDelete={() => handleDelete(familyId || '', name)}
+					message={deletionMessage}
+				/>
+			)}
 			<div className='familyedit'>
-				{showDeletionModalFor === familyId && (
-					<DeletionModal
-						id={familyId}
-						name={name}
-						onClose={() => handleCloseModal()}
-						onCloseDelete={handleCloseModalDeletion}
-						onDelete={() => handleDelete(familyId || '', name)}
-						message={deletionMessage}
-					/>
-				)}
 				{successLogFamily.isSuccess && (
 					<SuccessMessage message={successLogFamily.message} />
 				)}
@@ -94,21 +94,23 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 					<TrashIcon />
 				</button>
 				<h2>Editando la Familia: {name}</h2>
-				<Editables
-					what='Nombre'
-					valueOf={name}
-					type='input'
-					onUpdate={handleNameUpdate}
-				/>
-				<Editables
-					what='Descripción'
-					valueOf={description}
-					type='textarea'
-					onUpdate={handleDescriptionUpdate}
-				/>
-				<button className='save' onClick={handleUpdateFamily}>
-					Guardar Cambios
-				</button>
+				<div className='familycontent'>
+					<Editables
+						what='Nombre'
+						valueOf={name}
+						type='input'
+						onUpdate={handleNameUpdate}
+					/>
+					<Editables
+						what='Descripción'
+						valueOf={description}
+						type='textarea'
+						onUpdate={handleDescriptionUpdate}
+					/>
+					<button className='save' onClick={handleUpdateFamily}>
+						Guardar Cambios
+					</button>
+				</div>
 			</div>
 			<h3>Categorias</h3>
 			<EditCategory

@@ -37,20 +37,22 @@ function SubcategoryModal({
 	};
 	return (
 		<>
-			{subcategories.length !== 0 && (
-				<>
-					<p>Subcategorias: </p>
-					<ul>
-						{subcategories.map(subcategory => (
-							<li key={subcategory.id}>{subcategory.name}</li>
-						))}
-					</ul>
-				</>
-			)}
+			<div className='subcategories-container'>
+				{subcategories.length !== 0 && (
+					<>
+						<p>Subcategorias:</p>
+						<ul className='subcategories-list'>
+							{subcategories.map(subcategory => (
+								<li key={subcategory.id}>{subcategory.name}</li>
+							))}
+						</ul>
+					</>
+				)}
 
-			<button onClick={openModal} className='edit'>
-				Editar subcategorias
-			</button>
+				<button onClick={openModal} className='edit'>
+					Editar subcategorias
+				</button>
+			</div>
 
 			{modalVisible && (
 				<div id='subcategoriesModal' className='modal'>

@@ -1,5 +1,5 @@
+import '@components/css/editables.css';
 import { ChangeEvent, useEffect, useState } from 'react';
-
 interface EditablesProps {
 	what: string;
 	valueOf: string;

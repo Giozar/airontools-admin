@@ -62,7 +62,7 @@ function EditSubcategory({
 			{errorLogSubcategory.isError && (
 				<ErrorMessage message={errorLogSubcategory.message} />
 			)}
-			<div id='subcategoriesList'>
+			<div id='subcategoriesList' className='categoryedit'>
 				{subcategories.map((subcategory, subcategoryIndex) => (
 					<div key={subcategoryIndex} className='category'>
 						{showDeletionModalFor === subcategory.id && (
