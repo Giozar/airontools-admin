@@ -55,7 +55,9 @@ function ShowManageCategory({
 					>
 						<TrashIcon />
 					</button>
-					<h2>Categoría: {category.name} </h2>
+					<h2>
+						<span>Categoría</span> {category.name}{' '}
+					</h2>
 					<Editables
 						what='Nombre'
 						valueOf={category.name}

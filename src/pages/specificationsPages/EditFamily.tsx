@@ -93,7 +93,9 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 				>
 					<TrashIcon />
 				</button>
-				<h2>Editando la Familia: {name}</h2>
+				<h2>
+					<span>Editando la Familia</span> {name}
+				</h2>
 				<div className='familycontent'>
 					<Editables
 						what='Nombre'

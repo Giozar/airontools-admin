@@ -83,7 +83,9 @@ function EditSubcategory({
 						>
 							<TrashIcon />
 						</button>
-						<h2>Subcategoría: {subcategory.name} </h2>
+						<h2>
+							<span>Subcategoría</span> {subcategory.name}{' '}
+						</h2>
 						<Editables
 							what='Nombre'
 							valueOf={subcategory.name}

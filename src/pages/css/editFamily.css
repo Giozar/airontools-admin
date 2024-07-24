@@ -14,7 +14,10 @@
 	max-width: 400px;
 	color: white;
 }
-
+h2 span {
+	display: block;
+	opacity: 0.4;
+}
 .familyedit .familycontent {
 	width: 80%;
 }
@@ -80,7 +83,7 @@ h3 {
 @media (min-width: 1200px) {
 	.categoryedit,
 	.create-category {
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 	}
 }
 .categoryedit.new .add {

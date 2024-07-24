@@ -60,7 +60,9 @@ function SubcategoryModal({
 						<span className='close' onClick={closeModal}>
 							<CloseIcon />
 						</span>
-						<h2 id='modalTitle'>Subcategorías de {categoryName} </h2>
+						<h2 id='modalTitle'>
+							<span>Subcategorías</span> {categoryName}
+						</h2>
 						<p>({categoryId})</p>
 						<EditSubcategory
 							subcategories={subcategories}
