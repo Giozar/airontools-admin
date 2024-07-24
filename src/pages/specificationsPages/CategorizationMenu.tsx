@@ -91,6 +91,7 @@ function Collapsible({ trigger, children }: CollapsibleProps) {
 	);
 }
 */
+
 function ListofFamilies() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const {
@@ -145,7 +146,7 @@ function ListofFamilies() {
 			<ul className='familylist'>
 				{filteredFamilies.map(family => (
 					<li key={family.id} className='family'>
-						<div className='buttons'>
+						<div className='buttons family'>
 							<button className='edit' onClick={() => handleEdit(family)}>
 								<EditIcon />
 							</button>
@@ -178,8 +179,8 @@ function ListofFamilies() {
 							{filteredCategories
 								.filter(category => category.familyId === family.id)
 								.map(category => (
-									<>
-										<li key={category.id}>{category.name}</li>
+									<li key={category.id}>
+										{category.name}
 										{filteredSubcategories.filter(
 											subcategory => subcategory.categoryId === category.id,
 										).length !== 0 && <span>Subcategorias:</span>}
@@ -190,12 +191,10 @@ function ListofFamilies() {
 													subcategory => subcategory.categoryId === category.id,
 												)
 												.map(subcategory => (
-													<>
-														<li key={subcategory.id}>{subcategory.name}</li>
-													</>
+													<li key={subcategory.id}>{subcategory.name}</li>
 												))}
 										</ul>
-									</>
+									</li>
 								))}
 						</ul>
 					</li>

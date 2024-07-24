@@ -1,44 +1,107 @@
 .familylist {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
+	gap: 1rem;
 	padding: 20px;
 	color: white;
 	list-style-type: none;
 }
-.familylist .family {
-	margin: 10px;
-	border: #0e1822 2px solid;
-	border-radius: 10px;
-	background-color: #0e2439;
-	padding: 10px;
+
+.familylist {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
 }
-.familylist .family h2 {
-	margin: 0px;
-	padding-bottom: 0px;
-}
-.familylist .buttons {
-	float: right;
-	transform: scale(0.7);
-}
-.familylist .buttons button {
-	margin-left: 10px;
-}
-.familylist span {
-	display: block;
+
+.family {
 	margin: 10px 0;
-	border-bottom: #35485a 2px solid;
-	padding: 10px 0;
-	width: 100%;
-	color: #909da8;
+	border-radius: 8px;
+	background-color: #041524;
+	padding: 20px;
+	color: #e0e0e0;
+	text-transform: capitalize;
+}
+
+.family .buttons.family {
+	float: right;
+	margin: 0;
+	padding: 0;
+}
+
+.family .buttons.family button {
+	transition: background-color 0.3s ease;
+	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	background-color: transparent;
+	padding: 5px;
+}
+
+.family .buttons .edit {
+	color: #3498db;
+}
+
+.family .buttons .delete {
+	color: #e74c3c;
+}
+
+.family .buttons button:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.family h2 {
+	margin-bottom: 0;
+	color: #828a94;
+	font-size: 1.5em;
+}
+
+.family .id {
+	display: block;
+	margin-top: -0.1rem;
+	margin-bottom: 1.5rem;
+	color: #2b3644;
+	font-size: 0.8em;
+}
+
+.family span {
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 5px;
 	font-weight: bold;
 }
-.familylist .family p {
-	padding: 10px;
-	text-align: justify;
-	word-break: break-word;
+
+.family p {
+	margin: 0 0 10px 0;
+	color: #828a94;
 }
-.familylist .id {
-	border: 0px;
-	width: 100%;
-	color: #35485a;
+
+.family ul {
+	margin: 0;
+	padding-left: 20px;
+	list-style-type: none;
+}
+
+.family ul li {
+	position: relative;
+	margin-bottom: 5px;
+	color: #828a94;
+}
+
+.family ul li::before {
+	display: inline-block;
+	margin-right: 0.5rem;
+	margin-left: -1em;
+	width: 1em;
+	content: '⚒';
+	color: #3498db;
+	font-weight: bold;
+}
+
+.family ul ul {
+	margin-left: 20px;
+}
+
+.family ul ul li::before {
+	content: '⚙';
+	color: #1c2f6e;
 }
