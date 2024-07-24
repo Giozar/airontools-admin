@@ -11,12 +11,12 @@ const useErrorHandling = () => {
 		message: '',
 	});
 
-	const showError = (errorMessage: string, timeout = 4000) => {
+	const showError = (errorMessage: string) => {
 		setErrorLog({ isError: true, message: errorMessage });
 
 		setTimeout(() => {
 			setErrorLog({ isError: false, message: '' });
-		}, timeout);
+		}, 4000);
 	};
 
 	return {

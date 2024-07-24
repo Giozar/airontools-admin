@@ -1,8 +1,10 @@
-import usePasswordGenerator from '@hooks/usePasswordGenerator';
-import useUserCreate from '@hooks/useUserCreate';
-import { useUserForm } from '@hooks/useUserForm';
-import { useUserRoles } from '@hooks/useUserRoles';
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import { useUserRoles } from '@hooks/userRoles/useUserRoles';
+import { useUserForm } from '@hooks/users/useUserForm';
 import { UserRole } from '@interfaces/UserRole';
+import createUser from '@services/users/createUser.service';
 import { ChangeEvent, FormEvent } from 'react';
 import ErrorMessage from './ErrorMessage';
 import FileUpload from './FileUpload';
@@ -20,7 +22,8 @@ export default function UserForm() {
 		setRoles,
 	} = useUserForm();
 
-	const { successLog, errorLog, createUser } = useUserCreate();
+	const { errorLog, showError } = useErrorHandling();
+	const { successLog, showSuccess } = useSuccessHandling();
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setRoles(e.target.value);
@@ -29,9 +32,21 @@ export default function UserForm() {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			await createUser({ password, imageUrl, email, name, roles });
+			const userCreated = await createUser({
+				password,
+				imageUrl,
+				email,
+				name,
+				roles,
+			});
+			showSuccess(`Usuario ${userCreated} creado con éxito`);
 		} catch (error) {
-			console.error('Error actualizando usuario:', error);
+			console.error('Error al subir datos del usuario:', error);
+			if (error instanceof Error) {
+				showError(error.message);
+			} else {
+				showError('Error desconocido');
+			}
 		}
 	};
 

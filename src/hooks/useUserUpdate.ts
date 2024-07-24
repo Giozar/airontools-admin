@@ -4,8 +4,8 @@ import {
 	UserDataFrontend,
 } from '@adapters/user.adapter';
 import axios from 'axios';
-import useErrorHandling from './useErrorHandling';
-import useSuccessHandling from './useSuccessHandling';
+import useErrorHandling from './common/useErrorHandling';
+import useSuccessHandling from './common/useSuccessHandling';
 
 interface RegisterResponse {
 	token: string;

@@ -6,8 +6,8 @@ import {
 } from '@adapters/family.adapter';
 import { useState } from 'react';
 import { cleanNameURL } from './cleanNameUtil';
-import useErrorHandling from './useErrorHandling';
-import useSuccessHandling from './useSuccessHandling';
+import useErrorHandling from './common/useErrorHandling';
+import useSuccessHandling from './common/useSuccessHandling';
 
 interface ValidationError {
 	message: string[];

@@ -10,8 +10,8 @@ import React, { useContext, useState } from 'react';
 import ErrorMessage from '@components/ErrorMessage';
 import RoleList from '@components/RoleList';
 import SuccessMessage from '@components/SuccessMessage';
-import useErrorHandling from '@hooks/useErrorHandling';
-import useSuccessHandling from '@hooks/useSuccessHandling';
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
 
 function CreateRoleForm() {
 	const [name, setName] = useState('');

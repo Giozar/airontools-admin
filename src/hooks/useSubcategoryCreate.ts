@@ -5,8 +5,8 @@ import {
 	transformSubategoryDataBack,
 } from '@adapters/subcategory.adapter';
 import { cleanNameURL } from './cleanNameUtil';
-import useErrorHandling from './useErrorHandling';
-import useSuccessHandling from './useSuccessHandling';
+import useErrorHandling from './common/useErrorHandling';
+import useSuccessHandling from './common/useSuccessHandling';
 
 interface ValidationError {
 	message: string[];
