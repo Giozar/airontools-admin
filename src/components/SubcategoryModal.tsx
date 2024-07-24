@@ -1,38 +1,20 @@
-import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import useFetchSubcategoriesFromFamily from '@hooks/useFetchSubcategoriesFromFamily';
-import useSubcategoryUpdate from '@hooks/useSubcategoryUpdate';
 import { useEffect, useState } from 'react';
-import Editables from './Editables';
-import ErrorMessage from './ErrorMessage';
-import SuccessMessage from './SuccessMessage';
+import CreateSubcategory from './CreateSubcategory';
+import EditSubcategory from './EditSubcategory';
 import CloseIcon from './svg/CloseIcon';
-import TrashIcon from './svg/TrashIcon';
 
 function SubcategoryModal({
+	familyId,
+	createdBy,
 	categoryId,
 	categoryName,
 }: {
+	familyId: string;
+	createdBy: string;
 	categoryId: string;
 	categoryName: string;
 }) {
-	const { subcategories, setSubcategories, fetchSubcategories } =
-		useFetchSubcategoriesFromFamily();
-	const { errorLogSubcategory, successLogSubcategory, updateSubategory } =
-		useSubcategoryUpdate();
-
-	useEffect(() => {
-		fetchSubcategories(categoryId || '');
-	}, []);
-
-	const handleUpdateSubcategory = async (subcategory: SubcategoryFrontend) => {
-		try {
-			await updateSubategory({
-				...subcategory,
-			});
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	};
 	const [modalVisible, setModalVisible] = useState(false);
 
 	const openModal = () => {
@@ -43,27 +25,12 @@ function SubcategoryModal({
 		setModalVisible(false);
 	};
 
-	const addSubcategory = () => {
-		// Add your logic to add a new subcategory here
-		console.log('Adding new subcategory');
-	};
-	const handleSubcategoryNameChange = (
-		value: string,
-		categoryIndex: number,
-	) => {
-		const updatedCategories = [...subcategories];
-		updatedCategories[categoryIndex - 1].name = value;
-		setSubcategories(updatedCategories);
-	};
+	const { subcategories, setSubcategories, fetchSubcategories } =
+		useFetchSubcategoriesFromFamily();
+	useEffect(() => {
+		fetchSubcategories(categoryId || '');
+	}, []);
 
-	const handleSubcategoryDescriptionChange = (
-		value: string,
-		categoryIndex: number,
-	) => {
-		const updatedCategories = [...subcategories];
-		updatedCategories[categoryIndex - 1].description = value;
-		setSubcategories(updatedCategories);
-	};
 	return (
 		<>
 			{subcategories.length !== 0 && (
@@ -89,43 +56,15 @@ function SubcategoryModal({
 						</span>
 						<h2 id='modalTitle'>Subcategorías de {categoryName} </h2>
 						<p>({categoryId})</p>
-						{successLogSubcategory.isSuccess && (
-							<SuccessMessage message={successLogSubcategory.message} />
-						)}
-						{errorLogSubcategory.isError && (
-							<ErrorMessage message={errorLogSubcategory.message} />
-						)}
-						<div id='subcategoriesList'>
-							{subcategories.map((subcategory, subcategoryIndex) => (
-								<div key={subcategoryIndex} className='category'>
-									<button className='delete'>
-										<TrashIcon />
-									</button>
-									<h2>Subcategoría: {subcategory.name} </h2>
-									<Editables
-										what='Nombre'
-										valueOf={subcategory.name}
-										type='input'
-										whichOne={subcategoryIndex + 1}
-										onUpdateOne={handleSubcategoryNameChange}
-									/>
-									<Editables
-										what='Descripción'
-										valueOf={subcategory.description}
-										type='textarea'
-										whichOne={subcategoryIndex + 1}
-										onUpdateOne={handleSubcategoryDescriptionChange}
-									/>
-									<button
-										className='save'
-										onClick={() => handleUpdateSubcategory(subcategory)}
-									>
-										Guardar Cambios
-									</button>
-								</div>
-							))}
-						</div>
-						<button onClick={addSubcategory}>Añadir subcategoría</button>
+						<EditSubcategory
+							subcategories={subcategories}
+							setSubcategories={setSubcategories}
+						/>
+						<CreateSubcategory
+							createdBy={createdBy}
+							familyId={familyId}
+							categoryId={categoryId}
+						/>
 					</div>
 				</div>
 			)}

@@ -74,6 +74,8 @@ function ShowManageCategory({
 						<SubcategoryModal
 							categoryId={category.id}
 							categoryName={category.name}
+							familyId={category.familyId}
+							createdBy={category.createdBy}
 						/>
 					)}
 					<button
