@@ -2,6 +2,8 @@
 	margin-left: 2.5rem;
 }
 .breadcrumb span {
+	display: inline;
+	opacity: 1;
 	color: white;
 	text-transform: capitalize;
 }

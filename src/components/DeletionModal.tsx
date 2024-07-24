@@ -35,32 +35,34 @@ function DeletionModal({
 	return (
 		<div>
 			<div className='deletionmodal'>
-				{message ? (
-					<div>
-						<p>{message}</p>
-						<button
-							className='continue'
-							onClick={() => handleContinueClick(message)}
-						>
-							Continuar
-						</button>
-					</div>
-				) : (
-					<>
-						<h2>Confirmación de Eliminación</h2>
-						<p>¿Estás seguro de que deseas eliminar a {name}?</p>
-						{image ? <img src={image} alt='elemento a eliminar' /> : ''}
-						<h4>{id}</h4>
-						<div className='buttons'>
-							<button className='cancel' onClick={onClose}>
-								Cancelar
-							</button>
-							<button className='delete' onClick={handleDeleteClick}>
-								Eliminar
+				<div className='deletionmodal-content'>
+					{message ? (
+						<div>
+							<p>{message}</p>
+							<button
+								className='continue'
+								onClick={() => handleContinueClick(message)}
+							>
+								Continuar
 							</button>
 						</div>
-					</>
-				)}
+					) : (
+						<>
+							<h2>Confirmación de Eliminación</h2>
+							<p>¿Estás seguro de que deseas eliminar a {name}?</p>
+							{image ? <img src={image} alt='elemento a eliminar' /> : ''}
+							<h4>{id}</h4>
+							<div className='buttons'>
+								<button className='delete' onClick={handleDeleteClick}>
+									Eliminar
+								</button>
+								<button className='cancel' onClick={onClose}>
+									Cancelar
+								</button>
+							</div>
+						</>
+					)}
+				</div>
 			</div>
 		</div>
 	);
