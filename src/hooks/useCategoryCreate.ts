@@ -13,8 +13,14 @@ interface ValidationError {
 }
 
 const useCategoryCreate = () => {
-	const { errorLog, showError } = useErrorHandling();
-	const { successLog, showSuccess } = useSuccessHandling();
+	const {
+		errorLog: errorLogCategoryCreate,
+		showError: showErrorCategoryCreate,
+	} = useErrorHandling();
+	const {
+		successLog: successLogCategoryCreate,
+		showSuccess: showSuccessCategoryCreate,
+	} = useSuccessHandling();
 
 	const createCategory = async (categoryData: CategoryFrontend) => {
 		try {
@@ -25,7 +31,7 @@ const useCategoryCreate = () => {
 					path: cleanNameURL(categoryData.name),
 				}),
 			);
-			showSuccess('Categoria Creada Con Éxito');
+			showSuccessCategoryCreate('Categoria Creada Con Éxito');
 			return response.data;
 		} catch (error) {
 			if (!axios.isAxiosError<ValidationError>(error)) {
@@ -38,10 +44,11 @@ const useCategoryCreate = () => {
 			const message = Array.isArray(errorMessage)
 				? errorMessage.join(', ')
 				: errorMessage;
-			showError(message);
+			showErrorCategoryCreate(message);
+			console.log(message);
 		}
 	};
-	return { errorLog, successLog, createCategory };
+	return { errorLogCategoryCreate, successLogCategoryCreate, createCategory };
 };
 
 export default useCategoryCreate;
