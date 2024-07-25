@@ -1,12 +1,14 @@
 import { CategoryFrontend } from '@adapters/category.adapter';
 import SubcategoryModal from '@components/SubcategoryModal';
 import useCategoryManagement from '@hooks/useCategoryManegement';
+import { useState } from 'react';
 import DeletionModal from './DeletionModal';
 import Editables from './Editables';
 import TrashIcon from './svg/TrashIcon';
 
 interface ShowManageCategoryProps {
 	categories: CategoryFrontend[];
+	countOfCategories: number;
 	handleCategoryNameChange: (newName: string, index: number) => void;
 	handleCategoryDescriptionChange: (
 		newDescription: string,
@@ -30,6 +32,9 @@ function ShowManageCategory({
 		handleCloseModal,
 		handleDelete,
 	} = useCategoryManagement();
+	const [numberOfSubcategories, setNumberOfSubcategories] = useState<number[]>(
+		[],
+	);
 
 	return (
 		<>
@@ -43,6 +48,7 @@ function ShowManageCategory({
 							onCloseDelete={() => handleCloseModalDeletion(category)}
 							onDelete={() => handleDelete(category.id || '', category.name)}
 							message={deletionMessage}
+							confirmationInfo={`Al borrar esta categoría se eliminarán ${numberOfSubcategories} subcategorías`}
 						/>
 					)}
 					<button
@@ -78,8 +84,11 @@ function ShowManageCategory({
 							categoryName={category.name}
 							familyId={category.familyId}
 							createdBy={category.createdBy}
+							categoryIndex={categoryIndex}
+							setNumberOfSubcategories={setNumberOfSubcategories}
 						/>
 					)}
+					{numberOfSubcategories}
 					<button
 						className='save'
 						onClick={() => handleUpdateCategory(category)}

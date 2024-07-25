@@ -28,6 +28,7 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
+	const [numberOfCategories, setNumberOfCategories] = useState(0);
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
@@ -78,6 +79,7 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 					onCloseDelete={handleCloseModalDeletion}
 					onDelete={() => handleDelete(familyId || '', name)}
 					message={deletionMessage}
+					confirmationInfo={`Al borrar esta familia se eliminarán ${numberOfCategories} categorías y TODAS sus subcategorías`}
 				/>
 			)}
 			<div className='familyedit'>
@@ -119,6 +121,7 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 				familyId={familyId}
 				update={update}
 				updateCategoryList={updateCategoryList}
+				setNumberOfCategories={setNumberOfCategories}
 			/>
 			<CreateCategory
 				createdBy={createdBy}

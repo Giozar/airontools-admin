@@ -9,11 +9,15 @@ function SubcategoryModal({
 	createdBy,
 	categoryId,
 	categoryName,
+	categoryIndex,
+	setNumberOfSubcategories,
 }: {
 	familyId: string;
 	createdBy: string;
 	categoryId: string;
 	categoryName: string;
+	categoryIndex: number;
+	setNumberOfSubcategories: (n: number) => void;
 }) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [update, setUpdate] = useState(false);
@@ -30,7 +34,16 @@ function SubcategoryModal({
 
 	useEffect(() => {
 		fetchSubcategories(categoryId || '');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [update]);
+
+	useEffect(() => {
+		if (subcategories) {
+			setNumberOfSubcategories(subcategories.length);
+			console.log(categoryIndex);
+			console.log(subcategories.length);
+		}
+	}, []);
 
 	const updatedSubcategories = () => {
 		setUpdate(!update);
