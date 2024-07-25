@@ -21,7 +21,7 @@ const useFamilyCreate = () => {
 	const createFamily = async (familyData: FamilyFrontend) => {
 		try {
 			const response = await axios.post(
-				'http://localhost:4000/families',
+				import.meta.env.VITE_API_URL + '/families',
 				transformFamilyDataBack({
 					...familyData,
 					path: cleanNameURL(familyData.name),

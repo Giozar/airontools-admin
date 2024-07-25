@@ -20,7 +20,7 @@ function useFetchSubcategories() {
 		const fetchSubcategories = async () => {
 			try {
 				const response = await axios.get<SubcategoryBackend[]>(
-					'http://localhost:4000/subcategories',
+					import.meta.env.VITE_API_URL + '/subcategories',
 				);
 				setSubcategories(response.data.map(transformSubcategoryData));
 				setFilteredSubcategories(response.data.map(transformSubcategoryData));

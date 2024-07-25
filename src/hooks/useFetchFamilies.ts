@@ -20,7 +20,7 @@ function useFetchFamilies(updateListFlag: boolean) {
 		const fetchFamilies = async () => {
 			try {
 				const response = await axios.get<FamilyBackend[]>(
-					'http://localhost:4000/families',
+					import.meta.env.VITE_API_URL + '/families',
 				);
 				setFamilies(response.data.map(transformFamilyData));
 				setFilteredFamilies(response.data.map(transformFamilyData));

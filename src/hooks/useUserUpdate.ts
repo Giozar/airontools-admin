@@ -23,7 +23,7 @@ const useUserUpdate = () => {
 	const updateUser = async (userId: string, userData: UserDataFrontend) => {
 		try {
 			const response = await axios.put<RegisterResponse>(
-				`http://localhost:4000/auth/update/${userId}`,
+				import.meta.env.VITE_API_URL + `/auth/update/${userId}`,
 				transformUserDataBack(userData),
 			);
 			const { user } = response.data;
