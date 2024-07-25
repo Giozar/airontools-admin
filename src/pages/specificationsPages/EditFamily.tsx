@@ -68,6 +68,15 @@ function EditFamilyForm({
 				name,
 				description,
 			});
+			// Esto tal vez cause bugs cuando de refresh...
+			localStorage.setItem(
+				'familyToEdit',
+				JSON.stringify({
+					family: { ...familyToEdit, name, description },
+					numberOfCategories,
+					numberOfSubcategories,
+				}),
+			);
 		} catch (error) {
 			console.error('Error:', error);
 		}
