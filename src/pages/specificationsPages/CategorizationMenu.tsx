@@ -193,7 +193,11 @@ function ListofFamilies() {
 									}
 									onDelete={() => handleDelete(family.id || '', family.name)}
 									message={deletionMessage}
-									confirmationInfo={`Al borrar esta familia se eliminarán ${categoriesLength} categorias y ${subcategoriesLength} subcategorías`}
+									confirmationInfo={
+										categoriesLength > 0
+											? `Al borrar esta familia se eliminarán ${categoriesLength} categorias y ${subcategoriesLength} subcategorías`
+											: null
+									}
 								/>
 							)}
 							{filteredCategories.filter(
