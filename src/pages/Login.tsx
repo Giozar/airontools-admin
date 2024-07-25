@@ -8,7 +8,9 @@ import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import './css/Login.css';
 // eslint-disable-next-line import/no-absolute-path
-import aironLogo from '/Logo-Blanco.png';
+import EyeIcon from '@components/svg/EyeIcon';
+import EyeOffIcon from '@components/svg/EyeOffIcon';
+import aironLogo from './Logo-Blanco.png';
 
 interface LoginResponse {
 	token: string;
@@ -31,6 +33,7 @@ function Login() {
 	const [password, setPassword] = useState('');
 	const { errorLog, showError } = useErrorHandling();
 	const authContext = useContext(AuthContext);
+	const [showPassword, setShowPassword] = useState(false);
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
@@ -112,14 +115,22 @@ function Login() {
 						required
 					/>
 					<label htmlFor='password'>Contraseña</label>
-					<input
-						id='password'
-						type='password'
-						placeholder='Introduce tu Contraseña'
-						value={password}
-						onChange={e => setPassword(e.target.value)}
-						required
-					/>
+					<div className='passwordInput'>
+						<input
+							id='password'
+							type={showPassword ? 'text' : 'password'}
+							placeholder='Introduce tu Contraseña'
+							value={password}
+							onChange={e => setPassword(e.target.value)}
+							required
+						/>
+						<button
+							type='button'
+							onClick={() => setShowPassword(!showPassword)}
+						>
+							{showPassword ? <EyeOffIcon /> : <EyeIcon />}
+						</button>
+					</div>
 					<p>¿No tienes una cuenta? Hable con el administrador.</p>
 					<button type='submit'>Entrar</button>
 				</form>

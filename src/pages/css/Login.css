@@ -76,3 +76,15 @@ header h1 {
 	font-weight: bold;
 	font-size: medium;
 }
+.passwordInput {
+	display: grid;
+	grid-template-columns: 1fr auto;
+}
+.login form .passwordInput > button {
+	border-radius: 10px;
+	background-color: transparent;
+	padding: 5px;
+	width: fit-content;
+	height: fit-content;
+	color: white;
+}
