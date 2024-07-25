@@ -52,7 +52,17 @@ export default function UserForm() {
 
 	// Hook para generar la contraseña
 	const { password, generatePassword } = usePasswordGenerator({});
-
+	// Para copiar la contraseña
+	const copyPassword = () => {
+		navigator.clipboard
+			.writeText(password)
+			.then(() => {
+				alert('¡Se copió la contraseña!');
+			})
+			.catch(err => {
+				console.error('Error al copiar la contraseña: ', err);
+			});
+	};
 	// Se obtiene la lista de roles para el usuario
 	const { userRoles: roleOptions } = useUserRoles();
 	return (
@@ -95,6 +105,7 @@ export default function UserForm() {
 							value='Generar contraseña'
 						/>
 						<p>{password}</p>
+						<button onClick={copyPassword}>Copiar contraseña</button>
 					</div>
 
 					<label htmlFor='options'>Rol:</label>

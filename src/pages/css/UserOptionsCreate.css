@@ -46,7 +46,12 @@
 .register form .passwordgenerator input:hover {
 	opacity: 0.6;
 }
-
+.register form .passwordgenerator button {
+	margin-top: 1rem;
+	margin-left: 10px;
+	padding: 5px;
+	height: 2.5rem;
+}
 .custom-file-upload {
 	display: inline-block;
 	cursor: pointer;
