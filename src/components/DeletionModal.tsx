@@ -1,4 +1,5 @@
-import './css/deletionModal.css';
+import { SetStateAction, useState } from 'react';
+import './css/deletionModal.css'; // Assuming your CSS file path is correct
 
 interface DeletionModalProps {
 	id: string | null;
@@ -8,6 +9,7 @@ interface DeletionModalProps {
 	onCloseDelete: () => void;
 	onDelete: () => void;
 	message: string | null;
+	confirmationInfo?: string | null;
 }
 
 function DeletionModal({
@@ -18,7 +20,24 @@ function DeletionModal({
 	onCloseDelete,
 	onDelete,
 	message,
+	confirmationInfo,
 }: DeletionModalProps) {
+	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+	const [showSecondConfirmationModal, setShowSecondConfirmationModal] =
+		useState(false);
+	const [inputValue, setInputValue] = useState('');
+	const [message2, setMessage2] = useState('');
+
+	const handleInputChange = (event: {
+		target: { value: SetStateAction<string> };
+	}) => {
+		setInputValue(event.target.value);
+	};
+	const handleDeleteConfirm = () => {
+		setMessage2('intenta de nuevo :(');
+		setInputValue('');
+	};
+
 	const handleDeleteClick = () => {
 		if (id && name) {
 			onDelete();
@@ -48,18 +67,100 @@ function DeletionModal({
 						</div>
 					) : (
 						<>
-							<h2>Confirmación de Eliminación</h2>
-							<p>¿Estás seguro de que deseas eliminar a {name}?</p>
-							{image ? <img src={image} alt='elemento a eliminar' /> : ''}
-							<h4>{id}</h4>
-							<div className='buttons'>
-								<button className='delete' onClick={handleDeleteClick}>
-									Eliminar
-								</button>
-								<button className='cancel' onClick={onClose}>
-									Cancelar
-								</button>
-							</div>
+							{' '}
+							{!showConfirmationModal && (
+								<>
+									<h2>Confirmación de Eliminación</h2>
+									<p>¿Estás seguro de que deseas eliminar a {name}?</p>
+									{image && <img src={image} alt='elemento a eliminar' />}
+									<h4>{id}</h4>
+									<div className='buttons'>
+										<button className='cancel' onClick={onClose}>
+											Cancelar
+										</button>
+										<button
+											className='delete'
+											onClick={
+												confirmationInfo
+													? () => setShowConfirmationModal(true)
+													: handleDeleteClick
+											}
+										>
+											Eliminar
+										</button>
+									</div>
+								</>
+							)}
+							{showConfirmationModal && !showSecondConfirmationModal && (
+								<>
+									<h2>¿Estás seguro?</h2>
+									<p className='warning'>{confirmationInfo}</p>
+									<p>
+										Si estas seguro escribe:
+										<span data-text=' Estoy Muy Muy Seguro'></span>
+									</p>
+									{message2}
+
+									<input
+										type='text'
+										value={inputValue}
+										onChange={handleInputChange}
+										placeholder='Escribe aquí'
+									/>
+
+									<div className='buttons'>
+										<button className='cancel' onClick={onClose}>
+											Cancelar
+										</button>
+										<button
+											className='delete'
+											onClick={
+												inputValue === 'Estoy Muy Muy Seguro'
+													? () => setShowSecondConfirmationModal(true)
+													: handleDeleteConfirm
+											}
+											disabled={!inputValue.trim()}
+										>
+											Eliminar
+										</button>
+									</div>
+								</>
+							)}
+							{showSecondConfirmationModal && (
+								<>
+									<h2>¿En serio?</h2>
+									<p className='warning'>{confirmationInfo}</p>
+									<p>
+										Si es enserio escribe:
+										<span data-text=' Es Enserio, Estoy Muy Seguro'></span>
+									</p>
+									{message2}
+
+									<input
+										type='text'
+										value={inputValue}
+										onChange={handleInputChange}
+										placeholder='Escribe aquí'
+									/>
+
+									<div className='buttons'>
+										<button className='cancel' onClick={onClose}>
+											Cancelar
+										</button>
+										<button
+											className='delete'
+											onClick={
+												inputValue === 'Es Enserio, Estoy Muy Seguro'
+													? handleDeleteClick
+													: handleDeleteConfirm
+											}
+											disabled={!inputValue.trim()}
+										>
+											Eliminar
+										</button>
+									</div>
+								</>
+							)}
 						</>
 					)}
 				</div>

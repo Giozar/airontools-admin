@@ -24,7 +24,9 @@ function EditCategory({
 		if (familyId) {
 			fetchCategories(familyId);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [familyId, update]);
+
 	const handleCategoryNameChange = (value: string, categoryIndex: number) => {
 		const updatedCategories = [...categories];
 		updatedCategories[categoryIndex - 1].name = value;
@@ -61,6 +63,7 @@ function EditCategory({
 			)}
 			<ShowManageCategory
 				categories={categories}
+				countOfCategories={categories.length}
 				handleCategoryNameChange={handleCategoryNameChange}
 				handleCategoryDescriptionChange={handleCategoryDescriptionChange}
 				handleUpdateCategory={handleUpdateCategory}

@@ -43,6 +43,7 @@
 	display: flex;
 	justify-content: center;
 	gap: 2rem;
+	margin-top: 20px;
 	width: 100%;
 }
 
@@ -64,4 +65,14 @@
 
 .deletionmodal .buttons button:hover {
 	filter: brightness(1.2);
+}
+
+[data-text] {
+	color: orange;
+}
+[data-text]::after {
+	content: attr(data-text);
+}
+.warning {
+	color: red;
 }

@@ -30,6 +30,7 @@ h2 span {
 	position: absolute;
 	top: 20px;
 	right: 20px;
+	z-index: 50;
 	cursor: pointer;
 	border: none;
 	background: none;
@@ -70,8 +71,14 @@ h3 {
 	color: white;
 	word-break: break-word;
 }
-.categoryedit .delete {
-	float: right;
+.categoryedit .category {
+	position: relative;
+}
+.categoryedit .category > .delete {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	z-index: 50;
 	background-color: transparent;
 	color: #ff4444;
 }
@@ -106,6 +113,7 @@ h3 {
 	overflow: auto;
 }
 .modal-content {
+	position: relative;
 	margin: 15% auto;
 	border-radius: 10px;
 	background-color: #02040a;
@@ -116,10 +124,15 @@ h3 {
 	padding: 10px;
 }
 .close {
-	float: right;
 	color: #aaa;
 	font-weight: bold;
 	font-size: 28px;
+}
+.modal-content > .close {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	z-index: 50;
 }
 .close:hover,
 .close:focus {

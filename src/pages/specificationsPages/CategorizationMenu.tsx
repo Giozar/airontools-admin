@@ -128,6 +128,19 @@ function ListofFamilies() {
 	if (errorLog.isError) {
 		return <ErrorMessage message={errorLog.message} />;
 	}
+	const calc = (familyId: string) => {
+		const categories = filteredCategories.filter(
+			category => category.familyId === familyId,
+		);
+
+		const subcategories = filteredSubcategories.filter(subcategory =>
+			categories.some(category => category.id === subcategory.categoryId),
+		);
+
+		const categoriesLength = categories.length;
+		const subcategoriesLength = subcategories.length;
+		return { categoriesLength, subcategoriesLength };
+	};
 
 	return (
 		<div>
@@ -144,61 +157,79 @@ function ListofFamilies() {
 			/>
 
 			<ul className='familylist'>
-				{filteredFamilies.map(family => (
-					<li key={family.id} className='family'>
-						<div className='buttons family'>
-							<button className='edit' onClick={() => handleEdit(family)}>
-								<EditIcon />
-							</button>
-							<button
-								className='delete'
-								onClick={() => setShowDeletionModalFor(family.id || '')}
-							>
-								<TrashIcon />
-							</button>
-						</div>
-						<h2>{family.name}</h2>
-						<span className='id'>({family.id})</span>
-						<span>Descripción:</span>
-						<p>{family.description}</p>
-						{showDeletionModalFor === family.id && (
-							<DeletionModal
-								id={family.id}
-								name={family.name}
-								onClose={() => handleCloseModal()}
-								onCloseDelete={() => handleCloseModalDeletion(family.id || '')}
-								onDelete={() => handleDelete(family.id || '', family.name)}
-								message={deletionMessage}
-							/>
-						)}
-						{filteredCategories.filter(
-							category => category.familyId === family.id,
-						).length !== 0 && <span>Categorias:</span>}
+				{filteredFamilies.map(family => {
+					const { categoriesLength, subcategoriesLength } = calc(
+						family.id || '',
+					);
+					return (
+						<li key={family.id} className='family'>
+							<div className='buttons family'>
+								<button
+									className='edit'
+									onClick={() =>
+										handleEdit(family, categoriesLength, subcategoriesLength)
+									}
+								>
+									<EditIcon />
+								</button>
+								<button
+									className='delete'
+									onClick={() => setShowDeletionModalFor(family.id || '')}
+								>
+									<TrashIcon />
+								</button>
+							</div>
+							<h2>{family.name}</h2>
+							<span className='id'>({family.id})</span>
+							<span>Descripción:</span>
+							<p>{family.description}</p>
+							{showDeletionModalFor === family.id && (
+								<DeletionModal
+									id={family.id}
+									name={family.name}
+									onClose={() => handleCloseModal()}
+									onCloseDelete={() =>
+										handleCloseModalDeletion(family.id || '')
+									}
+									onDelete={() => handleDelete(family.id || '', family.name)}
+									message={deletionMessage}
+									confirmationInfo={
+										categoriesLength > 0
+											? `Al borrar esta familia se eliminarán ${categoriesLength} categorias y ${subcategoriesLength} subcategorías`
+											: null
+									}
+								/>
+							)}
+							{filteredCategories.filter(
+								category => category.familyId === family.id,
+							).length !== 0 && <span>Categorias:</span>}
 
-						<ul>
-							{filteredCategories
-								.filter(category => category.familyId === family.id)
-								.map(category => (
-									<li key={category.id}>
-										{category.name}
-										{filteredSubcategories.filter(
-											subcategory => subcategory.categoryId === category.id,
-										).length !== 0 && <span>Subcategorias:</span>}
+							<ul>
+								{filteredCategories
+									.filter(category => category.familyId === family.id)
+									.map(category => (
+										<li key={category.id}>
+											{category.name}
+											{filteredSubcategories.filter(
+												subcategory => subcategory.categoryId === category.id,
+											).length !== 0 && <span>Subcategorias:</span>}
 
-										<ul>
-											{filteredSubcategories
-												.filter(
-													subcategory => subcategory.categoryId === category.id,
-												)
-												.map(subcategory => (
-													<li key={subcategory.id}>{subcategory.name}</li>
-												))}
-										</ul>
-									</li>
-								))}
-						</ul>
-					</li>
-				))}
+											<ul>
+												{filteredSubcategories
+													.filter(
+														subcategory =>
+															subcategory.categoryId === category.id,
+													)
+													.map(subcategory => (
+														<li key={subcategory.id}>{subcategory.name}</li>
+													))}
+											</ul>
+										</li>
+									))}
+							</ul>
+						</li>
+					);
+				})}
 			</ul>
 		</div>
 	);

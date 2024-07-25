@@ -1,11 +1,36 @@
 .errorMessage {
+	display: flex;
 	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: 10;
-	border-radius: 20px;
-	background-color: #000000;
-	padding: 15px;
-	color: #ff0000;
+	top: 20%;
+	right: 20%;
+	align-items: center;
+	z-index: 300;
+	animation: slideIn 0.3s ease-out;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	background-color: #d12e2ea6;
+	padding: 12px 20px;
+	color: #ffffff;
+}
+
+.errorMessage .error-icon {
+	margin-right: 12px;
+	font-size: 24px;
+}
+
+.errorMessage p {
+	margin: 0;
+	font-weight: 500;
+	font-size: 16px;
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateY(-100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
