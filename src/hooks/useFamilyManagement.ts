@@ -13,8 +13,14 @@ const useFamilyManagement = () => {
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
-	const handleEdit = (family: FamilyFrontend) => {
-		navigate(location.pathname + `/editar-familia`, { state: { family } });
+	const handleEdit = (
+		family: FamilyFrontend,
+		numberOfCategories: number,
+		numberOfSubcategories: number,
+	) => {
+		navigate(location.pathname + `/editar-familia`, {
+			state: { family, numberOfCategories, numberOfSubcategories },
+		});
 	};
 
 	const handleCloseModal = () => {

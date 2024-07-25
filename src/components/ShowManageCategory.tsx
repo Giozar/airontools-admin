@@ -32,9 +32,20 @@ function ShowManageCategory({
 		handleCloseModal,
 		handleDelete,
 	} = useCategoryManagement();
-	const [numberOfSubcategories, setNumberOfSubcategories] = useState<number[]>(
-		[],
-	);
+
+	const [subcategoriesLengths, setSubcategoriesLengths] = useState<{
+		[key: string]: number;
+	}>({});
+
+	const handleUpdateSubcategoriesLength = (
+		categoryId: string,
+		length: number,
+	) => {
+		setSubcategoriesLengths(prevState => ({
+			...prevState,
+			[categoryId]: length,
+		}));
+	};
 
 	return (
 		<>
@@ -48,7 +59,11 @@ function ShowManageCategory({
 							onCloseDelete={() => handleCloseModalDeletion(category)}
 							onDelete={() => handleDelete(category.id || '', category.name)}
 							message={deletionMessage}
-							confirmationInfo={`Al borrar esta categoría se eliminarán ${numberOfSubcategories} subcategorías`}
+							confirmationInfo={
+								subcategoriesLengths[category.id || ''] || 0
+									? `Al borrar esta categoría se eliminarán ${subcategoriesLengths[category.id || '']} subcategorías`
+									: null
+							}
 						/>
 					)}
 					<button
@@ -84,11 +99,10 @@ function ShowManageCategory({
 							categoryName={category.name}
 							familyId={category.familyId}
 							createdBy={category.createdBy}
-							categoryIndex={categoryIndex}
-							setNumberOfSubcategories={setNumberOfSubcategories}
+							onUpdateSubcategoriesLength={handleUpdateSubcategoriesLength}
 						/>
 					)}
-					{numberOfSubcategories}
+
 					<button
 						className='save'
 						onClick={() => handleUpdateCategory(category)}

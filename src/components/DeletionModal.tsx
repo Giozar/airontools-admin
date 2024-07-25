@@ -9,7 +9,7 @@ interface DeletionModalProps {
 	onCloseDelete: () => void;
 	onDelete: () => void;
 	message: string | null;
-	confirmationInfo?: string; // Optional children for additional modal content
+	confirmationInfo?: string | null;
 }
 
 function DeletionModal({
@@ -23,6 +23,8 @@ function DeletionModal({
 	confirmationInfo,
 }: DeletionModalProps) {
 	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+	const [showSecondConfirmationModal, setShowSecondConfirmationModal] =
+		useState(false);
 	const [inputValue, setInputValue] = useState('');
 	const [message2, setMessage2] = useState('');
 
@@ -33,6 +35,7 @@ function DeletionModal({
 	};
 	const handleDeleteConfirm = () => {
 		setMessage2('intenta de nuevo :(');
+		setInputValue('');
 	};
 
 	const handleDeleteClick = () => {
@@ -88,13 +91,13 @@ function DeletionModal({
 									</div>
 								</>
 							)}
-							{showConfirmationModal && (
+							{showConfirmationModal && !showSecondConfirmationModal && (
 								<>
 									<h2>¿Estás seguro?</h2>
 									<p className='warning'>{confirmationInfo}</p>
 									<p>
 										Si estas seguro escribe:
-										<span data-text=' Estoy muy seguro'></span>
+										<span data-text=' Estoy Muy Muy Seguro'></span>
 									</p>
 									{message2}
 
@@ -112,7 +115,42 @@ function DeletionModal({
 										<button
 											className='delete'
 											onClick={
-												inputValue === 'Estoy muy seguro'
+												inputValue === 'Estoy Muy Muy Seguro'
+													? () => setShowSecondConfirmationModal(true)
+													: handleDeleteConfirm
+											}
+											disabled={!inputValue.trim()}
+										>
+											Eliminar
+										</button>
+									</div>
+								</>
+							)}
+							{showSecondConfirmationModal && (
+								<>
+									<h2>¿En serio?</h2>
+									<p className='warning'>{confirmationInfo}</p>
+									<p>
+										Si es enserio escribe:
+										<span data-text=' Es Enserio, Estoy Muy Seguro'></span>
+									</p>
+									{message2}
+
+									<input
+										type='text'
+										value={inputValue}
+										onChange={handleInputChange}
+										placeholder='Escribe aquí'
+									/>
+
+									<div className='buttons'>
+										<button className='cancel' onClick={onClose}>
+											Cancelar
+										</button>
+										<button
+											className='delete'
+											onClick={
+												inputValue === 'Es Enserio, Estoy Muy Seguro'
 													? handleDeleteClick
 													: handleDeleteConfirm
 											}

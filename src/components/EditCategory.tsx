@@ -10,12 +10,10 @@ function EditCategory({
 	familyId,
 	update,
 	updateCategoryList,
-	setNumberOfCategories,
 }: {
 	familyId: string;
 	update: boolean;
 	updateCategoryList: () => void;
-	setNumberOfCategories: (n: number) => void;
 }) {
 	const { errorLogCategory, successLogCategory, updateCategory } =
 		useCategoryUpdate();
@@ -28,11 +26,6 @@ function EditCategory({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [familyId, update]);
-
-	useEffect(() => {
-		if (categories) setNumberOfCategories(categories.length);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [categories]);
 
 	const handleCategoryNameChange = (value: string, categoryIndex: number) => {
 		const updatedCategories = [...categories];

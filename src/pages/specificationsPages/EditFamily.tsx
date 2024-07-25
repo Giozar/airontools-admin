@@ -19,8 +19,16 @@ import '@pages/css/editFamily.css';
 
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
+interface EditFamilyFormProps {
+	familyToEdit: FamilyFrontend;
+	numberOfCategories: number;
+	numberOfSubcategories: number;
+}
+function EditFamilyForm({
+	familyToEdit,
+	numberOfCategories,
+	numberOfSubcategories,
+}: EditFamilyFormProps) {
 	// Datos recuperados y que se pueden modificar
 	const [name, setName] = useState(familyToEdit.name);
 	const [description, setDescription] = useState(familyToEdit.description);
@@ -28,7 +36,7 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
-	const [numberOfCategories, setNumberOfCategories] = useState(0);
+
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
@@ -79,7 +87,11 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 					onCloseDelete={handleCloseModalDeletion}
 					onDelete={() => handleDelete(familyId || '', name)}
 					message={deletionMessage}
-					confirmationInfo={`Al borrar esta familia se eliminarán ${numberOfCategories} categorías y TODAS sus subcategorías`}
+					confirmationInfo={
+						numberOfCategories > 0
+							? `Al borrar esta familia se eliminarán ${numberOfCategories} categorías y ${numberOfSubcategories} sus subcategorías`
+							: null
+					}
 				/>
 			)}
 			<div className='familyedit'>
@@ -121,7 +133,6 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 				familyId={familyId}
 				update={update}
 				updateCategoryList={updateCategoryList}
-				setNumberOfCategories={setNumberOfCategories}
 			/>
 			<CreateCategory
 				createdBy={createdBy}
@@ -133,15 +144,22 @@ function EditFamilyForm({ familyToEdit }: { familyToEdit: FamilyFrontend }) {
 }
 function ContentMainPage() {
 	const location = useLocation();
-	const { family } = location.state || {
-		family: { id: 'N/A', name: 'Desconocido' },
-	};
+	const { family, numberOfCategories, numberOfSubcategories } =
+		location.state || {
+			family: { id: 'N/A', name: 'Desconocido' },
+			numberOfCategories: 0,
+			numberOfSubcategories: 0,
+		};
 	return (
 		<BasePage>
 			<HeaderApp />
 			<main>
 				<HeaderTitle title='Editar Familia' />
-				<EditFamilyForm familyToEdit={family} />
+				<EditFamilyForm
+					familyToEdit={family}
+					numberOfCategories={numberOfCategories}
+					numberOfSubcategories={numberOfSubcategories}
+				/>
 			</main>
 		</BasePage>
 	);

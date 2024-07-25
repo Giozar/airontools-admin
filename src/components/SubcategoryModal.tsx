@@ -9,15 +9,13 @@ function SubcategoryModal({
 	createdBy,
 	categoryId,
 	categoryName,
-	categoryIndex,
-	setNumberOfSubcategories,
+	onUpdateSubcategoriesLength,
 }: {
 	familyId: string;
 	createdBy: string;
 	categoryId: string;
 	categoryName: string;
-	categoryIndex: number;
-	setNumberOfSubcategories: (n: number) => void;
+	onUpdateSubcategoriesLength: (categoryId: string, length: number) => void;
 }) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [update, setUpdate] = useState(false);
@@ -37,17 +35,22 @@ function SubcategoryModal({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [update]);
 
-	useEffect(() => {
-		if (subcategories) {
-			setNumberOfSubcategories(subcategories.length);
-			console.log(categoryIndex);
-			console.log(subcategories.length);
-		}
-	}, []);
-
 	const updatedSubcategories = () => {
 		setUpdate(!update);
 	};
+
+	useEffect(() => {
+		const categoryIds = Array.from(
+			new Set(subcategories.map(subcategory => subcategory.categoryId)),
+		);
+		categoryIds.forEach(categoryId => {
+			const length = subcategories.filter(
+				subcategory => subcategory.categoryId === categoryId,
+			).length;
+			onUpdateSubcategoriesLength(categoryId, length);
+		});
+	}, [subcategories, update]);
+
 	return (
 		<>
 			<div className='subcategories-container'>
