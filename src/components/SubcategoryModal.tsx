@@ -49,6 +49,7 @@ function SubcategoryModal({
 			).length;
 			onUpdateSubcategoriesLength(categoryId, length);
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [subcategories, update]);
 
 	return (
