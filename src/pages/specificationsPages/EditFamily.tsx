@@ -17,8 +17,8 @@ import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/editFamily.css';
 
-import { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
 	familyToEdit: FamilyFrontend;
 	numberOfCategories: number;
@@ -68,6 +68,15 @@ function EditFamilyForm({
 				name,
 				description,
 			});
+			// Esto tal vez cause bugs cuando de refresh...
+			localStorage.setItem(
+				'familyToEdit',
+				JSON.stringify({
+					family: { ...familyToEdit, name, description },
+					numberOfCategories,
+					numberOfSubcategories,
+				}),
+			);
 		} catch (error) {
 			console.error('Error:', error);
 		}
@@ -143,13 +152,22 @@ function EditFamilyForm({
 	);
 }
 function ContentMainPage() {
-	const location = useLocation();
-	const { family, numberOfCategories, numberOfSubcategories } =
-		location.state || {
-			family: { id: 'N/A', name: 'Desconocido' },
-			numberOfCategories: 0,
-			numberOfSubcategories: 0,
-		};
+	const initialState = {
+		family: { id: 'N/A', name: 'Desconocido' },
+		numberOfCategories: 0,
+		numberOfSubcategories: 0,
+	};
+
+	const [state] = useState(() => {
+		const savedState = localStorage.getItem('familyToEdit');
+		return savedState ? JSON.parse(savedState) : initialState;
+	});
+
+	useEffect(() => {
+		localStorage.setItem('familyToEdit', JSON.stringify(state));
+	}, [state]);
+
+	const { family, numberOfCategories, numberOfSubcategories } = state;
 	return (
 		<BasePage>
 			<HeaderApp />

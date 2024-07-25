@@ -14,7 +14,8 @@ const useUserManagement = () => {
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
 	const handleEdit = (user: UserDataFrontend) => {
-		navigate(location.pathname + `/editar-usuario`, { state: { user } });
+		localStorage.setItem('userToEdit', JSON.stringify(user));
+		navigate(location.pathname + `/editar-usuario`);
 	};
 
 	const handleCloseModal = () => {

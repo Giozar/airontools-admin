@@ -18,9 +18,11 @@ const useFamilyManagement = () => {
 		numberOfCategories: number,
 		numberOfSubcategories: number,
 	) => {
-		navigate(location.pathname + `/editar-familia`, {
-			state: { family, numberOfCategories, numberOfSubcategories },
-		});
+		localStorage.setItem(
+			'familyToEdit',
+			JSON.stringify({ family, numberOfCategories, numberOfSubcategories }),
+		);
+		navigate(location.pathname + `/editar-familia`);
 	};
 
 	const handleCloseModal = () => {

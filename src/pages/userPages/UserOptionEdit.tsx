@@ -10,9 +10,9 @@ import { UserRole } from '@interfaces/UserRole';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
+	console.log(userToEdit);
 	const [email, setEmail] = useState(userToEdit.email);
 	const pastImageUrl = userToEdit.imageUrl;
 	const [imageUrl, setImageUrl] = useState(userToEdit.imageUrl);
@@ -49,6 +49,7 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 			} else {
 				await updateUser(userToEdit.id || '', { ...updatedUserData, password });
 			}
+			localStorage.setItem('userToEdit', JSON.stringify(updatedUserData));
 		} catch (error) {
 			console.error('Error actualizando usuario:', error);
 		}
@@ -125,16 +126,25 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 }
 
 function ContentMainPage() {
-	const location = useLocation();
-	const { user } = location.state || {
+	const initialState = {
 		user: { id: 'N/A', name: 'Desconocido' },
 	};
+
+	const [state] = useState(() => {
+		const savedState = localStorage.getItem('userToEdit');
+		return savedState ? JSON.parse(savedState) : initialState;
+	});
+
+	useEffect(() => {
+		localStorage.setItem('userToEdit', JSON.stringify(state));
+	}, [state]);
+
 	return (
 		<BasePage>
 			<HeaderApp />
 			<main>
 				<HeaderTitle title='Editar Usuario' />
-				<EditUserForm userToEdit={user} />
+				<EditUserForm userToEdit={state} />
 			</main>
 		</BasePage>
 	);
