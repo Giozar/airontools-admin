@@ -34,7 +34,18 @@ const useFamilyManagement = () => {
 	};
 	const handleDelete = async (familyid: string, familyname: string) => {
 		try {
-			await axios.delete(`http://localhost:4000/families/${familyid}`);
+			await axios
+				.delete(`http://localhost:4000/families/${familyid}`)
+				.then(
+					await axios.delete(
+						`http://localhost:4000/categories/family/${familyid}`,
+					),
+				)
+				.then(
+					await axios.delete(
+						`http://localhost:4000/subcategories/family/${familyid}`,
+					),
+				);
 			setDeletionMessage(
 				`${familyname} (${familyid}) ha sido eliminado correctamente.`,
 			);

@@ -77,7 +77,8 @@ function ShowManageCategory({
 						<TrashIcon />
 					</button>
 					<h2>
-						<span>Categoría</span> {category.name}{' '}
+						Categoría <span style={{ fontSize: '20px' }}> ({category.id})</span>
+						{category.name}{' '}
 					</h2>
 					<Editables
 						what='Nombre'
