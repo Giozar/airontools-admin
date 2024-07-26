@@ -8,7 +8,7 @@
 /* Estilos para cada especificación individual */
 .especificacion {
 	margin-bottom: 20px;
-	border: 1px solid #092b48;
+	border: 1px solid var(--bg-primary);
 	border-radius: 6px;
 	background-color: #041425;
 	padding: 15px;
@@ -36,11 +36,9 @@
 
 .form-group input,
 .form-group textarea {
-	border: 1px solid #092b48;
+	border: 1px solid var(--bg-primary);
 	border-radius: 4px;
-	background-color: #0c1c2c;
 	padding: 10px;
-	color: #ffffff;
 	font-size: 14px;
 }
 

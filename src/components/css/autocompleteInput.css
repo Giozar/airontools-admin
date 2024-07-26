@@ -20,12 +20,10 @@
 }
 
 .autocomplete-input input {
-	border: 1px solid #092b48;
+	border: 1px solid var(--bg-primary);
 	border-radius: 4px;
-	background-color: #0c1c2c;
 	padding: 0.75rem;
 	width: 100%;
-	color: #ffffff;
 	font-size: 1rem;
 }
 
@@ -45,7 +43,7 @@
 	left: 0;
 	z-index: 10;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	border: 1px solid #092b48;
+	border: 1px solid var(--bg-primary);
 	border-top: none;
 	border-radius: 0 0 4px 4px;
 	background-color: #0c1c2c;
@@ -61,7 +59,7 @@
 }
 
 .option-item:hover {
-	background-color: #092b48;
+	background-color: var(--bg-primary);
 }
 
 /* Scrollbar styles for WebKit browsers */

@@ -1,37 +1,171 @@
 :root {
-	background-color: #242424;
-	color: rgba(255, 255, 255, 0.87);
+	/* Colores principales */
+	--bg-primary: #092b48;
+	--bg-secondary: #041425;
+	--bg-tertiary: #102e47;
 
-	color-scheme: light dark;
-	--dark-bg: #051424;
-	--dark-slider-bg: #090a0e;
-	--dark-input-bg: #0c1c2c;
-	--dark-border: #34495e;
-	--dark-title: #3498db;
-	--dark-text: white;
+	--text-primary: #ffffff;
+	--text-secondary: #b0b0b0;
 
-	background-color: var(--dark-bg);
-	color: var(--dark-text);
+	/* Colores de acento y enlaces */
+	--link: #ffffff;
+	--accent-primary: #056db4;
+	--accent-secondary: #0a84d6;
 
-	font-weight: 400;
-	line-height: 1.5;
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	/* Colores para bordes y divisores */
+	--border: #2a3f5f;
+	--divider: #34495e;
 
-	font-synthesis: none;
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	/* Colores de estado */
+	--success: #1d794c;
+	--error: #e74c3c;
+	--warning: #f39c12;
+	--info: #3498db;
+
+	/* Colores de interacción */
+	--hover: #0c3d66;
+	--focus: #1a5f8d;
+	--active: #0e4a7c;
+	/*var(--menu-bg)*/
+	/* Colores adicionales */
+	--menu-bg: #19181a;
+	--card-bg: #041425;
+	--input-bg: #0c1c2c;
+	--input-text: #fff;
+	--button-text: #ffffff;
+	--disabled: #5a6d7e;
+	--placeholder: #6c7a89;
+
+	--add: #115a37;
 }
 
+/* Estilos base */
 body {
 	margin: 0;
+	background-color: var(--bg-primary);
 	min-width: 320px;
 	min-height: 100vh;
+	color: var(--text-primary);
+	font-family: Arial, sans-serif;
 }
+
+/* Estilos para encabezados */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: var(--text-primary);
+}
+
+/* Estilos para enlaces */
+a {
+	color: var(--link);
+	text-decoration: none;
+}
+
+a:hover {
+	color: var(--accent-secondary);
+	text-decoration: underline;
+}
+
+/* Estilos para botones */
 button {
-	transition: 150ms ease-in-out opacity;
+	transition: background-color 0.3s ease;
 	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	background-color: var(--accent-primary);
+	padding: 10px 20px;
+	color: var(--button-text);
 }
+
 button:hover {
+	background-color: var(--hover);
+}
+
+button:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px var(--focus);
+}
+
+button:active {
+	background-color: var(--active);
+}
+
+/* Estilos para tarjetas o modales */
+.card {
+	margin-bottom: 20px;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background-color: var(--card-bg);
+	padding: 20px;
+}
+
+/* Estilos para el menú */
+.menu {
+	background-color: var(--menu-bg);
+	padding: 10px;
+}
+
+.menu a {
+	margin-right: 15px;
+	color: var(--link);
+}
+
+/* Estilos para inputs */
+input,
+textarea,
+select {
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	background-color: var(--input-bg);
+	padding: 8px;
+	color: var(--input-text);
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: var(--placeholder);
+}
+
+/* Estilos para mensajes de estado */
+.success {
+	color: var(--success);
+}
+.error {
+	color: var(--error);
+}
+.warning {
+	color: var(--warning);
+}
+.info {
+	color: var(--info);
+}
+
+/* Estilos para divisores */
+hr {
+	margin: 20px 0;
+	border: none;
+	border-top: 1px solid var(--divider);
+}
+
+/* Estilos para elementos deshabilitados */
+.disabled {
 	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.save {
+	background-color: var(--success);
+	color: var(--button-text);
+}
+.save:hover {
+	background-color: #1f6922;
+}
+
+.add {
+	background-color: var(--add);
+	color: var(--button-text);
 }

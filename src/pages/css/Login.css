@@ -1,12 +1,12 @@
 body {
-	background-color: #092b48;
+	background-color: var(--bg-primary);
 }
 
 header {
 	display: grid;
 	top: 0;
 	grid-template-columns: repeat(2, 200px);
-	background-color: #18181b;
+	background-color: var(--menu-bg);
 	padding: 20px 0;
 	width: 100%;
 }
@@ -42,24 +42,22 @@ header h1 {
 
 .login h2 {
 	margin-top: 0;
-	border-bottom: 2px solid white;
+	border-bottom: 2px solid var(--text-primary);
 	font-weight: normal;
 	font-size: 2em;
 }
 
 .login form label {
 	padding: 10px 0;
-	color: white;
+	color: var(--text-primary);
 	font-size: large;
 }
 
 .login form input {
 	margin: 2px;
-	border: 2px solid white;
+	border: 2px solid var(--text-primary);
 	border-radius: 20px;
-	background-color: white;
 	padding: 15px;
-	color: #18181b;
 }
 
 .login form input:focus {
@@ -72,7 +70,7 @@ header h1 {
 	border-radius: 30px;
 	background-color: #1196e6;
 	padding: 15px;
-	color: white;
+	color: var(--text-primary);
 	font-weight: bold;
 	font-size: medium;
 }
@@ -86,5 +84,5 @@ header h1 {
 	padding: 5px;
 	width: fit-content;
 	height: fit-content;
-	color: white;
+	color: var(--text-primary);
 }

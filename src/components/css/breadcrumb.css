@@ -4,12 +4,12 @@
 .breadcrumb span {
 	display: inline;
 	opacity: 1;
-	color: white;
+	color: var(--text-primary);
 	text-transform: capitalize;
 }
 
 .breadcrumb span a {
-	color: white;
+	color: var(--text-primary);
 	text-decoration: none;
 }
 
