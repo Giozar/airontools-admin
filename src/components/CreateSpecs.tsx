@@ -1,5 +1,6 @@
 import { SpecsFrontend } from '@adapters/specifications.adapter';
 import '@components/css/createSpecs.css';
+import createSpecification from '@services/specifications/createSpecification.service';
 import { useEffect, useState } from 'react';
 function CreateSpecs({
 	familyId,
@@ -18,7 +19,7 @@ function CreateSpecs({
 				name: '',
 				description: '',
 				unit: '',
-				createdBy: '',
+				createdBy: 'El usuario',
 				path: '',
 				familyId,
 				categoryId,
@@ -36,7 +37,7 @@ function CreateSpecs({
 				name: '',
 				description: '',
 				unit: '',
-				createdBy: '',
+				createdBy: 'El usuario',
 				path: '',
 				familyId,
 				categoryId,
@@ -62,16 +63,20 @@ function CreateSpecs({
 		setSpecifications(newspecifications);
 	};
 
-	const saveSpecifications = () => {
+	const saveSpecifications = async () => {
 		// Usar SpecsMappingBack
 		const datos = {
 			familyId,
 			categoryId,
 			subcategoryId,
 			specifications,
+			createdBy: 'El usuario',
 		};
 		console.log(JSON.stringify(datos));
 		alert('Especificaciones guardadas. Revisa la consola para ver los datos.');
+		for (const specification of specifications) {
+			await createSpecification({ specification });
+		}
 	};
 	return (
 		<div id='specifications'>

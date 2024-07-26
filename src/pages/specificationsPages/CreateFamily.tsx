@@ -18,26 +18,6 @@ interface SubcategoryAux {
 	categoryIndex: number;
 	subcategory: SubcategoryFrontend;
 }
-
-function capitalizeCategoryNames(category: CategoryFrontend) {
-	const capitalizedCategory: CategoryFrontend = {
-		name: '',
-		description: '',
-		createdBy: '',
-		path: '',
-		familyId: '',
-	};
-	for (const key in category) {
-		if (Object.prototype.hasOwnProperty.call(category, key)) {
-			if (key === 'name') {
-				capitalizedCategory[key] = category[key].toLowerCase();
-				console.log(capitalizedCategory[key]);
-			}
-		}
-	}
-	return capitalizedCategory;
-}
-
 function CreateFamilyForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
@@ -52,7 +32,7 @@ function CreateFamilyForm() {
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		await createFamily({
-			name: name.toLowerCase(),
+			name,
 			description,
 			createdBy,
 			path: '',
@@ -61,7 +41,7 @@ function CreateFamilyForm() {
 				console.log('Family ID:', familyId);
 				const createdCategoryPromises = categories.map(async category => {
 					return await createCategory({
-						...capitalizeCategoryNames(category),
+						...category,
 						familyId,
 						createdBy,
 					});
