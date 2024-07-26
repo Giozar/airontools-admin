@@ -1,114 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import AutoCompleteInput from '@components/AutoCompleteInput';
+import CreateSpecs from '@components/CreateSpecs';
+
 import HeaderTitle from '@components/HeaderTitle';
 import useFetchCategoriesFromFamily from '@hooks/useFetchCategoriesFromFamily';
 import useFetchFamilies from '@hooks/useFetchFamilies';
 import useFetchSubcategoriesFromFamily from '@hooks/useFetchSubcategoriesFromFamily';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
-import '@pages/css/createSpecification.css';
+
 import { useEffect, useState } from 'react';
-
-interface Especificacion {
-	name: string;
-	descripcion: string;
-	unidades: string;
-}
-function Specifications({
-	familyId,
-	categoryId,
-	subcategoryId,
-}: {
-	familyId: string;
-	categoryId: string;
-	subcategoryId?: string;
-}) {
-	const [specifications, setSpecifications] = useState<Especificacion[]>([]);
-	const [specificationsCounter, setSpecificationsCounter] = useState<number>(0);
-
-	const addSpecifications = () => {
-		setSpecificationsCounter(specificationsCounter + 1);
-		setSpecifications([
-			...specifications,
-			{ name: '', descripcion: '', unidades: '' },
-		]);
-	};
-
-	const borrarEspecificacion = (index: number) => {
-		setSpecifications(specifications.filter((_, i) => i !== index));
-	};
-
-	const handleInputChangeInSpec = (
-		index: number,
-		field: keyof Especificacion,
-		value: string,
-	) => {
-		const newspecifications = [...specifications];
-		newspecifications[index] = {
-			...newspecifications[index],
-			[field]: value,
-		};
-		setSpecifications(newspecifications);
-	};
-
-	const saveSpecifications = () => {
-		const datos = {
-			familyId,
-			categoryId,
-			subcategoryId,
-			specifications,
-		};
-		console.log(JSON.stringify(datos));
-		alert('specifications guardadas. Revisa la consola para ver los datos.');
-	};
-	return (
-		<div id='specifications'>
-			{specifications.map((especificacion, index) => (
-				<div
-					key={index}
-					id={`especificacion-${index}`}
-					className='especificacion'
-				>
-					<p>Especificación {index + 1}</p>
-					<form className='form-group'>
-						<input
-							type='text'
-							placeholder='Name'
-							value={especificacion.name}
-							onChange={e =>
-								handleInputChangeInSpec(index, 'name', e.target.value)
-							}
-							required
-						/>
-						<textarea
-							placeholder='Descripción'
-							value={especificacion.descripcion}
-							onChange={e =>
-								handleInputChangeInSpec(index, 'descripcion', e.target.value)
-							}
-						/>
-						<input
-							type='text'
-							placeholder='Unidades'
-							value={especificacion.unidades}
-							onChange={e =>
-								handleInputChangeInSpec(index, 'unidades', e.target.value)
-							}
-						/>
-					</form>
-					<button
-						onClick={() => borrarEspecificacion(index)}
-						className='delete'
-					>
-						Borrar
-					</button>
-				</div>
-			))}
-			<button onClick={addSpecifications}>Agregar Especificación</button>
-			<button onClick={saveSpecifications}>Guardar specifications</button>
-		</div>
-	);
-}
 
 function FamilySpecifications() {
 	const { families } = useFetchFamilies();
@@ -164,10 +65,9 @@ function FamilySpecifications() {
 					}))}
 					onSelect={handleSelectFamily}
 				/>
-				{selectedFamily && <p>Seleccionado: {selectedFamily}</p>}
 				{selectedFamily && (
 					<AutoCompleteInput
-						inputName='Categorias'
+						inputName='Categoria'
 						options={categories.map(category =>
 							category.familyId === selectedFamily
 								? {
@@ -180,10 +80,9 @@ function FamilySpecifications() {
 						clearInput={clearInputCategory}
 					/>
 				)}
-				{selectedCategory && <p>Seleccionado: {selectedCategory}</p>}
 				{selectedCategory && (
 					<AutoCompleteInput
-						inputName='Subcategorias'
+						inputName='Subcategoria'
 						options={subcategories.map(subcategory =>
 							subcategory.categoryId === selectedCategory
 								? {
@@ -196,10 +95,9 @@ function FamilySpecifications() {
 						clearInput={clearInputSubcategory}
 					/>
 				)}
-				{selectedSubcategory && <p>Seleccionado: {selectedSubcategory}</p>}
 			</div>
 			{selectedCategory && (
-				<Specifications
+				<CreateSpecs
 					familyId={selectedFamily || ''}
 					categoryId={selectedCategory || ''}
 					subcategoryId={selectedSubcategory || ''}

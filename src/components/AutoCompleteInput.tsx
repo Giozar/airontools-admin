@@ -1,5 +1,5 @@
+import '@components/css/autocompleteInput.css';
 import React, { useEffect, useRef, useState } from 'react';
-
 interface Option {
 	id: string;
 	name: string;
@@ -86,18 +86,20 @@ function AutoCompleteInput({
 	);
 
 	return (
-		<form className='autocomplete-input'>
-			<label htmlFor={inputName}>{inputName}</label>
-			<input
-				id={inputName}
-				type='text'
-				ref={inputRef}
-				placeholder={`Buscar ${inputName}`}
-				onChange={handleInputChange}
-				onFocus={handleInputFocus}
-			/>
-			{renderOptions()}
-		</form>
+		<div className='autocomplete'>
+			<form className='autocomplete-input'>
+				<label htmlFor={inputName}>{inputName}</label>
+				<input
+					id={inputName}
+					type='text'
+					ref={inputRef}
+					placeholder={`Buscar ${inputName}`}
+					onChange={handleInputChange}
+					onFocus={handleInputFocus}
+				/>
+				{renderOptions()}
+			</form>
+		</div>
 	);
 }
 

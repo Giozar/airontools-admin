@@ -1,0 +1,83 @@
+/* Dark mode styles */
+.autocomplete {
+	margin-bottom: -20px;
+	background-color: #041425;
+	padding: 20px;
+	color: #ffffff;
+}
+.autocomplete-input {
+	position: relative;
+	margin-bottom: 1rem;
+
+	width: 100%;
+	max-width: 300px;
+}
+
+.autocomplete-input label {
+	display: block;
+	margin-bottom: 0.5rem;
+	color: #34495e;
+}
+
+.autocomplete-input input {
+	border: 1px solid #092b48;
+	border-radius: 4px;
+	background-color: #0c1c2c;
+	padding: 0.75rem;
+	width: 100%;
+	color: #ffffff;
+	font-size: 1rem;
+}
+
+.autocomplete-input input::placeholder {
+	color: #34495e;
+}
+
+.autocomplete-input input:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(52, 73, 94, 0.2);
+	border-color: #34495e;
+}
+
+.options-container {
+	position: absolute;
+	top: 84%;
+	left: 0;
+	z-index: 10;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	border: 1px solid #092b48;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
+	background-color: #0c1c2c;
+	width: 100%;
+	max-height: 200px;
+	overflow-y: auto;
+}
+
+.option-item {
+	transition: background-color 0.2s ease;
+	cursor: pointer;
+	padding: 0.75rem;
+}
+
+.option-item:hover {
+	background-color: #092b48;
+}
+
+/* Scrollbar styles for WebKit browsers */
+.options-container::-webkit-scrollbar {
+	width: 8px;
+}
+
+.options-container::-webkit-scrollbar-track {
+	background: #0c1c2c;
+}
+
+.options-container::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: #34495e;
+}
+
+.options-container::-webkit-scrollbar-thumb:hover {
+	background-color: #41586e;
+}
