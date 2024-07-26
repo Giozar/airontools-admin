@@ -1,0 +1,69 @@
+.container {
+	margin: 0 auto;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	background-color: white;
+	padding: 20px;
+	max-width: 800px;
+}
+
+#family {
+	border-radius: 5px;
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+.especificacion {
+	margin-bottom: 15px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 15px;
+}
+.especificacion h3 {
+	margin-top: 0;
+	margin-bottom: 10px;
+	font-size: 18px;
+}
+
+.select-search-container {
+	position: relative;
+}
+.select-search-input {
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 8px;
+	width: 100%;
+}
+.select-search-options {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	left: 0;
+	z-index: 1000;
+	border: 1px solid #ddd;
+	border-top: none;
+	border-radius: 0 0 4px 4px;
+	background-color: white;
+	max-height: 200px;
+	overflow-y: auto;
+}
+.select-search-option {
+	cursor: pointer;
+	padding: 8px;
+}
+.select-search-option:hover {
+	background-color: #f0f0f0;
+}
+.familyoptions {
+	margin-top: -1.5rem;
+	border-radius: 10px;
+}
+.familyoptions .select-search-option {
+	background-color: white;
+}
+.familyoptions .select-search-option:hover {
+	opacity: 0.7;
+}

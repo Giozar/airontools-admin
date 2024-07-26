@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import useErrorHandling from './common/useErrorHandling';
 
-function useFetchFamilies(updateListFlag: boolean) {
+function useFetchFamilies(updateListFlag?: boolean) {
 	const { errorLog, showError } = useErrorHandling();
 	const [families, setFamilies] = useState<FamilyFrontend[]>([]);
 	const [filteredFamilies, setFilteredFamilies] = useState<FamilyFrontend[]>(
