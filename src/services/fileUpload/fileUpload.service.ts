@@ -6,7 +6,7 @@ const uploadFile = async (file: File): Promise<string> => {
 
 	try {
 		const response = await axios.post(
-			'http://localhost:4000/files/upload',
+			import.meta.env.VITE_API_URL + '/files/upload',
 			formData,
 			{
 				headers: {

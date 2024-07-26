@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:4000/roles';
+const apiUrl = import.meta.env.VITE_API_URL + '/roles';
 
 export async function getUserRoles() {
 	const response = await axios.get(apiUrl);

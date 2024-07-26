@@ -21,7 +21,7 @@ const useFamilyUpdate = () => {
 	const updateFamily = async (familyData: FamilyFrontend) => {
 		try {
 			await axios.patch(
-				`http://localhost:4000/families/${familyData.id}`,
+				import.meta.env.VITE_API_URL + `/families/${familyData.id}`,
 				transformFamilyDataBack({
 					...familyData,
 					path: cleanNameURL(familyData.name),

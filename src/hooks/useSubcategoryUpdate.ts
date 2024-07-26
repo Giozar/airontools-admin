@@ -23,7 +23,7 @@ const useSubcategoryUpdate = () => {
 	const updateSubategory = async (subcategoryData: SubcategoryFrontend) => {
 		try {
 			const response = await axios.patch(
-				`http://localhost:4000/subcategories/${subcategoryData.id}`,
+				import.meta.env.VITE_API_URL + `/subcategories/${subcategoryData.id}`,
 				transformSubategoryDataBack({
 					...subcategoryData,
 					path: cleanNameURL(subcategoryData.name),

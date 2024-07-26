@@ -5,6 +5,10 @@ import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [react()],
+	server: {
+		host: 'localhost' /* '0.0.0.0', */,
+		port: 3000,
+	},
 	resolve: {
 		alias: {
 			'@adapters': path.resolve(__dirname, 'src/adapters'),
