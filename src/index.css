@@ -3,6 +3,16 @@
 	color: rgba(255, 255, 255, 0.87);
 
 	color-scheme: light dark;
+	--dark-bg: #051424;
+	--dark-slider-bg: #090a0e;
+	--dark-input-bg: #0c1c2c;
+	--dark-border: #34495e;
+	--dark-title: #3498db;
+	--dark-text: white;
+
+	background-color: var(--dark-bg);
+	color: var(--dark-text);
+
 	font-weight: 400;
 	line-height: 1.5;
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
