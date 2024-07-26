@@ -75,6 +75,7 @@ function CreateFamilyForm() {
 					async subcategory => {
 						return await createSubategory({
 							...subcategory.subcategory,
+							familyId: createdCategories[subcategory.categoryIndex].familyId,
 							categoryId: createdCategories[subcategory.categoryIndex]._id,
 						});
 					},
