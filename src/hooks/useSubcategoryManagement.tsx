@@ -22,7 +22,7 @@ const useSubcategoryManagement = () => {
 	) => {
 		try {
 			await axios.delete(
-				`http://localhost:4000/subcategories/${subcategoryid}`,
+				import.meta.env.VITE_API_URL + `/subcategories/${subcategoryid}`,
 			);
 			setDeletionMessage(
 				`${subcategoryname} (${subcategoryid}) ha sido eliminado correctamente.`,

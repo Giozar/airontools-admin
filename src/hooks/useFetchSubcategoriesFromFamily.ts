@@ -19,7 +19,8 @@ function useFetchSubcategoriesFromFamily() {
 	const fetchSubcategories = async (categoryId: string) => {
 		try {
 			const response = await axios.get<SubcategoryBackend[]>(
-				`http://localhost:4000/subcategories?categoryId=${categoryId}`,
+				import.meta.env.VITE_API_URL +
+					`/subcategories?categoryId=${categoryId}`,
 			);
 			setSubcategories(response.data.map(transformSubcategoryData));
 			setFilteredSubcategories(response.data.map(transformSubcategoryData));

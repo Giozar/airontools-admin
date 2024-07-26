@@ -35,7 +35,9 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 	useEffect(() => {
 		const fetchRoles = async () => {
 			try {
-				const response = await axios.get<Role[]>('http://localhost:4000/roles');
+				const response = await axios.get<Role[]>(
+					import.meta.env.VITE_API_URL + '/roles',
+				);
 				setState({
 					roles: response.data,
 					loading: false,
@@ -61,7 +63,7 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 	}) => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:4000/roles/delete/${roleId}`,
+				import.meta.env.VITE_API_URL + `/roles/delete/${roleId}`,
 			);
 			console.log(response.data);
 			setDeletionMessage(

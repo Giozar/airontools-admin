@@ -21,7 +21,7 @@ const useCategoryUpdate = () => {
 	const updateCategory = async (categoryData: CategoryFrontend) => {
 		try {
 			await axios.patch(
-				`http://localhost:4000/categories/${categoryData.id}`,
+				import.meta.env.VITE_API_URL + `/categories/${categoryData.id}`,
 				transformCategoryDataBack({
 					...categoryData,
 					path: cleanNameURL(categoryData.name),

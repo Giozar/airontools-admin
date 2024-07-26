@@ -34,16 +34,17 @@ const useFamilyManagement = () => {
 	};
 	const handleDelete = async (familyid: string, familyname: string) => {
 		try {
-			await axios
-				.delete(`http://localhost:4000/families/${familyid}`)
-				.then(
+			await axios.delete(
+        import.meta.env.VITE_API_URL + `/families/${familyid}`,
+        )
+        .then(
 					await axios.delete(
-						`http://localhost:4000/categories/family/${familyid}`,
+						import.meta.env.VITE_API_URL + `/categories/family/${familyid}`,
 					),
 				)
 				.then(
 					await axios.delete(
-						`http://localhost:4000/subcategories/family/${familyid}`,
+						import.meta.env.VITE_API_URL + `/subcategories/family/${familyid}`,
 					),
 				);
 			setDeletionMessage(

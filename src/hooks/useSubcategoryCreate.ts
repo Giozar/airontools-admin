@@ -19,7 +19,7 @@ const useSubcategoryCreate = () => {
 	const createSubategory = async (subcategoryData: SubcategoryFrontend) => {
 		try {
 			const response = await axios.post(
-				'http://localhost:4000/subcategories',
+				import.meta.env.VITE_API_URL + '/subcategories',
 				transformSubategoryDataBack({
 					...subcategoryData,
 					path: cleanNameURL(subcategoryData.name),

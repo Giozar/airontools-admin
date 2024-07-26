@@ -18,13 +18,14 @@ const useCategoryManagement = () => {
 	};
 	const handleDelete = async (categoryid: string, categoryname: string) => {
 		try {
-			await axios
-				.delete(`http://localhost:4000/categories/${categoryid}`)
-				.then(
-					await axios.delete(
-						`http://localhost:4000/subcategories/category/${categoryid}`,
-					),
-				);
+			await axios.delete(
+				import.meta.env.VITE_API_URL + `/categories/${categoryid}`,
+			).then(
+				  await axios.delete(
+            import.meta.env.VITE_API_URL + `/subcategories/category/${categoryid}`,
+				),
+      );
+        
 			setDeletionMessage(
 				`${categoryname} (${categoryid}) ha sido eliminado correctamente.`,
 			);

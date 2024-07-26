@@ -42,7 +42,7 @@ function RoleChangeModal({
 		e.preventDefault();
 		try {
 			await axios.put<RegisterResponse>(
-				`http://localhost:4000/auth/update/${userToEdit.id}`,
+				import.meta.env.VITE_API_URL + `/auth/update/${userToEdit.id}`,
 				transformUserDataBack({
 					...userToEdit,
 					roles,

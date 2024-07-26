@@ -25,7 +25,7 @@ const useCategoryCreate = () => {
 	const createCategory = async (categoryData: CategoryFrontend) => {
 		try {
 			const response = await axios.post(
-				'http://localhost:4000/categories',
+				import.meta.env.VITE_API_URL + '/categories',
 				transformCategoryDataBack({
 					...categoryData,
 					path: cleanNameURL(categoryData.name),
