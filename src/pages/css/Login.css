@@ -55,20 +55,15 @@ header h1 {
 
 .login form input {
 	margin: 2px;
-	border: 2px solid var(--text-primary);
 	border-radius: 20px;
 	padding: 15px;
-}
-
-.login form input:focus {
-	background-color: #1196e6;
 }
 
 .login form button {
 	margin-top: 10px;
 	border: 0px;
 	border-radius: 30px;
-	background-color: #1196e6;
+	background-color: var(--accent-primary);
 	padding: 15px;
 	color: var(--text-primary);
 	font-weight: bold;

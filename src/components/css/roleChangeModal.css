@@ -12,6 +12,6 @@
 	color: var(--card-bg);
 }
 .choserol button {
-	background-color: #007bff;
+	background-color: var(--accent-primary);
 	padding: 10px;
 }

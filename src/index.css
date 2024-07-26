@@ -1,7 +1,7 @@
 :root {
 	/* Colores principales */
 	--bg-primary: #092b48;
-	--bg-secondary: #041425;
+	--bg-secondary: #010c18;
 	--bg-tertiary: #102e47;
 
 	--text-primary: #ffffff;
@@ -10,7 +10,7 @@
 	/* Colores de acento y enlaces */
 	--link: #ffffff;
 	--accent-primary: #056db4;
-	--accent-secondary: #0a84d6;
+	--accent-secondary: #093f63;
 
 	/* Colores para bordes y divisores */
 	--border: #2a3f5f;
@@ -18,7 +18,7 @@
 
 	/* Colores de estado */
 	--success: #1d794c;
-	--error: #e74c3c;
+	--error: #d12e2ea6;
 	--warning: #f39c12;
 	--info: #3498db;
 
@@ -35,6 +35,7 @@
 	--button-text: #ffffff;
 	--disabled: #5a6d7e;
 	--placeholder: #6c7a89;
+	--neutral: #34495e;
 
 	--add: #115a37;
 }

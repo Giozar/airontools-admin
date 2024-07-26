@@ -15,19 +15,20 @@
 }
 
 .userlist ul {
-	background-color: #046eb548;
+	background-color: var(--bg-tertiary);
 	padding: 0;
 	color: var(--text-primary);
 	list-style-type: none;
 }
 .userlist ul .title {
-	background-color: #046eb556;
+	opacity: 0.8;
+	background-color: var(--accent-primary);
 }
 .userlist ul li {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr)) repeat(3, 130px);
 	margin: 0;
-	border-bottom: 2px solid #102e42;
+	border-bottom: 1px solid var(--bg-secondary);
 	padding: 5px;
 	overflow: hidden;
 }

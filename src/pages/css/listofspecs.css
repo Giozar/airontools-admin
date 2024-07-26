@@ -1,12 +1,12 @@
 .container {
 	margin: 0 auto;
-	background-color: #041425;
+	background-color: var(--bg-secondary);
 	padding: 20px;
 
 	color: #ffffff;
 }
 h1 {
-	color: #34495e;
+	color: var(--neutral);
 	text-align: center;
 }
 .specifications-grid {
@@ -17,7 +17,7 @@ h1 {
 .specification-card {
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
-	background-color: #0c1c2c;
+	background-color: var(--card-bg);
 	padding: 15px;
 }
 .spec-name {
@@ -39,7 +39,7 @@ h1 {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 5px;
-	color: #34495e;
+	color: var(--neutral);
 	font-size: 0.8em;
 }
 .meta-tag {

@@ -62,8 +62,6 @@ function SpecificationsGrid() {
 
 	return (
 		<div className='container'>
-			<h1>Especificaciones</h1>
-
 			<div className='search-bar'>
 				<input
 					type='text'

@@ -54,23 +54,26 @@
 }
 .role-list ul li button {
 	margin-left: 50%;
-	border: 0px;
+	border-bottom: 2px solid var(--bg-secondary);
 	border-radius: 10px;
-	background-color: #031724;
+	background-color: var(--accent-secondary);
 	padding: 10px;
 }
 .role-list ul li .combobox {
 	margin: 10px 0;
-	background-color: #093f63;
+
 	font-size: 1.1rem;
 }
 .role-list ul li .combobox:hover {
+	background-color: var(--bg-tertiary);
 	color: var(--text-primary);
 }
 
 .role-list ul li .comboboxOptions {
 	margin-top: -10px;
+	margin-bottom: 10px;
+	border-bottom: 2px solid var(--bg-secondary);
 	border-radius: 10px;
-	background-color: #093f63;
-	padding-bottom: 20px;
+	background-color: var(--accent-secondary);
+	padding: 0 20px;
 }
