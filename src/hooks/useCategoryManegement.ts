@@ -20,7 +20,12 @@ const useCategoryManagement = () => {
 		try {
 			await axios.delete(
 				import.meta.env.VITE_API_URL + `/categories/${categoryid}`,
-			);
+			).then(
+				  await axios.delete(
+            import.meta.env.VITE_API_URL + `/subcategories/category/${categoryid}`,
+				),
+      );
+        
 			setDeletionMessage(
 				`${categoryname} (${categoryid}) ha sido eliminado correctamente.`,
 			);
