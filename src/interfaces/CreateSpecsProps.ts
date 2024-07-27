@@ -1,5 +1,5 @@
 export interface CreateSpecsProps {
 	familyId: string;
 	categoryId: string;
-	subcategoryId?: string;
+	subcategoryId: string | null;
 }

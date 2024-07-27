@@ -96,11 +96,12 @@ function FamilySpecifications() {
 					/>
 				)}
 			</div>
-			{selectedCategory && (
+
+			{selectedFamily && selectedCategory && selectedSubcategory && (
 				<CreateSpecs
-					familyId={selectedFamily || ''}
-					categoryId={selectedCategory || ''}
-					subcategoryId={selectedSubcategory || ''}
+					familyId={selectedFamily}
+					categoryId={selectedCategory}
+					subcategoryId={selectedSubcategory}
 				/>
 			)}
 		</>

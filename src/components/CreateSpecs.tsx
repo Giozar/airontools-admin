@@ -22,6 +22,7 @@ function CreateSpecs({
 	const createdBy = authContext?.user?.name || 'user';
 
 	useEffect(() => {
+		console.log(subcategoryId);
 		setSpecifications([
 			{
 				name: '',
