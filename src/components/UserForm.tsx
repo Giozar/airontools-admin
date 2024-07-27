@@ -39,7 +39,11 @@ export default function UserForm() {
 				name,
 				roles,
 			});
-			showSuccess(`Usuario ${userCreated} creado con éxito`);
+			showSuccess(`Usuario ${userCreated.user.fullName} creado con éxito`);
+			setImageUrl('');
+			setEmail('');
+			setName('');
+			setRoles('');
 		} catch (error) {
 			console.error('Error al subir datos del usuario:', error);
 			if (error instanceof Error) {
