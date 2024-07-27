@@ -7,12 +7,16 @@ interface ErrorMessageProps {
 
 function ErrorMessage(error: ErrorMessageProps) {
 	return (
-		<p className='errorMessage'>
-			<div className='error-icon'>
-				<CrossIcon />
-			</div>
-			{error.message}
-		</p>
+		<div>
+			{error.message && (
+				<div className='errorMessage'>
+					<div className='error-icon'>
+						<CrossIcon />
+					</div>
+					<p>{error.message}</p>
+				</div>
+			)}
+		</div>
 	);
 }
 
