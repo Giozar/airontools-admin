@@ -25,6 +25,10 @@ function ContentMainPage() {
 								title='Categorización'
 								path={location.pathname + '/categorizacion'}
 							/>
+							<ActionCard
+								title='Herramientas'
+								path={location.pathname + '/herramientas'}
+							/>
 						</>
 					) : (
 						<ActionCard

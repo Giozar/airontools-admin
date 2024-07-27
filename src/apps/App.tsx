@@ -20,6 +20,7 @@ import CreateFamily from '@pages/specificationsPages/CreateFamily';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditFamily from '@pages/specificationsPages/EditFamily';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
+import CreateTool from '@pages/toolPages/CreateTool';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 
 interface AuthContextType {
@@ -88,6 +89,7 @@ function App() {
 										path='/home/categorizacion/ver-especificaciones'
 										element={<ListOfSpecs />}
 									/>
+									<Route path='/home/herramientas' element={<CreateTool />} />
 								</Route>
 							</Route>
 						</Route>
