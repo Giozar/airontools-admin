@@ -34,7 +34,7 @@ h2 span {
 	cursor: pointer;
 	border: none;
 	background: none;
-	color: #ff4444;
+	color: var(--error);
 }
 
 .familyedit .save {
@@ -74,7 +74,7 @@ h3 {
 	right: 20px;
 	z-index: 50;
 	background-color: transparent;
-	color: #ff4444;
+	color: var(--error);
 }
 
 @media (min-width: 1200px) {
@@ -118,7 +118,7 @@ h3 {
 	padding: 10px;
 }
 .close {
-	color: #aaa;
+	color: var(--text-primary);
 	font-weight: bold;
 	font-size: 28px;
 }
@@ -131,7 +131,7 @@ h3 {
 .close:hover,
 .close:focus {
 	cursor: pointer;
-	color: #fff;
+	color: var(--text-secondary);
 	text-decoration: none;
 }
 .section-header {
@@ -156,7 +156,7 @@ h3 {
 	border-radius: 8px;
 	background-color: var(--bg-tertiary);
 	padding: 15px;
-	color: #e0e0e0;
+	color: var(--text-primary);
 }
 
 .subcategories-container p {
@@ -186,6 +186,7 @@ h3 {
 .subcategories-container .edit {
 	border-radius: 4px;
 	background-color: var(--bg-secondary);
+	color: var(--text-primary);
 }
 @media (min-width: 768px) {
 	.edit-subcategories-btn {

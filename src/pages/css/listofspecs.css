@@ -3,7 +3,7 @@
 	background-color: var(--bg-secondary);
 	padding: 20px;
 
-	color: #ffffff;
+	color: var(--text-primary);
 }
 h1 {
 	color: var(--neutral);
@@ -22,7 +22,7 @@ h1 {
 }
 .spec-name {
 	margin-bottom: 10px;
-	color: #3498db;
+	color: var(--info);
 	font-weight: bold;
 	font-size: 1.2em;
 }
@@ -32,7 +32,7 @@ h1 {
 }
 .spec-unit {
 	margin-bottom: 10px;
-	color: #95a5a6;
+	color: var(--text-secondary);
 	font-size: 0.9em;
 }
 .spec-metadata {

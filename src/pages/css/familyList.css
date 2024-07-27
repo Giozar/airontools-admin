@@ -18,7 +18,7 @@
 	border-radius: 8px;
 	background-color: var(--card-bg);
 	padding: 20px;
-	color: #e0e0e0;
+	color: var(--text-primary);
 	text-transform: capitalize;
 }
 
@@ -38,11 +38,11 @@
 }
 
 .family .buttons .edit {
-	color: #3498db;
+	color: var(--info);
 }
 
 .family > .buttons .delete {
-	color: #e74c3c;
+	color: var(--error);
 }
 
 .family h2 {
@@ -55,7 +55,7 @@
 	display: block;
 	margin-top: -0.1rem;
 	margin-bottom: 1.5rem;
-	color: #2b3644;
+	color: var(--neutral);
 	font-size: 0.8em;
 }
 
@@ -89,7 +89,7 @@
 	margin-left: -1em;
 	width: 1em;
 	content: '⚒';
-	color: #3498db;
+	color: var(--accent-primary);
 	font-weight: bold;
 }
 
@@ -99,5 +99,5 @@
 
 .family ul ul li::before {
 	content: '⚙';
-	color: #1c2f6e;
+	color: var(--accent-secondary);
 }

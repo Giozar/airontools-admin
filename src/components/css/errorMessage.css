@@ -10,7 +10,7 @@
 	border-radius: 8px;
 	background-color: var(--error);
 	padding: 12px 20px;
-	color: #ffffff;
+	color: var(--button-text);
 }
 
 .errorMessage .error-icon {
