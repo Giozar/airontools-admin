@@ -1,0 +1,86 @@
+.toolinfo {
+	display: flex;
+	justify-content: space-between;
+}
+.toolinfo > div > input {
+	margin-top: 0.5rem;
+	margin-left: -0.3rem;
+}
+.image-upload {
+	display: flex;
+	gap: 10px;
+}
+.image-placeholder {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	border: 1px dashed var(--neutral);
+	border-radius: 10px;
+	background-color: var(--neutral);
+	padding: 10px;
+	width: 200px;
+	height: 200px;
+}
+.add-image {
+	border: 2px dashed var(--accent-primary);
+	color: var(--accent-primary);
+}
+.characteristics {
+	display: grid;
+	gap: 10px;
+}
+.characteristics .characteristic-item {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 10px;
+}
+.createtoolform .delete {
+	margin: 0;
+	margin-bottom: 15px;
+	border: 0px;
+	background-color: transparent;
+	padding: 0;
+	color: var(--error);
+}
+.specifications {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(auto-fit, minmax(auto, 1fr));
+	gap: 10px;
+}
+
+.specifications input {
+	width: 60px;
+}
+.file-upload {
+	display: grid;
+	gap: 10px;
+}
+
+.specifications {
+	margin-bottom: 1rem; /* Space below each form group */
+}
+
+.specifications label {
+	display: block;
+	margin-bottom: 0.5rem; /* Space between label and input container */
+	font-weight: bold;
+}
+
+.specifications .input-container {
+	display: flex;
+	align-items: center;
+}
+
+.specifications .input-container input {
+	margin-right: 0.5rem;
+	border-radius: 4px;
+	padding: 0.5rem;
+	width: 70px;
+}
+
+.input-container span {
+	border-radius: 4px;
+	padding: 0.5rem;
+}
