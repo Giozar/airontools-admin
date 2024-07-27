@@ -4,18 +4,12 @@ TODO: hacer que el css sea generico para todas las paginas
 TODO: que el darkmode se guarde en un contexto */
 import { AuthContext } from '@apps/App';
 import Breadcrumb from '@components/Breadcrumb';
-import MoonIcon from '@components/svg/MoonIcon';
-import SunIcon from '@components/svg/SunIcon';
-import { useContext, useState } from 'react';
+import ThemeToggleButton from '@components/ThemeToggle';
+import { useContext } from 'react';
 
 function HeaderApp() {
-	const [isDarkMode, setIsDarkMode] = useState(false);
 	const authContext = useContext(AuthContext);
 
-	function toggleDarkMode() {
-		setIsDarkMode(!isDarkMode);
-		document.documentElement.classList.toggle('dark');
-	}
 	return (
 		<header>
 			<h2>
@@ -30,9 +24,7 @@ function HeaderApp() {
 				<p>
 					{authContext?.user?.name} <span>({authContext?.user?.roles})</span>
 				</p>
-				<button onClick={toggleDarkMode}>
-					{isDarkMode ? <SunIcon /> : <MoonIcon />}
-				</button>
+				<ThemeToggleButton />
 			</div>
 		</header>
 	);

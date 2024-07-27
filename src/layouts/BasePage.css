@@ -22,8 +22,8 @@
 }
 
 .sidebar .title img {
-	margin-right: 0.5rem;
-	width: 4rem;
+	margin-left: 0.5rem;
+	width: 5rem;
 }
 
 .sidebar .title h1 {
@@ -200,7 +200,7 @@ header {
 }
 .content main .options .card dl dt {
 	overflow: hidden;
-	color: #ffffff;
+	color: var(--text-primary);
 	font-weight: lighter;
 
 	font-size: 1.5rem;
@@ -261,10 +261,10 @@ form button {
 	background-color: var(--accent-primary);
 	padding: 0.5rem 1rem;
 	padding: 15px;
-	color: white;
+	color: var(--button-text);
 }
 form label {
-	color: white;
+	color: var(--text-primary);
 }
 form select {
 	margin: 0;
@@ -293,8 +293,8 @@ form {
 	color: var(--input-text);
 }
 .listtitle {
-	border-bottom: 1px solid white;
-	color: white;
+	border-bottom: 1px solid var(--text-primary);
+	color: var(--text-primary);
 }
 button {
 	border: 0px;

@@ -5,7 +5,7 @@
 	--bg-tertiary: #102e47;
 
 	--text-primary: #ffffff;
-	--text-secondary: #b0b0b0;
+	--text-secondary: #95a5a6;
 
 	/* Colores de acento y enlaces */
 	--link: #ffffff;
@@ -39,7 +39,172 @@
 
 	--add: #115a37;
 }
+.dark-theme {
+	/* Colores principales */
+	--bg-primary: #092b48;
+	--bg-secondary: #010c18;
+	--bg-tertiary: #102e47;
 
+	--text-primary: #ffffff;
+	--text-secondary: #95a5a6;
+
+	/* Colores de acento y enlaces */
+	--link: #ffffff;
+	--accent-primary: #056db4;
+	--accent-secondary: #093f63;
+
+	/* Colores para bordes y divisores */
+	--border: #2a3f5f;
+	--divider: #34495e;
+
+	/* Colores de estado */
+	--success: #1d794c;
+	--error: #d12e2ea6;
+	--warning: #f39c12;
+	--info: #3498db;
+
+	/* Colores de interacción */
+	--hover: #0c3d66;
+	--focus: #1a5f8d;
+	--active: #0e4a7c;
+	/*var(--menu-bg)*/
+	/* Colores adicionales */
+	--menu-bg: #19181a;
+	--card-bg: #041425;
+	--input-bg: #0c1c2c;
+	--input-text: #fff;
+	--button-text: #ffffff;
+	--disabled: #5a6d7e;
+	--placeholder: #6c7a89;
+	--neutral: #34495e;
+
+	--add: #115a37;
+}
+/* Light Theme */
+.light-theme {
+	--bg-primary: #fafafa; /* Very light grey */
+	--bg-secondary: #ffff; /* White */
+	--bg-tertiary: #f0f0f0; /* Light grey */
+
+	--text-primary: #202020; /* Dark grey, softer than black */
+	--text-secondary: #555555; /* Medium grey */
+
+	--link: #0066cc; /* Softer blue */
+	--accent-primary: #0099ff; /* Lighter blue */
+	--accent-secondary: #0066cc; /* Slightly darker blue */
+
+	--border: #dddddd; /* Light grey border */
+	--divider: #e0e0e0; /* Light grey for dividers */
+
+	--success: #4caf50; /* Green, unchanged */
+	--error: #f44336; /* Red, unchanged */
+	--warning: #ff9800; /* Orange, unchanged */
+	--info: #2196f3; /* Blue, unchanged */
+
+	--hover: #f0f0f0; /* Slightly darker background on hover */
+	--focus: #cce5ff; /* Soft blue focus */
+	--active: #b3d1ff; /* Light blue for active state */
+
+	--menu-bg: #2064a4; /* Very light blue-grey for menu background */
+	--card-bg: #e0e3e6; /* White background for cards */
+	--input-bg: #ffffff; /* White background for inputs */
+	--input-text: #333333; /* Dark grey for input text */
+	--button-text: #ffffff; /* White text on buttons */
+	--disabled: #d0d0d0; /* Light grey for disabled elements */
+	--placeholder: #a0a0a0; /* Grey placeholder text */
+	--neutral: #a0a0a0; /* Soft grey for neutral elements */
+
+	--add: #4caf50; /* Green for add actions */
+}
+.storm-light-theme {
+	--bg-primary: #f9f9f9; /* Lightest grey for the background */
+	--bg-secondary: #ffffff; /* White for contrast */
+	--bg-tertiary: #f0f4f8; /* Very light blue-grey for a subtle layer */
+
+	--text-primary: #333333; /* Dark grey for readable text */
+	--text-secondary: #666666; /* Medium grey for secondary text */
+
+	--link: #1e90ff; /* Bright blue for links */
+	--accent-primary: #4787ff; /* Tomato red for accents */
+	--accent-secondary: #7a7cff; /* Light salmon for additional accents */
+
+	--border: #dcdcdc; /* Soft grey for borders */
+	--divider: #e5e5e5; /* Slightly darker grey for dividers */
+
+	--success: #4caf50; /* Fresh green for success messages */
+	--error: #f44336; /* Vibrant red for errors */
+	--warning: #ff9800; /* Bright orange for warnings */
+	--info: #2196f3; /* Bright blue for informational messages */
+
+	--hover: #f0f8ff; /* Very light blue background on hover */
+	--focus: #b0e57c; /* Soft green focus for accessibility */
+	--active: #ffd700; /* Golden yellow for active states */
+
+	--menu-bg: #516ca7; /* Wheat color for a warm menu background */
+	--card-bg: #d2d5e6; /* Floral white for cards */
+	--input-bg: #ffffff; /* White background for inputs */
+	--input-text: #333333; /* Dark grey for input text */
+	--button-text: #ffffff; /* White text on buttons */
+	--disabled: #e0e0e0; /* Light grey for disabled elements */
+	--placeholder: #a0a0a0; /* Grey placeholder text */
+	--neutral: #919191; /* Soft grey for neutral elements */
+
+	--add: #4caf50; /* Fresh green for add actions */
+}
+.storm-light-theme .sidebar .title h1 {
+	color: var(--text-primary);
+}
+.dark-blue-theme {
+	--bg-primary: #0a0a0a; /* Very dark grey for the main background */
+	--bg-secondary: #1a1a1a; /* Dark grey for secondary backgrounds */
+	--bg-tertiary: #2a2a2a; /* Slightly lighter grey for additional layers */
+
+	--text-primary: #e0e0e0; /* Light grey for primary text */
+	--text-secondary: #b0b0b0; /* Medium grey for secondary text */
+
+	--link: #4a90e2; /* Soft blue for links */
+	--accent-primary: #007acc; /* Strong blue for primary accents */
+	--accent-secondary: #005b99; /* Darker blue for secondary accents */
+
+	--border: #333333; /* Dark grey for borders */
+	--divider: #444444; /* Slightly lighter grey for dividers */
+
+	--success: #4caf50; /* Green for success messages */
+	--error: #f44336; /* Red for errors */
+	--warning: #ff9800; /* Orange for warnings */
+	--info: #2196f3; /* Blue for informational messages */
+
+	--hover: #1c1c1c; /* Dark grey background on hover */
+	--focus: #003f6c; /* Deep blue for focus states */
+	--active: #0056a3; /* Stronger blue for active states */
+
+	--menu-bg: #121212; /* Very dark grey for menu background */
+	--card-bg: #1e1e1e; /* Darker grey for cards */
+	--input-bg: #0a0a0a; /* Very dark grey for inputs */
+	--input-text: #e0e0e0; /* Light grey for input text */
+	--button-text: #ffffff; /* White text on buttons */
+	--disabled: #666666; /* Grey for disabled elements */
+	--placeholder: #888888; /* Grey for placeholder text */
+	--neutral: #444444; /* Dark grey for neutral elements */
+
+	--add: #4caf50; /* Green for add actions */
+}
+/* Soft Blueish Light Theme */
+
+.storm-light-theme .sidebar .title img {
+	filter: invert(21%) sepia(1%) saturate(0%) hue-rotate(172deg) brightness(20%)
+		contrast(93%);
+}
+.light-theme .sidebar .title img {
+	filter: invert(21%) sepia(2%) saturate(0%) hue-rotate(172deg) brightness(10%)
+		contrast(93%);
+}
+.light-theme .sidebar .title h1 {
+	color: var(--text-primary);
+}
+.content .userinfo button svg {
+	color: var(--text-primary);
+}
 /* Estilos base */
 body {
 	margin: 0;

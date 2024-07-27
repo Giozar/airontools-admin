@@ -60,7 +60,7 @@
 .editable .edit {
 	margin: 0;
 	background-color: var(--neutral);
-	color: #ecf0f1;
+	color: var(--button-text);
 }
 
 .editable .edit:hover {
