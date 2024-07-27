@@ -1,9 +1,7 @@
 /* Estilos generales */
 .mainPage {
 	display: flex;
-	background-color: #ffffff;
 	height: 100vh;
-	color: #040b16;
 }
 
 /* Estilos de la barra lateral */
@@ -11,7 +9,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	background-color: #18181b;
+	background-color: var(--menu-bg);
 	padding: 1.5rem;
 	width: 16rem;
 	font-size: medium;
@@ -29,7 +27,7 @@
 }
 
 .sidebar .title h1 {
-	color: #046db5;
+	color: var(--accent-primary);
 	font-weight: bold;
 	font-size: 1.25rem;
 }
@@ -40,7 +38,7 @@
 	align-items: center;
 	border-radius: 0.25rem;
 	padding: 0.5rem;
-	color: #f3f4f6;
+	color: var(--text-primary);
 	text-decoration: none;
 }
 .sidebar a svg {
@@ -49,12 +47,12 @@
 
 .sidebar a:hover,
 .sidebar .comboboxOptions li span:hover {
-	background-color: #f3f4f6;
+	background-color: var(--text-primary);
 	color: black;
 }
 
 .sidebar .combobox {
-	color: #f3f4f6;
+	color: var(--text-primary);
 	font-size: 1rem;
 }
 
@@ -72,7 +70,7 @@
 }
 
 .combobox:hover {
-	background-color: #f3f4f6;
+	background-color: var(--text-primary);
 	color: black;
 }
 
@@ -111,8 +109,8 @@ header {
 	top: 0;
 	align-items: center;
 	z-index: 100;
-	background-color: #18181b;
-	color: #f3f4f6;
+	background-color: var(--menu-bg);
+	color: var(--text-primary);
 }
 
 .content header {
@@ -135,7 +133,7 @@ header {
 	background-position: center center;
 	background-size: cover;
 	background-repeat: no-repeat;
-	background-color: #046db5;
+	background-color: var(--accent-primary);
 	width: 2rem;
 	height: 2rem;
 	object-fit: cover;
@@ -156,12 +154,8 @@ header {
 	padding: 0.5rem;
 }
 
-.content .userinfo button:hover {
-	background-color: cornflowerblue;
-}
-
 .content main {
-	background-color: #092b48;
+	background-color: var(--bg-primary);
 	padding: 1.5rem;
 	min-height: 100vh;
 }
@@ -177,20 +171,20 @@ header {
 .content main .options .card {
 	display: flex;
 	flex-direction: column;
-	transition: background-color 200ms ease-in-out;
+	transition: opacity 200ms ease-in-out;
 	box-shadow:
 		0 1px 3px 0 rgba(0, 0, 0, 0.1),
 		0 1px 2px 0 rgba(0, 0, 0, 0.06);
 	border: 0px;
 	border-radius: 0.5rem;
-	background-color: #046db5;
+	background-color: var(--accent-primary);
 	padding: 2em;
 	overflow: hidden;
 	text-align: center;
 }
 
 .content main .options .card:hover {
-	background-color: #046eb57c;
+	opacity: 0.5;
 }
 
 .content main .options .card svg {
@@ -198,7 +192,7 @@ header {
 	margin: 1rem 0;
 	width: 6rem;
 	height: 6rem;
-	color: #092b48;
+	color: var(--bg-primary);
 	text-align: center;
 }
 .content main .options .card dl {
@@ -241,19 +235,20 @@ form input {
 	margin-bottom: 1rem;
 	border: 0px;
 	border-radius: 10px;
-	background-color: white;
+	background-color: var(--input-bg);
 	padding: 0.5rem;
 	padding: 10px;
-	color: black;
+	color: var(--input-text);
 }
 form textarea {
 	margin-bottom: 1rem;
+	border: 0px;
 	border-radius: 10px;
-	background-color: white;
+	background-color: var(--input-bg);
 	padding: 0.5rem;
 	padding: 10px;
 	height: 5rem;
-	color: black;
+	color: var(--input-text);
 }
 
 form button {
@@ -263,8 +258,7 @@ form button {
 	border-bottom: 4px #093f63 solid;
 	border-radius: 4px;
 	border-radius: 15px;
-	background-color: #007bff;
-	background-color: #046db5;
+	background-color: var(--accent-primary);
 	padding: 0.5rem 1rem;
 	padding: 15px;
 	color: white;
@@ -276,14 +270,14 @@ form select {
 	margin: 0;
 	border: 0px;
 	border-radius: 15px;
-	background-color: #046db5;
+	background-color: var(--accent-primary);
 	padding: 10px;
 }
 
 form select option {
 	opacity: 0.7;
 	border-bottom: 1px #093f63 solid;
-	background-color: #046db5;
+	background-color: var(--accent-primary);
 	padding: 5px;
 }
 form {
@@ -294,9 +288,9 @@ form {
 .search {
 	border: 0px;
 	border-radius: 10px;
-	background-color: aliceblue;
+	background-color: var(--input-bg);
 	padding: 10px;
-	color: #102e42;
+	color: var(--input-text);
 }
 .listtitle {
 	border-bottom: 1px solid white;

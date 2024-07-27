@@ -1,17 +1,17 @@
 .choserol {
 	border-radius: 10px;
-	background-color: #03121d;
+	background-color: var(--card-bg);
 	padding: 50px;
 	width: fit-content;
 }
 .choserol select {
 	margin: 5px 0;
 	border-radius: 10px;
-	background-color: white;
+	background-color: var(--text-primary);
 	padding: 5px;
-	color: #03121d;
+	color: var(--card-bg);
 }
 .choserol button {
-	background-color: #007bff;
+	background-color: var(--accent-primary);
 	padding: 10px;
 }

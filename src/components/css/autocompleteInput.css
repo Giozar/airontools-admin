@@ -1,9 +1,8 @@
-/* Dark mode styles */
 .autocomplete {
 	margin-bottom: -20px;
-	background-color: #041425;
+	background-color: var(--card-bg);
 	padding: 20px;
-	color: #ffffff;
+	color: var(--text-primary);
 }
 .autocomplete-input {
 	position: relative;
@@ -16,27 +15,25 @@
 .autocomplete-input label {
 	display: block;
 	margin-bottom: 0.5rem;
-	color: #34495e;
+	color: var(--neutral);
 }
 
 .autocomplete-input input {
-	border: 1px solid #092b48;
+	border: 1px solid var(--bg-primary);
 	border-radius: 4px;
-	background-color: #0c1c2c;
 	padding: 0.75rem;
 	width: 100%;
-	color: #ffffff;
 	font-size: 1rem;
 }
 
 .autocomplete-input input::placeholder {
-	color: #34495e;
+	color: var(--neutral);
 }
 
 .autocomplete-input input:focus {
 	outline: none;
 	box-shadow: 0 0 0 2px rgba(52, 73, 94, 0.2);
-	border-color: #34495e;
+	border-color: var(--neutral);
 }
 
 .options-container {
@@ -45,10 +42,10 @@
 	left: 0;
 	z-index: 10;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	border: 1px solid #092b48;
+	border: 1px solid var(--bg-primary);
 	border-top: none;
 	border-radius: 0 0 4px 4px;
-	background-color: #0c1c2c;
+	background-color: var(--input-bg);
 	width: 100%;
 	max-height: 200px;
 	overflow-y: auto;
@@ -61,7 +58,7 @@
 }
 
 .option-item:hover {
-	background-color: #092b48;
+	background-color: var(--bg-primary);
 }
 
 /* Scrollbar styles for WebKit browsers */
@@ -75,9 +72,9 @@
 
 .options-container::-webkit-scrollbar-thumb {
 	border-radius: 4px;
-	background-color: #34495e;
+	background-color: var(--neutral);
 }
 
 .options-container::-webkit-scrollbar-thumb:hover {
-	background-color: #41586e;
+	background-color: var(--neutral);
 }

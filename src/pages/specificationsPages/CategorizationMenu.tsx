@@ -251,6 +251,10 @@ function ContentMainPage() {
 						title='Crear Especificaciones'
 						path={location.pathname + '/crear-especificaciones'}
 					/>
+					<ActionCard
+						title='Ver Especificaciones'
+						path={location.pathname + '/ver-especificaciones'}
+					/>
 				</div>
 				<ListofFamilies />
 			</main>

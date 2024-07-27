@@ -1,0 +1,58 @@
+.container {
+	margin: 0 auto;
+	background-color: var(--bg-secondary);
+	padding: 20px;
+
+	color: #ffffff;
+}
+h1 {
+	color: var(--neutral);
+	text-align: center;
+}
+.specifications-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 20px;
+}
+.specification-card {
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	background-color: var(--card-bg);
+	padding: 15px;
+}
+.spec-name {
+	margin-bottom: 10px;
+	color: #3498db;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+.spec-description {
+	margin-bottom: 10px;
+	font-style: italic;
+}
+.spec-unit {
+	margin-bottom: 10px;
+	color: #95a5a6;
+	font-size: 0.9em;
+}
+.spec-metadata {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	color: var(--neutral);
+	font-size: 0.8em;
+}
+.meta-tag {
+	border-radius: 4px;
+	background-color: var(--bg-primary);
+	padding: 3px 6px;
+}
+.search-bar {
+	margin-bottom: 20px;
+}
+.search-bar input {
+	border: none;
+	border-radius: 4px;
+	padding: 10px;
+	width: 100%;
+}

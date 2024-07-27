@@ -8,7 +8,7 @@
 	border-radius: 8px;
 	padding: 1rem;
 	max-width: 400px;
-	color: white;
+	color: var(--text-primary);
 }
 
 .create-role-form h2 {
@@ -18,7 +18,7 @@
 .create-role-form label {
 	display: block;
 	margin-bottom: 0.5rem;
-	color: white;
+	color: var(--text-primary);
 	font-weight: bold;
 }
 
@@ -44,7 +44,7 @@
 	color: green;
 }
 .role-list h2 {
-	color: white;
+	color: var(--text-primary);
 }
 .role-list ul {
 	list-style-type: none;
@@ -54,23 +54,26 @@
 }
 .role-list ul li button {
 	margin-left: 50%;
-	border: 0px;
+	border-bottom: 2px solid var(--bg-secondary);
 	border-radius: 10px;
-	background-color: #031724;
+	background-color: var(--accent-secondary);
 	padding: 10px;
 }
 .role-list ul li .combobox {
 	margin: 10px 0;
-	background-color: #093f63;
+
 	font-size: 1.1rem;
 }
 .role-list ul li .combobox:hover {
-	color: white;
+	background-color: var(--bg-tertiary);
+	color: var(--text-primary);
 }
 
 .role-list ul li .comboboxOptions {
 	margin-top: -10px;
+	margin-bottom: 10px;
+	border-bottom: 2px solid var(--bg-secondary);
 	border-radius: 10px;
-	background-color: #093f63;
-	padding-bottom: 20px;
+	background-color: var(--accent-secondary);
+	padding: 0 20px;
 }

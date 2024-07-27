@@ -8,7 +8,7 @@
 	animation: slideIn 0.3s ease-out;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
-	background-color: #2ed136a6;
+	background-color: var(--success);
 	padding: 12px 20px;
 	color: #ffffff;
 }

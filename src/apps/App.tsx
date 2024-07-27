@@ -19,6 +19,7 @@ import CategorizationMenu from '@pages/specificationsPages/CategorizationMenu';
 import CreateFamily from '@pages/specificationsPages/CreateFamily';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditFamily from '@pages/specificationsPages/EditFamily';
+import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 
 interface AuthContextType {
@@ -82,6 +83,10 @@ function App() {
 									<Route
 										path='/home/categorizacion/crear-especificaciones'
 										element={<CreateSpecification />}
+									/>
+									<Route
+										path='/home/categorizacion/ver-especificaciones'
+										element={<ListOfSpecs />}
 									/>
 								</Route>
 							</Route>

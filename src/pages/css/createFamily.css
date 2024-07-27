@@ -6,7 +6,7 @@
 	width: 60%;
 }
 .createfamilyform form h2 {
-	color: white;
+	color: var(--text-primary);
 }
 .categories {
 	display: flex;
@@ -30,7 +30,6 @@
 	margin-top: 0;
 	margin: 5px;
 	border-color: rgb(20, 58, 11);
-	background-color: rgba(42, 165, 79, 0.637);
 	padding: 10px;
 	width: fit-content;
 }

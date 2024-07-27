@@ -1,16 +1,16 @@
 /* Estilos para el contenedor de especificaciones */
 #specifications {
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	background-color: #0c1c2c;
+	background-color: var(--input-bg);
 	padding: 20px;
 }
 
 /* Estilos para cada especificación individual */
 .especificacion {
 	margin-bottom: 20px;
-	border: 1px solid #092b48;
+	border: 1px solid var(--bg-primary);
 	border-radius: 6px;
-	background-color: #041425;
+	background-color: var(--card-bg);
 	padding: 15px;
 }
 
@@ -18,7 +18,7 @@
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 10px;
-	color: #34495e;
+	color: var(--neutral);
 	font-size: 18px;
 }
 .especificacion p .delete {
@@ -36,24 +36,22 @@
 
 .form-group input,
 .form-group textarea {
-	border: 1px solid #092b48;
+	border: 1px solid var(--bg-primary);
 	border-radius: 4px;
-	background-color: #0c1c2c;
 	padding: 10px;
-	color: #ffffff;
 	font-size: 14px;
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-	color: #34495e;
+	color: var(--neutral);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
 	outline: none;
 	box-shadow: 0 0 0 2px rgba(52, 73, 94, 0.2);
-	border-color: #34495e;
+	border-color: var(--neutral);
 }
 
 .form-group textarea {
@@ -72,14 +70,13 @@
 }
 #specifications button:not(.save):not(.delete) {
 	margin-right: 10px;
-	background-color: #34495e;
-	color: #ffffff;
+	background-color: var(--neutral);
 }
 
 #specifications button:not(.save):not(.delete):hover {
-	background-color: #2c3e50;
+	opacity: 0.7;
 }
 
 #unit {
-	width: 20%;
+	width: fit-content;
 }

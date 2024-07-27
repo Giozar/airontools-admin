@@ -3,7 +3,7 @@
 	grid-template-columns: repeat(2, 1fr);
 	gap: 1rem;
 	padding: 20px;
-	color: white;
+	color: var(--text-primary);
 	list-style-type: none;
 }
 
@@ -16,7 +16,7 @@
 .family {
 	margin: 10px 0;
 	border-radius: 8px;
-	background-color: #041524;
+	background-color: var(--card-bg);
 	padding: 20px;
 	color: #e0e0e0;
 	text-transform: capitalize;
@@ -41,17 +41,13 @@
 	color: #3498db;
 }
 
-.family .buttons .delete {
+.family > .buttons .delete {
 	color: #e74c3c;
-}
-
-.family .buttons button:hover {
-	background-color: rgba(255, 255, 255, 0.1);
 }
 
 .family h2 {
 	margin-bottom: 0;
-	color: #828a94;
+	color: var(--text-secondary);
 	font-size: 1.5em;
 }
 
@@ -72,7 +68,7 @@
 
 .family p {
 	margin: 0 0 10px 0;
-	color: #828a94;
+	color: var(--text-secondary);
 }
 
 .family ul {
@@ -84,7 +80,7 @@
 .family ul li {
 	position: relative;
 	margin-bottom: 5px;
-	color: #828a94;
+	color: var(--text-secondary);
 }
 
 .family ul li::before {
