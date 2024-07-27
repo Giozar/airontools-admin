@@ -1,25 +1,26 @@
 import { SpecsFrontend } from '@adapters/specifications.adapter';
 import '@components/css/createSpecs.css';
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import { CreateSpecsProps } from '@interfaces/CreateSpecsProps';
 import createSpecification from '@services/specifications/createSpecification.service';
+import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect, useState } from 'react';
+import ErrorMessage from './ErrorMessage';
 function CreateSpecs({
 	familyId,
 	categoryId,
 	subcategoryId,
-}: {
-	familyId: string;
-	categoryId: string;
-	subcategoryId?: string;
-}) {
+}: CreateSpecsProps) {
 	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
 	const [specificationsCounter, setSpecificationsCounter] = useState<number>(0);
+	const { showError, errorLog } = useErrorHandling();
 	useEffect(() => {
 		setSpecifications([
 			{
 				name: '',
 				description: '',
 				unit: '',
-				createdBy: 'El usuario',
+				createdBy: '',
 				path: '',
 				familyId,
 				categoryId,
@@ -37,7 +38,7 @@ function CreateSpecs({
 				name: '',
 				description: '',
 				unit: '',
-				createdBy: 'El usuario',
+				createdBy: '',
 				path: '',
 				familyId,
 				categoryId,
@@ -64,22 +65,17 @@ function CreateSpecs({
 	};
 
 	const saveSpecifications = async () => {
-		// Usar SpecsMappingBack
-		const datos = {
-			familyId,
-			categoryId,
-			subcategoryId,
-			specifications,
-			createdBy: 'El usuario',
-		};
-		console.log(JSON.stringify(datos));
-		alert('Especificaciones guardadas. Revisa la consola para ver los datos.');
 		for (const specification of specifications) {
-			await createSpecification({ specification });
+			try {
+				await createSpecification({ specification });
+			} catch (error) {
+				errorHandler(error, showError);
+			}
 		}
 	};
 	return (
 		<div id='specifications'>
+			{<ErrorMessage message={errorLog.message} />}
 			{specifications.map((spec, index) => (
 				<div
 					key={index}

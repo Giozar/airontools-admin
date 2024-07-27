@@ -8,4 +8,4 @@ export interface Specification {
 	createdBy?: string;
 	updatedBy?: string;
 }
-export interface SpecificationSuccesResponse {}
+export interface SpecificationSuccessResponse {}
