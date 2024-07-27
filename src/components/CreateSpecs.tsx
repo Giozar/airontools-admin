@@ -1,11 +1,12 @@
 import { SpecsFrontend } from '@adapters/specifications.adapter';
+import { AuthContext } from '@apps/App';
 import '@components/css/createSpecs.css';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { CreateSpecsProps } from '@interfaces/CreateSpecsProps';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { errorHandler } from '@utils/errorHandler.util';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ErrorMessage from './ErrorMessage';
 import SuccessMessage from './SuccessMessage';
 function CreateSpecs({
@@ -16,6 +17,8 @@ function CreateSpecs({
 	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
 	const [specificationsCounter, setSpecificationsCounter] = useState<number>(0);
 	const { showError, errorLog } = useErrorHandling();
+	const authContext = useContext(AuthContext);
+	const createdBy = authContext?.user?.name || 'user';
 	const { showSuccess, successLog } = useSuccessHandling();
 	useEffect(() => {
 		setSpecifications([
@@ -23,7 +26,7 @@ function CreateSpecs({
 				name: '',
 				description: '',
 				unit: '',
-				createdBy: '',
+				createdBy,
 				path: '',
 				familyId,
 				categoryId,
@@ -41,7 +44,7 @@ function CreateSpecs({
 				name: '',
 				description: '',
 				unit: '',
-				createdBy: '',
+				createdBy,
 				path: '',
 				familyId,
 				categoryId,
