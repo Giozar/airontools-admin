@@ -1,10 +1,11 @@
 import { SpecsFrontend } from '@adapters/specifications.adapter';
+import { AuthContext } from '@apps/App';
 import '@components/css/createSpecs.css';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import { CreateSpecsProps } from '@interfaces/CreateSpecsProps';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { errorHandler } from '@utils/errorHandler.util';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ErrorMessage from './ErrorMessage';
 function CreateSpecs({
 	familyId,
@@ -14,13 +15,15 @@ function CreateSpecs({
 	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
 	const [specificationsCounter, setSpecificationsCounter] = useState<number>(0);
 	const { showError, errorLog } = useErrorHandling();
+	const authContext = useContext(AuthContext);
+	const createdBy = authContext?.user?.name || 'user';
 	useEffect(() => {
 		setSpecifications([
 			{
 				name: '',
 				description: '',
 				unit: '',
-				createdBy: '',
+				createdBy,
 				path: '',
 				familyId,
 				categoryId,
@@ -38,7 +41,7 @@ function CreateSpecs({
 				name: '',
 				description: '',
 				unit: '',
-				createdBy: '',
+				createdBy,
 				path: '',
 				familyId,
 				categoryId,
