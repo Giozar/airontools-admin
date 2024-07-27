@@ -2,11 +2,13 @@ import { SpecsFrontend } from '@adapters/specifications.adapter';
 import { AuthContext } from '@apps/App';
 import '@components/css/createSpecs.css';
 import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { CreateSpecsProps } from '@interfaces/CreateSpecsProps';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useContext, useEffect, useState } from 'react';
 import ErrorMessage from './ErrorMessage';
+import SuccessMessage from './SuccessMessage';
 function CreateSpecs({
 	familyId,
 	categoryId,
@@ -17,6 +19,7 @@ function CreateSpecs({
 	const { showError, errorLog } = useErrorHandling();
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
+	const { showSuccess, successLog } = useSuccessHandling();
 	useEffect(() => {
 		setSpecifications([
 			{
@@ -71,6 +74,7 @@ function CreateSpecs({
 		for (const specification of specifications) {
 			try {
 				await createSpecification({ specification });
+				showSuccess('Especificación creado con éxito');
 			} catch (error) {
 				errorHandler(error, showError);
 			}
@@ -79,6 +83,7 @@ function CreateSpecs({
 	return (
 		<div id='specifications'>
 			{<ErrorMessage message={errorLog.message} />}
+			{<SuccessMessage message={successLog.message} />}
 			{specifications.map((spec, index) => (
 				<div
 					key={index}
