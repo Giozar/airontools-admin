@@ -6,12 +6,16 @@ interface SuccessMessageProps {
 }
 function SuccessMessage(success: SuccessMessageProps) {
 	return (
-		<p className='successMessage'>
-			<div className='success-icon'>
-				<CheckIcon />
-			</div>
-			{success.message}
-		</p>
+		<div>
+			{success.message && (
+				<div className='successMessage'>
+					<div className='success-icon'>
+						<CheckIcon />
+					</div>
+					<p>{success.message}</p>
+				</div>
+			)}
+		</div>
 	);
 }
 
