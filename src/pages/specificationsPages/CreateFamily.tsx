@@ -65,6 +65,10 @@ function CreateFamilyForm() {
 			.then(createdSubcategories => {
 				console.log('Created subcategories:', createdSubcategories);
 			})
+			.then(() => {
+				setName('');
+				setDescription('');
+			})
 			.catch(error => {
 				console.error('Error:', error);
 			});
@@ -179,7 +183,6 @@ function CreateFamilyForm() {
 					placeholder='Introduce la descripción de la familia'
 					value={description}
 					onChange={e => setDescription(e.target.value)}
-					required
 				/>
 				<label htmlFor='addCategory'>Categorías:</label>
 
