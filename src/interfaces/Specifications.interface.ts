@@ -1,4 +1,5 @@
 export interface Specification {
+	id_: string;
 	name: string;
 	description?: string;
 	units?: string;

@@ -4,7 +4,7 @@ import {
 } from '@interfaces/Specifications.interface';
 import axios from 'axios';
 
-export default async function createSpecification({
+export default async function editSpecification({
 	specification,
 	id,
 }: {

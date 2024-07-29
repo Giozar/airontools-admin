@@ -20,7 +20,11 @@ function CreateSpecs({
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
 	const { showSuccess, successLog } = useSuccessHandling();
+	const authContext = useContext(AuthContext);
+	const createdBy = authContext?.user?.name || 'user';
+
 	useEffect(() => {
+		console.log(subcategoryId);
 		setSpecifications([
 			{
 				name: '',

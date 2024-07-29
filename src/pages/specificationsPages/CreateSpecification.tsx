@@ -96,11 +96,19 @@ function FamilySpecifications() {
 					/>
 				)}
 			</div>
-			{selectedCategory && (
+			{/* Se tiene que repetir para evitar el bug de que no se guarden las subcategorias */}
+			{selectedFamily && selectedCategory && selectedSubcategory && (
 				<CreateSpecs
-					familyId={selectedFamily || ''}
-					categoryId={selectedCategory || ''}
-					subcategoryId={selectedSubcategory || ''}
+					familyId={selectedFamily}
+					categoryId={selectedCategory}
+					subcategoryId={selectedSubcategory}
+				/>
+			)}
+			{selectedFamily && selectedCategory && !selectedSubcategory && (
+				<CreateSpecs
+					familyId={selectedFamily}
+					categoryId={selectedCategory}
+					subcategoryId={selectedSubcategory}
 				/>
 			)}
 		</>
