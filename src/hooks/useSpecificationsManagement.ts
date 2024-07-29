@@ -16,6 +16,7 @@ const useSpecificationsManagement = () => {
 	const handleEdit = (spec: SpecsFrontend) => {
 		localStorage.setItem('specToEdit', JSON.stringify(spec));
 		navigate(location.pathname + `/editar-especificacion`);
+		console.log(JSON.stringify(spec));
 	};
 
 	const handleCloseModal = () => {
