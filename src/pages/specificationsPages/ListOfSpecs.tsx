@@ -2,11 +2,13 @@ import {
 	SpecsFrontend,
 	transformSpecsData,
 } from '@adapters/specifications.adapter';
+import DeletionModal from '@components/DeletionModal';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSpecificationsManagement from '@hooks/useSpecificationsManagement';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/listofspecs.css';
@@ -18,6 +20,14 @@ function SpecificationsGrid() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const { showError, errorLog } = useErrorHandling();
 	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleEdit,
+		handleCloseModal,
+		handleDelete,
+	} = useSpecificationsManagement();
 	useEffect(() => {
 		const fetchSpecifications = async () => {
 			try {
@@ -35,7 +45,9 @@ function SpecificationsGrid() {
 	const filteredSpecifications = specifications.filter(spec =>
 		spec.name.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
-
+	const handleCloseModalDeletion = (specId: string) => {
+		setSpecifications(specifications.filter(spec => spec.id !== specId));
+	};
 	return (
 		<div className='container'>
 			{<ErrorMessage message={errorLog.message} />}
@@ -52,10 +64,13 @@ function SpecificationsGrid() {
 				{filteredSpecifications.map((spec, index) => (
 					<div key={index} className='specification-card'>
 						<div className='buttons specs'>
-							<button className='edit'>
+							<button className='edit' onClick={() => handleEdit(spec)}>
 								<EditIcon />
 							</button>
-							<button className='delete'>
+							<button
+								className='delete'
+								onClick={() => setShowDeletionModalFor(spec.id || '')}
+							>
 								<TrashIcon />
 							</button>
 						</div>
@@ -76,6 +91,16 @@ function SpecificationsGrid() {
 								</span>
 							)}
 						</div>
+						{showDeletionModalFor === spec.id && (
+							<DeletionModal
+								id={spec.id}
+								name={spec.name}
+								onClose={() => handleCloseModal()}
+								onCloseDelete={() => handleCloseModalDeletion(spec.id || '')}
+								onDelete={() => handleDelete(spec.id || '', spec.name)}
+								message={deletionMessage}
+							/>
+						)}
 					</div>
 				))}
 			</div>
