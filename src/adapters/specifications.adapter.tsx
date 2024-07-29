@@ -1,5 +1,5 @@
 export interface SpecsBackend {
-	_id: string;
+	id_: string;
 	name: string;
 	description: string;
 	unit: string;

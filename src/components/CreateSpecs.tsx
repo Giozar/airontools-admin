@@ -1,4 +1,7 @@
-import { SpecsFrontend } from '@adapters/specifications.adapter';
+import {
+	SpecsFrontend,
+	transformSpecsDataBack,
+} from '@adapters/specifications.adapter';
 import { AuthContext } from '@apps/App';
 import '@components/css/createSpecs.css';
 import useErrorHandling from '@hooks/common/useErrorHandling';
@@ -20,8 +23,6 @@ function CreateSpecs({
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
 	const { showSuccess, successLog } = useSuccessHandling();
-	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
 
 	useEffect(() => {
 		console.log(subcategoryId);
@@ -77,7 +78,9 @@ function CreateSpecs({
 	const saveSpecifications = async () => {
 		for (const specification of specifications) {
 			try {
-				await createSpecification({ specification });
+				await createSpecification({
+					specification: transformSpecsDataBack(specification),
+				});
 				showSuccess('Especificación creado con éxito');
 			} catch (error) {
 				errorHandler(error, showError);
