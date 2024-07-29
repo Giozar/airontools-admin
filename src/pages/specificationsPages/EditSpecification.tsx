@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { SpecsBackend, SpecsFrontend } from '@adapters/specifications.adapter';
+import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
 
 import HeaderTitle from '@components/HeaderTitle';
@@ -7,11 +8,13 @@ import TrashIcon from '@components/svg/TrashIcon';
 import useFetchCategories from '@hooks/useFetchCategories';
 import useFetchFamilies from '@hooks/useFetchFamilies';
 import useFetchSubcategories from '@hooks/useFetchSubcategories';
+import useSpecificationsManagement from '@hooks/useSpecificationsManagement';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import axios from 'axios';
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 	const id = specToEdit.id;
@@ -92,13 +95,38 @@ function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 			console.error('Save failed:', error);
 		}
 	};
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleCloseModal,
+		handleDelete,
+	} = useSpecificationsManagement();
+
+	const navigate = useNavigate();
+	const handleCloseModalDeletion = () => {
+		navigate('/home/categorizacion/ver-especificaciones');
+	};
 	return (
 		<>
 			<div className='editspecification'>
 				<div className='familyedit'>
-					<button className='delete'>
+					<button
+						className='delete'
+						onClick={() => setShowDeletionModalFor(id || '')}
+					>
 						<TrashIcon />
 					</button>
+					{showDeletionModalFor === id && (
+						<DeletionModal
+							id={id}
+							name={name}
+							onClose={() => handleCloseModal()}
+							onCloseDelete={handleCloseModalDeletion}
+							onDelete={() => handleDelete(id || '', name)}
+							message={deletionMessage}
+						/>
+					)}
 					<h2>
 						<span>Editando la especificación</span> {name}
 					</h2>
