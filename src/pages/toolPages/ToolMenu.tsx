@@ -6,10 +6,10 @@ import {
 import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
 import HeaderTitle from '@components/HeaderTitle';
-import CloseIcon from '@components/svg/CloseIcon';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
+import ToolInfoModal from '@components/ToolInfoModal';
 import useProductManagement from '@hooks/useProductManagement';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
@@ -17,85 +17,6 @@ import '@pages/toolPages/ToolMenu.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-const Modal = ({
-	isOpen,
-	onClose,
-	product,
-}: {
-	isOpen: boolean;
-	onClose: () => void;
-	product: ProductFrontend | null;
-}) => {
-	if (!isOpen) return null;
-
-	return (
-		<div className='modal-overlay' onClick={onClose}>
-			<div className='modal-content'>
-				<button className='modal-close' onClick={onClose}>
-					<CloseIcon />
-				</button>
-				{product && (
-					<div>
-						<h1>{product.name}</h1>
-						<p>
-							<strong>Fotos:</strong> {product.imagesUrl}
-						</p>
-
-						<p>
-							<strong>Nombre:</strong> {product.name}
-						</p>
-						<p>
-							<strong>Modelo:</strong> {product.model}
-						</p>
-						<p>
-							<strong>Family ID:</strong> {product.familyId}
-						</p>
-						<p>
-							<strong>Category ID:</strong> {product.categoryId}
-						</p>
-						<p>
-							<strong>Subcategory ID:</strong> {product.subcategoryId || '---'}
-						</p>
-						<p>
-							<strong>Descripción:</strong> <br /> {product.description}
-						</p>
-
-						<div style={{ margin: '20px 0' }}>
-							<strong>Características:</strong>
-							<ul>
-								{product.characteristics.map(char => (
-									<li key={char}>{char}</li>
-								))}
-							</ul>
-						</div>
-
-						<div style={{ margin: '20px 0' }}>
-							<strong>Especificaciones:</strong>
-							<ul>
-								{product.specifications.length ? (
-									product.specifications.map((spec, index) =>
-										Object.entries(spec).map(([key, value]) => (
-											<li key={key + index}>
-												{key}: {value}
-											</li>
-										)),
-									)
-								) : (
-									<li>No hay especificaciones disponibles</li>
-								)}
-							</ul>
-						</div>
-
-						<p>
-							<strong>Creado por:</strong> {product.createdBy}
-						</p>
-						<button className='edit'>Editar</button>
-					</div>
-				)}
-			</div>
-		</div>
-	);
-};
 function ListOfTools() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [selectedProduct, setSelectedProduct] =
@@ -145,7 +66,7 @@ function ListOfTools() {
 				// }}
 				className='search'
 			/>
-			<Modal
+			<ToolInfoModal
 				isOpen={modalOpen}
 				onClose={() => setModalOpen(false)}
 				product={selectedProduct}

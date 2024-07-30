@@ -1,141 +1,15 @@
 import { AuthContext } from '@apps/App';
 import HeaderTitle from '@components/HeaderTitle';
 import TrashIcon from '@components/svg/TrashIcon';
+import useCharacteristics from '@hooks/useCharacteristics';
+import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
 import useVideos from '@hooks/useVideos';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/createtool.css';
-import uploadFile from '@services/fileUpload/fileUpload.service';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useContext, useState } from 'react';
-
-interface Item {
-	id: number;
-	value: string;
-}
-/* no hace nada por ahora useManuals en un futuro */
-function Manuals() {
-	const [manuals, setManuals] = useState<Item[]>([
-		{ id: Date.now(), value: '...ejemplo.pdf' },
-	]);
-	const addManual = () => {
-		setManuals([...manuals, { id: Date.now(), value: '' }]);
-	};
-
-	const removeManual = (id: number) => {
-		setManuals(manuals.filter(item => item.id !== id));
-	};
-
-	const updateManual = (id: number, value: string) => {
-		setManuals(
-			manuals.map(item => (item.id === id ? { ...item, value } : item)),
-		);
-	};
-	return (
-		<div className='file-upload'>
-			{manuals.map(manual => (
-				<div key={manual.id} className='manual-item'>
-					<input type='text' value={manual.value} readOnly />
-					<button type='button' onClick={() => updateManual(manual.id, '')}>
-						Subir manual
-					</button>
-					<button
-						type='button'
-						className='delete'
-						onClick={() => removeManual(manual.id)}
-					>
-						<TrashIcon />
-					</button>
-				</div>
-			))}
-			<button type='button' className='add' onClick={addManual}>
-				Añadir manual
-			</button>
-		</div>
-	);
-}
-
-const useCharacteristics = () => {
-	const [characteristics, setCharacteristics] = useState<Item[]>([
-		{ id: Date.now(), value: '' },
-	]);
-	const addCharacteristic = () => {
-		setCharacteristics([...characteristics, { id: Date.now(), value: '' }]);
-	};
-
-	const removeCharacteristic = (id: number) => {
-		setCharacteristics(characteristics.filter(item => item.id !== id));
-	};
-
-	const updateCharacteristic = (id: number, value: string) => {
-		setCharacteristics(
-			characteristics.map(item => (item.id === id ? { ...item, value } : item)),
-		);
-	};
-
-	return {
-		characteristics,
-		addCharacteristic,
-		removeCharacteristic,
-		updateCharacteristic,
-	};
-};
-
-const useMultipleFileUpload = () => {
-	const [files, setFiles] = useState<File[]>([]);
-	const [filePreviews, setFilePreviews] = useState<string[]>([]);
-	const [fileNames, setFileNames] = useState<string[]>([]);
-	const [uploadedFileUrls, setUploadedFileUrls] = useState<string[]>([]); // New state for uploaded file URLs
-
-	// Handle file selection
-	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
-		if (event.target.files && event.target.files.length > 0) {
-			const selectedFiles = Array.from(event.target.files);
-
-			// Generate previews and set state
-			const previews = selectedFiles.map(file => URL.createObjectURL(file));
-			const names = selectedFiles.map(file => file.name);
-
-			setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
-			setFilePreviews(prevPreviews => [...prevPreviews, ...previews]);
-			setFileNames(prevNames => [...prevNames, ...names]);
-		}
-	};
-
-	// Handle image removal
-	const handleRemoveImage = (index: number) => {
-		setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
-		setFilePreviews(prevPreviews => prevPreviews.filter((_, i) => i !== index));
-		setFileNames(prevNames => prevNames.filter((_, i) => i !== index));
-	};
-
-	// Handle file uploads
-	const handleFileUpload = async () => {
-		const urls: string[] = [];
-		for (const file of files) {
-			try {
-				const url = await uploadFile(file);
-				urls.push(url);
-			} catch (error) {
-				console.error('Failed to upload file:', file.name, error);
-			}
-		}
-		setUploadedFileUrls(urls);
-		console.log(urls);
-		return urls;
-	};
-
-	return {
-		files,
-		filePreviews,
-		fileNames,
-		uploadedFileUrls,
-		handleFileSelect,
-		handleRemoveImage,
-		handleFileUpload,
-	};
-};
 
 function ToolForm() {
 	const [toolName, setToolName] = useState<string>('Herramienta 1');
@@ -199,12 +73,11 @@ function ToolForm() {
 				createdBy,
 			};
 			console.log(createToolData);
-			// Send the form data
 			await axios.post(
 				import.meta.env.VITE_API_URL + '/products',
 				createToolData,
 			);
-			console.log('Tool created successfully!');
+			alert('Herramienta creada con exito!');
 		} catch (error) {
 			console.error('Error creating tool:', error);
 		}
@@ -362,7 +235,6 @@ function ToolForm() {
 			</div>
 
 			<label>Manuales</label>
-			<Manuals />
 
 			<label>Videos</label>
 			<div className='file-upload'>
