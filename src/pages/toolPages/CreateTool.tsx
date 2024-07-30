@@ -1,30 +1,108 @@
+import {
+	SpecsFrontend,
+	transformSpecsData,
+} from '@adapters/specifications.adapter';
 import HeaderTitle from '@components/HeaderTitle';
 import TrashIcon from '@components/svg/TrashIcon';
+import useFetchCategories from '@hooks/useFetchCategories';
+import useFetchFamilies from '@hooks/useFetchFamilies';
+import useFetchSubcategories from '@hooks/useFetchSubcategories';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/createtool.css';
-import { useState } from 'react';
+import { getSpecifications } from '@services/specifications/getSpecifications.service';
+import axios from 'axios';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+
 interface Item {
 	id: number;
 	value: string;
 }
-function Specs() {
-	return (
-		<>
-			{/* añadir componente que busque familia */}
-			<label>Especificaciones</label>
-			<div className='specifications'>
-				<div>
-					<label htmlFor='corona'>Corona</label>
-					<div className='input-container'>
-						<input type='number' id='corona' />
-						<span>ud.</span>
-					</div>
-				</div>
-			</div>
-		</>
-	);
-}
+const useSpecs = () => {
+	const { families } = useFetchFamilies();
+	const { categories, filteredCategories, setFilteredCategories } =
+		useFetchCategories();
+	const { subcategories, filteredSubcategories, setFilteredSubcategories } =
+		useFetchSubcategories();
+	const [selectedFamilyId, setSelectedFamilyId] = useState('');
+	const [selectedCategoryId, setSelectedCategoryId] = useState('');
+	const [selectedSubcategoryId, setSelectedSubcategoryId] = useState('');
+	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+	const [filteredSpecifications, setFilteredSpecifications] = useState<
+		SpecsFrontend[]
+	>([]);
+	const [specValues, setSpecValues] = useState<Record<string, string>>({});
+
+	useEffect(() => {
+		const fetchSpecifications = async () => {
+			try {
+				const specs = await getSpecifications();
+				setSpecifications(specs.map(transformSpecsData));
+				console.log(specs);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		fetchSpecifications();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const handleFamilyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+		const familyId = event.target.value;
+		setSelectedFamilyId(familyId);
+		const filteredCategories = categories.filter(
+			category => category.familyId === familyId,
+		);
+		setFilteredCategories(filteredCategories);
+	};
+	const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+		const categoryId = event.target.value;
+		setSelectedCategoryId(categoryId);
+		const filteredSubcategories = subcategories.filter(
+			subcategory => subcategory.categoryId === categoryId,
+		);
+		setFilteredSubcategories(filteredSubcategories);
+		const filteredSpecifications = specifications.filter(
+			spec => spec.categoryId === categoryId,
+		);
+		setFilteredSpecifications(filteredSpecifications);
+	};
+	const handleSubcategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+		const subcategoryId = event.target.value;
+		setSelectedSubcategoryId(subcategoryId);
+		if (subcategoryId !== '') {
+			setFilteredSpecifications(
+				specifications.filter(spec => spec.subcategoryId === subcategoryId),
+			);
+		} else {
+			setFilteredSpecifications(
+				specifications.filter(spec => spec.categoryId === selectedCategoryId),
+			);
+		}
+	};
+
+	const handleInputChange = (id: string, value: string) => {
+		setSpecValues(prevValues => ({
+			...prevValues,
+			[id]: value,
+		}));
+	};
+
+	return {
+		families,
+		filteredCategories,
+		filteredSubcategories,
+		selectedFamilyId,
+		selectedCategoryId,
+		selectedSubcategoryId,
+		filteredSpecifications,
+		specValues,
+		handleFamilyChange,
+		handleCategoryChange,
+		handleSubcategoryChange,
+		handleInputChange,
+	};
+};
 
 function Manuals() {
 	const [manuals, setManuals] = useState<Item[]>([
@@ -115,7 +193,8 @@ function Videos() {
 		</div>
 	);
 }
-function Characteristics() {
+
+const useCharacteristics = () => {
 	const [characteristics, setCharacteristics] = useState<Item[]>([
 		{ id: Date.now(), value: '' },
 	]);
@@ -133,38 +212,64 @@ function Characteristics() {
 			characteristics.map(item => (item.id === id ? { ...item, value } : item)),
 		);
 	};
-	return (
-		<div className='characteristics'>
-			{characteristics.map(char => (
-				<div key={char.id} className='characteristic-item'>
-					<input
-						type='text'
-						placeholder='Característica'
-						value={char.value}
-						onChange={e => updateCharacteristic(char.id, e.target.value)}
-					/>
-					<button
-						type='button'
-						className='delete'
-						onClick={() => removeCharacteristic(char.id)}
-					>
-						<TrashIcon />
-					</button>
-				</div>
-			))}
-			<button type='button' className='add' onClick={addCharacteristic}>
-				Añadir característica
-			</button>
-		</div>
-	);
-}
+
+	return {
+		characteristics,
+		addCharacteristic,
+		removeCharacteristic,
+		updateCharacteristic,
+	};
+};
+
 function ToolForm() {
 	const [toolName, setToolName] = useState<string>('Herramienta 1');
 	const [toolModel, setToolModel] = useState<string>('');
 	const [toolDescription, setToolDescription] = useState<string>('');
+	const {
+		characteristics,
+		addCharacteristic,
+		removeCharacteristic,
+		updateCharacteristic,
+	} = useCharacteristics();
+	const {
+		families,
+		filteredCategories,
+		filteredSubcategories,
+		selectedFamilyId,
+		selectedCategoryId,
+		selectedSubcategoryId,
+		filteredSpecifications,
+		specValues,
+		handleFamilyChange,
+		handleCategoryChange,
+		handleSubcategoryChange,
+		handleInputChange,
+	} = useSpecs();
+
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			const createToolData = {
+				name: toolName,
+				model: toolModel,
+				characteristics,
+				familyId: selectedFamilyId,
+				categoryId: selectedCategoryId,
+				subcategoryId: selectedSubcategoryId,
+				description: toolDescription,
+				specifications: specValues,
+			};
+			await axios.post(
+				import.meta.env.VITE_API_URL + `/products`,
+				createToolData,
+			);
+		} catch (error) {
+			console.error('Error creando herramienta:', error);
+		}
+	};
 
 	return (
-		<form className='createtoolform'>
+		<form className='createtoolform' onSubmit={handleSubmit}>
 			<div className='toolinfo'>
 				<div>
 					<label htmlFor='toolName'>Nombre de herramienta</label>
@@ -204,15 +309,102 @@ function ToolForm() {
 			/>
 
 			<label>Características</label>
-			<Characteristics />
+			<div className='characteristics'>
+				{characteristics.map(char => (
+					<div key={char.id} className='characteristic-item'>
+						<input
+							type='text'
+							placeholder='Característica'
+							value={char.value}
+							onChange={e => updateCharacteristic(char.id, e.target.value)}
+						/>
+						<button
+							type='button'
+							className='delete'
+							onClick={() => removeCharacteristic(char.id)}
+						>
+							<TrashIcon />
+						</button>
+					</div>
+				))}
+				<button type='button' className='add' onClick={addCharacteristic}>
+					Añadir característica
+				</button>
+			</div>
 
-			<Specs />
+			<div className='selectfamily'>
+				<label>Familia:</label>
+				<select onChange={handleFamilyChange}>
+					<option value=''>Selecciona una familia</option>
+					{families.map(family => (
+						<option key={family.id} value={family.id}>
+							{family.name}
+						</option>
+					))}
+				</select>
+
+				{filteredCategories.length > 0 && selectedFamilyId && (
+					<>
+						<label>Categorías:</label>
+						<select onChange={handleCategoryChange}>
+							<option value=''>Selecciona una categoría</option>
+							{filteredCategories.map(category => (
+								<option key={category.id} value={category.id}>
+									{category.name}
+								</option>
+							))}
+						</select>
+					</>
+				)}
+
+				{filteredSubcategories.length > 0 &&
+					selectedFamilyId &&
+					selectedCategoryId && (
+						<>
+							<label>Subcategorías:</label>
+							<select onChange={handleSubcategoryChange}>
+								<option value=''>Selecciona una subcategoría</option>
+								{filteredSubcategories.map(subcategory => (
+									<option key={subcategory.id} value={subcategory.id}>
+										{subcategory.name}
+									</option>
+								))}
+							</select>
+						</>
+					)}
+
+				{filteredSpecifications.length > 0 && (
+					<>
+						<label>Especificaciones</label>
+						<div className='specifications'>
+							{filteredSpecifications.map(spec => (
+								<div key={spec.id}>
+									<label htmlFor={spec.id}>{spec.name}</label>
+									<div className='input-container'>
+										<input
+											type='text'
+											id={spec.id}
+											required
+											value={specValues[spec.id || ''] || ''}
+											onChange={(e: ChangeEvent<HTMLInputElement>) =>
+												handleInputChange(spec.id || '', e.target.value)
+											}
+										/>
+										<span>{spec.unit}</span>
+									</div>
+								</div>
+							))}
+						</div>
+					</>
+				)}
+			</div>
 
 			<label>Manuales</label>
 			<Manuals />
 
 			<label>Videos</label>
 			<Videos />
+			<input type='submit' value='Send Request' />
 		</form>
 	);
 }
