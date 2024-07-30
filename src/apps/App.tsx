@@ -22,6 +22,7 @@ import EditFamily from '@pages/specificationsPages/EditFamily';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
 import CreateTool from '@pages/toolPages/CreateTool';
+import EditTool from '@pages/toolPages/EditTool';
 import ToolMenu from '@pages/toolPages/ToolMenu';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 
@@ -99,6 +100,10 @@ function App() {
 									<Route
 										path='/home/herramientas/crear-herramienta'
 										element={<CreateTool />}
+									/>
+									<Route
+										path='/home/herramientas/editar-herramienta'
+										element={<EditTool />}
 									/>
 								</Route>
 							</Route>
