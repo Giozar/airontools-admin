@@ -11,8 +11,18 @@
 	display: block;
 }
 .image-upload {
-	display: flex;
-	gap: 10px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 0;
+}
+.image-preview {
+	position: relative;
+}
+.image-preview .delete {
+	position: absolute;
+	top: 15px;
+	left: 10px;
+	background-color: #000;
 }
 .image-placeholder {
 	display: flex;

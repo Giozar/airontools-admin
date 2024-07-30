@@ -38,6 +38,10 @@ const Modal = ({
 					<div>
 						<h1>{product.name}</h1>
 						<p>
+							<strong>Fotos:</strong> {product.imagesUrl}
+						</p>
+
+						<p>
 							<strong>Nombre:</strong> {product.name}
 						</p>
 						<p>

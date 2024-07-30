@@ -6,6 +6,7 @@ import useVideos from '@hooks/useVideos';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/createtool.css';
+import uploadFile from '@services/fileUpload/fileUpload.service';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useContext, useState } from 'react';
 
@@ -81,6 +82,61 @@ const useCharacteristics = () => {
 	};
 };
 
+const useMultipleFileUpload = () => {
+	const [files, setFiles] = useState<File[]>([]);
+	const [filePreviews, setFilePreviews] = useState<string[]>([]);
+	const [fileNames, setFileNames] = useState<string[]>([]);
+	const [uploadedFileUrls, setUploadedFileUrls] = useState<string[]>([]); // New state for uploaded file URLs
+
+	// Handle file selection
+	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			const selectedFiles = Array.from(event.target.files);
+
+			// Generate previews and set state
+			const previews = selectedFiles.map(file => URL.createObjectURL(file));
+			const names = selectedFiles.map(file => file.name);
+
+			setFiles(prevFiles => [...prevFiles, ...selectedFiles]);
+			setFilePreviews(prevPreviews => [...prevPreviews, ...previews]);
+			setFileNames(prevNames => [...prevNames, ...names]);
+		}
+	};
+
+	// Handle image removal
+	const handleRemoveImage = (index: number) => {
+		setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+		setFilePreviews(prevPreviews => prevPreviews.filter((_, i) => i !== index));
+		setFileNames(prevNames => prevNames.filter((_, i) => i !== index));
+	};
+
+	// Handle file uploads
+	const handleFileUpload = async () => {
+		const urls: string[] = [];
+		for (const file of files) {
+			try {
+				const url = await uploadFile(file);
+				urls.push(url);
+			} catch (error) {
+				console.error('Failed to upload file:', file.name, error);
+			}
+		}
+		setUploadedFileUrls(urls);
+		console.log(urls);
+		return urls;
+	};
+
+	return {
+		files,
+		filePreviews,
+		fileNames,
+		uploadedFileUrls,
+		handleFileSelect,
+		handleRemoveImage,
+		handleFileUpload,
+	};
+};
+
 function ToolForm() {
 	const [toolName, setToolName] = useState<string>('Herramienta 1');
 	const [toolModel, setToolModel] = useState<string>('');
@@ -108,6 +164,12 @@ function ToolForm() {
 		handleInputChange,
 	} = useSpecs();
 	const { videos, addVideo, removeVideo, updateVideo } = useVideos();
+	const {
+		filePreviews,
+		handleFileSelect,
+		handleRemoveImage,
+		handleFileUpload,
+	} = useMultipleFileUpload();
 
 	const handleUrlChange = (
 		id: number,
@@ -115,9 +177,12 @@ function ToolForm() {
 	) => {
 		updateVideo(id, event.target.value);
 	};
+
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
+			const uploadedUrls = await handleFileUpload();
+			console.log(uploadedUrls);
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
@@ -130,15 +195,18 @@ function ToolForm() {
 					[key]: specValues[key],
 				})),
 				videos: videos.map(video => video.url),
+				imagesUrl: uploadedUrls,
 				createdBy,
 			};
 			console.log(createToolData);
+			// Send the form data
 			await axios.post(
-				import.meta.env.VITE_API_URL + `/products`,
+				import.meta.env.VITE_API_URL + '/products',
 				createToolData,
 			);
+			console.log('Tool created successfully!');
 		} catch (error) {
-			console.error('Error creando herramienta:', error);
+			console.error('Error creating tool:', error);
 		}
 	};
 
@@ -169,10 +237,30 @@ function ToolForm() {
 
 			<label>Fotos de herramienta</label>
 			<div className='image-upload'>
-				<div className='image-placeholder'>Foto de herramienta</div>
-				<div className='image-placeholder add-image'>Subir imagen +</div>
+				{filePreviews.map((preview, index) => (
+					<div key={index} className='image-preview'>
+						<img
+							src={preview}
+							alt={`preview-${index}`}
+							className='image-placeholder'
+						/>
+						<button onClick={() => handleRemoveImage(index)} className='delete'>
+							<TrashIcon />
+						</button>
+					</div>
+				))}
+				<div className='image-placeholder add-image'>
+					<label htmlFor='file-input'>Subir imagen +</label>
+					<input
+						type='file'
+						id='file-input'
+						multiple
+						accept='image/*'
+						onChange={handleFileSelect}
+						style={{ display: 'none' }}
+					/>
+				</div>
 			</div>
-
 			<label htmlFor='toolDescription'>Descripción de herramienta</label>
 			<textarea
 				id='toolDescription'
