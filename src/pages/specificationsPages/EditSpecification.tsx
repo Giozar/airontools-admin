@@ -2,15 +2,20 @@
 import { SpecsBackend, SpecsFrontend } from '@adapters/specifications.adapter';
 import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
+import ErrorMessage from '@components/ErrorMessage';
 
 import HeaderTitle from '@components/HeaderTitle';
+import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useFetchCategories from '@hooks/useFetchCategories';
 import useFetchFamilies from '@hooks/useFetchFamilies';
 import useFetchSubcategories from '@hooks/useFetchSubcategories';
 import useSpecificationsManagement from '@hooks/useSpecificationsManagement';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 import { useEffect, useState } from 'react';
@@ -33,6 +38,9 @@ function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 	const [familyName, setFamilyName] = useState('');
 	const [categoryName, setCategoryName] = useState('');
 	const [subcategoryName, setSubcategoryName] = useState('');
+
+	const { showError, errorLog } = useErrorHandling();
+	const { showSuccess, successLog } = useSuccessHandling();
 
 	const handleNameUpdate = (newValue: string) => {
 		setName(newValue);
@@ -88,10 +96,12 @@ function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 				{ name, description, unit, familyId, categoryId, subcategoryId },
 			);
 			// Handle the response if needed
+			showSuccess('Especificación editada con éxito');
 
 			console.log('Save successful:', response.data);
 		} catch (error) {
 			// Handle errors if the request fails
+			errorHandler(error, showError);
 			console.error('Save failed:', error);
 		}
 	};
@@ -109,6 +119,8 @@ function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 	};
 	return (
 		<>
+			<ErrorMessage message={errorLog.message} />
+			<SuccessMessage message={successLog.message} />
 			<div className='editspecification'>
 				<div className='familyedit'>
 					<button
