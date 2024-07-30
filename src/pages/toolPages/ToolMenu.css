@@ -8,7 +8,7 @@
 	opacity: 0.8;
 	background-color: var(--accent-primary);
 }
-.toollist ul li {
+.toollist > ul li {
 	display: grid;
 	grid-template-columns: repeat(6, minmax(0, 1fr)) repeat(3, 130px);
 	margin: 0;
@@ -61,7 +61,7 @@
 	left: 0;
 	justify-content: center;
 	align-items: center;
-	z-index: 1000;
+	z-index: 100;
 	background-color: rgba(0, 0, 0, 0.5);
 	width: 100%;
 	height: 100%;
@@ -75,12 +75,14 @@
 	width: 100%;
 	max-width: 800px;
 }
-
+.modal-content ul li {
+	padding: 10px;
+}
 .modal-close {
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	background-color: transparent;
+	background-color: var(--bg-secondary);
 	color: var(--text-primary);
 }
 
