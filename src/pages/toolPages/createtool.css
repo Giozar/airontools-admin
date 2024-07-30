@@ -3,12 +3,26 @@
 	justify-content: space-between;
 }
 .toolinfo > div > input {
+	display: block;
 	margin-top: 0.5rem;
 	margin-left: -0.3rem;
 }
+.toolinfo > div {
+	display: block;
+}
 .image-upload {
-	display: flex;
-	gap: 10px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 0;
+}
+.image-preview {
+	position: relative;
+}
+.image-preview .delete {
+	position: absolute;
+	top: 15px;
+	left: 10px;
+	background-color: #000;
 }
 .image-placeholder {
 	display: flex;
@@ -45,12 +59,14 @@
 }
 .specifications {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	grid-template-columns: repeat(auto-fit, minmax(auto, 1fr));
-	gap: 10px;
+	gap: 3rem;
+	text-transform: capitalize;
 }
 
 .specifications input {
+	margin-top: 0.5rem;
 	width: 60px;
 }
 .file-upload {
@@ -59,13 +75,10 @@
 }
 
 .specifications {
-	margin-bottom: 1rem; /* Space below each form group */
-}
-
-.specifications label {
-	display: block;
-	margin-bottom: 0.5rem; /* Space between label and input container */
-	font-weight: bold;
+	margin: 0.5rem 0;
+	border-radius: 10px;
+	background-color: var(--bg-secondary);
+	padding: 1rem;
 }
 
 .specifications .input-container {
@@ -77,10 +90,21 @@
 	margin-right: 0.5rem;
 	border-radius: 4px;
 	padding: 0.5rem;
-	width: 70px;
+	width: 10rem;
 }
 
 .input-container span {
 	border-radius: 4px;
 	padding: 0.5rem;
+}
+
+.selectfamily {
+	display: grid;
+	margin: 30px 0;
+}
+.selectfamily select {
+	margin: 20px 20px;
+}
+.selectfamily label {
+	margin: 5px 0;
 }

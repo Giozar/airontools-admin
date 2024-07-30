@@ -1,0 +1,121 @@
+.toollist ul {
+	background-color: var(--bg-tertiary);
+	padding: 0;
+	color: var(--text-primary);
+	list-style-type: none;
+}
+.toollist ul .title {
+	opacity: 0.8;
+	background-color: var(--accent-primary);
+}
+.toollist ul li {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr)) repeat(3, 130px);
+	margin: 0;
+	border-bottom: 1px solid var(--bg-secondary);
+	padding: 5px;
+	overflow: hidden;
+}
+.toollist ul li p {
+	margin: auto;
+	padding: 10px 0;
+}
+.toollist ul li p:first-child {
+	padding-left: 15px;
+}
+.toollist ul li p {
+	padding: 5px;
+	word-break: break-word;
+}
+.toollist ul li button {
+	margin: auto;
+	border: 0px;
+	border-radius: 10px;
+	padding: 10px;
+	width: fit-content;
+}
+
+.toollist ul li .editrol {
+	background-color: rgba(255, 0, 157, 0.521);
+}
+@media (max-width: 1024px) {
+	.toollist ul li {
+		grid-template-columns: 50px repeat(5, minmax(0, 1fr)) repeat(3, 45px);
+	}
+	.toollist ul li p {
+		font-size: small;
+	}
+	.toollist ul li button {
+		padding: 3px;
+	}
+	.toollist ul li button svg {
+		transform: scale(0.8);
+	}
+}
+
+/* Modal.css */
+.modal-overlay {
+	display: flex;
+	position: fixed;
+	top: 0;
+	left: 0;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	background-color: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	height: 100%;
+}
+
+.modal-content {
+	position: relative;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	border-radius: 8px;
+	padding: 20px;
+	width: 100%;
+	max-width: 800px;
+}
+
+.modal-close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background-color: transparent;
+	color: var(--text-primary);
+}
+
+.slideshow-container {
+	position: relative;
+	width: 200px;
+	height: 200px;
+	overflow: hidden;
+}
+.grupo {
+	display: flex;
+	justify-content: space-around;
+}
+
+.slideshow-image {
+	width: 100%;
+	height: 100%;
+}
+
+.nav-button {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 100;
+	cursor: pointer;
+	border: none;
+	background-color: rgba(0, 0, 0, 0.5);
+	padding: 10px;
+	color: white;
+}
+
+.nav-button.prev {
+	left: 0;
+}
+
+.nav-button.next {
+	right: 0;
+}

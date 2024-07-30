@@ -22,6 +22,7 @@ import EditFamily from '@pages/specificationsPages/EditFamily';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
 import CreateTool from '@pages/toolPages/CreateTool';
+import ToolMenu from '@pages/toolPages/ToolMenu';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 
 interface AuthContextType {
@@ -94,7 +95,11 @@ function App() {
 										path='/home/categorizacion/ver-especificaciones/editar-especificacion'
 										element={<EditSpecification />}
 									/>
-									<Route path='/home/herramientas' element={<CreateTool />} />
+									<Route path='/home/herramientas' element={<ToolMenu />} />
+									<Route
+										path='/home/herramientas/crear-herramienta'
+										element={<CreateTool />}
+									/>
 								</Route>
 							</Route>
 						</Route>
