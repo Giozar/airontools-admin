@@ -1,3 +1,4 @@
+import { AuthContext } from '@apps/App';
 import HeaderTitle from '@components/HeaderTitle';
 import TrashIcon from '@components/svg/TrashIcon';
 import useSpecs from '@hooks/useSpecs';
@@ -6,7 +7,7 @@ import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/createtool.css';
 import axios from 'axios';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useState } from 'react';
 
 interface Item {
 	id: number;
@@ -84,6 +85,8 @@ function ToolForm() {
 	const [toolName, setToolName] = useState<string>('Herramienta 1');
 	const [toolModel, setToolModel] = useState<string>('');
 	const [toolDescription, setToolDescription] = useState<string>('');
+	const authContext = useContext(AuthContext);
+	const createdBy = authContext?.user?.name || 'user';
 	const {
 		characteristics,
 		addCharacteristic,
@@ -127,7 +130,7 @@ function ToolForm() {
 					[key]: specValues[key],
 				})),
 				videos: videos.map(video => video.url),
-				createdBy: 'user',
+				createdBy,
 			};
 			console.log(createToolData);
 			await axios.post(
