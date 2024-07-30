@@ -1,112 +1,21 @@
-import {
-	SpecsFrontend,
-	transformSpecsData,
-} from '@adapters/specifications.adapter';
 import HeaderTitle from '@components/HeaderTitle';
 import TrashIcon from '@components/svg/TrashIcon';
-import useFetchCategories from '@hooks/useFetchCategories';
-import useFetchFamilies from '@hooks/useFetchFamilies';
-import useFetchSubcategories from '@hooks/useFetchSubcategories';
+import useSpecs from '@hooks/useSpecs';
+import useVideos from '@hooks/useVideos';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/createtool.css';
-import { getSpecifications } from '@services/specifications/getSpecifications.service';
 import axios from 'axios';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 interface Item {
 	id: number;
 	value: string;
 }
-const useSpecs = () => {
-	const { families } = useFetchFamilies();
-	const { categories, filteredCategories, setFilteredCategories } =
-		useFetchCategories();
-	const { subcategories, filteredSubcategories, setFilteredSubcategories } =
-		useFetchSubcategories();
-	const [selectedFamilyId, setSelectedFamilyId] = useState('');
-	const [selectedCategoryId, setSelectedCategoryId] = useState('');
-	const [selectedSubcategoryId, setSelectedSubcategoryId] = useState('');
-	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
-	const [filteredSpecifications, setFilteredSpecifications] = useState<
-		SpecsFrontend[]
-	>([]);
-	const [specValues, setSpecValues] = useState<Record<string, string>>({});
-
-	useEffect(() => {
-		const fetchSpecifications = async () => {
-			try {
-				const specs = await getSpecifications();
-				setSpecifications(specs.map(transformSpecsData));
-				console.log(specs);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		fetchSpecifications();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	const handleFamilyChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		const familyId = event.target.value;
-		setSelectedFamilyId(familyId);
-		const filteredCategories = categories.filter(
-			category => category.familyId === familyId,
-		);
-		setFilteredCategories(filteredCategories);
-	};
-	const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		const categoryId = event.target.value;
-		setSelectedCategoryId(categoryId);
-		const filteredSubcategories = subcategories.filter(
-			subcategory => subcategory.categoryId === categoryId,
-		);
-		setFilteredSubcategories(filteredSubcategories);
-		const filteredSpecifications = specifications.filter(
-			spec => spec.categoryId === categoryId,
-		);
-		setFilteredSpecifications(filteredSpecifications);
-	};
-	const handleSubcategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		const subcategoryId = event.target.value;
-		setSelectedSubcategoryId(subcategoryId);
-		if (subcategoryId !== '') {
-			setFilteredSpecifications(
-				specifications.filter(spec => spec.subcategoryId === subcategoryId),
-			);
-		} else {
-			setFilteredSpecifications(
-				specifications.filter(spec => spec.categoryId === selectedCategoryId),
-			);
-		}
-	};
-
-	const handleInputChange = (id: string, value: string) => {
-		setSpecValues(prevValues => ({
-			...prevValues,
-			[id]: value,
-		}));
-	};
-
-	return {
-		families,
-		filteredCategories,
-		filteredSubcategories,
-		selectedFamilyId,
-		selectedCategoryId,
-		selectedSubcategoryId,
-		filteredSpecifications,
-		specValues,
-		handleFamilyChange,
-		handleCategoryChange,
-		handleSubcategoryChange,
-		handleInputChange,
-	};
-};
-
+/* no hace nada por ahora useManuals en un futuro */
 function Manuals() {
 	const [manuals, setManuals] = useState<Item[]>([
-		{ id: Date.now(), value: '...hola.pdf' },
+		{ id: Date.now(), value: '...ejemplo.pdf' },
 	]);
 	const addManual = () => {
 		setManuals([...manuals, { id: Date.now(), value: '' }]);
@@ -138,57 +47,8 @@ function Manuals() {
 					</button>
 				</div>
 			))}
-			<button
-				type='button'
-				className='add'
-				style={{ marginTop: '10px' }}
-				onClick={addManual}
-			>
+			<button type='button' className='add' onClick={addManual}>
 				Añadir manual
-			</button>
-		</div>
-	);
-}
-
-function Videos() {
-	const [videos, setVideos] = useState<Item[]>([{ id: Date.now(), value: '' }]);
-	const addVideo = () => {
-		setVideos([...videos, { id: Date.now(), value: '' }]);
-	};
-
-	const removeVideo = (id: number) => {
-		setVideos(videos.filter(item => item.id !== id));
-	};
-
-	const updateVideo = (id: number, value: string) => {
-		setVideos(videos.map(item => (item.id === id ? { ...item, value } : item)));
-	};
-	return (
-		<div className='file-upload'>
-			{videos.map(video => (
-				<div key={video.id} className='video-item'>
-					<input
-						type='text'
-						placeholder='URL del video'
-						value={video.value}
-						onChange={e => updateVideo(video.id, e.target.value)}
-					/>
-					<button
-						type='button'
-						className='delete'
-						onClick={() => removeVideo(video.id)}
-					>
-						<TrashIcon />
-					</button>
-				</div>
-			))}
-			<button
-				type='button'
-				className='add'
-				style={{ marginTop: '10px' }}
-				onClick={addVideo}
-			>
-				Añadir video
 			</button>
 		</div>
 	);
@@ -198,7 +58,6 @@ const useCharacteristics = () => {
 	const [characteristics, setCharacteristics] = useState<Item[]>([
 		{ id: Date.now(), value: '' },
 	]);
-
 	const addCharacteristic = () => {
 		setCharacteristics([...characteristics, { id: Date.now(), value: '' }]);
 	};
@@ -245,20 +104,32 @@ function ToolForm() {
 		handleSubcategoryChange,
 		handleInputChange,
 	} = useSpecs();
+	const { videos, addVideo, removeVideo, updateVideo } = useVideos();
 
+	const handleUrlChange = (
+		id: number,
+		event: ChangeEvent<HTMLInputElement>,
+	) => {
+		updateVideo(id, event.target.value);
+	};
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
-				characteristics,
+				characteristics: characteristics.map(char => char.value),
 				familyId: selectedFamilyId,
 				categoryId: selectedCategoryId,
 				subcategoryId: selectedSubcategoryId,
 				description: toolDescription,
-				specifications: specValues,
+				specifications: Object.keys(specValues).map(key => ({
+					[key]: specValues[key],
+				})),
+				videos: videos.map(video => video.url),
+				createdBy: 'user',
 			};
+			console.log(createToolData);
 			await axios.post(
 				import.meta.env.VITE_API_URL + `/products`,
 				createToolData,
@@ -403,8 +274,35 @@ function ToolForm() {
 			<Manuals />
 
 			<label>Videos</label>
-			<Videos />
-			<input type='submit' value='Send Request' />
+			<div className='file-upload'>
+				{videos.map(video => (
+					<div key={video.id}>
+						<input
+							type='text'
+							placeholder='Enter video URL'
+							value={video.url}
+							onChange={event => handleUrlChange(video.id, event)}
+						/>
+						{video.url && (
+							<a href={video.url} target='_blank' rel='noopener noreferrer'>
+								Ver Video
+							</a>
+						)}
+						<button
+							type='button'
+							onClick={() => removeVideo(video.id)}
+							className='delete'
+						>
+							<TrashIcon />
+						</button>
+					</div>
+				))}
+
+				<button type='button' className='add' onClick={addVideo}>
+					Añadir video
+				</button>
+			</div>
+			<button type='submit'>Crear herramienta</button>
 		</form>
 	);
 }
