@@ -1,30 +1,21 @@
+import {
+	ProductBackend,
+	ProductFrontend,
+	transformProductData,
+} from '@adapters/products.adapter';
 import ActionCard from '@components/ActionCard';
+import DeletionModal from '@components/DeletionModal';
 import HeaderTitle from '@components/HeaderTitle';
 import CloseIcon from '@components/svg/CloseIcon';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
+import useProductManagement from '@hooks/useProductManagement';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/ToolMenu.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-
-interface Tool {
-	_id: string;
-	name: string;
-	model: string;
-	familyId: string;
-	categoryId: string;
-	subcategoryId?: string;
-	description: string;
-	characteristics: string[];
-	specifications: Array<{ [key: string]: string }>;
-	imagesUrl?: string[];
-	manuals?: string[];
-	videos?: string[];
-	createdBy: string;
-}
 
 const Modal = ({
 	isOpen,
@@ -33,7 +24,7 @@ const Modal = ({
 }: {
 	isOpen: boolean;
 	onClose: () => void;
-	product: Tool | null;
+	product: ProductFrontend | null;
 }) => {
 	if (!isOpen) return null;
 
@@ -47,6 +38,9 @@ const Modal = ({
 					<div>
 						<h1>{product.name}</h1>
 						<p>
+							<strong>Nombre:</strong> {product.name}
+						</p>
+						<p>
 							<strong>Modelo:</strong> {product.model}
 						</p>
 						<p>
@@ -59,7 +53,7 @@ const Modal = ({
 							<strong>Subcategory ID:</strong> {product.subcategoryId || '---'}
 						</p>
 						<p>
-							<strong>Descripción:</strong> {product.description}
+							<strong>Descripción:</strong> <br /> {product.description}
 						</p>
 
 						<div style={{ margin: '20px 0' }}>
@@ -100,26 +94,27 @@ const Modal = ({
 };
 function ListOfTools() {
 	const [modalOpen, setModalOpen] = useState(false);
-	const [selectedProduct, setSelectedProduct] = useState<Tool | null>(null);
-
-	const handleOpenModal = (product: Tool) => {
-		setSelectedProduct(product);
-		console.log(product);
-		setModalOpen(true);
-	};
-
-	const handleCloseModal = () => {
-		setModalOpen(false);
-	};
-	const [products, setProducts] = useState<Tool[]>([]);
+	const [selectedProduct, setSelectedProduct] =
+		useState<ProductFrontend | null>(null);
+	const [products, setProducts] = useState<ProductFrontend[]>([]);
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleEdit,
+		handleCloseModal,
+		handleDelete,
+	} = useProductManagement();
 
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
-				const response = await axios.get<Tool[]>(
-					import.meta.env.VITE_API_URL + '/products',
+				const response = await axios.get<ProductBackend[]>(
+					`${import.meta.env.VITE_API_URL}/products`,
 				);
-				setProducts(response.data);
+				setProducts(response.data.map(transformProductData));
+				console.log(response.data);
+				console.log(response.data.map(transformProductData));
 			} catch (error) {
 				console.error('Failed to fetch tools:', error);
 			}
@@ -127,6 +122,11 @@ function ListOfTools() {
 
 		fetchProducts();
 	}, []);
+	console.log(products);
+	const handleCloseModalDeletion = (toolid: string) => {
+		setProducts(products.filter(tool => tool.id !== toolid));
+		handleCloseModal();
+	};
 
 	return (
 		<div className='toollist'>
@@ -135,20 +135,20 @@ function ListOfTools() {
 				type='text'
 				placeholder='Buscar herramientas...'
 				// value={searchTerm}
-				/* onChange={e => {
-					handleSearch(e.target.value);
-					setSearchTerm(e.target.value);
-				}} */
+				// onChange={e => {
+				//   handleSearch(e.target.value);
+				//   setSearchTerm(e.target.value);
+				// }}
 				className='search'
 			/>
 			<Modal
 				isOpen={modalOpen}
-				onClose={handleCloseModal}
+				onClose={() => setModalOpen(false)}
 				product={selectedProduct}
 			/>
 			<ul>
 				<li className='title'>
-					<p>Id</p>
+					<p>ID</p>
 					<p>Nombre</p>
 					<p>Modelo</p>
 					<p>Familia</p>
@@ -159,59 +159,51 @@ function ListOfTools() {
 					<p>Borrar</p>
 				</li>
 				{products.map(tool => (
-					<li key={tool._id}>
-						<p>{tool._id}</p>
+					<li key={tool.id}>
+						<p>{tool.id}</p>
 						<p>{tool.name}</p>
 						<p>{tool.model}</p>
 						<p>{tool.familyId}</p>
 						<p>{tool.categoryId}</p>
-						<p>{tool.subcategoryId ? tool.subcategoryId : '---'}</p>
+						<p>{tool.subcategoryId || '---'}</p>
 
 						<button
-							className='edit' // onClick={() => handleEdit(user)}
-							onClick={() => handleOpenModal(tool)}
+							className='view'
+							onClick={() => {
+								setSelectedProduct(tool);
+								setModalOpen(true);
+							}}
 						>
 							<EyeIcon />
 						</button>
-						<button
-							className='edit' // onClick={() => handleEdit(user)}
-						>
+
+						<button className='edit' onClick={() => handleEdit(tool)}>
 							<EditIcon />
 						</button>
 
 						<button
 							className='delete'
-							//	onClick={() => setShowDeletionModalFor(user.id || '')}
+							onClick={() => setShowDeletionModalFor(tool.id)}
 						>
 							<TrashIcon />
 						</button>
-						{/* 
-						{showDeletionModalFor === user.id && (
+
+						{showDeletionModalFor === tool.id && (
 							<DeletionModal
-								id={user.id}
-								name={user.name}
-								image={user.imageUrl || ''}
+								id={tool.id}
+								name={tool.name}
 								onClose={() => handleCloseModal()}
-								onCloseDelete={() => handleCloseModalDeletion(user.id || '')}
-								onDelete={() => handleDelete(user.id || '', user.name)}
+								onCloseDelete={() => handleCloseModalDeletion(tool.id)}
+								onDelete={() => handleDelete(tool.id, tool.name)}
 								message={deletionMessage}
 							/>
 						)}
-						{showModalFor === user.id && (
-							<RoleChangeModal
-								userToEdit={user}
-								onCloseModal={() => setShowModalFor(null)}
-								onUpdateList={handleUpdateList}
-							/>
-						)}
-                            */}
 					</li>
 				))}
 			</ul>
 		</div>
 	);
 }
-
 function ContentMainPage() {
 	return (
 		<BasePage>

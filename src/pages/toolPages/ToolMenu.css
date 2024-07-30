@@ -80,17 +80,6 @@
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	cursor: pointer;
-	border: none;
-	background: none;
-	font-size: 24px;
-}
-
-.modal-edit {
-	cursor: pointer;
-	margin-top: 20px;
-	border: none;
-	border-radius: 4px;
-	padding: 10px 20px;
-	color: white;
+	background-color: transparent;
+	color: var(--text-primary);
 }
