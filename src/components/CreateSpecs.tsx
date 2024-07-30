@@ -18,12 +18,12 @@ function CreateSpecs({
 	subcategoryId,
 }: CreateSpecsProps) {
 	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
-	const [specificationsCounter, setSpecificationsCounter] = useState<number>(0);
 	const { showError, errorLog } = useErrorHandling();
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
 	const { showSuccess, successLog } = useSuccessHandling();
 
+	// Aquí se inicializa el Array con un objeto vacío al primer render del dom
 	useEffect(() => {
 		console.log(subcategoryId);
 		setSpecifications([
@@ -41,8 +41,8 @@ function CreateSpecs({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// Se añade una especificación y se suma uno al conteo
 	const addSpecifications = () => {
-		setSpecificationsCounter(specificationsCounter + 1);
 		setSpecifications([
 			...specifications,
 			{
@@ -58,6 +58,7 @@ function CreateSpecs({
 		]);
 	};
 
+	// Se elimina por la posición
 	const deleteSpecification = (index: number) => {
 		setSpecifications(specifications.filter((_, i) => i !== index));
 	};
