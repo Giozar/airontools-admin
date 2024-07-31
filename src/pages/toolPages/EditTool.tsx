@@ -2,9 +2,8 @@ import { ProductFrontend } from '@adapters/products.adapter';
 import Editables from '@components/Editables';
 import HeaderTitle from '@components/HeaderTitle';
 import TrashIcon from '@components/svg/TrashIcon';
-import useFetchCategories from '@hooks/useFetchCategories';
-import useFetchFamilies from '@hooks/useFetchFamilies';
-import useFetchSubcategories from '@hooks/useFetchSubcategories';
+import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
+
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { fetchSpecificationsByCategoryId } from '@services/specifications/fetchSpecificationsByCategoryId.service';
@@ -21,36 +20,32 @@ interface Specification {
 }
 
 function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
+	const {
+		families,
+		familyId,
+		filteredCategories,
+		categoryId,
+		filteredSubcategories,
+		subcategoryId,
+		familyName,
+		categoryName,
+		subcategoryName,
+		handleFamilyIdUpdate,
+		handleCategoryIdUpdate,
+		handleSubcategoryIdUpdate,
+	} = useToolCategorizationEdit({
+		initialFamilyId: toolToEdit.familyId,
+		initialCategoryId: toolToEdit.categoryId,
+		initialSubcategoryId: toolToEdit.subcategoryId,
+	});
 	const id = toolToEdit.id;
-	const [familyId, setFamilyId] = useState(toolToEdit.familyId);
-	const [categoryId, setCategoryId] = useState(toolToEdit.categoryId);
-	const [subcategoryId, setSubcategoryId] = useState(toolToEdit.subcategoryId);
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
-	const [images, setImages] = useState(toolToEdit.imagesUrl);
+	const [images] = useState(toolToEdit.imagesUrl);
 	const [char, setChar] = useState(toolToEdit.characteristics);
 	const [specs, setSpecs] = useState(toolToEdit.specifications);
-	console.log('ola');
-	console.log(specs);
-	const [familyName, setFamilyName] = useState('');
-	const [categoryName, setCategoryName] = useState('');
-	const [subcategoryName, setSubcategoryName] = useState('');
-
-	function findKeyInSpecs(keyToFind: string): string | null {
-		for (const spec of specs) {
-			if (keyToFind in spec) {
-				return spec[keyToFind];
-			}
-		}
-		return null;
-	}
-
-	const { families } = useFetchFamilies();
-	const { categories, filteredCategories, setFilteredCategories } =
-		useFetchCategories();
-	const { subcategories, filteredSubcategories, setFilteredSubcategories } =
-		useFetchSubcategories();
+	const [specifications, setSpecifications] = useState<Specification[]>([]);
 
 	const handleNameUpdate = (newValue: string) => {
 		setName(newValue);
@@ -62,7 +57,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const handleModelUpdate = (newValue: string) => {
 		setModel(newValue);
 	};
-	function editOrCreateKeyInSpecs(keyToFind: string, newValue: string): void {
+	const editOrCreateKeyInSpecs = (keyToFind: string, newValue: string) => {
 		let keyFound = false;
 		const updatedSpecs = specs.map(spec => {
 			if (keyToFind in spec) {
@@ -73,63 +68,32 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 		});
 
 		if (!keyFound) {
-			setSpecs([]);
 			updatedSpecs.push({ [keyToFind]: newValue });
 		}
 
 		setSpecs(updatedSpecs);
-	}
+	};
+	const findKeyInSpecs = (keyToFind: string) => {
+		for (const spec of specs) {
+			if (keyToFind in spec) {
+				return spec[keyToFind];
+			}
+		}
+		return null;
+	};
 
 	const handleSpecUpdate = (newValue: string, index: number) => {
-		console.log(newValue, index);
-		console.log(specifications[index - 1]);
-		console.log(specifications[index - 1]._id);
 		console.log(
 			editOrCreateKeyInSpecs(specifications[index - 1]._id, newValue),
 		);
-		console.log(findKeyInSpecs(specifications[index - 1]._id));
-		console.log(specs);
 	};
-	const handleFamilyIdUpdate = (newValue: string) => {
-		setFamilyId(newValue);
-		const family = families.find(f => f.id === newValue);
-		setFamilyName(family ? family.name : '');
-		setFilteredCategories(categories.filter(f => f.familyId === newValue));
-		setCategoryId('');
-		setCategoryName('');
-		setSubcategoryId('');
-		setSubcategoryName('');
-	};
-	const handleCategoryIdUpdate = (newValue: string) => {
-		setCategoryId(newValue);
-		const category = filteredCategories.find(f => f.id === newValue);
-		setCategoryName(category ? category.name : '');
-		setFilteredSubcategories(
-			subcategories.filter(f => f.categoryId === newValue),
-		);
-		setSubcategoryId('');
-		setSubcategoryName('');
-	};
-	const handleSubcategoryIdUpdate = (newValue: string) => {
-		setSubcategoryId(newValue);
-		const subcategory = filteredSubcategories.find(f => f.id === newValue);
-		setSubcategoryName(subcategory ? subcategory.name : '');
-	};
-
+	const [flag, setFlag] = useState(true);
 	useEffect(() => {
-		const family = families.find(f => f.id === familyId);
-		setFamilyName(family ? family.name : '');
+		if (!flag) setSpecs([]);
+		if (flag) {
+			setFlag(false);
+		}
 
-		const category = filteredCategories.find(c => c.id === categoryId);
-		setCategoryName(category ? category.name : '');
-
-		const subcategory = filteredSubcategories.find(s => s.id === subcategoryId);
-		setSubcategoryName(subcategory ? subcategory.name : '');
-	}, [families]);
-
-	const [specifications, setSpecifications] = useState<Specification[]>([]);
-
-	useEffect(() => {
 		console.log(categoryId);
 		const getSpecifications = async () => {
 			try {
@@ -263,23 +227,24 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 					</div>
 					<p> Imágenes: </p>
 					<div className='image-upload'>
-						{images.map((preview, index) => (
-							<div key={index} className='image-preview'>
-								<img
-									src={preview}
-									alt={`preview-${index}`}
-									className='image-placeholder'
-								/>
-								<button
-									// borra la imagen del servidor?
-									// onClick={() => handleRemoveImage(index)}
-									// deberia de poder borrar del servidor y aqui solo cambiar la lista (borrar el string de la imagen)
-									className='delete'
-								>
-									<TrashIcon />
-								</button>
-							</div>
-						))}
+						{images &&
+							images.map((preview, index) => (
+								<div key={index} className='image-preview'>
+									<img
+										src={preview}
+										alt={`preview-${index}`}
+										className='image-placeholder'
+									/>
+									<button
+										// borra la imagen del servidor?
+										// onClick={() => handleRemoveImage(index)}
+										// deberia de poder borrar del servidor y aqui solo cambiar la lista (borrar el string de la imagen)
+										className='delete'
+									>
+										<TrashIcon />
+									</button>
+								</div>
+							))}
 						<div className='image-placeholder add-image'>
 							<label htmlFor='file-input'>Subir imagen +</label>
 							<input
