@@ -8,6 +8,7 @@ import useFetchSubcategories from '@hooks/useFetchSubcategories';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { fetchSpecificationsByCategoryId } from '@services/specifications/fetchSpecificationsByCategoryId.service';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 interface Specification {
@@ -29,7 +30,8 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const [model, setModel] = useState(toolToEdit.model);
 	const [images, setImages] = useState(toolToEdit.imagesUrl);
 	const [char, setChar] = useState(toolToEdit.characteristics);
-	const [specs, SetSpecs] = useState(toolToEdit.specifications);
+	const [specs, setSpecs] = useState(toolToEdit.specifications);
+	console.log('ola');
 	console.log(specs);
 	const [familyName, setFamilyName] = useState('');
 	const [categoryName, setCategoryName] = useState('');
@@ -41,7 +43,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 				return spec[keyToFind];
 			}
 		}
-		return null; // Return null if the key is not found in any object
+		return null;
 	}
 
 	const { families } = useFetchFamilies();
@@ -59,6 +61,34 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	};
 	const handleModelUpdate = (newValue: string) => {
 		setModel(newValue);
+	};
+	function editOrCreateKeyInSpecs(keyToFind: string, newValue: string): void {
+		let keyFound = false;
+		const updatedSpecs = specs.map(spec => {
+			if (keyToFind in spec) {
+				keyFound = true;
+				return { ...spec, [keyToFind]: newValue };
+			}
+			return spec;
+		});
+
+		if (!keyFound) {
+			setSpecs([]);
+			updatedSpecs.push({ [keyToFind]: newValue });
+		}
+
+		setSpecs(updatedSpecs);
+	}
+
+	const handleSpecUpdate = (newValue: string, index: number) => {
+		console.log(newValue, index);
+		console.log(specifications[index - 1]);
+		console.log(specifications[index - 1]._id);
+		console.log(
+			editOrCreateKeyInSpecs(specifications[index - 1]._id, newValue),
+		);
+		console.log(findKeyInSpecs(specifications[index - 1]._id));
+		console.log(specs);
 	};
 	const handleFamilyIdUpdate = (newValue: string) => {
 		setFamilyId(newValue);
@@ -116,6 +146,31 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const handleUpdateChar = (newValues: string[]) => {
 		setChar(newValues);
 	};
+	const handleSubmit = async () => {
+		try {
+			console.log(import.meta.env.VITE_API_URL + '/products/' + id);
+			const editedToolData = {
+				_id: id,
+				name,
+				model,
+				characteristics: char,
+				familyId,
+				categoryId,
+				subcategoryId,
+				description,
+				specifications: specs,
+			};
+			console.log(editedToolData);
+			await axios.patch(
+				import.meta.env.VITE_API_URL + '/products/' + id,
+				editedToolData,
+			);
+			alert('Herramienta actualizada con exito!');
+		} catch (error) {
+			console.error('Error editing tool:', error);
+		}
+	};
+
 	return (
 		<>
 			<div className='editspecification'>
@@ -177,7 +232,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 							}))}
 						/>
 						<Editables
-							what='SubCategoría'
+							what='Subcategoría'
 							valueOf={subcategoryName}
 							type='select'
 							onUpdate={handleSubcategoryIdUpdate}
@@ -189,15 +244,18 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 						<hr></hr>
 						<p>Especificaciones: </p>
 						{specifications &&
-							specifications.map(spec => (
+							specifications.map((spec, index) => (
 								<div key={spec._id}>
-									<Editables
-										what={spec.name}
-										valueOf={findKeyInSpecs(spec._id) || 'N/A'}
-										unit={spec.unit}
-										type='input'
-										onUpdate={handleModelUpdate}
-									/>
+									{handleSpecUpdate && (
+										<Editables
+											what={spec.name}
+											valueOf={findKeyInSpecs(spec._id) || 'N/A'}
+											unit={spec.unit}
+											type='input'
+											whichOne={index + 1}
+											onUpdateOne={handleSpecUpdate}
+										/>
+									)}
 									<p></p>
 								</div>
 							))}
@@ -235,6 +293,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 						</div>
 					</div>
 				</div>
+				<button onClick={handleSubmit}>subir</button>
 			</div>
 		</>
 	);

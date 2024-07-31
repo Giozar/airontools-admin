@@ -45,8 +45,9 @@ function Editables({
 	};
 
 	const handleSaveInput = () => {
-		if (whichOne && onUpdateOne) onUpdateOne(input, whichOne);
-		else if (onUpdate) onUpdate(input);
+		if (whichOne && onUpdateOne) {
+			onUpdateOne(input, whichOne);
+		} else if (onUpdate) onUpdate(input);
 
 		setEditing(false);
 	};
@@ -94,7 +95,7 @@ function Editables({
 									onChange={handleChange}
 									onKeyDown={handleKeyDown}
 									id={what}
-								/>{' '}
+								/>
 								{unit && <span style={{ marginLeft: '8px' }}>{unit}</span>}
 							</div>
 						)}
