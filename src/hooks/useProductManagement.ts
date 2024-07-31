@@ -15,7 +15,7 @@ const useProductManagement = () => {
 
 	const handleEdit = (Product: ProductFrontend) => {
 		localStorage.setItem('ProductToEdit', JSON.stringify(Product));
-		navigate(location.pathname + `/editar-herramientas`);
+		navigate(location.pathname + `/editar-herramienta`);
 	};
 
 	const handleCloseModal = () => {
