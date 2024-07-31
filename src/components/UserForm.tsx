@@ -109,7 +109,9 @@ export default function UserForm() {
 							value='Generar contraseña'
 						/>
 						<p>{password}</p>
-						<button onClick={copyPassword}>Copiar contraseña</button>
+						<button type='button' onClick={copyPassword}>
+							Copiar contraseña
+						</button>
 					</div>
 
 					<label htmlFor='options'>Rol:</label>
