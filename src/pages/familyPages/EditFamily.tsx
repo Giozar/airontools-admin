@@ -23,11 +23,13 @@ interface EditFamilyFormProps {
 	familyToEdit: FamilyFrontend;
 	numberOfCategories: number;
 	numberOfSubcategories: number;
+	numberOfSpecifications: number;
 }
 function EditFamilyForm({
 	familyToEdit,
 	numberOfCategories,
 	numberOfSubcategories,
+	numberOfSpecifications,
 }: EditFamilyFormProps) {
 	// Datos recuperados y que se pueden modificar
 	const [name, setName] = useState(familyToEdit.name);
@@ -75,6 +77,7 @@ function EditFamilyForm({
 					family: { ...familyToEdit, name, description },
 					numberOfCategories,
 					numberOfSubcategories,
+					numberOfSpecifications,
 				}),
 			);
 		} catch (error) {
@@ -97,9 +100,11 @@ function EditFamilyForm({
 					onDelete={() => handleDelete(familyId || '', name)}
 					message={deletionMessage}
 					confirmationInfo={
-						numberOfCategories > 0
-							? `Al borrar esta familia se eliminarán ${numberOfCategories} categorías y ${numberOfSubcategories} sus subcategorías`
-							: null
+						numberOfCategories > 0 && numberOfSpecifications > 0
+							? `Al borrar esta familia se eliminarán ${numberOfCategories} categorias, ${numberOfSubcategories} subcategorías Y ${numberOfSpecifications} especificaciones`
+							: numberOfCategories > 0
+								? `Al borrar esta familia se eliminarán ${numberOfCategories} categorias y ${numberOfSubcategories} subcategorías`
+								: null
 					}
 				/>
 			)}
@@ -156,6 +161,7 @@ function ContentMainPage() {
 		family: { id: 'N/A', name: 'Desconocido' },
 		numberOfCategories: 0,
 		numberOfSubcategories: 0,
+		numberOfSpecifications: 0,
 	};
 
 	const [state] = useState(() => {
@@ -167,7 +173,12 @@ function ContentMainPage() {
 		localStorage.setItem('familyToEdit', JSON.stringify(state));
 	}, [state]);
 
-	const { family, numberOfCategories, numberOfSubcategories } = state;
+	const {
+		family,
+		numberOfCategories,
+		numberOfSubcategories,
+		numberOfSpecifications,
+	} = state;
 	return (
 		<BasePage>
 			<HeaderApp />
@@ -177,6 +188,7 @@ function ContentMainPage() {
 					familyToEdit={family}
 					numberOfCategories={numberOfCategories}
 					numberOfSubcategories={numberOfSubcategories}
+					numberOfSpecifications={numberOfSpecifications}
 				/>
 			</main>
 		</BasePage>

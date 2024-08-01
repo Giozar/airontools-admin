@@ -79,10 +79,13 @@ function ListofFamilies() {
 		const subcategories = filteredSubcategories.filter(subcategory =>
 			categories.some(category => category.id === subcategory.categoryId),
 		);
-
+		const specificationsn = specifications.filter(
+			specs => specs.familyId === familyId,
+		);
 		const categoriesLength = categories.length;
 		const subcategoriesLength = subcategories.length;
-		return { categoriesLength, subcategoriesLength };
+		const specificationLength = specificationsn.length;
+		return { categoriesLength, subcategoriesLength, specificationLength };
 	};
 
 	return (
@@ -101,16 +104,20 @@ function ListofFamilies() {
 
 			<ul className='familylist'>
 				{filteredFamilies.map(family => {
-					const { categoriesLength, subcategoriesLength } = calc(
-						family.id || '',
-					);
+					const { categoriesLength, subcategoriesLength, specificationLength } =
+						calc(family.id || '');
 					return (
 						<li key={family.id} className='family'>
 							<div className='buttons family'>
 								<button
 									className='edit'
 									onClick={() =>
-										handleEdit(family, categoriesLength, subcategoriesLength)
+										handleEdit(
+											family,
+											categoriesLength,
+											subcategoriesLength,
+											specificationLength,
+										)
 									}
 								>
 									<EditIcon />
@@ -137,9 +144,11 @@ function ListofFamilies() {
 									onDelete={() => handleDelete(family.id || '', family.name)}
 									message={deletionMessage}
 									confirmationInfo={
-										categoriesLength > 0
-											? `Al borrar esta familia se eliminarán ${categoriesLength} categorias y ${subcategoriesLength} subcategorías`
-											: null
+										categoriesLength > 0 && specificationLength > 0
+											? `Al borrar esta familia se eliminarán ${categoriesLength} categorias, ${subcategoriesLength} subcategorías Y ${specificationLength} especificaciones`
+											: categoriesLength > 0
+												? `Al borrar esta familia se eliminarán ${categoriesLength} categorias y ${subcategoriesLength} subcategorías`
+												: null
 									}
 								/>
 							)}

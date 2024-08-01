@@ -17,10 +17,16 @@ const useFamilyManagement = () => {
 		family: FamilyFrontend,
 		numberOfCategories: number,
 		numberOfSubcategories: number,
+		numberOfSpecifications: number,
 	) => {
 		localStorage.setItem(
 			'familyToEdit',
-			JSON.stringify({ family, numberOfCategories, numberOfSubcategories }),
+			JSON.stringify({
+				family,
+				numberOfCategories,
+				numberOfSubcategories,
+				numberOfSpecifications,
+			}),
 		);
 		navigate(location.pathname + `/editar-familia`);
 	};
