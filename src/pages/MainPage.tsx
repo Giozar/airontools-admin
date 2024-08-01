@@ -1,7 +1,6 @@
 import ActionCard from '@components/ActionCard';
 import HeaderTitle from '@components/HeaderTitle';
 import { AuthContext } from '@contexts/AuthContext';
-import { UserRole } from '@interfaces/UserRole';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { useContext } from 'react';
@@ -9,9 +8,6 @@ import { useLocation } from 'react-router-dom';
 
 function ContentMainPage() {
 	const authContext = useContext(AuthContext);
-	const user = authContext?.user;
-	console.log(user);
-	const role = user?.role as UserRole;
 	const location = useLocation();
 	return (
 		<BasePage>
@@ -19,7 +15,7 @@ function ContentMainPage() {
 			<main>
 				<HeaderTitle title='Acciones' />
 				<div className='options'>
-					{role.name === 'Administrador' ? (
+					{authContext?.role?.name === 'Administrador' ? (
 						<>
 							<ActionCard
 								title='Usuarios'
