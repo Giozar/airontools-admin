@@ -4,8 +4,12 @@ import {
 } from '@adapters/products.adapter';
 import { SpecsFrontend } from '@adapters/specifications.adapter';
 import Editables from '@components/Editables';
+import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
+import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
 
 import BasePage from '@layouts/BasePage';
@@ -41,6 +45,9 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const [char, setChar] = useState(toolToEdit.characteristics);
 	const [specs, setSpecs] = useState(toolToEdit.specifications);
 	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+
+	const { errorLog, showError } = useErrorHandling();
+	const { successLog, showSuccess } = useSuccessHandling();
 
 	const handleNameUpdate = (newValue: string) => {
 		setName(newValue);
@@ -91,7 +98,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 				const data = await fetchSpecificationsByCategoryId(categoryId);
 				setSpecifications(data);
 			} catch (error) {
-				console.error('fallo :(');
+				showError('No se pudieron obtener las especificaciones');
 			}
 		};
 		getSpecifications();
@@ -117,14 +124,16 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 					specifications: specs,
 				}),
 			);
-			alert('Herramienta actualizada con exito!');
+			showSuccess('Herramienta actualizada con éxito');
 		} catch (error) {
-			console.error('Error editing tool:', error);
+			showError('No se pudo actualizar la herramienta');
 		}
 	};
 
 	return (
 		<>
+			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
+			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 			<div className='editspecification'>
 				<div className='familyedit'>
 					<h2>
