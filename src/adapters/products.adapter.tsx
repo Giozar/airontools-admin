@@ -11,7 +11,7 @@ export interface ProductBackend {
 	imagesUrl?: string[];
 	manuals?: string[];
 	videos?: string[];
-	createdBy: string;
+	createdBy?: string;
 }
 
 export interface ProductFrontend {
@@ -27,7 +27,7 @@ export interface ProductFrontend {
 	imagesUrl?: string[];
 	manuals?: string[];
 	videos?: string[];
-	createdBy: string;
+	createdBy?: string;
 }
 
 // el mapeo de los datos de usuario

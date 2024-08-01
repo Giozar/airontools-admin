@@ -1,4 +1,8 @@
-import { ProductFrontend } from '@adapters/products.adapter';
+import {
+	ProductFrontend,
+	transformProductDataBack,
+} from '@adapters/products.adapter';
+import { SpecsFrontend } from '@adapters/specifications.adapter';
 import Editables from '@components/Editables';
 import HeaderTitle from '@components/HeaderTitle';
 import TrashIcon from '@components/svg/TrashIcon';
@@ -9,15 +13,6 @@ import HeaderApp from '@layouts/HeaderApp';
 import { fetchSpecificationsByCategoryId } from '@services/specifications/fetchSpecificationsByCategoryId.service';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-
-interface Specification {
-	_id: string;
-	name: string;
-	description: string;
-	unit: string;
-	categoryId: string;
-	subcategoryId: string;
-}
 
 function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const {
@@ -45,7 +40,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const [images] = useState(toolToEdit.imagesUrl);
 	const [char, setChar] = useState(toolToEdit.characteristics);
 	const [specs, setSpecs] = useState(toolToEdit.specifications);
-	const [specifications, setSpecifications] = useState<Specification[]>([]);
+	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
 
 	const handleNameUpdate = (newValue: string) => {
 		setName(newValue);
@@ -83,9 +78,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	};
 
 	const handleSpecUpdate = (newValue: string, index: number) => {
-		console.log(
-			editOrCreateKeyInSpecs(specifications[index - 1]._id, newValue),
-		);
+		console.log(editOrCreateKeyInSpecs(specifications[index - 1].id, newValue));
 	};
 	const [flag, setFlag] = useState(true);
 	useEffect(() => {
@@ -93,18 +86,16 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 		if (flag) {
 			setFlag(false);
 		}
-
-		console.log(categoryId);
 		const getSpecifications = async () => {
 			try {
 				const data = await fetchSpecificationsByCategoryId(categoryId);
-				console.log(data);
 				setSpecifications(data);
 			} catch (error) {
 				console.error('fallo :(');
 			}
 		};
 		getSpecifications();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categoryId]);
 
 	const handleUpdateChar = (newValues: string[]) => {
@@ -112,22 +103,19 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	};
 	const handleSubmit = async () => {
 		try {
-			console.log(import.meta.env.VITE_API_URL + '/products/' + id);
-			const editedToolData = {
-				_id: id,
-				name,
-				model,
-				characteristics: char,
-				familyId,
-				categoryId,
-				subcategoryId,
-				description,
-				specifications: specs,
-			};
-			console.log(editedToolData);
 			await axios.patch(
 				import.meta.env.VITE_API_URL + '/products/' + id,
-				editedToolData,
+				transformProductDataBack({
+					id,
+					name,
+					model,
+					characteristics: char,
+					familyId,
+					categoryId,
+					subcategoryId: subcategoryId || '',
+					description,
+					specifications: specs,
+				}),
 			);
 			alert('Herramienta actualizada con exito!');
 		} catch (error) {
@@ -209,11 +197,11 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 						<p>Especificaciones: </p>
 						{specifications &&
 							specifications.map((spec, index) => (
-								<div key={spec._id}>
+								<div key={spec.id}>
 									{handleSpecUpdate && (
 										<Editables
 											what={spec.name}
-											valueOf={findKeyInSpecs(spec._id) || 'N/A'}
+											valueOf={findKeyInSpecs(spec.id) || 'N/A'}
 											unit={spec.unit}
 											type='input'
 											whichOne={index + 1}

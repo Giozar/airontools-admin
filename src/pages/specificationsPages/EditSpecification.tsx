@@ -60,18 +60,13 @@ function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 
 	const handleSave = async () => {
 		try {
-			const response = await axios.patch<SpecsBackend>(
+			await axios.patch<SpecsBackend>(
 				`${import.meta.env.VITE_API_URL}/specifications/${id}`,
 				{ name, description, unit, familyId, categoryId, subcategoryId },
 			);
-			// Handle the response if needed
 			showSuccess('Especificación editada con éxito');
-
-			console.log('Save successful:', response.data);
 		} catch (error) {
-			// Handle errors if the request fails
 			errorHandler(error, showError);
-			console.error('Save failed:', error);
 		}
 	};
 	const {
