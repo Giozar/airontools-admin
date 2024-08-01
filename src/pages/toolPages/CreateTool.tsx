@@ -1,6 +1,10 @@
 import { AuthContext } from '@apps/App';
+import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
+import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useCharacteristics from '@hooks/useCharacteristics';
 import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
@@ -8,6 +12,7 @@ import useVideos from '@hooks/useVideos';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/createtool.css';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useContext, useState } from 'react';
 
@@ -51,12 +56,13 @@ function ToolForm() {
 	) => {
 		updateVideo(id, event.target.value);
 	};
+	const { errorLog, showError } = useErrorHandling();
+	const { successLog, showSuccess } = useSuccessHandling();
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
 			const uploadedUrls = await handleFileUpload();
-			console.log(uploadedUrls);
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
@@ -72,19 +78,20 @@ function ToolForm() {
 				imagesUrl: uploadedUrls,
 				createdBy,
 			};
-			console.log(createToolData);
 			await axios.post(
 				import.meta.env.VITE_API_URL + '/products',
 				createToolData,
 			);
-			alert('Herramienta creada con exito!');
+			showSuccess('Herramienta creada con éxito');
 		} catch (error) {
-			console.error('Error creating tool:', error);
+			errorHandler(error, showError);
 		}
 	};
 
 	return (
 		<form className='createtoolform' onSubmit={handleSubmit}>
+			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
+			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 			<div className='toolinfo'>
 				<div>
 					<label htmlFor='toolName'>Nombre de herramienta</label>
