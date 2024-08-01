@@ -1,3 +1,5 @@
+import { CategoryFrontend } from '@adapters/category.adapter';
+import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import useFetchCategories from '@hooks/useFetchCategories';
 import useFetchFamilies from '@hooks/useFetchFamilies';
 import useFetchSubcategories from '@hooks/useFetchSubcategories';
@@ -20,10 +22,27 @@ function useToolCategorizationEdit({
 	const [subcategoryName, setSubcategoryName] = useState('');
 
 	const { families } = useFetchFamilies();
-	const { categories, filteredCategories, setFilteredCategories } =
-		useFetchCategories();
-	const { subcategories, filteredSubcategories, setFilteredSubcategories } =
-		useFetchSubcategories();
+	const { categories } = useFetchCategories();
+	const { subcategories } = useFetchSubcategories();
+	const [filteredCategories, setFilteredCategories] = useState<
+		CategoryFrontend[]
+	>([]);
+	const [filteredSubcategories, setFilteredSubcategories] = useState<
+		SubcategoryFrontend[]
+	>([]);
+
+	useEffect(() => {
+		if (categories) {
+			setFilteredCategories(categories.filter(c => c.familyId === familyId));
+		}
+	}, [categories, familyId]);
+	useEffect(() => {
+		if (categories) {
+			setFilteredSubcategories(
+				subcategories.filter(c => c.categoryId === categoryId),
+			);
+		}
+	}, [subcategories, categoryId, categories]);
 
 	useEffect(() => {
 		const family = families.find(f => f.id === familyId);
@@ -36,11 +55,11 @@ function useToolCategorizationEdit({
 		setSubcategoryName(subcategory ? subcategory.name : '');
 	}, [
 		families,
-		filteredCategories,
-		filteredSubcategories,
 		familyId,
 		categoryId,
 		subcategoryId,
+		filteredCategories,
+		filteredSubcategories,
 	]);
 
 	const handleFamilyIdUpdate = (newValue: string) => {
