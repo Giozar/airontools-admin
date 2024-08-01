@@ -2,9 +2,9 @@
 TODO: hacer componente breadcrumbs para que el titulo se actualice dinamicamente
 TODO: hacer que el css sea generico para todas las paginas
 TODO: que el darkmode se guarde en un contexto */
-import { AuthContext } from '@apps/App';
 import Breadcrumb from '@components/Breadcrumb';
 import ThemeToggleButton from '@components/ThemeToggle';
+import { AuthContext } from '@contexts/AuthContext';
 import { useContext } from 'react';
 
 function HeaderApp() {

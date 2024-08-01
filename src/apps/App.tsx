@@ -1,5 +1,5 @@
-import { UserDataFrontend } from '@adapters/user.adapter';
-import React, { createContext, useState } from 'react';
+import { AuthContext, AuthProvider } from '@contexts/AuthContext';
+import React from 'react';
 import {
 	BrowserRouter,
 	Navigate,
@@ -8,113 +8,88 @@ import {
 	Routes,
 } from 'react-router-dom';
 
-import UserOptionCreate from '@pages/userPages/UserOptionCreate';
-import UserOptionEdit from '@pages/userPages/UserOptionEdit';
-import UserOptions from '@pages/userPages/UserOptions';
-
-import Login from '@pages/Login';
-import Home from '@pages/MainPage';
-
-import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
-
+import { UserRole } from '@interfaces/UserRole';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
 import CreateFamily from '@pages/familyPages/CreateFamily';
 import EditFamily from '@pages/familyPages/EditFamily';
+import Login from '@pages/Login';
+import Home from '@pages/MainPage';
+import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
 import CreateTool from '@pages/toolPages/CreateTool';
 import EditTool from '@pages/toolPages/EditTool';
 import ToolMenu from '@pages/toolPages/ToolMenu';
+import UserOptionCreate from '@pages/userPages/UserOptionCreate';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
+import UserOptionEdit from '@pages/userPages/UserOptionEdit';
+import UserOptions from '@pages/userPages/UserOptions';
 
-interface AuthContextType {
-	isAuthenticated: boolean;
-	user: UserDataFrontend | null;
-	setAuth: (auth: {
-		isAuthenticated: boolean;
-		user: UserDataFrontend | null;
-	}) => void;
-}
-
-export const AuthContext = createContext<AuthContextType | undefined>(
-	undefined,
-);
-
-function App() {
-	const [auth, setAuth] = useState<{
-		isAuthenticated: boolean;
-		user: UserDataFrontend | null;
-	}>({
-		isAuthenticated: false,
-		user: null,
-	});
-
+const App = () => {
 	return (
-		<>
-			<AuthContext.Provider value={{ ...auth, setAuth }}>
-				<BrowserRouter>
-					<Routes>
-						<Route path='/login' element={<Login />} />
-						<Route element={<PrivateRoute />}>
-							<Route element={<PrivateRouteOptionUser />}>
-								<Route path='/home' element={<Home />} />
-								<Route path='/home/solo-editor' element={<Home />} />
-								<Route element={<PrivateRouteOptionUserAdmin />}>
-									<Route path='/home/usuarios' element={<UserOptions />} />
-									<Route
-										path='/home/usuarios/crear-usuario'
-										element={<UserOptionCreate />}
-									/>
-									<Route
-										path='/home/usuarios/editar-usuario'
-										element={<UserOptionEdit />}
-									/>
-									<Route
-										path='/home/usuarios/crear-rol'
-										element={<UserOptionCreateRole />}
-									/>
-									<Route
-										path='/home/categorizacion'
-										element={<CategorizationMenu />}
-									/>
-									<Route
-										path='/home/categorizacion/crear-familia'
-										element={<CreateFamily />}
-									/>
-									<Route
-										path='/home/categorizacion/editar-familia'
-										element={<EditFamily />}
-									/>
-									<Route
-										path='/home/categorizacion/especificaciones/crear-especificaciones'
-										element={<CreateSpecification />}
-									/>
-									<Route
-										path='/home/categorizacion/especificaciones'
-										element={<ListOfSpecs />}
-									/>
-									<Route
-										path='/home/categorizacion/especificaciones/editar-especificacion'
-										element={<EditSpecification />}
-									/>
-									<Route path='/home/herramientas' element={<ToolMenu />} />
-									<Route
-										path='/home/herramientas/crear-herramienta'
-										element={<CreateTool />}
-									/>
-									<Route
-										path='/home/herramientas/editar-herramienta'
-										element={<EditTool />}
-									/>
-								</Route>
+		<AuthProvider>
+			<BrowserRouter>
+				<Routes>
+					<Route path='/login' element={<Login />} />
+					<Route element={<PrivateRoute />}>
+						<Route element={<PrivateRouteOptionUser />}>
+							<Route path='/home' element={<Home />} />
+							<Route path='/home/solo-editor' element={<Home />} />
+							<Route element={<PrivateRouteOptionUserAdmin />}>
+								<Route path='/home/usuarios' element={<UserOptions />} />
+								<Route
+									path='/home/usuarios/crear-usuario'
+									element={<UserOptionCreate />}
+								/>
+								<Route
+									path='/home/usuarios/editar-usuario'
+									element={<UserOptionEdit />}
+								/>
+								<Route
+									path='/home/usuarios/crear-rol'
+									element={<UserOptionCreateRole />}
+								/>
+								<Route
+									path='/home/categorizacion'
+									element={<CategorizationMenu />}
+								/>
+								<Route
+									path='/home/categorizacion/crear-familia'
+									element={<CreateFamily />}
+								/>
+								<Route
+									path='/home/categorizacion/editar-familia'
+									element={<EditFamily />}
+								/>
+								<Route
+									path='/home/categorizacion/especificaciones/crear-especificaciones'
+									element={<CreateSpecification />}
+								/>
+								<Route
+									path='/home/categorizacion/especificaciones'
+									element={<ListOfSpecs />}
+								/>
+								<Route
+									path='/home/categorizacion/especificaciones/editar-especificacion'
+									element={<EditSpecification />}
+								/>
+								<Route path='/home/herramientas' element={<ToolMenu />} />
+								<Route
+									path='/home/herramientas/crear-herramienta'
+									element={<CreateTool />}
+								/>
+								<Route
+									path='/home/herramientas/editar-herramienta'
+									element={<EditTool />}
+								/>
 							</Route>
 						</Route>
-					</Routes>
-				</BrowserRouter>
-			</AuthContext.Provider>
-		</>
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</AuthProvider>
 	);
-}
+};
 
 const PrivateRoute = () => {
 	const authContext = React.useContext(AuthContext);
@@ -130,9 +105,9 @@ const PrivateRouteOptionUser = () => {
 
 const PrivateRouteOptionUserAdmin = () => {
 	const authContext = React.useContext(AuthContext);
+	const role = authContext?.user?.role as UserRole;
 	if (!authContext) return null;
-	return authContext.isAuthenticated &&
-		authContext.user?.roles === 'Administrador' ? (
+	return authContext.isAuthenticated && role?.name === 'Administrador' ? (
 		<Outlet />
 	) : (
 		<Navigate to='/home' />

@@ -1,6 +1,6 @@
 import { UserDataBackend, transformUserData } from '@adapters/user.adapter';
-import { AuthContext } from '@apps/App';
 import ErrorMessage from '@components/ErrorMessage';
+import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import axios, { AxiosError } from 'axios';
 import { jwtDecode } from 'jwt-decode';

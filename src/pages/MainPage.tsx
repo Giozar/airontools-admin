@@ -1,6 +1,6 @@
-import { AuthContext } from '@apps/App';
 import ActionCard from '@components/ActionCard';
 import HeaderTitle from '@components/HeaderTitle';
+import { AuthContext } from '@contexts/AuthContext';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { useContext } from 'react';
@@ -15,7 +15,7 @@ function ContentMainPage() {
 			<main>
 				<HeaderTitle title='Acciones' />
 				<div className='options'>
-					{authContext?.user?.roles === 'Administrador' ? (
+					{authContext?.user?.role === 'Administrador' ? (
 						<>
 							<ActionCard
 								title='Usuarios'

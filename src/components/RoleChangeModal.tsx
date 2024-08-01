@@ -1,8 +1,4 @@
-import {
-	transformUserDataBack,
-	UserDataBackend,
-	UserDataFrontend,
-} from '@adapters/user.adapter';
+import { UserDataBackend, transformUserData } from '@adapters/user.adapter';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import { useUserRoles } from '@hooks/userRoles/useUserRoles';
 import { UserRole } from '@interfaces/UserRole';
@@ -20,7 +16,7 @@ interface ValidationError {
 }
 
 interface RoleChangeModalProps {
-	userToEdit: UserDataFrontend;
+	userToEdit: UserDataBackend;
 	onCloseModal: () => void;
 	onUpdateList: () => void;
 }
@@ -31,7 +27,7 @@ function RoleChangeModal({
 	onUpdateList,
 }: RoleChangeModalProps) {
 	const { userRoles: roleOptions } = useUserRoles();
-	const [roles, setRoles] = useState(userToEdit.roles);
+	const [role, setRoles] = useState(userToEdit.role);
 	const { errorLog, showError } = useErrorHandling();
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -42,10 +38,10 @@ function RoleChangeModal({
 		e.preventDefault();
 		try {
 			await axios.patch<RegisterResponse>(
-				import.meta.env.VITE_API_URL + `/auth/${userToEdit.id}`,
-				transformUserDataBack({
+				import.meta.env.VITE_API_URL + `/auth/${userToEdit._id}`,
+				transformUserData({
 					...userToEdit,
-					roles,
+					role,
 				}),
 			);
 			onUpdateList();
@@ -70,7 +66,11 @@ function RoleChangeModal({
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 			<form onSubmit={handleSubmit} className='choserol'>
 				<label htmlFor='options'>Nuevo rol:</label>
-				<select id='options' value={roles} onChange={handleOptionChange}>
+				<select
+					id='options'
+					value={role as string}
+					onChange={handleOptionChange}
+				>
 					{roleOptions.map((roleOption: UserRole, index) => (
 						<option key={index} value={roleOption.name}>
 							{roleOption.name}

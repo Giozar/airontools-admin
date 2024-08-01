@@ -1,7 +1,4 @@
-import {
-	transformUserDataBack,
-	UserDataFrontend,
-} from '@adapters/user.adapter';
+import { transformUserData, UserDataBackend } from '@adapters/user.adapter';
 import {
 	RegisterResponse,
 	ValidationError,
@@ -9,12 +6,12 @@ import {
 import axios from 'axios';
 
 export default async function createUser(
-	userData: UserDataFrontend,
+	userData: UserDataBackend,
 ): Promise<RegisterResponse> {
 	try {
 		const response = await axios.post<RegisterResponse>(
 			import.meta.env.VITE_API_URL + '/auth',
-			transformUserDataBack(userData),
+			transformUserData(userData),
 		);
 		const userCreated = response.data;
 
