@@ -15,10 +15,11 @@ import UserOptions from '@pages/userPages/UserOptions';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
 
-import CategorizationMenu from '@pages/specificationsPages/CategorizationMenu';
-import CreateFamily from '@pages/specificationsPages/CreateFamily';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
-import EditFamily from '@pages/specificationsPages/EditFamily';
+
+import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
+import CreateFamily from '@pages/familyPages/CreateFamily';
+import EditFamily from '@pages/familyPages/EditFamily';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
 import CreateTool from '@pages/toolPages/CreateTool';
@@ -85,15 +86,15 @@ function App() {
 										element={<EditFamily />}
 									/>
 									<Route
-										path='/home/categorizacion/crear-especificaciones'
+										path='/home/categorizacion/especificaciones/crear-especificaciones'
 										element={<CreateSpecification />}
 									/>
 									<Route
-										path='/home/categorizacion/ver-especificaciones'
+										path='/home/categorizacion/especificaciones'
 										element={<ListOfSpecs />}
 									/>
 									<Route
-										path='/home/categorizacion/ver-especificaciones/editar-especificacion'
+										path='/home/categorizacion/especificaciones/editar-especificacion'
 										element={<EditSpecification />}
 									/>
 									<Route path='/home/herramientas' element={<ToolMenu />} />

@@ -8,7 +8,7 @@ import TrashIcon from './svg/TrashIcon';
 
 interface ShowManageCategoryProps {
 	categories: CategoryFrontend[];
-	countOfCategories: number;
+	countOfCategories?: number;
 	handleCategoryNameChange: (newName: string, index: number) => void;
 	handleCategoryDescriptionChange: (
 		newDescription: string,
