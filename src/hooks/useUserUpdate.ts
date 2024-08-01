@@ -22,8 +22,8 @@ const useUserUpdate = () => {
 
 	const updateUser = async (userId: string, userData: UserDataFrontend) => {
 		try {
-			const response = await axios.put<RegisterResponse>(
-				import.meta.env.VITE_API_URL + `/auth/update/${userId}`,
+			const response = await axios.patch<RegisterResponse>(
+				import.meta.env.VITE_API_URL + `/auth/${userId}`,
 				transformUserDataBack(userData),
 			);
 			const { user } = response.data;

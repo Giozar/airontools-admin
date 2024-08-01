@@ -41,8 +41,8 @@ function RoleChangeModal({
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			await axios.put<RegisterResponse>(
-				import.meta.env.VITE_API_URL + `/auth/update/${userToEdit.id}`,
+			await axios.patch<RegisterResponse>(
+				import.meta.env.VITE_API_URL + `/auth/${userToEdit.id}`,
 				transformUserDataBack({
 					...userToEdit,
 					roles,

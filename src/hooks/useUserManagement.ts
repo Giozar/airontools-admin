@@ -27,9 +27,7 @@ const useUserManagement = () => {
 	};
 	const handleDelete = async (userid: string, username: string) => {
 		try {
-			await axios.delete(
-				import.meta.env.VITE_API_URL + `/auth/delete/${userid}`,
-			);
+			await axios.delete(import.meta.env.VITE_API_URL + `/auth/${userid}`);
 			setDeletionMessage(
 				`Usuario ${username} (${userid}) ha sido eliminado correctamente.`,
 			);

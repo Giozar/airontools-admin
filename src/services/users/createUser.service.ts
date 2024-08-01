@@ -13,7 +13,7 @@ export default async function createUser(
 ): Promise<RegisterResponse> {
 	try {
 		const response = await axios.post<RegisterResponse>(
-			import.meta.env.VITE_API_URL + '/auth/register',
+			import.meta.env.VITE_API_URL + '/auth',
 			transformUserDataBack(userData),
 		);
 		const userCreated = response.data;
