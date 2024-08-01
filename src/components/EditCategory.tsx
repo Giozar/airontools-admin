@@ -54,22 +54,24 @@ function EditCategory({
 		updateCategoryList();
 	};
 	return (
-		<div className='categoryedit'>
+		<>
 			{successLogCategory.isSuccess && (
 				<SuccessMessage message={successLogCategory.message} />
 			)}
 			{errorLogCategory.isError && (
 				<ErrorMessage message={errorLogCategory.message} />
 			)}
-			<ShowManageCategory
-				categories={categories}
-				countOfCategories={categories.length}
-				handleCategoryNameChange={handleCategoryNameChange}
-				handleCategoryDescriptionChange={handleCategoryDescriptionChange}
-				handleUpdateCategory={handleUpdateCategory}
-				handleCloseModalDeletion={handleCategoryDeleteFromList}
-			/>
-		</div>
+			<div className='categoryedit'>
+				<ShowManageCategory
+					categories={categories}
+					countOfCategories={categories.length}
+					handleCategoryNameChange={handleCategoryNameChange}
+					handleCategoryDescriptionChange={handleCategoryDescriptionChange}
+					handleUpdateCategory={handleUpdateCategory}
+					handleCloseModalDeletion={handleCategoryDeleteFromList}
+				/>
+			</div>
+		</>
 	);
 }
 export default EditCategory;

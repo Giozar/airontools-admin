@@ -1,9 +1,9 @@
 export interface SpecsBackend {
-	id_: string;
+	_id: string;
 	name: string;
 	description: string;
 	unit: string;
-	createdBy: string;
+	createdBy?: string;
 	updatedBy?: string;
 	createdAt?: string;
 	updatedAt?: string;
@@ -15,11 +15,11 @@ export interface SpecsBackend {
 }
 
 export interface SpecsFrontend {
-	id?: string;
+	id: string;
 	name: string;
 	description: string;
 	unit: string;
-	createdBy: string;
+	createdBy?: string;
 	updatedBy?: string;
 	createdAt?: string;
 	updatedAt?: string;
