@@ -1,3 +1,4 @@
+import { SpecsFrontend } from '@adapters/specifications.adapter';
 import useFetchSubcategoriesFromFamily from '@hooks/useFetchSubcategoriesFromFamily';
 import { useEffect, useState } from 'react';
 import CreateSubcategory from './CreateSubcategory';
@@ -9,12 +10,14 @@ function SubcategoryModal({
 	createdBy,
 	categoryId,
 	categoryName,
+	specifications,
 	onUpdateSubcategoriesLength,
 }: {
 	familyId: string;
 	createdBy: string;
 	categoryId: string;
 	categoryName: string;
+	specifications: SpecsFrontend[];
 	onUpdateSubcategoriesLength: (categoryId: string, length: number) => void;
 }) {
 	const [modalVisible, setModalVisible] = useState(false);
@@ -85,6 +88,7 @@ function SubcategoryModal({
 							subcategories={subcategories}
 							setSubcategories={setSubcategories}
 							update={updatedSubcategories}
+							specifications={specifications}
 						/>
 						<CreateSubcategory
 							createdBy={createdBy}

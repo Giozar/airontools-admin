@@ -1,4 +1,5 @@
 import { CategoryFrontend } from '@adapters/category.adapter';
+import { SpecsFrontend } from '@adapters/specifications.adapter';
 import SubcategoryModal from '@components/SubcategoryModal';
 import useCategoryManagement from '@hooks/useCategoryManegement';
 import { useState } from 'react';
@@ -16,6 +17,7 @@ interface ShowManageCategoryProps {
 	) => void;
 	handleUpdateCategory: (updatedCategory: CategoryFrontend) => void;
 	handleCloseModalDeletion: (updatedCategory: CategoryFrontend) => void;
+	specifications: SpecsFrontend[];
 }
 
 function ShowManageCategory({
@@ -24,6 +26,7 @@ function ShowManageCategory({
 	handleCategoryDescriptionChange,
 	handleUpdateCategory,
 	handleCloseModalDeletion,
+	specifications,
 }: ShowManageCategoryProps) {
 	const {
 		showDeletionModalFor,
@@ -60,9 +63,25 @@ function ShowManageCategory({
 							onDelete={() => handleDelete(category.id || '', category.name)}
 							message={deletionMessage}
 							confirmationInfo={
-								subcategoriesLengths[category.id || ''] || 0
-									? `Al borrar esta categoría se eliminarán ${subcategoriesLengths[category.id || '']} subcategorías`
-									: null
+								(subcategoriesLengths[category.id || ''] &&
+									specifications.filter(spec => spec.categoryId === category.id)
+										.length) > 0
+									? `Al borrar esta categoría se eliminarán ${subcategoriesLengths[category.id || '']} subcategorías y ${
+											specifications.filter(
+												spec => spec.categoryId === category.id,
+											).length
+										} especificaciones`
+									: specifications.filter(
+												spec => spec.categoryId === category.id,
+										  ).length > 0
+										? `Al borrar esta categoría se eliminarán ${
+												specifications.filter(
+													spec => spec.categoryId === category.id,
+												).length
+											} especificaciones`
+										: (subcategoriesLengths[category.id || ''] || 0) > 0
+											? `Al borrar esta categoría se eliminarán ${subcategoriesLengths[category.id || '']} subcategorías`
+											: null
 							}
 						/>
 					)}
@@ -101,6 +120,7 @@ function ShowManageCategory({
 							familyId={category.familyId}
 							createdBy={category.createdBy}
 							onUpdateSubcategoriesLength={handleUpdateSubcategoriesLength}
+							specifications={specifications}
 						/>
 					)}
 

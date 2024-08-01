@@ -1,4 +1,5 @@
 import { FamilyFrontend } from '@adapters/family.adapter';
+import { SpecsFrontend } from '@adapters/specifications.adapter';
 import { AuthContext } from '@apps/App';
 import CreateCategory from '@components/CreateCategory';
 import DeletionModal from '@components/DeletionModal';
@@ -23,11 +24,13 @@ interface EditFamilyFormProps {
 	familyToEdit: FamilyFrontend;
 	numberOfCategories: number;
 	numberOfSubcategories: number;
+	specifications: SpecsFrontend[];
 }
 function EditFamilyForm({
 	familyToEdit,
 	numberOfCategories,
 	numberOfSubcategories,
+	specifications,
 }: EditFamilyFormProps) {
 	// Datos recuperados y que se pueden modificar
 	const [name, setName] = useState(familyToEdit.name);
@@ -75,6 +78,7 @@ function EditFamilyForm({
 					family: { ...familyToEdit, name, description },
 					numberOfCategories,
 					numberOfSubcategories,
+					specifications,
 				}),
 			);
 		} catch (error) {
@@ -97,9 +101,12 @@ function EditFamilyForm({
 					onDelete={() => handleDelete(familyId || '', name)}
 					message={deletionMessage}
 					confirmationInfo={
-						numberOfCategories > 0
-							? `Al borrar esta familia se eliminarán ${numberOfCategories} categorías y ${numberOfSubcategories} sus subcategorías`
-							: null
+						numberOfCategories > 0 &&
+						specifications.filter(spec => spec.familyId === familyId).length > 0
+							? `Al borrar esta familia se eliminarán ${numberOfCategories} categorias, ${numberOfSubcategories} subcategorías Y ${specifications.filter(spec => spec.familyId === familyId).length} especificaciones`
+							: numberOfCategories > 0
+								? `Al borrar esta familia se eliminarán ${numberOfCategories} categorias y ${numberOfSubcategories} subcategorías`
+								: null
 					}
 				/>
 			)}
@@ -142,6 +149,7 @@ function EditFamilyForm({
 				familyId={familyId}
 				update={update}
 				updateCategoryList={updateCategoryList}
+				specifications={specifications}
 			/>
 			<CreateCategory
 				createdBy={createdBy}
@@ -156,6 +164,7 @@ function ContentMainPage() {
 		family: { id: 'N/A', name: 'Desconocido' },
 		numberOfCategories: 0,
 		numberOfSubcategories: 0,
+		specifications: [{ id: 'N/A', name: 'Desconocido' }],
 	};
 
 	const [state] = useState(() => {
@@ -167,7 +176,8 @@ function ContentMainPage() {
 		localStorage.setItem('familyToEdit', JSON.stringify(state));
 	}, [state]);
 
-	const { family, numberOfCategories, numberOfSubcategories } = state;
+	const { family, numberOfCategories, numberOfSubcategories, specifications } =
+		state;
 	return (
 		<BasePage>
 			<HeaderApp />
@@ -177,6 +187,7 @@ function ContentMainPage() {
 					familyToEdit={family}
 					numberOfCategories={numberOfCategories}
 					numberOfSubcategories={numberOfSubcategories}
+					specifications={specifications}
 				/>
 			</main>
 		</BasePage>

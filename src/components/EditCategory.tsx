@@ -1,4 +1,5 @@
 import { CategoryFrontend } from '@adapters/category.adapter';
+import { SpecsFrontend } from '@adapters/specifications.adapter';
 import useCategoryUpdate from '@hooks/useCategoryUpdate';
 import useFetchCategoriesFromFamily from '@hooks/useFetchCategoriesFromFamily';
 import { useEffect } from 'react';
@@ -10,10 +11,12 @@ function EditCategory({
 	familyId,
 	update,
 	updateCategoryList,
+	specifications,
 }: {
 	familyId: string;
 	update: boolean;
 	updateCategoryList: () => void;
+	specifications: SpecsFrontend[];
 }) {
 	const { errorLogCategory, successLogCategory, updateCategory } =
 		useCategoryUpdate();
@@ -69,6 +72,7 @@ function EditCategory({
 					handleCategoryDescriptionChange={handleCategoryDescriptionChange}
 					handleUpdateCategory={handleUpdateCategory}
 					handleCloseModalDeletion={handleCategoryDeleteFromList}
+					specifications={specifications}
 				/>
 			</div>
 		</>
