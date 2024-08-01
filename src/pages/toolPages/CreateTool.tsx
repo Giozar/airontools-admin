@@ -184,7 +184,7 @@ function ToolForm() {
 			</div>
 
 			<div className='selectfamily'>
-				<label>Familia:</label>
+				<label>Categorización:</label>
 				<Editables
 					what='Familia'
 					valueOf={familyName}

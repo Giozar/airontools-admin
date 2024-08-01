@@ -133,3 +133,16 @@
 .selectfamily label {
 	margin: 5px 0;
 }
+.selectfamily .editable {
+	width: 100%;
+}
+.selectfamily .editable .autocomplete {
+	width: 500px;
+	height: 200px;
+}
+.selectfamily .editable .autocomplete input {
+	width: 400px;
+}
+.selectfamily .editable .options-container {
+	top: 100%;
+}
