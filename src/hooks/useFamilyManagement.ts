@@ -1,4 +1,5 @@
 import { FamilyFrontend } from '@adapters/family.adapter';
+import { SpecsFrontend } from '@adapters/specifications.adapter';
 import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -17,7 +18,7 @@ const useFamilyManagement = () => {
 		family: FamilyFrontend,
 		numberOfCategories: number,
 		numberOfSubcategories: number,
-		numberOfSpecifications: number,
+		specifications: SpecsFrontend[],
 	) => {
 		localStorage.setItem(
 			'familyToEdit',
@@ -25,7 +26,7 @@ const useFamilyManagement = () => {
 				family,
 				numberOfCategories,
 				numberOfSubcategories,
-				numberOfSpecifications,
+				specifications,
 			}),
 		);
 		navigate(location.pathname + `/editar-familia`);

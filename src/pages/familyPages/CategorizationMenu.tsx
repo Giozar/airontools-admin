@@ -116,7 +116,7 @@ function ListofFamilies() {
 											family,
 											categoriesLength,
 											subcategoriesLength,
-											specificationLength,
+											specifications,
 										)
 									}
 								>
