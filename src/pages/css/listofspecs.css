@@ -1,6 +1,5 @@
 .container {
 	margin: 0 auto;
-	background-color: var(--bg-secondary);
 	padding: 20px;
 
 	color: var(--text-primary);

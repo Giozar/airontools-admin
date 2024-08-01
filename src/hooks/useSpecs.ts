@@ -1,97 +1,88 @@
-import {
-	SpecsFrontend,
-	transformSpecsData,
-} from '@adapters/specifications.adapter';
-import { getSpecifications } from '@services/specifications/getSpecifications.service';
-import { ChangeEvent, useEffect, useState } from 'react';
-import useFetchCategories from './useFetchCategories';
-import useFetchFamilies from './useFetchFamilies';
-import useFetchSubcategories from './useFetchSubcategories';
+import { SpecsFrontend } from '@adapters/specifications.adapter';
+import { fetchSpecificationsByCategoryId } from '@services/specifications/fetchSpecificationsByCategoryId.service';
+import { useEffect, useState } from 'react';
 
-const useSpecs = () => {
-	const { families } = useFetchFamilies();
-	const { categories, filteredCategories, setFilteredCategories } =
-		useFetchCategories();
-	const { subcategories, filteredSubcategories, setFilteredSubcategories } =
-		useFetchSubcategories();
-	const [selectedFamilyId, setSelectedFamilyId] = useState('');
-	const [selectedCategoryId, setSelectedCategoryId] = useState('');
-	const [selectedSubcategoryId, setSelectedSubcategoryId] = useState('');
+interface spec {
+	catId: string;
+	initialSpecs?: Array<{ [key: string]: string }>;
+}
+function useSpecs({ catId, initialSpecs }: spec) {
+	const [specs, setSpecs] = useState(initialSpecs);
 	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
-	const [filteredSpecifications, setFilteredSpecifications] = useState<
-		SpecsFrontend[]
-	>([]);
+	const [flag, setFlag] = useState(true);
 	const [specValues, setSpecValues] = useState<Record<string, string>>({});
 
-	useEffect(() => {
-		const fetchSpecifications = async () => {
-			try {
-				const specs = await getSpecifications();
-				setSpecifications(specs.map(transformSpecsData));
-				console.log(specs);
-			} catch (error) {
-				console.error(error);
+	const editOrCreateKeyInSpecs = (keyToFind: string, newValue: string) => {
+		let keyFound = false;
+		if (!specs) return;
+		const updatedSpecs = specs.map(spec => {
+			if (keyToFind in spec) {
+				keyFound = true;
+				return { ...spec, [keyToFind]: newValue };
 			}
-		};
-		fetchSpecifications();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+			return spec;
+		});
 
-	const handleFamilyChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		const familyId = event.target.value;
-		setSelectedFamilyId(familyId);
-		const filteredCategories = categories.filter(
-			category => category.familyId === familyId,
-		);
-		setFilteredCategories(filteredCategories);
+		if (!keyFound) {
+			updatedSpecs.push({ [keyToFind]: newValue });
+		}
+
+		setSpecs(updatedSpecs);
 	};
-	const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		const categoryId = event.target.value;
-		setSelectedCategoryId(categoryId);
-		const filteredSubcategories = subcategories.filter(
-			subcategory => subcategory.categoryId === categoryId,
-		);
-		setFilteredSubcategories(filteredSubcategories);
-		const filteredSpecifications = specifications.filter(
-			spec => spec.categoryId === categoryId,
-		);
-		setFilteredSpecifications(filteredSpecifications);
+
+	const findKeyInSpecs = (keyToFind: string) => {
+		if (!specs) return;
+		for (const spec of specs) {
+			if (keyToFind in spec) {
+				return spec[keyToFind];
+			}
+		}
+		return null;
 	};
-	const handleSubcategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		const subcategoryId = event.target.value;
-		setSelectedSubcategoryId(subcategoryId);
-		if (subcategoryId !== '') {
-			setFilteredSpecifications(
-				specifications.filter(spec => spec.subcategoryId === subcategoryId),
-			);
-		} else {
-			setFilteredSpecifications(
-				specifications.filter(spec => spec.categoryId === selectedCategoryId),
-			);
+
+	const handleSpecUpdate = (newValue: string, index: number) => {
+		const key = specifications[index - 1]?.id;
+		if (key) {
+			editOrCreateKeyInSpecs(key, newValue);
 		}
 	};
 
+	useEffect(() => {
+		if (!flag) {
+			setSpecs([]);
+		} else {
+			setFlag(false);
+		}
+
+		const getSpecifications = async () => {
+			try {
+				const data = await fetchSpecificationsByCategoryId(catId);
+				setSpecifications(data);
+			} catch (error) {
+				console.error('No se pudieron obtener las especificaciones');
+			}
+		};
+
+		if (catId) {
+			getSpecifications();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [catId]);
 	const handleInputChange = (id: string, value: string) => {
 		setSpecValues(prevValues => ({
 			...prevValues,
 			[id]: value,
 		}));
 	};
-
 	return {
-		families,
-		filteredCategories,
-		filteredSubcategories,
-		selectedFamilyId,
-		selectedCategoryId,
-		selectedSubcategoryId,
-		filteredSpecifications,
+		specs,
+		specifications,
+		editOrCreateKeyInSpecs,
+		findKeyInSpecs,
+		handleSpecUpdate,
 		specValues,
-		handleFamilyChange,
-		handleCategoryChange,
-		handleSubcategoryChange,
 		handleInputChange,
 	};
-};
+}
 
 export default useSpecs;

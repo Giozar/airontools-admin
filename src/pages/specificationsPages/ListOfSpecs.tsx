@@ -2,6 +2,7 @@ import {
 	SpecsFrontend,
 	transformSpecsData,
 } from '@adapters/specifications.adapter';
+import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
@@ -15,6 +16,7 @@ import '@pages/css/listofspecs.css';
 import { getSpecifications } from '@services/specifications/getSpecifications.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 function SpecificationsGrid() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -108,11 +110,19 @@ function SpecificationsGrid() {
 	);
 }
 function ContentMainPage() {
+	const location = useLocation();
 	return (
 		<BasePage>
 			<HeaderApp />
 			<main>
-				<HeaderTitle title='Ver espeficaciones' />
+				<HeaderTitle title='Especificaciones' />
+				<div className='options users'>
+					<ActionCard
+						title='Crear Especificaciones'
+						path={location.pathname + '/crear-especificaciones'}
+					/>
+				</div>
+				<h2 className='listtitle'>Lista de especificaciones</h2>
 				<SpecificationsGrid />
 			</main>
 		</BasePage>

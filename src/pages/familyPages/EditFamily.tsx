@@ -182,8 +182,8 @@ function ContentMainPage() {
 		</BasePage>
 	);
 }
-function CategorizationMenu() {
+function EditFamily() {
 	return <ContentMainPage />;
 }
 
-export default CategorizationMenu;
+export default EditFamily;

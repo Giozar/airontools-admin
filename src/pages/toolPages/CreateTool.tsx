@@ -1,4 +1,5 @@
 import { AuthContext } from '@apps/App';
+import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
 import SuccessMessage from '@components/SuccessMessage';
@@ -8,6 +9,7 @@ import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useCharacteristics from '@hooks/useCharacteristics';
 import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
+import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
 import useVideos from '@hooks/useVideos';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
@@ -30,18 +32,25 @@ function ToolForm() {
 	} = useCharacteristics();
 	const {
 		families,
+		familyId,
 		filteredCategories,
+		categoryId,
 		filteredSubcategories,
-		selectedFamilyId,
-		selectedCategoryId,
-		selectedSubcategoryId,
-		filteredSpecifications,
-		specValues,
-		handleFamilyChange,
-		handleCategoryChange,
-		handleSubcategoryChange,
-		handleInputChange,
-	} = useSpecs();
+		subcategoryId,
+		handleFamilyIdUpdate,
+		handleCategoryIdUpdate,
+		handleSubcategoryIdUpdate,
+		familyName,
+		categoryName,
+		subcategoryName,
+	} = useToolCategorizationEdit({
+		initialFamilyId: '',
+		initialCategoryId: '',
+		initialSubcategoryId: '',
+	});
+	const { specifications, handleInputChange, specValues } = useSpecs({
+		catId: categoryId,
+	});
 	const { videos, addVideo, removeVideo, updateVideo } = useVideos();
 	const {
 		filePreviews,
@@ -67,9 +76,9 @@ function ToolForm() {
 				name: toolName,
 				model: toolModel,
 				characteristics: characteristics.map(char => char.value),
-				familyId: selectedFamilyId,
-				categoryId: selectedCategoryId,
-				subcategoryId: selectedSubcategoryId,
+				familyId,
+				categoryId,
+				subcategoryId,
 				description: toolDescription,
 				specifications: Object.keys(specValues).map(key => ({
 					[key]: specValues[key],
@@ -175,51 +184,43 @@ function ToolForm() {
 			</div>
 
 			<div className='selectfamily'>
-				<label>Familia:</label>
-				<select onChange={handleFamilyChange}>
-					<option value=''>Selecciona una familia</option>
-					{families.map(family => (
-						<option key={family.id} value={family.id}>
-							{family.name}
-						</option>
-					))}
-				</select>
+				<label>Categorización:</label>
+				<Editables
+					what='Familia'
+					valueOf={familyName}
+					type='select'
+					onUpdate={handleFamilyIdUpdate}
+					list={families.map(item => ({
+						id: item.id || 'error',
+						name: item.name || 'error',
+					}))}
+				/>
 
-				{filteredCategories.length > 0 && selectedFamilyId && (
-					<>
-						<label>Categorías:</label>
-						<select onChange={handleCategoryChange}>
-							<option value=''>Selecciona una categoría</option>
-							{filteredCategories.map(category => (
-								<option key={category.id} value={category.id}>
-									{category.name}
-								</option>
-							))}
-						</select>
-					</>
-				)}
-
-				{filteredSubcategories.length > 0 &&
-					selectedFamilyId &&
-					selectedCategoryId && (
-						<>
-							<label>Subcategorías:</label>
-							<select onChange={handleSubcategoryChange}>
-								<option value=''>Selecciona una subcategoría</option>
-								{filteredSubcategories.map(subcategory => (
-									<option key={subcategory.id} value={subcategory.id}>
-										{subcategory.name}
-									</option>
-								))}
-							</select>
-						</>
-					)}
-
-				{filteredSpecifications.length > 0 && (
+				<Editables
+					what='Categoría'
+					valueOf={categoryName}
+					type='select'
+					onUpdate={handleCategoryIdUpdate}
+					list={filteredCategories.map(item => ({
+						id: item.id || 'error',
+						name: item.name || 'error',
+					}))}
+				/>
+				<Editables
+					what='Subcategoría'
+					valueOf={subcategoryName}
+					type='select'
+					onUpdate={handleSubcategoryIdUpdate}
+					list={filteredSubcategories.map(item => ({
+						id: item.id || 'error',
+						name: item.name || 'error',
+					}))}
+				/>
+				{specifications.length > 0 && (
 					<>
 						<label>Especificaciones</label>
 						<div className='specifications'>
-							{filteredSpecifications.map(spec => (
+							{specifications.map(spec => (
 								<div key={spec.id}>
 									<label htmlFor={spec.id}>{spec.name}</label>
 									<div className='input-container'>

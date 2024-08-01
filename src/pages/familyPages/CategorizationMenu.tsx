@@ -1,5 +1,10 @@
+import {
+	SpecsFrontend,
+	transformSpecsData,
+} from '@adapters/specifications.adapter';
 import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
+import DropdownMenu from '@components/DropdownMenu';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
@@ -11,86 +16,9 @@ import useFetchSubcategories from '@hooks/useFetchSubcategories';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/familyList.css';
-import { useState } from 'react';
-// import React, { useState } from 'react';
+import { getSpecifications } from '@services/specifications/getSpecifications.service';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-/* interface Subcategory {
-	name: string;
-}
-
-interface Category {
-	name: string;
-	subcategories?: Subcategory[];
-}
-
-interface Family {
-	name: string;
-	description: string;
-	categories: Category[];
-}
-
-const SubcategoryList: React.FC<{ subcategories: Subcategory[] }> = ({
-	subcategories,
-}) => (
-	<ul className='subcategory'>
-		{subcategories.map((subcategory, index) => (
-			<li key={index}>{subcategory.name}</li>
-		))}
-	</ul>
-);
-
-const CategoryList: React.FC<{ categories: Category[] }> = ({ categories }) => (
-	<ul className='category'>
-		{categories.map((category, index) => (
-			<li key={index}>
-				{category.name}
-				{category.subcategories && (
-					<SubcategoryList subcategories={category.subcategories} />
-				)}
-			</li>
-		))}
-	</ul>
-);
-
-const FamilyList: React.FC<{ families: Family[] }> = ({ families }) => (
-	<div className='familylist'>
-		{families.map((family, index) => (
-			<div key={index} className='family'>
-				<h2>{family.name}</h2>
-				<p>{family.description}</p>
-				{family.categories.map((category, catIndex) => (
-					<div key={catIndex}>
-						<Collapsible
-							trigger={isOpen => (
-								<div>
-									<span>{isOpen ? '▼' : '▶'}</span>
-									<span>{category.name}</span>
-								</div>
-							)}
-						>
-							<CategoryList categories={category.subcategories || []} />
-						</Collapsible>
-					</div>
-				))}
-			</div>
-		))}
-	</div>
-);
-type CollapsibleProps = {
-	trigger: (isOpen: boolean) => React.ReactNode;
-	children: React.ReactNode;
-};
-
-function Collapsible({ trigger, children }: CollapsibleProps) {
-	const [isOpen, setIsOpen] = useState(false);
-	return (
-		<>
-			<div onClick={() => setIsOpen(!isOpen)}>{trigger(isOpen)}</div>
-			{isOpen && <div>{children}</div>}
-		</>
-	);
-}
-*/
 
 function ListofFamilies() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -121,6 +49,21 @@ function ListofFamilies() {
 			filteredFamilies.filter(family => family.id !== familyid),
 		);
 	};
+	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+	useEffect(() => {
+		const fetchSpecifications = async () => {
+			try {
+				const specs = await getSpecifications();
+				setSpecifications(specs.map(transformSpecsData));
+				console.log(specs);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		fetchSpecifications();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	if (loading) {
 		return <p>Cargando...</p>;
 	}
@@ -200,33 +143,12 @@ function ListofFamilies() {
 									}
 								/>
 							)}
-							{filteredCategories.filter(
-								category => category.familyId === family.id,
-							).length !== 0 && <span>Categorias:</span>}
-
-							<ul>
-								{filteredCategories
-									.filter(category => category.familyId === family.id)
-									.map(category => (
-										<li key={category.id}>
-											{category.name}
-											{filteredSubcategories.filter(
-												subcategory => subcategory.categoryId === category.id,
-											).length !== 0 && <span>Subcategorias:</span>}
-
-											<ul>
-												{filteredSubcategories
-													.filter(
-														subcategory =>
-															subcategory.categoryId === category.id,
-													)
-													.map(subcategory => (
-														<li key={subcategory.id}>{subcategory.name}</li>
-													))}
-											</ul>
-										</li>
-									))}
-							</ul>
+							<DropdownMenu
+								filteredCategories={filteredCategories}
+								filteredSubcategories={filteredSubcategories}
+								specifications={specifications}
+								family={family}
+							/>
 						</li>
 					);
 				})}
@@ -248,12 +170,8 @@ function ContentMainPage() {
 						path={location.pathname + '/crear-familia'}
 					/>
 					<ActionCard
-						title='Crear Especificaciones'
-						path={location.pathname + '/crear-especificaciones'}
-					/>
-					<ActionCard
-						title='Ver Especificaciones'
-						path={location.pathname + '/ver-especificaciones'}
+						title='Especificaciones'
+						path={location.pathname + '/especificaciones'}
 					/>
 				</div>
 				<ListofFamilies />

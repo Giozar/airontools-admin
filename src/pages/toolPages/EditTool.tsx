@@ -2,7 +2,6 @@ import {
 	ProductFrontend,
 	transformProductDataBack,
 } from '@adapters/products.adapter';
-import { SpecsFrontend } from '@adapters/specifications.adapter';
 import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
@@ -10,11 +9,11 @@ import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import useSpecs from '@hooks/useSpecs';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
 
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
-import { fetchSpecificationsByCategoryId } from '@services/specifications/fetchSpecificationsByCategoryId.service';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -37,14 +36,16 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 		initialCategoryId: toolToEdit.categoryId,
 		initialSubcategoryId: toolToEdit.subcategoryId,
 	});
+	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
+		catId: categoryId,
+		initialSpecs: toolToEdit.specifications,
+	});
 	const id = toolToEdit.id;
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
 	const [images] = useState(toolToEdit.imagesUrl);
 	const [char, setChar] = useState(toolToEdit.characteristics);
-	const [specs, setSpecs] = useState(toolToEdit.specifications);
-	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
 
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
@@ -59,51 +60,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const handleModelUpdate = (newValue: string) => {
 		setModel(newValue);
 	};
-	const editOrCreateKeyInSpecs = (keyToFind: string, newValue: string) => {
-		let keyFound = false;
-		const updatedSpecs = specs.map(spec => {
-			if (keyToFind in spec) {
-				keyFound = true;
-				return { ...spec, [keyToFind]: newValue };
-			}
-			return spec;
-		});
-
-		if (!keyFound) {
-			updatedSpecs.push({ [keyToFind]: newValue });
-		}
-
-		setSpecs(updatedSpecs);
-	};
-	const findKeyInSpecs = (keyToFind: string) => {
-		for (const spec of specs) {
-			if (keyToFind in spec) {
-				return spec[keyToFind];
-			}
-		}
-		return null;
-	};
-
-	const handleSpecUpdate = (newValue: string, index: number) => {
-		console.log(editOrCreateKeyInSpecs(specifications[index - 1].id, newValue));
-	};
-	const [flag, setFlag] = useState(true);
-	useEffect(() => {
-		if (!flag) setSpecs([]);
-		if (flag) {
-			setFlag(false);
-		}
-		const getSpecifications = async () => {
-			try {
-				const data = await fetchSpecificationsByCategoryId(categoryId);
-				setSpecifications(data);
-			} catch (error) {
-				showError('No se pudieron obtener las especificaciones');
-			}
-		};
-		getSpecifications();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [categoryId]);
 
 	const handleUpdateChar = (newValues: string[]) => {
 		setChar(newValues);
@@ -121,7 +77,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 					categoryId,
 					subcategoryId: subcategoryId || '',
 					description,
-					specifications: specs,
+					specifications: specs || toolToEdit.specifications,
 				}),
 			);
 			showSuccess('Herramienta actualizada con éxito');
