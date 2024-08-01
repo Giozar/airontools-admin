@@ -1,3 +1,4 @@
+import { SpecsFrontend } from '@adapters/specifications.adapter';
 import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import useSubcategoryManagement from '@hooks/useSubcategoryManagement';
 import useSubcategoryUpdate from '@hooks/useSubcategoryUpdate';
@@ -10,10 +11,12 @@ import TrashIcon from './svg/TrashIcon';
 function EditSubcategory({
 	subcategories,
 	setSubcategories,
+	specifications,
 	update,
 }: {
 	subcategories: SubcategoryFrontend[];
 	setSubcategories: (subcategories: SubcategoryFrontend[]) => void;
+	specifications: SpecsFrontend[];
 	update: () => void;
 }) {
 	const {
@@ -75,6 +78,17 @@ function EditSubcategory({
 									handleDelete(subcategory.id || '', subcategory.name)
 								}
 								message={deletionMessage}
+								confirmationInfo={
+									specifications.filter(
+										spec => spec.subcategoryId === subcategory.id,
+									).length > 0
+										? `Al borrar esta subcategoría se eliminarán ${
+												specifications.filter(
+													spec => spec.subcategoryId === subcategory.id,
+												).length
+											} especificaciones`
+										: null
+								}
 							/>
 						)}
 						<button

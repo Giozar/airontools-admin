@@ -120,6 +120,7 @@ function ShowManageCategory({
 							familyId={category.familyId}
 							createdBy={category.createdBy}
 							onUpdateSubcategoriesLength={handleUpdateSubcategoriesLength}
+							specifications={specifications}
 						/>
 					)}
 
