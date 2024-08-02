@@ -85,7 +85,7 @@ function DropdownMenu({
 																)
 																.map(specs => (
 																	<li key={specs.id}>
-																		{specs.name}{' '}
+																		{specs.name}
 																		{specs.unit && `(${specs.unit})`}
 																	</li>
 																))}

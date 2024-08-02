@@ -109,17 +109,7 @@ function ListofFamilies() {
 					return (
 						<li key={family.id} className='family'>
 							<div className='buttons family'>
-								<button
-									className='edit'
-									onClick={() =>
-										handleEdit(
-											family,
-											categoriesLength,
-											subcategoriesLength,
-											specifications,
-										)
-									}
-								>
+								<button className='edit' onClick={() => handleEdit(family)}>
 									<EditIcon />
 								</button>
 								<button

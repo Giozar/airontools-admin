@@ -50,7 +50,6 @@ function DeletionModal({
 			onCloseDelete();
 		}
 	};
-
 	return (
 		<div>
 			<div className='deletionmodal'>
@@ -67,7 +66,6 @@ function DeletionModal({
 						</div>
 					) : (
 						<>
-							{' '}
 							{!showConfirmationModal && (
 								<>
 									<h2>Confirmación de Eliminación</h2>

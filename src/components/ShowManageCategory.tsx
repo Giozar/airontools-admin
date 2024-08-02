@@ -1,10 +1,10 @@
 import { CategoryFrontend } from '@adapters/category.adapter';
-import { SpecsFrontend } from '@adapters/specifications.adapter';
-import SubcategoryModal from '@components/SubcategoryModal';
 import useCategoryManagement from '@hooks/useCategoryManegement';
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import DeletionModal from './DeletionModal';
 import Editables from './Editables';
+import SubcategoryModal from './SubcategoryModal';
 import TrashIcon from './svg/TrashIcon';
 
 interface ShowManageCategoryProps {
@@ -17,7 +17,6 @@ interface ShowManageCategoryProps {
 	) => void;
 	handleUpdateCategory: (updatedCategory: CategoryFrontend) => void;
 	handleCloseModalDeletion: (updatedCategory: CategoryFrontend) => void;
-	specifications: SpecsFrontend[];
 }
 
 function ShowManageCategory({
@@ -26,7 +25,6 @@ function ShowManageCategory({
 	handleCategoryDescriptionChange,
 	handleUpdateCategory,
 	handleCloseModalDeletion,
-	specifications,
 }: ShowManageCategoryProps) {
 	const {
 		showDeletionModalFor,
@@ -35,21 +33,69 @@ function ShowManageCategory({
 		handleCloseModal,
 		handleDelete,
 	} = useCategoryManagement();
+	const [numberOfSubcategories, setNumberOfSubcategories] = useState<
+		number | null
+	>(null);
+	const [numberOfSpecifications, setNumberOfSpecifications] = useState<
+		number | null
+	>(null);
+	const [numberOfProducts, setNumberOfProducts] = useState<number | null>(null);
+	const [loading, setLoading] = useState<boolean>(true);
 
-	const [subcategoriesLengths, setSubcategoriesLengths] = useState<{
-		[key: string]: number;
-	}>({});
+	useEffect(() => {
+		if (!showDeletionModalFor) {
+			setNumberOfSubcategories(null);
+			setNumberOfSpecifications(null);
+			setNumberOfProducts(null);
+			setLoading(false);
+			return;
+		}
+		setLoading(true);
+		const fetchCounts = async () => {
+			try {
+				const [
+					subcategoriesResponse,
+					specificationsResponse,
+					productsResponse,
+				] = await Promise.all([
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/subcategories/countByCategory/${showDeletionModalFor}`,
+					),
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/specifications/countByCategory/${showDeletionModalFor}`,
+					),
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/products/countByCategory/${showDeletionModalFor}`,
+					),
+				]);
+				setNumberOfSubcategories(subcategoriesResponse.data);
+				setNumberOfSpecifications(specificationsResponse.data);
+				setNumberOfProducts(productsResponse.data);
+			} catch (error) {
+				console.error(
+					'Error al contar subcategorias y especificaciones:',
+					error,
+				);
+			} finally {
+				setLoading(false);
+			}
+		};
 
-	const handleUpdateSubcategoriesLength = (
-		categoryId: string,
-		length: number,
-	) => {
-		setSubcategoriesLengths(prevState => ({
-			...prevState,
-			[categoryId]: length,
-		}));
+		fetchCounts();
+	}, [showDeletionModalFor]);
+	if (loading) {
+		return <div>Cargando...</div>;
+	}
+	const confirmationInfo = () => {
+		let mensaje = '';
+		if (numberOfSubcategories && numberOfSubcategories > 0)
+			mensaje += `Al borrar esta categoria se eliminarán ${numberOfSubcategories} subcategorías`;
+		if (numberOfSpecifications && numberOfSpecifications > 0)
+			mensaje += ` y ${numberOfSpecifications} especificaciones`;
+		if (numberOfProducts && numberOfProducts > 0)
+			mensaje += `. Además se afectarán ${numberOfProducts} productos`;
+		return mensaje;
 	};
-
 	return (
 		<>
 			{categories.map((category, categoryIndex) => (
@@ -62,27 +108,7 @@ function ShowManageCategory({
 							onCloseDelete={() => handleCloseModalDeletion(category)}
 							onDelete={() => handleDelete(category.id || '', category.name)}
 							message={deletionMessage}
-							confirmationInfo={
-								(subcategoriesLengths[category.id || ''] &&
-									specifications.filter(spec => spec.categoryId === category.id)
-										.length) > 0
-									? `Al borrar esta categoría se eliminarán ${subcategoriesLengths[category.id || '']} subcategorías y ${
-											specifications.filter(
-												spec => spec.categoryId === category.id,
-											).length
-										} especificaciones`
-									: specifications.filter(
-												spec => spec.categoryId === category.id,
-										  ).length > 0
-										? `Al borrar esta categoría se eliminarán ${
-												specifications.filter(
-													spec => spec.categoryId === category.id,
-												).length
-											} especificaciones`
-										: (subcategoriesLengths[category.id || ''] || 0) > 0
-											? `Al borrar esta categoría se eliminarán ${subcategoriesLengths[category.id || '']} subcategorías`
-											: null
-							}
+							confirmationInfo={confirmationInfo()}
 						/>
 					)}
 					<button
@@ -119,11 +145,8 @@ function ShowManageCategory({
 							categoryName={category.name}
 							familyId={category.familyId}
 							createdBy={category.createdBy}
-							onUpdateSubcategoriesLength={handleUpdateSubcategoriesLength}
-							specifications={specifications}
 						/>
 					)}
-
 					<button
 						className='save'
 						onClick={() => handleUpdateCategory(category)}
