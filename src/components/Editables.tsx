@@ -83,7 +83,14 @@ function Editables({
 			<div className='content'>
 				{!editing ? (
 					<p onClick={handleEditClick}>
-						{valueOf} {unit || ''}
+						{valueOf.includes('<br>')
+							? valueOf.split('<br>').map(value => (
+									<p key={value}>
+										{value} <br></br> <br></br>
+									</p>
+								))
+							: valueOf}{' '}
+						{unit || ''}
 					</p>
 				) : (
 					<form>

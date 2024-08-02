@@ -45,6 +45,8 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
 	const [images] = useState(toolToEdit.imagesUrl);
+	const [manuals] = useState(toolToEdit.manuals);
+	const [videos, setVideos] = useState(toolToEdit.videos);
 	const [char, setChar] = useState(toolToEdit.characteristics);
 
 	const { errorLog, showError } = useErrorHandling();
@@ -64,6 +66,9 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const handleUpdateChar = (newValues: string[]) => {
 		setChar(newValues);
 	};
+	const handleUpdateVideos = (newValues: string[]) => {
+		setVideos(newValues);
+	};
 	const handleSubmit = async () => {
 		try {
 			await axios.patch(
@@ -77,6 +82,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 					categoryId,
 					subcategoryId: subcategoryId || '',
 					description,
+					videos,
 					specifications: specs || toolToEdit.specifications,
 				}),
 			);
@@ -123,7 +129,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 							/>
 							<Editables
 								what='Características'
-								valueOf={char.join(', ')}
+								valueOf={char.join('<br>')}
 								type='list'
 								onUpdateMany={handleUpdateChar}
 								strlist={char}
@@ -223,9 +229,28 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 					</div>
 					<div className='column'>
 						<p> Manuales: </p>
+						<Editables
+							what='Manuales'
+							valueOf={char.join('<br>')}
+							type='list'
+							onUpdateMany={handleUpdateChar}
+							strlist={char}
+						/>
 					</div>
 					<div className='column'>
 						<p> Videos: </p>
+						<Editables
+							what='Videos'
+							valueOf={(videos || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={handleUpdateVideos}
+							strlist={videos}
+						/>
+					</div>
+					<div className='titulo'>
+						<button onClick={handleSubmit} className='save'>
+							Guardar Cambios
+						</button>
 					</div>
 				</div>
 			</div>
