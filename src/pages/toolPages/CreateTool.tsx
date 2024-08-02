@@ -182,7 +182,70 @@ function ToolForm() {
 					Añadir característica
 				</button>
 			</div>
+			<div className='toolinfo'>
+				<div>
+					<label>Manuales</label>
+					<div className='file-upload'>
+						{videos.map(video => (
+							<div key={video.id}>
+								<input
+									type='text'
+									placeholder='Enter video URL'
+									value={video.url}
+									onChange={event => handleUrlChange(video.id, event)}
+								/>
+								{video.url && (
+									<a href={video.url} target='_blank' rel='noopener noreferrer'>
+										Ver manual
+									</a>
+								)}
+								<button
+									type='button'
+									onClick={() => removeVideo(video.id)}
+									className='delete'
+								>
+									<TrashIcon />
+								</button>
+							</div>
+						))}
 
+						<button type='button' className='add' onClick={addVideo}>
+							Añadir manual
+						</button>
+					</div>
+				</div>
+				<div>
+					<label>Videos</label>
+					<div className='file-upload'>
+						{videos.map(video => (
+							<div key={video.id}>
+								<input
+									type='text'
+									placeholder='URL del video'
+									value={video.url}
+									onChange={event => handleUrlChange(video.id, event)}
+								/>
+								{video.url && (
+									<a href={video.url} target='_blank' rel='noopener noreferrer'>
+										Ver Video
+									</a>
+								)}
+								<button
+									type='button'
+									onClick={() => removeVideo(video.id)}
+									className='delete'
+								>
+									<TrashIcon />
+								</button>
+							</div>
+						))}
+
+						<button type='button' className='add' onClick={addVideo}>
+							Añadir video
+						</button>
+					</div>
+				</div>
+			</div>
 			<div className='selectfamily'>
 				<label>Categorización:</label>
 				<Editables
@@ -241,39 +304,9 @@ function ToolForm() {
 					</>
 				)}
 			</div>
-
-			<label>Manuales</label>
-
-			<label>Videos</label>
-			<div className='file-upload'>
-				{videos.map(video => (
-					<div key={video.id}>
-						<input
-							type='text'
-							placeholder='Enter video URL'
-							value={video.url}
-							onChange={event => handleUrlChange(video.id, event)}
-						/>
-						{video.url && (
-							<a href={video.url} target='_blank' rel='noopener noreferrer'>
-								Ver Video
-							</a>
-						)}
-						<button
-							type='button'
-							onClick={() => removeVideo(video.id)}
-							className='delete'
-						>
-							<TrashIcon />
-						</button>
-					</div>
-				))}
-
-				<button type='button' className='add' onClick={addVideo}>
-					Añadir video
-				</button>
-			</div>
-			<button type='submit'>Crear herramienta</button>
+			<button type='submit' className='save'>
+				Crear herramienta
+			</button>
 		</form>
 	);
 }
