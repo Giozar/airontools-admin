@@ -2,8 +2,8 @@ import {
 	SpecsFrontend,
 	transformSpecsDataBack,
 } from '@adapters/specifications.adapter';
-import { AuthContext } from '@apps/App';
 import '@components/css/createSpecs.css';
+import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { CreateSpecsProps } from '@interfaces/CreateSpecsProps';

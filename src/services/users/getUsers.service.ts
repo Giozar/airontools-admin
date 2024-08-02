@@ -15,7 +15,7 @@ export async function getUsers({
 }) {
 	try {
 		const response = await axios.get<UserDataBackend[]>(
-			import.meta.env.VITE_API_URL + '/auth/users',
+			import.meta.env.VITE_API_URL + '/auth',
 		);
 		const transformedUsers = response.data.map(user => ({
 			...transformUserData(user),

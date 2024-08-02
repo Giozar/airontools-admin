@@ -1,9 +1,9 @@
 import { FamilyFrontend } from '@adapters/family.adapter';
-import { AuthContext } from '@apps/App';
 import CreateCategory from '@components/CreateCategory';
 import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
 import EditCategory from '@components/EditCategory';
+import { AuthContext } from '@contexts/AuthContext';
 
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';

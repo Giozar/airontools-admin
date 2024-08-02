@@ -2,9 +2,9 @@
 TODO: que tenga un css consistente durante todas las paginas
 */
 
-import { AuthContext } from '@apps/App';
 import ComboBox from '@components/ComboBox';
 import BellIcon from '@components/svg/BellIcon';
+import { AuthContext } from '@contexts/AuthContext';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-absolute-path
