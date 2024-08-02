@@ -92,126 +92,142 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 			<div className='editspecification'>
 				<div className='familyedit'>
-					<h2>
-						<span>Editando la herramienta</span> {name}
-					</h2>
-
-					<div className='familycontent'>
-						<hr></hr>
-						<Editables
-							what='Nombre'
-							valueOf={name}
-							type='input'
-							onUpdate={handleNameUpdate}
-						/>
-						<Editables
-							what='Modelo'
-							valueOf={model}
-							type='input'
-							onUpdate={handleModelUpdate}
-						/>
-						<Editables
-							what='Descripción'
-							valueOf={description}
-							type='textarea'
-							onUpdate={handleDescriptionUpdate}
-						/>
-						<Editables
-							what='Características'
-							valueOf={char.join(', ')}
-							type='list'
-							onUpdateMany={handleUpdateChar}
-							strlist={char}
-						/>
-						<hr></hr>
+					<div className='titulo'>
+						<h2>
+							<span>Editando la herramienta</span> {name}
+						</h2>
+						<button onClick={handleSubmit} className='save'>
+							Guardar Cambios
+						</button>
 					</div>
-					<div className='familycontent'>
-						<hr></hr>
-						<Editables
-							what='Familia'
-							valueOf={familyName}
-							type='select'
-							onUpdate={handleFamilyIdUpdate}
-							list={families.map(item => ({
-								id: item.id || 'error',
-								name: item.name || 'error',
-							}))}
-						/>
 
-						<Editables
-							what='Categoría'
-							valueOf={categoryName}
-							type='select'
-							onUpdate={handleCategoryIdUpdate}
-							list={filteredCategories.map(item => ({
-								id: item.id || 'error',
-								name: item.name || 'error',
-							}))}
-						/>
-						<Editables
-							what='Subcategoría'
-							valueOf={subcategoryName}
-							type='select'
-							onUpdate={handleSubcategoryIdUpdate}
-							list={filteredSubcategories.map(item => ({
-								id: item.id || 'error',
-								name: item.name || 'error',
-							}))}
-						/>
-						<hr></hr>
-						<p>Especificaciones: </p>
-						{specifications &&
-							specifications.map((spec, index) => (
-								<div key={spec.id}>
-									{handleSpecUpdate && (
-										<Editables
-											what={spec.name}
-											valueOf={findKeyInSpecs(spec.id) || 'N/A'}
-											unit={spec.unit}
-											type='input'
-											whichOne={index + 1}
-											onUpdateOne={handleSpecUpdate}
-										/>
-									)}
-									<p></p>
-								</div>
-							))}
-						<hr></hr>
-					</div>
-					<p> Imágenes: </p>
-					<div className='image-upload'>
-						{images &&
-							images.map((preview, index) => (
-								<div key={index} className='image-preview'>
-									<img
-										src={preview}
-										alt={`preview-${index}`}
-										className='image-placeholder'
-									/>
-									<button
-										// borra la imagen del servidor?
-										// onClick={() => handleRemoveImage(index)}
-										// deberia de poder borrar del servidor y aqui solo cambiar la lista (borrar el string de la imagen)
-										className='delete'
-									>
-										<TrashIcon />
-									</button>
-								</div>
-							))}
-						<div className='image-placeholder add-image'>
-							<label htmlFor='file-input'>Subir imagen +</label>
-							<input
-								type='file'
-								id='file-input'
-								multiple
-								accept='image/*'
-								// onChange={handleFileSelect}
-								style={{ display: 'none' }}
+					<div className='column'>
+						<div className='familycontent'>
+							<Editables
+								what='Nombre'
+								valueOf={name}
+								type='input'
+								onUpdate={handleNameUpdate}
+							/>
+							<Editables
+								what='Modelo'
+								valueOf={model}
+								type='input'
+								onUpdate={handleModelUpdate}
+							/>
+							<Editables
+								what='Descripción'
+								valueOf={description}
+								type='textarea'
+								onUpdate={handleDescriptionUpdate}
+							/>
+							<Editables
+								what='Características'
+								valueOf={char.join(', ')}
+								type='list'
+								onUpdateMany={handleUpdateChar}
+								strlist={char}
 							/>
 						</div>
 					</div>
+					<div className='column'>
+						<div className='familycontent'>
+							<Editables
+								what='Familia'
+								valueOf={familyName}
+								type='select'
+								onUpdate={handleFamilyIdUpdate}
+								list={families.map(item => ({
+									id: item.id || 'error',
+									name: item.name || 'error',
+								}))}
+							/>
+
+							<Editables
+								what='Categoría'
+								valueOf={categoryName}
+								type='select'
+								onUpdate={handleCategoryIdUpdate}
+								list={filteredCategories.map(item => ({
+									id: item.id || 'error',
+									name: item.name || 'error',
+								}))}
+							/>
+							<Editables
+								what='Subcategoría'
+								valueOf={subcategoryName}
+								type='select'
+								onUpdate={handleSubcategoryIdUpdate}
+								list={filteredSubcategories.map(item => ({
+									id: item.id || 'error',
+									name: item.name || 'error',
+								}))}
+							/>
+						</div>
+					</div>
+					<div className='column'>
+						<div className='familycontent'>
+							<p>Especificaciones: </p>
+							{specifications &&
+								specifications.map((spec, index) => (
+									<div key={spec.id}>
+										{handleSpecUpdate && (
+											<Editables
+												what={spec.name}
+												valueOf={findKeyInSpecs(spec.id) || 'N/A'}
+												unit={spec.unit}
+												type='input'
+												whichOne={index + 1}
+												onUpdateOne={handleSpecUpdate}
+											/>
+										)}
+										<p></p>
+									</div>
+								))}
+						</div>
+					</div>
+
+					<div className='column'>
+						<p> Imágenes: </p>
+						<div className='image-upload'>
+							{images &&
+								images.map((preview, index) => (
+									<div key={index} className='image-preview'>
+										<img
+											src={preview}
+											alt={`preview-${index}`}
+											className='image-placeholder'
+										/>
+										<button
+											// borra la imagen del servidor?
+											// onClick={() => handleRemoveImage(index)}
+											// deberia de poder borrar del servidor y aqui solo cambiar la lista (borrar el string de la imagen)
+											className='delete'
+										>
+											<TrashIcon />
+										</button>
+									</div>
+								))}
+							<div className='image-placeholder add-image'>
+								<label htmlFor='file-input'>Subir imagen +</label>
+								<input
+									type='file'
+									id='file-input'
+									multiple
+									accept='image/*'
+									// onChange={handleFileSelect}
+									style={{ display: 'none' }}
+								/>
+							</div>
+						</div>
+					</div>
+					<div className='column'>
+						<p> Manuales: </p>
+					</div>
+					<div className='column'>
+						<p> Videos: </p>
+					</div>
 				</div>
-				<button onClick={handleSubmit}>subir</button>
 			</div>
 		</>
 	);
