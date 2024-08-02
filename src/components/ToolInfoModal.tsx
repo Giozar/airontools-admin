@@ -26,6 +26,7 @@ const ToolInfoModal = ({
 							<strong>Fotos:</strong>
 						</p>
 						<div className='grupo'>
+							{product.imagesUrl}
 							{product.imagesUrl && <Slideshow imagesUrl={product.imagesUrl} />}
 							<div>
 								<p>

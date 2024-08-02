@@ -52,12 +52,16 @@ function ToolForm() {
 		catId: categoryId,
 	});
 	const { videos, addVideo, removeVideo, updateVideo } = useVideos();
-	const {
-		filePreviews,
-		handleFileSelect,
-		handleRemoveImage,
-		handleFileUpload,
-	} = useMultipleFileUpload();
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
+
+	const handleImageUpload = async (productId: string) => {
+		return await handleFileUpload('/images/' + productId, 'images');
+	};
+
+	const handleManualUpload = async (productId: string) => {
+		return await handleFileUpload('/manuals/' + productId, 'manuals');
+	};
 
 	const handleUrlChange = (
 		id: number,
@@ -71,7 +75,6 @@ function ToolForm() {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			const uploadedUrls = await handleFileUpload();
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
@@ -84,13 +87,31 @@ function ToolForm() {
 					[key]: specValues[key],
 				})),
 				videos: videos.map(video => video.url),
-				imagesUrl: uploadedUrls,
 				createdBy,
 			};
-			await axios.post(
+			// Paso 1: Crear el producto
+			const response = await axios.post(
 				import.meta.env.VITE_API_URL + '/products',
 				createToolData,
 			);
+			const productId = response.data._id;
+			console.log(productId);
+			// Paso 2: Subir imagenes
+			const uploadedUrlImages = await handleImageUpload(productId);
+			// Paso 3: Actualizar producto con imagenes
+			await axios.patch(
+				import.meta.env.VITE_API_URL + '/products/' + productId,
+				{ imagesUrl: uploadedUrlImages },
+			);
+
+			// Paso 4: Subir manuales
+			const uploadedUrlManuals = await handleManualUpload(productId);
+			// Paso 3: Actualizar producto con manuales
+			await axios.patch(
+				import.meta.env.VITE_API_URL + '/products/' + productId,
+				{ manuals: uploadedUrlManuals },
+			);
+			/* falta decir si fallo alguna subida de imagenes o manuales... */
 			showSuccess('Herramienta creada con éxito');
 		} catch (error) {
 			errorHandler(error, showError);
@@ -126,18 +147,6 @@ function ToolForm() {
 
 			<label>Fotos de herramienta</label>
 			<div className='image-upload'>
-				{filePreviews.map((preview, index) => (
-					<div key={index} className='image-preview'>
-						<img
-							src={preview}
-							alt={`preview-${index}`}
-							className='image-placeholder'
-						/>
-						<button onClick={() => handleRemoveImage(index)} className='delete'>
-							<TrashIcon />
-						</button>
-					</div>
-				))}
 				<div className='image-placeholder add-image'>
 					<label htmlFor='file-input'>Subir imagen +</label>
 					<input
@@ -145,10 +154,26 @@ function ToolForm() {
 						id='file-input'
 						multiple
 						accept='image/*'
-						onChange={handleFileSelect}
+						onChange={event => handleFileSelect(event, 'images')}
 						style={{ display: 'none' }}
 					/>
 				</div>
+				{filePreviews.images?.map((preview, index) => (
+					<div key={index} className='image-preview'>
+						<img
+							src={preview}
+							alt={`preview-${index}`}
+							className='image-placeholder'
+						/>
+						<button
+							onClick={() => handleRemoveFile('images', index)}
+							className='delete'
+							type='button'
+						>
+							<TrashIcon />
+						</button>
+					</div>
+				))}
 			</div>
 			<label htmlFor='toolDescription'>Descripción de herramienta</label>
 			<textarea
@@ -185,33 +210,38 @@ function ToolForm() {
 			<div className='toolinfo'>
 				<div>
 					<label>Manuales</label>
-					<div className='file-upload'>
-						{videos.map(video => (
-							<div key={video.id}>
-								<input
-									type='text'
-									placeholder='Enter video URL'
-									value={video.url}
-									onChange={event => handleUrlChange(video.id, event)}
-								/>
-								{video.url && (
-									<a href={video.url} target='_blank' rel='noopener noreferrer'>
-										Ver manual
-									</a>
-								)}
+					<div className='image-upload'>
+						<div className='file-upload'>
+							<label htmlFor='manual-input' className='add'>
+								Añadir manual
+							</label>
+							<input
+								type='file'
+								id='manual-input'
+								multiple
+								accept='.pdf, .doc, .docx'
+								onChange={event => handleFileSelect(event, 'manuals')}
+								style={{ display: 'none' }}
+							/>
+						</div>
+						{filePreviews.manuals?.map((preview, index) => (
+							<div key={index} className='image-preview'>
+								<embed
+									src={preview}
+									width='250'
+									height='200'
+									className='image-placeholder'
+								></embed>
+
 								<button
-									type='button'
-									onClick={() => removeVideo(video.id)}
+									onClick={() => handleRemoveFile('manuals', index)}
 									className='delete'
+									type='button'
 								>
 									<TrashIcon />
 								</button>
 							</div>
 						))}
-
-						<button type='button' className='add' onClick={addVideo}>
-							Añadir manual
-						</button>
 					</div>
 				</div>
 				<div>

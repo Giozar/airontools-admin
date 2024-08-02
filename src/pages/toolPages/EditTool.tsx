@@ -229,13 +229,15 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 					</div>
 					<div className='column'>
 						<p> Manuales: </p>
-						<Editables
-							what='Manuales'
-							valueOf={char.join('<br>')}
-							type='list'
-							onUpdateMany={handleUpdateChar}
-							strlist={char}
-						/>
+						{manuals?.map(preview => (
+							<embed
+								key={preview}
+								src={preview}
+								width='250'
+								height='200'
+								className='image-placeholder'
+							></embed>
+						))}
 					</div>
 					<div className='column'>
 						<p> Videos: </p>

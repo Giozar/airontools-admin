@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-const uploadFile = async (file: File): Promise<string> => {
+const uploadFile = async (file: File, folder: string): Promise<string> => {
 	const formData = new FormData();
 	formData.append('file', file);
 
 	try {
+		console.log(import.meta.env.VITE_API_URL + '/files/upload' + folder);
 		const response = await axios.post(
-			import.meta.env.VITE_API_URL + '/files/upload',
+			import.meta.env.VITE_API_URL + '/files/upload' + folder,
 			formData,
 			{
 				headers: {
