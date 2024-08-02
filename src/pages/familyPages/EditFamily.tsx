@@ -1,5 +1,4 @@
 import { FamilyFrontend } from '@adapters/family.adapter';
-import { SpecsFrontend } from '@adapters/specifications.adapter';
 import { AuthContext } from '@apps/App';
 import CreateCategory from '@components/CreateCategory';
 import DeletionModal from '@components/DeletionModal';
@@ -17,21 +16,14 @@ import useFamilyUpdate from '@hooks/useFamilyUpdate';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/editFamily.css';
+import axios from 'axios';
 
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
 	familyToEdit: FamilyFrontend;
-	numberOfCategories: number;
-	numberOfSubcategories: number;
-	specifications: SpecsFrontend[];
 }
-function EditFamilyForm({
-	familyToEdit,
-	numberOfCategories,
-	numberOfSubcategories,
-	specifications,
-}: EditFamilyFormProps) {
+function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	// Datos recuperados y que se pueden modificar
 	const [name, setName] = useState(familyToEdit.name);
 	const [description, setDescription] = useState(familyToEdit.description);
@@ -39,7 +31,6 @@ function EditFamilyForm({
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.name || 'user';
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
-
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
@@ -48,6 +39,17 @@ function EditFamilyForm({
 		handleDelete,
 	} = useFamilyManagement();
 	const [update, setUpdate] = useState(false);
+	const [numberOfCategories, setNumberOfCategories] = useState<number | null>(
+		null,
+	);
+	const [numberOfSubcategories, setNumberOfSubcategories] = useState<
+		number | null
+	>(null);
+	const [numberOfSpecifications, setNumberOfSpecifications] = useState<
+		number | null
+	>(null);
+	const [numberOfProducts, setNumberOfProducts] = useState<number | null>(null);
+
 	const updateCategoryList = () => {
 		setUpdate(!update);
 	};
@@ -58,6 +60,10 @@ function EditFamilyForm({
 
 	const handleDescriptionUpdate = (newValue: string) => {
 		setDescription(newValue);
+	};
+	const navigate = useNavigate();
+	const handleCloseModalDeletion = () => {
+		navigate('/home/categorizacion');
 	};
 	const handleUpdateFamily = async () => {
 		try {
@@ -76,19 +82,76 @@ function EditFamilyForm({
 				'familyToEdit',
 				JSON.stringify({
 					family: { ...familyToEdit, name, description },
-					numberOfCategories,
-					numberOfSubcategories,
-					specifications,
 				}),
 			);
 		} catch (error) {
 			console.error('Error:', error);
 		}
 	};
+	const [loading, setLoading] = useState<boolean>(true);
+	useEffect(() => {
+		const fetchCounts = async () => {
+			if (!familyId) {
+				setNumberOfCategories(null);
+				setNumberOfSubcategories(null);
+				setNumberOfSpecifications(null);
+				setNumberOfProducts(null);
+				setLoading(false);
+				return;
+			}
+			setLoading(true);
+			try {
+				const [
+					categoriesResponse,
+					subcategoriesResponse,
+					specificationsResponse,
+					productsResponse,
+				] = await Promise.all([
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/categories/count/${familyId}`,
+					),
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/subcategories/count/${familyId}`,
+					),
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/specifications/count/${familyId}`,
+					),
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/products/count/${familyId}`,
+					),
+				]);
 
-	const navigate = useNavigate();
-	const handleCloseModalDeletion = () => {
-		navigate('/home/categorizacion');
+				setNumberOfCategories(categoriesResponse.data);
+				setNumberOfSubcategories(subcategoriesResponse.data);
+				setNumberOfSpecifications(specificationsResponse.data);
+				setNumberOfProducts(productsResponse.data);
+			} catch (error) {
+				console.error(
+					'Error al contar categorias, subcategorias y especificaciones:',
+					error,
+				);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchCounts();
+	}, [familyId]);
+
+	if (loading) {
+		return <div>Cargando...</div>;
+	}
+	const confirmationInfo = () => {
+		let mensaje = '';
+		if (numberOfCategories && numberOfCategories > 0)
+			mensaje += `Al borrar esta familia se eliminarán ${numberOfCategories} categorías`;
+		if (numberOfSubcategories && numberOfSubcategories > 0)
+			mensaje += `, ${numberOfSubcategories} subcategorías`;
+		if (numberOfSpecifications && numberOfSpecifications > 0)
+			mensaje += ` y ${numberOfSpecifications} especificaciones`;
+		if (numberOfProducts && numberOfProducts > 0)
+			mensaje += `. Además se afectarán ${numberOfProducts} productos`;
+		return mensaje;
 	};
 	return (
 		<div>
@@ -100,14 +163,7 @@ function EditFamilyForm({
 					onCloseDelete={handleCloseModalDeletion}
 					onDelete={() => handleDelete(familyId || '', name)}
 					message={deletionMessage}
-					confirmationInfo={
-						numberOfCategories > 0 &&
-						specifications.filter(spec => spec.familyId === familyId).length > 0
-							? `Al borrar esta familia se eliminarán ${numberOfCategories} categorias, ${numberOfSubcategories} subcategorías Y ${specifications.filter(spec => spec.familyId === familyId).length} especificaciones`
-							: numberOfCategories > 0
-								? `Al borrar esta familia se eliminarán ${numberOfCategories} categorias y ${numberOfSubcategories} subcategorías`
-								: null
-					}
+					confirmationInfo={confirmationInfo() || null}
 				/>
 			)}
 			<div className='familyedit'>
@@ -149,7 +205,6 @@ function EditFamilyForm({
 				familyId={familyId}
 				update={update}
 				updateCategoryList={updateCategoryList}
-				specifications={specifications}
 			/>
 			<CreateCategory
 				createdBy={createdBy}
@@ -162,9 +217,6 @@ function EditFamilyForm({
 function ContentMainPage() {
 	const initialState = {
 		family: { id: 'N/A', name: 'Desconocido' },
-		numberOfCategories: 0,
-		numberOfSubcategories: 0,
-		specifications: [{ id: 'N/A', name: 'Desconocido' }],
 	};
 
 	const [state] = useState(() => {
@@ -176,19 +228,13 @@ function ContentMainPage() {
 		localStorage.setItem('familyToEdit', JSON.stringify(state));
 	}, [state]);
 
-	const { family, numberOfCategories, numberOfSubcategories, specifications } =
-		state;
+	const { family } = state;
 	return (
 		<BasePage>
 			<HeaderApp />
 			<main>
 				<HeaderTitle title='Editar Familia' />
-				<EditFamilyForm
-					familyToEdit={family}
-					numberOfCategories={numberOfCategories}
-					numberOfSubcategories={numberOfSubcategories}
-					specifications={specifications}
-				/>
+				<EditFamilyForm familyToEdit={family} />
 			</main>
 		</BasePage>
 	);

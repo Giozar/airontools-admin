@@ -1,7 +1,8 @@
-import { SpecsFrontend } from '@adapters/specifications.adapter';
 import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import useSubcategoryManagement from '@hooks/useSubcategoryManagement';
 import useSubcategoryUpdate from '@hooks/useSubcategoryUpdate';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import DeletionModal from './DeletionModal';
 import Editables from './Editables';
 import ErrorMessage from './ErrorMessage';
@@ -11,12 +12,10 @@ import TrashIcon from './svg/TrashIcon';
 function EditSubcategory({
 	subcategories,
 	setSubcategories,
-	specifications,
 	update,
 }: {
 	subcategories: SubcategoryFrontend[];
 	setSubcategories: (subcategories: SubcategoryFrontend[]) => void;
-	specifications: SpecsFrontend[];
 	update: () => void;
 }) {
 	const {
@@ -56,7 +55,52 @@ function EditSubcategory({
 		updatedSubcategories[categoryIndex - 1].description = value;
 		setSubcategories(updatedSubcategories);
 	};
+	const [numberOfSpecifications, setNumberOfSpecifications] = useState<
+		number | null
+	>(null);
+	const [numberOfProducts, setNumberOfProducts] = useState<number | null>(null);
+	const [loading, setLoading] = useState<boolean>(true);
 
+	useEffect(() => {
+		if (!showDeletionModalFor) {
+			setNumberOfSpecifications(null);
+			setNumberOfProducts(null);
+			setLoading(false);
+			return;
+		}
+		setLoading(true);
+		const fetchCounts = async () => {
+			try {
+				const [specificationsResponse, productsResponse] = await Promise.all([
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/specifications/countBySubcategory/${showDeletionModalFor}`,
+					),
+					axios.get(
+						`${import.meta.env.VITE_API_URL}/products/countBySubcategory/${showDeletionModalFor}`,
+					),
+				]);
+				setNumberOfSpecifications(specificationsResponse.data);
+				setNumberOfProducts(productsResponse.data);
+			} catch (error) {
+				console.error('Error al contar especificaciones:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchCounts();
+	}, [showDeletionModalFor]);
+	if (loading) {
+		return <div>Cargando...</div>;
+	}
+	const confirmationInfo = () => {
+		let mensaje = '';
+		if (numberOfSpecifications && numberOfSpecifications > 0)
+			mensaje += `Al borrar esta subcategoria se eliminarán ${numberOfSpecifications} especificaciones`;
+		if (numberOfProducts && numberOfProducts > 0)
+			mensaje += `. Además se afectarán ${numberOfProducts} productos`;
+		return mensaje;
+	};
 	return (
 		<>
 			{successLogSubcategory.isSuccess && (
@@ -78,17 +122,7 @@ function EditSubcategory({
 									handleDelete(subcategory.id || '', subcategory.name)
 								}
 								message={deletionMessage}
-								confirmationInfo={
-									specifications.filter(
-										spec => spec.subcategoryId === subcategory.id,
-									).length > 0
-										? `Al borrar esta subcategoría se eliminarán ${
-												specifications.filter(
-													spec => spec.subcategoryId === subcategory.id,
-												).length
-											} especificaciones`
-										: null
-								}
+								confirmationInfo={confirmationInfo()}
 							/>
 						)}
 						<button

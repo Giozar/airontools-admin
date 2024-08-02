@@ -1,4 +1,3 @@
-import { SpecsFrontend } from '@adapters/specifications.adapter';
 import useFetchSubcategoriesFromFamily from '@hooks/useFetchSubcategoriesFromFamily';
 import { useEffect, useState } from 'react';
 import CreateSubcategory from './CreateSubcategory';
@@ -10,15 +9,11 @@ function SubcategoryModal({
 	createdBy,
 	categoryId,
 	categoryName,
-	specifications,
-	onUpdateSubcategoriesLength,
 }: {
 	familyId: string;
 	createdBy: string;
 	categoryId: string;
 	categoryName: string;
-	specifications: SpecsFrontend[];
-	onUpdateSubcategoriesLength: (categoryId: string, length: number) => void;
 }) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [update, setUpdate] = useState(false);
@@ -41,19 +36,6 @@ function SubcategoryModal({
 	const updatedSubcategories = () => {
 		setUpdate(!update);
 	};
-
-	useEffect(() => {
-		const categoryIds = Array.from(
-			new Set(subcategories.map(subcategory => subcategory.categoryId)),
-		);
-		categoryIds.forEach(categoryId => {
-			const length = subcategories.filter(
-				subcategory => subcategory.categoryId === categoryId,
-			).length;
-			onUpdateSubcategoriesLength(categoryId, length);
-		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [subcategories, update]);
 
 	return (
 		<>
@@ -88,7 +70,6 @@ function SubcategoryModal({
 							subcategories={subcategories}
 							setSubcategories={setSubcategories}
 							update={updatedSubcategories}
-							specifications={specifications}
 						/>
 						<CreateSubcategory
 							createdBy={createdBy}

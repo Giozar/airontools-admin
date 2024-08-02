@@ -1,5 +1,4 @@
 import { FamilyFrontend } from '@adapters/family.adapter';
-import { SpecsFrontend } from '@adapters/specifications.adapter';
 import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,19 +13,11 @@ const useFamilyManagement = () => {
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
-	const handleEdit = (
-		family: FamilyFrontend,
-		numberOfCategories: number,
-		numberOfSubcategories: number,
-		specifications: SpecsFrontend[],
-	) => {
+	const handleEdit = (family: FamilyFrontend) => {
 		localStorage.setItem(
 			'familyToEdit',
 			JSON.stringify({
 				family,
-				numberOfCategories,
-				numberOfSubcategories,
-				specifications,
 			}),
 		);
 		navigate(location.pathname + `/editar-familia`);
