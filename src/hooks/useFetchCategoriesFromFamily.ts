@@ -19,7 +19,7 @@ function useFetchCategoriesFromFamily() {
 	const fetchCategories = async (familyId: string) => {
 		try {
 			const response = await axios.get<CategoryDataBackend[]>(
-				import.meta.env.VITE_API_URL + `/categories?familyId=${familyId}`,
+				import.meta.env.VITE_API_URL + `/categories?family=${familyId}`,
 			);
 			setCategories(response.data.map(transformCategoryDataToFrontend));
 			setFilteredCategories(response.data.map(transformCategoryDataToFrontend));

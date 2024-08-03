@@ -1,14 +1,14 @@
-import { CategoryFrontend } from '@adapters/category.adapter';
-import { FamilyFrontend } from '@adapters/family.adapter';
 import { SpecsFrontend } from '@adapters/specifications.adapter';
 import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import '@components/css/dropdownmenu.css';
+import { CategoryDataFrontend } from '@interfaces/Category.interface';
+import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useState } from 'react';
 import DownArrow from './svg/DownArrow';
 import RightArrow from './svg/RightArrow';
 interface props {
-	family: FamilyFrontend;
-	filteredCategories: CategoryFrontend[];
+	family: FamilyDataFrontend;
+	filteredCategories: CategoryDataFrontend[];
 	filteredSubcategories: SubcategoryFrontend[];
 	specifications: SpecsFrontend[];
 }
@@ -32,7 +32,7 @@ function DropdownMenu({
 			<div className='dropdown-content'>
 				<ul>
 					{filteredCategories
-						.filter(category => category.familyId === family.id)
+						.filter(category => category.family.id === family.id)
 						.map(category => (
 							<li key={category.id}>
 								<div onClick={() => handleCategoryClick(category.id || '')}>
