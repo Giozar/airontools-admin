@@ -1,28 +1,17 @@
-import {
-	transformUserData,
-	UserDataBackend,
-	UserDataFrontend,
-} from '@adapters/user.adapter';
+import { transformUserData } from '@adapters/user.adapter';
+import { UserDataBackend, UserDataFrontend } from '@interfaces/User.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
-import { Dispatch, SetStateAction } from 'react';
 
-export async function getUsers({
-	setUsersList,
-	setFilteredUsers,
-}: {
-	setUsersList: Dispatch<SetStateAction<UserDataFrontend[]>>;
-	setFilteredUsers: Dispatch<SetStateAction<UserDataFrontend[]>>;
-}) {
+export async function getUsers(): Promise<UserDataFrontend[]> {
 	try {
 		const response = await axios.get<UserDataBackend[]>(
-			import.meta.env.VITE_API_URL + '/auth',
+			`${import.meta.env.VITE_API_URL}/auth`,
 		);
-		const transformedUsers = response.data.map(user => ({
-			...transformUserData(user),
-		}));
-		setUsersList(transformedUsers);
-		setFilteredUsers(transformedUsers);
+		const transformedUsers = response.data.map(user => transformUserData(user));
+		return transformedUsers;
 	} catch (error) {
-		console.error('Error fetching users:', error);
+		errorHandler(error);
+		return [];
 	}
 }
