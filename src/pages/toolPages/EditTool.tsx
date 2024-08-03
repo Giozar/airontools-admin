@@ -9,6 +9,7 @@ import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
 
@@ -40,11 +41,16 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 		catId: categoryId,
 		initialSpecs: toolToEdit.specifications,
 	});
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
+
 	const id = toolToEdit.id;
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
 	const [images] = useState(toolToEdit.imagesUrl);
+	const [manuals] = useState(toolToEdit.manuals);
+	const [videos, setVideos] = useState(toolToEdit.videos);
 	const [char, setChar] = useState(toolToEdit.characteristics);
 
 	const { errorLog, showError } = useErrorHandling();
@@ -64,6 +70,16 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const handleUpdateChar = (newValues: string[]) => {
 		setChar(newValues);
 	};
+	const handleUpdateVideos = (newValues: string[]) => {
+		setVideos(newValues);
+	};
+	const handleImageUpload = async (productId: string) => {
+		return await handleFileUpload('/images/' + productId, 'images');
+	};
+
+	const handleManualUpload = async (productId: string) => {
+		return await handleFileUpload('/manuals/' + productId, 'manuals');
+	};
 	const handleSubmit = async () => {
 		try {
 			await axios.patch(
@@ -77,9 +93,23 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 					categoryId,
 					subcategoryId: subcategoryId || '',
 					description,
+					videos,
 					specifications: specs || toolToEdit.specifications,
 				}),
 			);
+			// Paso 2: subir imagenes
+			const uploadedUrlImages = await handleImageUpload(id);
+			// Paso 3: Actualizar producto con imagenes
+			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+				imagesUrl: uploadedUrlImages,
+			});
+
+			// Paso 4: Subir manuales
+			const uploadedUrlManuals = await handleManualUpload(id);
+			// Paso 3: Actualizar producto con manuales
+			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+				manuals: uploadedUrlManuals,
+			});
 			showSuccess('Herramienta actualizada con éxito');
 		} catch (error) {
 			showError('No se pudo actualizar la herramienta');
@@ -123,7 +153,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 							/>
 							<Editables
 								what='Características'
-								valueOf={char.join(', ')}
+								valueOf={char.join('<br>')}
 								type='list'
 								onUpdateMany={handleUpdateChar}
 								strlist={char}
@@ -208,6 +238,23 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 										</button>
 									</div>
 								))}
+							<p>Imagenes nuevas: </p>
+							{filePreviews.images?.map((preview, index) => (
+								<div key={index} className='image-preview'>
+									<img
+										src={preview}
+										alt={`preview-${index}`}
+										className='image-placeholder'
+									/>
+									<button
+										onClick={() => handleRemoveFile('images', index)}
+										className='delete'
+										type='button'
+									>
+										<TrashIcon />
+									</button>
+								</div>
+							))}
 							<div className='image-placeholder add-image'>
 								<label htmlFor='file-input'>Subir imagen +</label>
 								<input
@@ -215,17 +262,81 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 									id='file-input'
 									multiple
 									accept='image/*'
-									// onChange={handleFileSelect}
+									onChange={event => handleFileSelect(event, 'images')}
 									style={{ display: 'none' }}
 								/>
 							</div>
 						</div>
 					</div>
 					<div className='column'>
-						<p> Manuales: </p>
+						<p>Manuales:</p>
+						<div className='image-upload'>
+							{manuals?.map(preview => (
+								<div key={preview} className='image-preview'>
+									<embed
+										src={preview}
+										width='150'
+										height='100'
+										className='image-placeholder'
+									/>
+									<button className='delete'>
+										<TrashIcon />
+									</button>
+
+									<div className='buttons'>
+										<a href={preview} target='_blank' rel='noopener noreferrer'>
+											Ver documento completo
+										</a>
+									</div>
+								</div>
+							))}
+							<p>Manuales nuevos: </p>
+							{filePreviews.manuals?.map((preview, index) => (
+								<div key={index} className='image-preview'>
+									<embed
+										src={preview}
+										width='250'
+										height='200'
+										className='image-placeholder'
+									></embed>
+
+									<button
+										onClick={() => handleRemoveFile('manuals', index)}
+										className='delete'
+										type='button'
+									>
+										<TrashIcon />
+									</button>
+								</div>
+							))}
+							<div className='image-placeholder add-image'>
+								<label htmlFor='file-input'>Subir Manual +</label>
+								<input
+									type='file'
+									id='manual-input'
+									multiple
+									accept='.pdf, .doc, .docx'
+									onChange={event => handleFileSelect(event, 'manuals')}
+									style={{ display: 'none' }}
+								/>
+							</div>
+						</div>
 					</div>
+
 					<div className='column'>
 						<p> Videos: </p>
+						<Editables
+							what='Videos'
+							valueOf={(videos || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={handleUpdateVideos}
+							strlist={videos}
+						/>
+					</div>
+					<div className='titulo'>
+						<button onClick={handleSubmit} className='save'>
+							Guardar Cambios
+						</button>
 					</div>
 				</div>
 			</div>
