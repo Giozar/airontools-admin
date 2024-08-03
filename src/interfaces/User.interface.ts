@@ -14,7 +14,7 @@ export interface UserDataBackend {
 	imageUrl: string;
 	email: string;
 	password?: string;
-	fullName: string;
+	name: string;
 	role: UserRole;
 }
 

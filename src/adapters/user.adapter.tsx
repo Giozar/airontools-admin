@@ -6,7 +6,7 @@ export const transformUserData = (user: UserDataBackend): UserDataFrontend => {
 		imageUrl: user.imageUrl,
 		email: user.email,
 		password: user.password,
-		name: user.fullName,
+		name: user.name,
 		role: user.role,
 	};
 };
@@ -19,7 +19,7 @@ export const transformUserDataBack = (
 		imageUrl: user.imageUrl,
 		email: user.email,
 		password: user.password,
-		fullName: user.name,
+		name: user.name,
 		role: user.role,
 	};
 };
