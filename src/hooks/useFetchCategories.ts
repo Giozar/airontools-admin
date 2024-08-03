@@ -1,17 +1,17 @@
+import { transformCategoryDataToFrontend } from '@adapters/category.adapter';
 import {
-	CategoryBackend,
-	CategoryFrontend,
-	transformCategoryData,
-} from '@adapters/category.adapter';
+	CategoryDataBackend,
+	CategoryDataFrontend,
+} from '@interfaces/Category.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import useErrorHandling from './common/useErrorHandling';
 
 function useFetchCategories() {
 	const { errorLog, showError } = useErrorHandling();
-	const [categories, setCategories] = useState<CategoryFrontend[]>([]);
+	const [categories, setCategories] = useState<CategoryDataFrontend[]>([]);
 	const [filteredCategories, setFilteredCategories] = useState<
-		CategoryFrontend[]
+		CategoryDataFrontend[]
 	>([]);
 	const [, setSearchTerm] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(true);
@@ -19,11 +19,13 @@ function useFetchCategories() {
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
-				const response = await axios.get<CategoryBackend[]>(
+				const response = await axios.get<CategoryDataBackend[]>(
 					import.meta.env.VITE_API_URL + '/categories',
 				);
-				setCategories(response.data.map(transformCategoryData));
-				setFilteredCategories(response.data.map(transformCategoryData));
+				setCategories(response.data.map(transformCategoryDataToFrontend));
+				setFilteredCategories(
+					response.data.map(transformCategoryDataToFrontend),
+				);
 				setLoading(false);
 			} catch (error) {
 				console.error('Failed to fetch categories:', error);

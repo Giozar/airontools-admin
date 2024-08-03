@@ -33,6 +33,7 @@ function useFetchFamilies(updateListFlag?: boolean) {
 		};
 
 		fetchFamilies();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updateListFlag]); // Empty dependency array ensures this effect runs only once
 
 	const handleSearch = (searchTerm: string) => {
