@@ -33,7 +33,7 @@ function useToolCategorizationEdit({
 
 	useEffect(() => {
 		if (categories) {
-			setFilteredCategories(categories.filter(c => c.familyId === familyId));
+			setFilteredCategories(categories.filter(c => c.id === familyId));
 		}
 	}, [categories, familyId]);
 	useEffect(() => {
@@ -66,7 +66,7 @@ function useToolCategorizationEdit({
 		setFamilyId(newValue);
 		const family = families.find(f => f.id === newValue);
 		setFamilyName(family ? family.name : '');
-		setFilteredCategories(categories.filter(f => f.familyId === newValue));
+		setFilteredCategories(categories.filter(f => f.id === newValue));
 		setCategoryId('');
 		setCategoryName('');
 		setSubcategoryId('');

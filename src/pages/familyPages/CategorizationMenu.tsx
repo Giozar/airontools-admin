@@ -73,7 +73,7 @@ function ListofFamilies() {
 	}
 	const calc = (familyId: string) => {
 		const categories = filteredCategories.filter(
-			category => category.familyId === familyId,
+			category => category.id === familyId,
 		);
 
 		const subcategories = filteredSubcategories.filter(subcategory =>
