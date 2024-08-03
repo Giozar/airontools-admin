@@ -74,7 +74,7 @@ function ReturnUsers() {
 							style={{ backgroundImage: `url(${user.imageUrl})` }}
 						></div>
 
-						<p>{user.roles}</p>
+						<p>{user.role.name}</p>
 
 						<button
 							className='editrol'
