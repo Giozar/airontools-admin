@@ -1,4 +1,4 @@
-import { UserDataFrontend } from '@adapters/user.adapter';
+import { UserDataFrontend } from '@interfaces/User.interface';
 import { UserRole } from '@interfaces/UserRole';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 

@@ -1,30 +1,25 @@
-import { transformUserData, UserDataBackend } from '@adapters/user.adapter';
+import { transformUserData } from '@adapters/user.adapter';
 import {
 	RegisterResponse,
-	ValidationError,
-} from '@interfaces/users/userResponse';
+	sendingUserData,
+	UserDataFrontend,
+} from '@interfaces/User.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 export default async function createUser(
-	userData: UserDataBackend,
-): Promise<RegisterResponse> {
+	userData: sendingUserData,
+): Promise<UserDataFrontend> {
 	try {
 		const response = await axios.post<RegisterResponse>(
-			import.meta.env.VITE_API_URL + '/auth',
-			transformUserData(userData),
+			`${import.meta.env.VITE_API_URL}/auth`,
+			userData,
 		);
-		const userCreated = response.data;
-
+		const userCreated = transformUserData(response.data.user);
 		return userCreated;
 	} catch (error) {
-		if (axios.isAxiosError<ValidationError>(error) && error.response) {
-			const errorMessage = error.response.data.message;
-			const message = Array.isArray(errorMessage)
-				? errorMessage.join(', ')
-				: errorMessage;
-			throw new Error(message);
-		} else {
-			throw new Error('Registration failed');
-		}
+		errorHandler(error);
+		// Lanzamos un error para asegurar que la función siempre devuelve un valor.
+		throw new Error('Failed to create user');
 	}
 }

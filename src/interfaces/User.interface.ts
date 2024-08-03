@@ -1,5 +1,14 @@
 import { UserRole } from './UserRole';
 
+export interface sendingUserData {
+	name: string;
+	imageUrl: string;
+	email: string;
+	password?: string;
+	role: string;
+	createdBy: string;
+}
+
 export interface UserDataBackend {
 	_id: string;
 	imageUrl: string;
@@ -10,9 +19,9 @@ export interface UserDataBackend {
 }
 
 export interface UserDataFrontend {
-	id?: string;
-	imageUrl?: string;
-	email?: string;
+	id: string;
+	imageUrl: string;
+	email: string;
 	password?: string;
 	name: string;
 	role: UserRole;

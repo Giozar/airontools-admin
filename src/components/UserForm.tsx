@@ -18,15 +18,16 @@ export default function UserForm() {
 		setEmail,
 		imageUrl,
 		setImageUrl,
-		roles,
-		setRoles,
+		role,
+		setRole,
+		createdBy,
 	} = useUserForm();
 
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setRoles(e.target.value);
+		setRole(e.target.value);
 	};
 
 	const handleSubmit = async (e: FormEvent) => {
@@ -37,13 +38,14 @@ export default function UserForm() {
 				imageUrl,
 				email,
 				name,
-				roles,
+				role,
+				createdBy,
 			});
-			showSuccess(`Usuario ${userCreated.user.fullName} creado con éxito`);
+			showSuccess(`Usuario ${userCreated.name} creado con éxito`);
 			setImageUrl('');
 			setEmail('');
 			setName('');
-			setRoles('');
+			setRole('');
 		} catch (error) {
 			console.error('Error al subir datos del usuario:', error);
 			if (error instanceof Error) {
@@ -115,7 +117,7 @@ export default function UserForm() {
 					</div>
 
 					<label htmlFor='options'>Rol:</label>
-					<select id='options' value={roles} onChange={handleOptionChange}>
+					<select id='options' value={role} onChange={handleOptionChange}>
 						{roleOptions.map((roleOption: UserRole, index) => (
 							<option key={index} value={roleOption.name}>
 								{roleOption.name}
