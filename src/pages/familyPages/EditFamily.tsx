@@ -29,7 +29,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const [description, setDescription] = useState(familyToEdit.description);
 	const familyId = familyToEdit.id || '';
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
+	const createdBy = authContext?.user?.id || 'user';
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
 		showDeletionModalFor,

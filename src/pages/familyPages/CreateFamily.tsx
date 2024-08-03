@@ -22,7 +22,7 @@ function CreateFamilyForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
+	const createdBy = authContext?.user?.id || 'user';
 	const { errorLog, successLog, createFamily } = useFamilyCreate();
 	const { createCategory } = useCategoryCreate();
 	const { createSubategory } = useSubcategoryCreate();
@@ -42,7 +42,7 @@ function CreateFamilyForm() {
 				const createdCategoryPromises = categories.map(async category => {
 					return await createCategory({
 						...category,
-						familyId,
+						family: familyId,
 						createdBy,
 					});
 				});

@@ -23,7 +23,7 @@ function ToolForm() {
 	const [toolModel, setToolModel] = useState<string>('');
 	const [toolDescription, setToolDescription] = useState<string>('');
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
+	const createdBy = authContext?.user?.id || 'user';
 	const {
 		characteristics,
 		addCharacteristic,

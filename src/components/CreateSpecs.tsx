@@ -20,7 +20,7 @@ function CreateSpecs({
 	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
 	const { showError, errorLog } = useErrorHandling();
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
+	const createdBy = authContext?.user?.id || 'user';
 	const { showSuccess, successLog } = useSuccessHandling();
 
 	// Aquí se inicializa el Array con un objeto vacío al primer render del dom
