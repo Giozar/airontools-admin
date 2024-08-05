@@ -1,4 +1,4 @@
-import { ProductFrontend } from '@adapters/products.adapter';
+import { ProductDataToSend } from '@interfaces/Product.interface';
 import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ const useProductManagement = () => {
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
-	const handleEdit = (Product: ProductFrontend) => {
+	const handleEdit = (Product: ProductDataToSend) => {
 		localStorage.setItem('ProductToEdit', JSON.stringify(Product));
 		navigate(location.pathname + `/editar-herramienta`);
 	};

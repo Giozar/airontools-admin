@@ -15,7 +15,7 @@ export const transformProductDataToFrontend = (
 		description: Product.description,
 		characteristics: Product.characteristics,
 		specifications: Product.specifications,
-		imagesUrl: Product.imagesUrl,
+		images: Product.images,
 		manuals: Product.manuals,
 		videos: Product.videos,
 		family: Product.family,
@@ -40,7 +40,7 @@ export const transformProductDataToBackend = (
 		category: Product.category._id || '',
 		subcategory: Product.subcategory._id || '',
 
-		imagesUrl: Product.imagesUrl,
+		images: Product.images,
 		manuals: Product.manuals,
 		videos: Product.videos,
 		createdBy: Product.createdBy.id,
@@ -56,7 +56,7 @@ export const transformProductDataToBackend = (
 	description: string;
 	characteristics: string[];
 	Productifications: Array<{ [key: string]: string }>;
-	imagesUrl?: string[];
+	images?: string[];
 	manuals?: string[];
 	videos?: string[];
 	createdBy?: string;
@@ -72,7 +72,7 @@ export interface ProductFrontend {
 	description: string;
 	characteristics: string[];
 	Productifications: Array<{ [key: string]: string }>;
-	imagesUrl?: string[];
+	images?: string[];
 	manuals?: string[];
 	videos?: string[];
 	createdBy?: string;
@@ -88,7 +88,7 @@ const ProductMapping: Record<keyof ProductBackend, keyof ProductFrontend> = {
 	subcategoryId: 'subcategoryId',
 	description: 'description',
 	characteristics: 'characteristics',
-	imagesUrl: 'imagesUrl',
+	images: 'images',
 	manuals: 'manuals',
 	videos: 'videos',
 	createdBy: 'createdBy',
@@ -104,7 +104,7 @@ const ProductMappingBack: Record<keyof ProductFrontend, keyof ProductBackend> =
 		subcategoryId: 'subcategoryId',
 		description: 'description',
 		characteristics: 'characteristics',
-		imagesUrl: 'imagesUrl',
+		images: 'images',
 		manuals: 'manuals',
 		videos: 'videos',
 		createdBy: 'createdBy',

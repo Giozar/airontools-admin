@@ -14,7 +14,7 @@ export interface ProductDataToSend {
 	family: string;
 	category: string;
 	subcategory?: string;
-	imagesUrl?: string[];
+	images?: string[];
 	manuals?: string[];
 	videos?: string[];
 	createdBy: string;
@@ -30,7 +30,7 @@ export interface ProductDataBackend {
 	family: FamilyDataToSend;
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
-	imagesUrl?: string[];
+	images?: string[];
 	manuals?: string[];
 	videos?: string[];
 	createdBy: UserDataBackend;
@@ -46,7 +46,7 @@ export interface ProductDataFrontend {
 	family: FamilyDataToSend;
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
-	imagesUrl?: string[];
+	images?: string[];
 	manuals?: string[];
 	videos?: string[];
 	createdBy: UserDataFrontend;

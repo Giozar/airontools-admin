@@ -107,9 +107,10 @@ function ToolForm() {
 			// Paso 2: Subir imagenes
 			const uploadedUrlImages = await handleImageUpload(productId);
 			// Paso 3: Actualizar producto con imagenes
+			console.log(uploadedUrlImages);
 			await axios.patch(
 				import.meta.env.VITE_API_URL + '/products/' + productId,
-				{ imagesUrl: uploadedUrlImages },
+				{ images: uploadedUrlImages },
 			);
 
 			// Paso 4: Subir manuales

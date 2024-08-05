@@ -8,14 +8,14 @@ import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
-import { ProductDataToSend } from '@interfaces/Product.interface';
+import { ProductDataFrontend } from '@interfaces/Product.interface';
 
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
+function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const {
 		families,
 		familyId,
@@ -30,10 +30,11 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
 		handleCategoryIdUpdate,
 		handleSubcategoryIdUpdate,
 	} = useToolCategorizationEdit({
-		initialFamilyId: toolToEdit.family,
-		initialCategoryId: toolToEdit.category,
-		initialSubcategoryId: toolToEdit.subcategory,
+		initialFamilyId: toolToEdit.family._id || '',
+		initialCategoryId: toolToEdit.category._id || '',
+		initialSubcategoryId: toolToEdit.subcategory._id || '',
 	});
+	console.log(toolToEdit.family._id);
 	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
 		catId: categoryId,
 		initialSpecs: toolToEdit.specifications,
@@ -41,11 +42,12 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 
-	const id = toolToEdit._id;
+	const id = toolToEdit.id;
+	console.log(toolToEdit.id);
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
-	const [images] = useState(toolToEdit.imagesUrl);
+	const [images] = useState(toolToEdit.images);
 	const [manuals] = useState(toolToEdit.manuals);
 	const [videos, setVideos] = useState(toolToEdit.videos);
 	const [char, setChar] = useState(toolToEdit.characteristics);
@@ -79,8 +81,9 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
 	};
 	const handleSubmit = async () => {
 		try {
+			console.log(subcategoryId);
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-				id,
+				_id: id,
 				name,
 				model,
 				characteristics: char,
@@ -95,18 +98,21 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
 			const uploadedUrlImages = await handleImageUpload(id || '');
 			// Paso 3: Actualizar producto con imagenes
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-				imagesUrl: uploadedUrlImages,
+				images: images ? [...images, ...uploadedUrlImages] : uploadedUrlImages,
 			});
 
 			// Paso 4: Subir manuales
 			const uploadedUrlManuals = await handleManualUpload(id || '');
 			// Paso 3: Actualizar producto con manuales
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-				manuals: uploadedUrlManuals,
+				manuals: manuals
+					? [...manuals, ...uploadedUrlManuals]
+					: uploadedUrlManuals,
 			});
 			showSuccess('Herramienta actualizada con éxito');
 		} catch (error) {
 			showError('No se pudo actualizar la herramienta');
+			console.error(error);
 		}
 	};
 
@@ -156,6 +162,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
 					</div>
 					<div className='column'>
 						<div className='familycontent'>
+							{familyName}
 							<Editables
 								what='Familia'
 								valueOf={familyName}
@@ -304,7 +311,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
 								</div>
 							))}
 							<div className='image-placeholder add-image'>
-								<label htmlFor='file-input'>Subir Manual +</label>
+								<label htmlFor='manual-input'>Subir Manual +</label>
 								<input
 									type='file'
 									id='manual-input'
@@ -340,7 +347,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
 
 function ContentMainPage() {
 	const initialState = {
-		spec: { id: 'N/A', name: 'Desconocido' },
+		spec: { _id: 'N/A', name: 'Desconocido' },
 	};
 
 	const [state] = useState(() => {
@@ -351,11 +358,11 @@ function ContentMainPage() {
 	useEffect(() => {
 		localStorage.setItem('ProductToEdit', JSON.stringify(state));
 	}, [state]);
-
 	return (
 		<BasePage>
 			<HeaderApp />
 			<main>
+				{state.id}
 				<HeaderTitle title='Editar Herramienta' />
 				<EditToolForm toolToEdit={state} />
 			</main>

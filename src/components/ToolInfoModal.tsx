@@ -1,4 +1,4 @@
-import { ProductFrontend } from '@adapters/products.adapter';
+import { ProductDataFrontend } from '@interfaces/Product.interface';
 import Slideshow from './Slideshow';
 import CloseIcon from './svg/CloseIcon';
 
@@ -9,10 +9,9 @@ const ToolInfoModal = ({
 }: {
 	isOpen: boolean;
 	onClose: () => void;
-	product: ProductFrontend | null;
+	product: ProductDataFrontend | null;
 }) => {
 	if (!isOpen) return null;
-
 	return (
 		<div className='modal-overlay'>
 			<div className='modal-content'>
@@ -26,7 +25,7 @@ const ToolInfoModal = ({
 							<strong>Fotos:</strong>
 						</p>
 						<div className='grupo'>
-							{product.imagesUrl && <Slideshow imagesUrl={product.imagesUrl} />}
+							{product.images && <Slideshow images={product.images} />}
 							<div>
 								<p>
 									<strong>Nombre:</strong> {product.name}
@@ -35,14 +34,14 @@ const ToolInfoModal = ({
 									<strong>Modelo:</strong> {product.model}
 								</p>
 								<p>
-									<strong>Family ID:</strong> {product.familyId}
+									<strong>Family:</strong> {product.family.name}
 								</p>
 								<p>
-									<strong>Category ID:</strong> {product.categoryId}
+									<strong>Category:</strong> {product.category.name}
 								</p>
 								<p>
-									<strong>Subcategory ID:</strong>{' '}
-									{product.subcategoryId || '---'}
+									<strong>Subcategory:</strong>{' '}
+									{product.subcategory.name || '---'}
 								</p>
 							</div>
 						</div>
@@ -53,7 +52,7 @@ const ToolInfoModal = ({
 						<div style={{ margin: '20px 0' }}>
 							<strong>Características:</strong>
 							<ul>
-								{product.characteristics.map(char => (
+								{product.characteristics?.map(char => (
 									<li key={char}>{char}</li>
 								))}
 							</ul>
@@ -63,13 +62,12 @@ const ToolInfoModal = ({
 							<strong>Especificaciones:</strong>
 							<ul>
 								{product.specifications.length ? (
-									product.specifications.map((spec, index) =>
-										Object.entries(spec).map(([key, value]) => (
-											<li key={key + index}>
-												{key}: {value}
-											</li>
-										)),
-									)
+									product.specifications.map(spec => (
+										<li key={spec.id}>
+											{spec.specification.name}: {spec.value}{' '}
+											{spec.specification.unit}
+										</li>
+									))
 								) : (
 									<li>No hay especificaciones disponibles</li>
 								)}
@@ -77,7 +75,7 @@ const ToolInfoModal = ({
 						</div>
 
 						<p>
-							<strong>Creado por:</strong> {product.createdBy}
+							<strong>Creado por:</strong> {product.createdBy.name}
 						</p>
 						<button className='edit'>Editar</button>
 					</div>
