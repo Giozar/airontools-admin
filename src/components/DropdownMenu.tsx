@@ -1,7 +1,7 @@
-import { SpecsFrontend } from '@adapters/specifications.adapter';
 import '@components/css/dropdownmenu.css';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
+import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
 import DownArrow from './svg/DownArrow';
@@ -10,7 +10,7 @@ interface props {
 	family: FamilyDataFrontend;
 	filteredCategories: CategoryDataFrontend[];
 	filteredSubcategories: SubcategoryDataFrontend[];
-	specifications: SpecsFrontend[];
+	specifications: SpecDataFrontend[];
 }
 function DropdownMenu({
 	filteredCategories,
@@ -47,15 +47,15 @@ function DropdownMenu({
 									<>
 										{specifications.some(
 											specs =>
-												specs.categoryId === category.id &&
-												!specs.subcategoryId,
+												specs.category._id === category.id &&
+												!specs.subcategory._id,
 										) && <span>Especificaciones:</span>}
 										<ul>
 											{specifications
 												.filter(
 													specs =>
-														specs.categoryId === category.id &&
-														!specs.subcategoryId,
+														specs.category._id === category.id &&
+														!specs.subcategory._id,
 												)
 												.map(specs => (
 													<li key={specs.id}>
@@ -76,13 +76,13 @@ function DropdownMenu({
 													<>
 														<li key={subcategory.id}>{subcategory.name}</li>
 														{specifications.some(
-															specs => specs.subcategoryId === subcategory.id,
+															specs => specs.subcategory._id === subcategory.id,
 														) && <span>Especificaciones:</span>}
 														<ul>
 															{specifications
 																.filter(
 																	specs =>
-																		specs.subcategoryId === subcategory.id,
+																		specs.subcategory._id === subcategory.id,
 																)
 																.map(specs => (
 																	<li key={`spec${specs.id}`}>

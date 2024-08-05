@@ -1,4 +1,4 @@
-export interface ProductBackend {
+/* export interface ProductBackend {
 	_id: string;
 	name: string;
 	model: string;
@@ -100,3 +100,4 @@ export const transformProductDataBack = (
 		ProductMappingBack,
 	) as ProductBackend;
 };
+*/
