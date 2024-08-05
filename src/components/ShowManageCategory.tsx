@@ -12,7 +12,7 @@ import SubcategoryModal from './SubcategoryModal';
 import TrashIcon from './svg/TrashIcon';
 
 interface ShowManageCategoryProps {
-	categories: CategoryDataFrontend[];
+	categories: CategoryDataFrontend[] | any[];
 	countOfCategories?: number;
 	handleCategoryNameChange: (newName: string, index: number) => void;
 	handleCategoryDescriptionChange: (
@@ -20,7 +20,9 @@ interface ShowManageCategoryProps {
 		index: number,
 	) => void;
 	handleUpdateCategory: (updatedCategory: CategoryDataToSend) => void;
-	handleCloseModalDeletion: (updatedCategory: CategoryDataFrontend) => void;
+	handleCloseModalDeletion:
+		| ((updatedCategory: CategoryDataFrontend) => void)
+		| ((updatedCategory: any) => void);
 }
 
 function ShowManageCategory({

@@ -1,4 +1,4 @@
-import {
+/* import {
 	CategoryDataBackend,
 	CategoryDataFrontend,
 	CategoryDataToSend,
@@ -28,8 +28,8 @@ export const transformCategoryDataToBackend = (
 		family: Category.family.id,
 		createdBy: Category.createdBy.id,
 	};
-};
-/* export interface SpecsBackend {
+}; */
+export interface SpecsBackend {
 	_id: string;
 	name: string;
 	description: string;
@@ -128,4 +128,3 @@ export const transformSpecsDataBack = (data: SpecsFrontend): SpecsBackend => {
 		SpecsMappingBack,
 	) as SpecsBackend;
 };
-*/
