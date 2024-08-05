@@ -1,9 +1,9 @@
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
-import { useUserRoles } from '@hooks/userRoles/useUserRoles';
+import { useRoles } from '@hooks/roles/useRoles';
 import { useUserForm } from '@hooks/users/useUserForm';
-import { UserRole } from '@interfaces/UserRole';
+import { Role } from '@interfaces/Role.interface';
 import createUser from '@services/users/createUser.service';
 import { ChangeEvent, FormEvent } from 'react';
 import ErrorMessage from './ErrorMessage';
@@ -70,7 +70,7 @@ export default function UserForm() {
 			});
 	};
 	// Se obtiene la lista de roles para el usuario
-	const { userRoles: roleOptions } = useUserRoles();
+	const { userRoles: roleOptions } = useRoles();
 	return (
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
@@ -118,7 +118,7 @@ export default function UserForm() {
 
 					<label htmlFor='options'>Rol:</label>
 					<select id='options' value={role} onChange={handleOptionChange}>
-						{roleOptions.map((roleOption: UserRole, index) => (
+						{roleOptions.map((roleOption: Role, index) => (
 							<option key={index} value={roleOption.name}>
 								{roleOption.name}
 							</option>

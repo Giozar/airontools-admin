@@ -1,7 +1,7 @@
 import { UserDataBackend, transformUserData } from '@adapters/user.adapter';
 import useErrorHandling from '@hooks/common/useErrorHandling';
-import { useUserRoles } from '@hooks/userRoles/useUserRoles';
-import { UserRole } from '@interfaces/UserRole';
+import { useRoles } from '@hooks/roles/useRoles';
+import { Role } from '@interfaces/Role.interface';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import './css/roleChangeModal.css';
@@ -26,7 +26,7 @@ function RoleChangeModal({
 	onCloseModal,
 	onUpdateList,
 }: RoleChangeModalProps) {
-	const { userRoles: roleOptions } = useUserRoles();
+	const { userRoles: roleOptions } = useRoles();
 	const [role, setRoles] = useState(userToEdit.role);
 	const { errorLog, showError } = useErrorHandling();
 
@@ -71,7 +71,7 @@ function RoleChangeModal({
 					value={role as string}
 					onChange={handleOptionChange}
 				>
-					{roleOptions.map((roleOption: UserRole, index) => (
+					{roleOptions.map((roleOption: Role, index) => (
 						<option key={index} value={roleOption.name}>
 							{roleOption.name}
 						</option>

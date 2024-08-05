@@ -4,9 +4,9 @@ import FileUpload from '@components/FileUpload';
 import HeaderTitle from '@components/HeaderTitle';
 import SuccessMessage from '@components/SuccessMessage';
 import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
-import { useUserRoles } from '@hooks/userRoles/useUserRoles';
+import { useRoles } from '@hooks/roles/useRoles';
 import useUserUpdate from '@hooks/useUserUpdate';
-import { UserRole } from '@interfaces/UserRole';
+import { Role } from '@interfaces/Role.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
@@ -23,7 +23,7 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 	const { password, generatePassword } = usePasswordGenerator({
 		pastPassword: userToEdit.password,
 	});
-	const { userRoles: roleOptions } = useUserRoles();
+	const { userRoles: roleOptions } = useRoles();
 
 	useEffect(() => {}, [imageUrl]);
 
@@ -105,7 +105,7 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 
 					<label htmlFor='options'>Rol:</label>
 					<select id='options' value={roles} onChange={handleOptionChange}>
-						{roleOptions.map((roleOption: UserRole, index) => (
+						{roleOptions.map((roleOption: Role, index) => (
 							<option key={index} value={roleOption.name}>
 								{roleOption.name}
 							</option>
