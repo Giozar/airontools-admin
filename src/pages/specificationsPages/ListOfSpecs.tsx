@@ -1,7 +1,3 @@
-import {
-	SpecsFrontend,
-	transformSpecsData,
-} from '@adapters/specifications.adapter';
 import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
 import ErrorMessage from '@components/ErrorMessage';
@@ -10,6 +6,7 @@ import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSpecificationsManagement from '@hooks/useSpecificationsManagement';
+import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/listofspecs.css';
@@ -21,7 +18,7 @@ import { useLocation } from 'react-router-dom';
 function SpecificationsGrid() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const { showError, errorLog } = useErrorHandling();
-	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
@@ -34,7 +31,7 @@ function SpecificationsGrid() {
 		const fetchSpecifications = async () => {
 			try {
 				const specs = await getSpecifications();
-				setSpecifications(specs.map(transformSpecsData));
+				setSpecifications(specs);
 				console.log(specs);
 			} catch (error) {
 				errorHandler(error, showError);
@@ -77,19 +74,22 @@ function SpecificationsGrid() {
 							</button>
 						</div>
 						<p className='spec-name'>{spec.name}</p>
-						<p className='spec-created-by'> Creado por: {spec.createdBy}</p>
+						<p className='spec-created-by'>
+							{' '}
+							Creado por: {spec.createdBy.name}
+						</p>
 						<p className='spec-description'>{spec.description}</p>
 						<p className='spec-unit'>Unidad: {spec.unit}</p>
 						<div className='spec-metadata'>
 							<span className='meta-tag metafamily'>
-								Familia: {spec.familyId}
+								Familia: {spec.family.name}
 							</span>
 							<span className='meta-tag metacategory'>
-								Categoría: {spec.categoryId}
+								Categoría: {spec.category.name}
 							</span>
-							{spec.subcategoryId && (
+							{spec.subcategory._id && (
 								<span className='meta-tag metasubcategory'>
-									Subcategoría: {spec.subcategoryId}
+									Subcategoría: {spec.subcategory.name}
 								</span>
 							)}
 						</div>

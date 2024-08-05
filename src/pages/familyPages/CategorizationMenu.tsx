@@ -1,7 +1,3 @@
-import {
-	SpecsFrontend,
-	transformSpecsData,
-} from '@adapters/specifications.adapter';
 import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
 import DropdownMenu from '@components/DropdownMenu';
@@ -13,6 +9,7 @@ import useFamilyManagement from '@hooks/useFamilyManagement';
 import useFetchCategories from '@hooks/useFetchCategories';
 import useFetchFamilies from '@hooks/useFetchFamilies';
 import useFetchSubcategories from '@hooks/useFetchSubcategories';
+import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/familyList.css';
@@ -48,12 +45,12 @@ function ListofFamilies() {
 			filteredFamilies.filter(family => family.id !== familyid),
 		);
 	};
-	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 	useEffect(() => {
 		const fetchSpecifications = async () => {
 			try {
 				const specs = await getSpecifications();
-				setSpecifications(specs.map(transformSpecsData));
+				setSpecifications(specs);
 				console.log(specs);
 			} catch (error) {
 				console.error(error);
@@ -79,7 +76,7 @@ function ListofFamilies() {
 			categories.some(category => category.id === subcategory.category._id),
 		);
 		const specificationsn = specifications.filter(
-			specs => specs.familyId === familyId,
+			specs => specs.family._id === familyId,
 		);
 		const categoriesLength = categories.length;
 		const subcategoriesLength = subcategories.length;
