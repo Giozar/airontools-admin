@@ -1,29 +1,32 @@
+import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
 import {
-	SubcategoryBackend,
-	SubcategoryFrontend,
-	transformSubcategoryData,
-} from '@adapters/subcategory.adapter';
+	SubcategoryDataBackend,
+	SubcategoryDataFrontend,
+} from '@interfaces/subcategory.interface';
 import axios from 'axios';
 import { useState } from 'react';
 import useErrorHandling from './common/useErrorHandling';
 
 function useFetchSubcategoriesFromFamily() {
 	const { errorLog, showError } = useErrorHandling();
-	const [subcategories, setSubcategories] = useState<SubcategoryFrontend[]>([]);
+	const [subcategories, setSubcategories] = useState<SubcategoryDataFrontend[]>(
+		[],
+	);
 	const [filteredSubcategories, setFilteredSubcategories] = useState<
-		SubcategoryFrontend[]
+		SubcategoryDataFrontend[]
 	>([]);
 	const [, setSearchTerm] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const fetchSubcategories = async (categoryId: string) => {
 		try {
-			const response = await axios.get<SubcategoryBackend[]>(
-				import.meta.env.VITE_API_URL +
-					`/subcategories?categoryId=${categoryId}`,
+			const response = await axios.get<SubcategoryDataBackend[]>(
+				import.meta.env.VITE_API_URL + `/subcategories?category=${categoryId}`,
 			);
-			setSubcategories(response.data.map(transformSubcategoryData));
-			setFilteredSubcategories(response.data.map(transformSubcategoryData));
+			setSubcategories(response.data.map(transformSubcategoryDataToFrontend));
+			setFilteredSubcategories(
+				response.data.map(transformSubcategoryDataToFrontend),
+			);
 			setLoading(false);
 		} catch (error) {
 			console.error('Failed to fetch categories:', error);
