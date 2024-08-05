@@ -1,7 +1,3 @@
-import {
-	ProductFrontend,
-	transformProductDataBack,
-} from '@adapters/products.adapter';
 import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
@@ -12,13 +8,14 @@ import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
+import { ProductDataToSend } from '@interfaces/Product.interface';
 
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
+function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataToSend }) {
 	const {
 		families,
 		familyId,
@@ -33,9 +30,9 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 		handleCategoryIdUpdate,
 		handleSubcategoryIdUpdate,
 	} = useToolCategorizationEdit({
-		initialFamilyId: toolToEdit.familyId,
-		initialCategoryId: toolToEdit.categoryId,
-		initialSubcategoryId: toolToEdit.subcategoryId,
+		initialFamilyId: toolToEdit.family,
+		initialCategoryId: toolToEdit.category,
+		initialSubcategoryId: toolToEdit.subcategory,
 	});
 	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
 		catId: categoryId,
@@ -44,7 +41,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 
-	const id = toolToEdit.id;
+	const id = toolToEdit._id;
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
@@ -82,30 +79,27 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 	};
 	const handleSubmit = async () => {
 		try {
-			await axios.patch(
-				import.meta.env.VITE_API_URL + '/products/' + id,
-				transformProductDataBack({
-					id,
-					name,
-					model,
-					characteristics: char,
-					familyId,
-					categoryId,
-					subcategoryId: subcategoryId || '',
-					description,
-					videos,
-					specifications: specs || toolToEdit.specifications,
-				}),
-			);
+			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+				id,
+				name,
+				model,
+				characteristics: char,
+				family: familyId,
+				category: categoryId,
+				subcategory: subcategoryId || '',
+				description,
+				videos,
+				specifications: specs || toolToEdit.specifications,
+			});
 			// Paso 2: subir imagenes
-			const uploadedUrlImages = await handleImageUpload(id);
+			const uploadedUrlImages = await handleImageUpload(id || '');
 			// Paso 3: Actualizar producto con imagenes
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
 				imagesUrl: uploadedUrlImages,
 			});
 
 			// Paso 4: Subir manuales
-			const uploadedUrlManuals = await handleManualUpload(id);
+			const uploadedUrlManuals = await handleManualUpload(id || '');
 			// Paso 3: Actualizar producto con manuales
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
 				manuals: uploadedUrlManuals,
@@ -141,19 +135,19 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductFrontend }) {
 							/>
 							<Editables
 								what='Modelo'
-								valueOf={model}
+								valueOf={model || ''}
 								type='input'
 								onUpdate={handleModelUpdate}
 							/>
 							<Editables
 								what='Descripción'
-								valueOf={description}
+								valueOf={description || ''}
 								type='textarea'
 								onUpdate={handleDescriptionUpdate}
 							/>
 							<Editables
 								what='Características'
-								valueOf={char.join('<br>')}
+								valueOf={char?.join('<br>') || ''}
 								type='list'
 								onUpdateMany={handleUpdateChar}
 								strlist={char}

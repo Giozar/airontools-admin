@@ -1,8 +1,4 @@
-import {
-	ProductBackend,
-	ProductFrontend,
-	transformProductData,
-} from '@adapters/products.adapter';
+import { transformProductDataToFrontend } from '@adapters/products.adapter';
 import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
 import HeaderTitle from '@components/HeaderTitle';
@@ -11,6 +7,10 @@ import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import ToolInfoModal from '@components/ToolInfoModal';
 import useProductManagement from '@hooks/useProductManagement';
+import {
+	ProductDataBackend,
+	ProductDataFrontend,
+} from '@interfaces/Product.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/ToolMenu.css';
@@ -20,8 +20,8 @@ import { useEffect, useState } from 'react';
 function ListOfTools() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [selectedProduct, setSelectedProduct] =
-		useState<ProductFrontend | null>(null);
-	const [products, setProducts] = useState<ProductFrontend[]>([]);
+		useState<ProductDataFrontend | null>(null);
+	const [products, setProducts] = useState<ProductDataFrontend[]>([]);
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
@@ -34,12 +34,12 @@ function ListOfTools() {
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
-				const response = await axios.get<ProductBackend[]>(
+				const response = await axios.get<ProductDataBackend[]>(
 					`${import.meta.env.VITE_API_URL}/products`,
 				);
-				setProducts(response.data.map(transformProductData));
+				setProducts(response.data.map(transformProductDataToFrontend));
 				console.log(response.data);
-				console.log(response.data.map(transformProductData));
+				console.log(response.data.map(transformProductDataToFrontend));
 			} catch (error) {
 				console.error('Failed to fetch tools:', error);
 			}
@@ -88,9 +88,9 @@ function ListOfTools() {
 						<p>{tool.id}</p>
 						<p>{tool.name}</p>
 						<p>{tool.model}</p>
-						<p>{tool.familyId}</p>
-						<p>{tool.categoryId}</p>
-						<p>{tool.subcategoryId || '---'}</p>
+						<p>{tool.family.name}</p>
+						<p>{tool.category.name}</p>
+						<p>{tool.subcategory.name || '---'}</p>
 
 						<button
 							className='view'

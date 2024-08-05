@@ -75,20 +75,28 @@ function ToolForm() {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
+			console.log(subcategoryId);
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
 				characteristics: characteristics.map(char => char.value),
-				familyId,
-				categoryId,
-				subcategoryId,
+				family: familyId,
+				category: categoryId,
+				subcategory: subcategoryId,
 				description: toolDescription,
 				specifications: Object.keys(specValues).map(key => ({
-					[key]: specValues[key],
+					specification: key,
+					value: specValues[key],
 				})),
 				videos: videos.map(video => video.url),
 				createdBy,
 			};
+			console.log(
+				Object.keys(specValues).map(key => ({
+					specification: key,
+					value: specValues[key],
+				})),
+			);
 			// Paso 1: Crear el producto
 			const response = await axios.post(
 				import.meta.env.VITE_API_URL + '/products',
