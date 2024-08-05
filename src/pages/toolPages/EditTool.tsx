@@ -1,3 +1,4 @@
+import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
@@ -5,6 +6,7 @@ import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import useFileManagement from '@hooks/useFileManagement';
 import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
@@ -41,14 +43,21 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	});
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
+	const {
+		showDeletionModalFor,
+		setShowDeletionModalFor,
+		deletionMessage,
+		handleCloseModal,
+		handleDelete,
+	} = useFileManagement();
 
 	const id = toolToEdit.id;
 	console.log(toolToEdit.id);
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
-	const [images] = useState(toolToEdit.images);
-	const [manuals] = useState(toolToEdit.manuals);
+	const [images, setImages] = useState(toolToEdit.images);
+	const [manuals, setManuals] = useState(toolToEdit.manuals);
 	const [videos, setVideos] = useState(toolToEdit.videos);
 	const [char, setChar] = useState(toolToEdit.characteristics);
 
@@ -78,6 +87,12 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 
 	const handleManualUpload = async (productId: string) => {
 		return await handleFileUpload('/manuals/' + productId, 'manuals');
+	};
+	const handleCloseModalDeletionImages = (image: string) => {
+		setImages(images?.filter(img => img !== image));
+	};
+	const handleCloseModalDeletionManuals = (manual: string) => {
+		setManuals(manuals?.filter(man => man !== manual));
 	};
 	const handleSubmit = async () => {
 		try {
@@ -224,6 +239,19 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 							{images &&
 								images.map((preview, index) => (
 									<div key={index} className='image-preview'>
+										{showDeletionModalFor === preview && (
+											<DeletionModal
+												id={preview}
+												name={preview}
+												image={preview}
+												onClose={() => handleCloseModal()}
+												onCloseDelete={() =>
+													handleCloseModalDeletionImages(preview)
+												}
+												onDelete={() => handleDelete(preview, '')}
+												message={deletionMessage}
+											/>
+										)}
 										<img
 											src={preview}
 											alt={`preview-${index}`}
@@ -231,7 +259,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 										/>
 										<button
 											// borra la imagen del servidor?
-											// onClick={() => handleRemoveImage(index)}
+											onClick={() => setShowDeletionModalFor(preview)}
 											// deberia de poder borrar del servidor y aqui solo cambiar la lista (borrar el string de la imagen)
 											className='delete'
 										>
@@ -239,6 +267,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 										</button>
 									</div>
 								))}
+							<br></br>
 							<p>Imagenes nuevas: </p>
 							{filePreviews.images?.map((preview, index) => (
 								<div key={index} className='image-preview'>
@@ -274,13 +303,29 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 						<div className='image-upload'>
 							{manuals?.map(preview => (
 								<div key={preview} className='image-preview'>
+									{showDeletionModalFor === preview && (
+										<DeletionModal
+											id={preview}
+											name={preview}
+											image={preview}
+											onClose={() => handleCloseModal()}
+											onCloseDelete={() =>
+												handleCloseModalDeletionManuals(preview)
+											}
+											onDelete={() => handleDelete(preview, '')}
+											message={deletionMessage}
+										/>
+									)}
 									<embed
 										src={preview}
 										width='150'
 										height='100'
 										className='image-placeholder'
 									/>
-									<button className='delete'>
+									<button
+										className='delete'
+										onClick={() => setShowDeletionModalFor(preview)}
+									>
 										<TrashIcon />
 									</button>
 
@@ -291,6 +336,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									</div>
 								</div>
 							))}
+							<br></br>
 							<p>Manuales nuevos: </p>
 							{filePreviews.manuals?.map((preview, index) => (
 								<div key={index} className='image-preview'>
