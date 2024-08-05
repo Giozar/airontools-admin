@@ -1,15 +1,15 @@
 import { SpecsFrontend } from '@adapters/specifications.adapter';
-import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import '@components/css/dropdownmenu.css';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
+import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
 import DownArrow from './svg/DownArrow';
 import RightArrow from './svg/RightArrow';
 interface props {
 	family: FamilyDataFrontend;
 	filteredCategories: CategoryDataFrontend[];
-	filteredSubcategories: SubcategoryFrontend[];
+	filteredSubcategories: SubcategoryDataFrontend[];
 	specifications: SpecsFrontend[];
 }
 function DropdownMenu({
@@ -64,12 +64,13 @@ function DropdownMenu({
 												))}
 										</ul>
 										{filteredSubcategories.some(
-											subcategory => subcategory.categoryId === category.id,
+											subcategory => subcategory.category._id === category.id,
 										) && <span>Subcategorias:</span>}
 										<ul>
 											{filteredSubcategories
 												.filter(
-													subcategory => subcategory.categoryId === category.id,
+													subcategory =>
+														subcategory.category._id === category.id,
 												)
 												.map(subcategory => (
 													<>
@@ -84,7 +85,7 @@ function DropdownMenu({
 																		specs.subcategoryId === subcategory.id,
 																)
 																.map(specs => (
-																	<li key={specs.id}>
+																	<li key={`spec${specs.id}`}>
 																		{specs.name}
 																		{specs.unit && `(${specs.unit})`}
 																	</li>

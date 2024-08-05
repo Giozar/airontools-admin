@@ -3,19 +3,19 @@ import {
 	SubcategoryDataFrontend,
 	SubcategoryDataToSend,
 } from '@interfaces/subcategory.interface';
-import { transformCategoryDataToFrontend } from './category.adapter';
 import { transformFamilyDataToFrontend } from './family.adapter';
 import { transformUserData } from './user.adapter';
 
 export const transformSubcategoryDataToFrontend = (
 	subcategory: SubcategoryDataBackend,
 ): SubcategoryDataFrontend => {
+	console.log(subcategory.category);
 	return {
 		id: subcategory._id,
 		name: subcategory.name,
 		description: subcategory.description,
 		family: transformFamilyDataToFrontend(subcategory.family),
-		category: transformCategoryDataToFrontend(subcategory.category),
+		category: subcategory.category,
 		createdBy: transformUserData(subcategory.createdBy),
 	};
 };
@@ -28,7 +28,7 @@ export const transformSubcategoryDataToBackend = (
 		name: subcategory.name,
 		description: subcategory.description,
 		family: subcategory.family.id,
-		category: subcategory.category.id,
+		category: subcategory.category._id || '',
 		createdBy: subcategory.createdBy.id,
 	};
 };

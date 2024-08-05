@@ -42,7 +42,7 @@ function ListofFamilies() {
 	} = useFetchFamilies(updateListFlag);
 	const { filteredCategories } = useFetchCategories();
 	const { filteredSubcategories } = useFetchSubcategories();
-
+	console.log(filteredCategories);
 	const handleCloseModalDeletion = (familyid: string) => {
 		setFamilies(families.filter(family => family.id !== familyid));
 		setFilteredFamilies(
@@ -77,7 +77,7 @@ function ListofFamilies() {
 		);
 
 		const subcategories = filteredSubcategories.filter(subcategory =>
-			categories.some(category => category.id === subcategory.categoryId),
+			categories.some(category => category.id === subcategory.category._id),
 		);
 		const specificationsn = specifications.filter(
 			specs => specs.familyId === familyId,

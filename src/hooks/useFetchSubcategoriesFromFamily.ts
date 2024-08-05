@@ -21,7 +21,8 @@ function useFetchSubcategoriesFromFamily() {
 	const fetchSubcategories = async (categoryId: string) => {
 		try {
 			const response = await axios.get<SubcategoryDataBackend[]>(
-				import.meta.env.VITE_API_URL + `/subcategories?category=${categoryId}`,
+				import.meta.env.VITE_API_URL +
+					`/subcategories?categoryId=${categoryId}`,
 			);
 			setSubcategories(response.data.map(transformSubcategoryDataToFrontend));
 			setFilteredSubcategories(
@@ -29,7 +30,7 @@ function useFetchSubcategoriesFromFamily() {
 			);
 			setLoading(false);
 		} catch (error) {
-			console.error('Failed to fetch categories:', error);
+			console.error('Failed to fetch subcategories:', error);
 			showError('Error al cargar las categorias');
 			setLoading(false);
 		}

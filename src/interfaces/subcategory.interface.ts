@@ -1,7 +1,4 @@
-import {
-	CategoryDataBackend,
-	CategoryDataFrontend,
-} from './Category.interface';
+import { CategoryDataToSend } from './Category.interface';
 import { FamilyDataBackend, FamilyDataFrontend } from './Family.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
 
@@ -20,7 +17,7 @@ export interface SubcategoryDataBackend {
 	name: string;
 	description?: string;
 	family: FamilyDataBackend;
-	category: CategoryDataBackend;
+	category: CategoryDataToSend;
 	createdBy: UserDataBackend;
 }
 // Datos que se usan en el frontend - Visualización (solo frontend)
@@ -29,7 +26,7 @@ export interface SubcategoryDataFrontend {
 	name: string;
 	description?: string;
 	family: FamilyDataFrontend;
-	category: CategoryDataFrontend;
+	category: CategoryDataToSend;
 	createdBy: UserDataFrontend;
 }
 // DELETE se hace directo con ids
