@@ -36,7 +36,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		initialCategoryId: toolToEdit.category._id || '',
 		initialSubcategoryId: toolToEdit.subcategory._id || '',
 	});
-	console.log(toolToEdit.family._id);
 	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
 		catId: categoryId,
 		initialSpecs: toolToEdit.specifications,
@@ -52,7 +51,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	} = useFileManagement();
 
 	const id = toolToEdit.id;
-	console.log(toolToEdit.id);
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
@@ -89,10 +87,14 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		return await handleFileUpload('/manuals/' + productId, 'manuals');
 	};
 	const handleCloseModalDeletionImages = (image: string) => {
-		setImages(images?.filter(img => img !== image));
+		if (images?.length === 1)
+			setManuals([]); // Por alguna razon hay un bug aqui que necesita esta condicion
+		else setImages(images?.filter(img => img !== image));
 	};
 	const handleCloseModalDeletionManuals = (manual: string) => {
-		setManuals(manuals?.filter(man => man !== manual));
+		if (manuals?.length === 1)
+			setManuals([]); // Por alguna razon hay un bug aqui que necesita esta condicion
+		else setManuals(manuals?.filter(man => man !== manual));
 	};
 	const handleSubmit = async () => {
 		try {
@@ -119,11 +121,13 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 			// Paso 4: Subir manuales
 			const uploadedUrlManuals = await handleManualUpload(id || '');
 			// Paso 3: Actualizar producto con manuales
-			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-				manuals: manuals
-					? [...manuals, ...uploadedUrlManuals]
-					: uploadedUrlManuals,
-			});
+			console.log(
+				await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+					manuals: manuals
+						? [...manuals, ...uploadedUrlManuals]
+						: uploadedUrlManuals,
+				}),
+			);
 			showSuccess('Herramienta actualizada con éxito');
 		} catch (error) {
 			showError('No se pudo actualizar la herramienta');
@@ -303,11 +307,11 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 						<div className='image-upload'>
 							{manuals?.map(preview => (
 								<div key={preview} className='image-preview'>
+									{preview}
 									{showDeletionModalFor === preview && (
 										<DeletionModal
 											id={preview}
 											name={preview}
-											image={preview}
 											onClose={() => handleCloseModal()}
 											onCloseDelete={() =>
 												handleCloseModalDeletionManuals(preview)
