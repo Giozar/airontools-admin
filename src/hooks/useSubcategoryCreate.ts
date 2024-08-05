@@ -14,6 +14,7 @@ const useSubcategoryCreate = () => {
 	const { successLog, showSuccess } = useSuccessHandling();
 
 	const createSubategory = async (subcategoryData: SubcategoryDataToSend) => {
+		console.log(subcategoryData);
 		try {
 			const response = await axios.post(
 				import.meta.env.VITE_API_URL + '/subcategories',

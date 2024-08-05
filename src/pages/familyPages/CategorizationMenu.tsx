@@ -42,7 +42,6 @@ function ListofFamilies() {
 	} = useFetchFamilies(updateListFlag);
 	const { filteredCategories } = useFetchCategories();
 	const { filteredSubcategories } = useFetchSubcategories();
-	console.log(filteredCategories);
 	const handleCloseModalDeletion = (familyid: string) => {
 		setFamilies(families.filter(family => family.id !== familyid));
 		setFilteredFamilies(

@@ -1,4 +1,35 @@
-export interface SpecsBackend {
+import {
+	CategoryDataBackend,
+	CategoryDataFrontend,
+	CategoryDataToSend,
+} from '@interfaces/Category.interface';
+import { transformFamilyDataToFrontend } from './family.adapter';
+import { transformUserData } from './user.adapter';
+
+export const transformCategoryDataToFrontend = (
+	Category: CategoryDataBackend,
+): CategoryDataFrontend => {
+	return {
+		id: Category._id,
+		name: Category.name,
+		description: Category.description,
+		family: transformFamilyDataToFrontend(Category.family),
+		createdBy: transformUserData(Category.createdBy),
+	};
+};
+
+export const transformCategoryDataToBackend = (
+	Category: CategoryDataFrontend,
+): CategoryDataToSend => {
+	return {
+		_id: Category.id,
+		name: Category.name,
+		description: Category.description,
+		family: Category.family.id,
+		createdBy: Category.createdBy.id,
+	};
+};
+/* export interface SpecsBackend {
 	_id: string;
 	name: string;
 	description: string;
@@ -97,3 +128,4 @@ export const transformSpecsDataBack = (data: SpecsFrontend): SpecsBackend => {
 		SpecsMappingBack,
 	) as SpecsBackend;
 };
+*/
