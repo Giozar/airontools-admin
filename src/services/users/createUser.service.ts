@@ -1,14 +1,14 @@
 import { transformUserData } from '@adapters/user.adapter';
 import {
 	RegisterResponse,
-	sendingUserData,
 	UserDataFrontend,
+	UserDataSend,
 } from '@interfaces/User.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 export default async function createUser(
-	userData: sendingUserData,
+	userData: UserDataSend,
 ): Promise<UserDataFrontend> {
 	try {
 		const response = await axios.post<RegisterResponse>(
