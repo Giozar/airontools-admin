@@ -12,20 +12,17 @@ import HeaderApp from '@layouts/HeaderApp';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
-	console.log(userToEdit);
 	const [email, setEmail] = useState(userToEdit.email);
 	const pastImageUrl = userToEdit.imageUrl;
 	const [imageUrl, setImageUrl] = useState(userToEdit.imageUrl);
 	const [name, setName] = useState(userToEdit.name);
-	const [role, setRole] = useState(userToEdit.role._id);
+	const [role, setRole] = useState(userToEdit.role?.id);
 
 	const { errorLog, successLog, updateUser } = useUserUpdate();
 	const { password, generatePassword } = usePasswordGenerator({
 		pastPassword: userToEdit.password,
 	});
 	const { roles: roleOptions } = useRoles();
-
-	useEffect(() => {}, [imageUrl]);
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setRole(e.target.value);
@@ -54,6 +51,8 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 			console.error('Error actualizando usuario:', error);
 		}
 	};
+
+	useEffect(() => {}, [handleOptionChange, imageUrl]);
 
 	return (
 		<>

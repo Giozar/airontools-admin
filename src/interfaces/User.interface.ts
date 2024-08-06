@@ -5,7 +5,7 @@ export interface UserDataSend {
 	imageUrl: string;
 	email: string;
 	password?: string;
-	role: string;
+	role?: string;
 	createdBy?: string;
 	updatedBy?: string;
 }
