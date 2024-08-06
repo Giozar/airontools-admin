@@ -4,8 +4,7 @@ import {
 	SubcategoryDataToSend,
 } from '@interfaces/subcategory.interface';
 import { transformFamilyDataToFrontend } from './family.adapter';
-import { transformUserData } from './user.adapter';
-
+import { transformUserDataFront } from './user.adapter';
 export const transformSubcategoryDataToFrontend = (
 	subcategory: SubcategoryDataBackend,
 ): SubcategoryDataFrontend => {
@@ -16,7 +15,7 @@ export const transformSubcategoryDataToFrontend = (
 		description: subcategory.description,
 		family: transformFamilyDataToFrontend(subcategory.family),
 		category: subcategory.category,
-		createdBy: transformUserData(subcategory.createdBy),
+		createdBy: transformUserDataFront(subcategory.createdBy),
 	};
 };
 

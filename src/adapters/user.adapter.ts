@@ -1,4 +1,5 @@
 import { UserDataBackend, UserDataFrontend } from '@interfaces/User.interface';
+import { transformRoleDataFront } from './role.adapter';
 
 export const transformUserDataFront = (
 	user: UserDataBackend,
@@ -9,6 +10,6 @@ export const transformUserDataFront = (
 		email: user.email,
 		password: user.password,
 		name: user.name,
-		role: user.role,
+		role: transformRoleDataFront(user.role),
 	};
 };
