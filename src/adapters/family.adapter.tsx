@@ -1,4 +1,35 @@
-export interface FamilyBackend {
+import {
+	FamilyDataBackend,
+	FamilyDataFrontend,
+	FamilyDataToSend,
+} from '@interfaces/Family.interface';
+import { transformUserData } from './user.adapter';
+
+export const transformFamilyDataToFrontend = (
+	Family: FamilyDataBackend,
+): FamilyDataFrontend => {
+	return {
+		id: Family._id,
+		name: Family.name,
+		path: Family.path,
+		description: Family.description,
+		createdBy: transformUserData(Family.createdBy),
+	};
+};
+
+export const transformFamilyDataToBackend = (
+	Family: FamilyDataFrontend,
+): FamilyDataToSend => {
+	return {
+		_id: Family.id,
+		name: Family.name,
+		path: Family.path,
+		description: Family.description,
+		createdBy: Family.createdBy.id,
+	};
+};
+
+/* export interface FamilyBackend {
 	_id: string;
 	name: string;
 	description: string;
@@ -83,3 +114,4 @@ export const transformFamilyDataBack = (
 		familyMappingBack,
 	) as FamilyBackend;
 };
+*/

@@ -1,4 +1,5 @@
-import { SpecsFrontend } from '@adapters/specifications.adapter';
+import { transformSpecDataToBackend } from '@adapters/specifications.adapter';
+import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import deleteSpecification from '@services/specifications/deleteSpecification.service';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,8 +14,11 @@ const useSpecificationsManagement = () => {
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
-	const handleEdit = (spec: SpecsFrontend) => {
-		localStorage.setItem('specToEdit', JSON.stringify(spec));
+	const handleEdit = (spec: SpecDataFrontend) => {
+		localStorage.setItem(
+			'specToEdit',
+			JSON.stringify(transformSpecDataToBackend(spec)),
+		);
 		navigate(location.pathname + `/editar-especificacion`);
 		console.log(JSON.stringify(spec));
 	};

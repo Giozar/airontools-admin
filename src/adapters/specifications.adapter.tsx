@@ -1,3 +1,41 @@
+import {
+	SpecDataBackend,
+	SpecDataFrontend,
+	SpecDataToSend,
+} from '@interfaces/Specifications.interface';
+import { transformUserData } from './user.adapter';
+
+export const transformSpecDataToFrontend = (
+	Spec: SpecDataBackend,
+): SpecDataFrontend => {
+	return {
+		id: Spec._id,
+		name: Spec.name,
+		description: Spec.description,
+		unit: Spec.unit,
+		family: Spec.family,
+		category: Spec.category,
+		subcategory: Spec.subcategory,
+		createdBy: transformUserData(Spec.createdBy),
+	};
+};
+
+export const transformSpecDataToBackend = (
+	Spec: SpecDataFrontend,
+): SpecDataToSend => {
+	return {
+		_id: Spec.id,
+		name: Spec.name,
+		description: Spec.description,
+		unit: Spec.unit,
+		family: Spec.family._id || '',
+		category: Spec.category._id || '',
+		subcategory: Spec.subcategory._id || '',
+		createdBy: Spec.createdBy.id,
+	};
+};
+
+/*
 export interface SpecsBackend {
 	_id: string;
 	name: string;
@@ -10,8 +48,8 @@ export interface SpecsBackend {
 	__v?: number;
 	path: string;
 	familyId: string;
-	categoryId: string;
-	subcategoryId: string;
+	SpecId: string;
+	subSpecId: string;
 }
 
 export interface SpecsFrontend {
@@ -26,8 +64,8 @@ export interface SpecsFrontend {
 	__v?: number;
 	path: string;
 	familyId: string;
-	categoryId: string;
-	subcategoryId: string;
+	SpecId: string;
+	subSpecId: string;
 }
 
 // el mapeo de los datos de usuario
@@ -43,8 +81,8 @@ const SpecsMapping: Record<keyof SpecsBackend, keyof SpecsFrontend> = {
 	__v: '__v',
 	path: 'path',
 	familyId: 'familyId',
-	categoryId: 'categoryId',
-	subcategoryId: 'subcategoryId',
+	SpecId: 'SpecId',
+	subSpecId: 'subSpecId',
 };
 const SpecsMappingBack: Record<keyof SpecsFrontend, keyof SpecsBackend> = {
 	id: '_id',
@@ -58,8 +96,8 @@ const SpecsMappingBack: Record<keyof SpecsFrontend, keyof SpecsBackend> = {
 	__v: '__v',
 	path: 'path',
 	familyId: 'familyId',
-	categoryId: 'categoryId',
-	subcategoryId: 'subcategoryId',
+	SpecId: 'SpecId',
+	subSpecId: 'subSpecId',
 };
 
 // Transform data generico, este se podra usar para transformar otros datos que vengan del backend
@@ -97,3 +135,4 @@ export const transformSpecsDataBack = (data: SpecsFrontend): SpecsBackend => {
 		SpecsMappingBack,
 	) as SpecsBackend;
 };
+*/

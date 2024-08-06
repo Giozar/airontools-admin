@@ -1,9 +1,5 @@
+import { CategoryDataToSend } from '@interfaces/Category.interface';
 import axios from 'axios';
-
-import {
-	CategoryFrontend,
-	transformCategoryDataBack,
-} from '@adapters/category.adapter';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
@@ -22,14 +18,14 @@ const useCategoryCreate = () => {
 		showSuccess: showSuccessCategoryCreate,
 	} = useSuccessHandling();
 
-	const createCategory = async (categoryData: CategoryFrontend) => {
+	const createCategory = async (categoryData: CategoryDataToSend) => {
 		try {
 			const response = await axios.post(
 				import.meta.env.VITE_API_URL + '/categories',
-				transformCategoryDataBack({
+				{
 					...categoryData,
 					path: cleanNameURL(categoryData.name),
-				}),
+				},
 			);
 			showSuccessCategoryCreate('Categoria Creada Con Éxito');
 			return response.data;

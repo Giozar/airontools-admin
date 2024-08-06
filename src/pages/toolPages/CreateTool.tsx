@@ -23,7 +23,7 @@ function ToolForm() {
 	const [toolModel, setToolModel] = useState<string>('');
 	const [toolDescription, setToolDescription] = useState<string>('');
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
+	const createdBy = authContext?.user?.id || 'user';
 	const {
 		characteristics,
 		addCharacteristic,
@@ -48,7 +48,7 @@ function ToolForm() {
 		initialCategoryId: '',
 		initialSubcategoryId: '',
 	});
-	const { specifications, handleInputChange, specValues } = useSpecs({
+	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
 		catId: categoryId,
 	});
 	const { videos, addVideo, removeVideo, updateVideo } = useVideos();
@@ -71,24 +71,24 @@ function ToolForm() {
 	};
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
-
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
+			console.log(subcategoryId);
+			console.log(specs);
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
 				characteristics: characteristics.map(char => char.value),
-				familyId,
-				categoryId,
-				subcategoryId,
+				family: familyId,
+				category: categoryId,
+				subcategory: subcategoryId,
 				description: toolDescription,
-				specifications: Object.keys(specValues).map(key => ({
-					[key]: specValues[key],
-				})),
+				specifications: specs,
 				videos: videos.map(video => video.url),
 				createdBy,
 			};
+
 			// Paso 1: Crear el producto
 			const response = await axios.post(
 				import.meta.env.VITE_API_URL + '/products',
@@ -99,9 +99,10 @@ function ToolForm() {
 			// Paso 2: Subir imagenes
 			const uploadedUrlImages = await handleImageUpload(productId);
 			// Paso 3: Actualizar producto con imagenes
+			console.log(uploadedUrlImages);
 			await axios.patch(
 				import.meta.env.VITE_API_URL + '/products/' + productId,
-				{ imagesUrl: uploadedUrlImages },
+				{ images: uploadedUrlImages },
 			);
 
 			// Paso 4: Subir manuales
@@ -122,6 +123,7 @@ function ToolForm() {
 		<form className='createtoolform' onSubmit={handleSubmit}>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
+
 			<div className='toolinfo'>
 				<div>
 					<label htmlFor='toolName'>Nombre de herramienta</label>
@@ -175,6 +177,7 @@ function ToolForm() {
 					</div>
 				))}
 			</div>
+
 			<label htmlFor='toolDescription'>Descripción de herramienta</label>
 			<textarea
 				id='toolDescription'
@@ -207,10 +210,11 @@ function ToolForm() {
 					Añadir característica
 				</button>
 			</div>
+
 			<div className='toolinfo'>
 				<div>
 					<label>Manuales</label>
-					<div className='image-upload'>
+					<div className='file-upload'>
 						<div className='file-upload'>
 							<label htmlFor='manual-input' className='add'>
 								Añadir manual
@@ -231,8 +235,7 @@ function ToolForm() {
 									width='250'
 									height='200'
 									className='image-placeholder'
-								></embed>
-
+								/>
 								<button
 									onClick={() => handleRemoveFile('manuals', index)}
 									className='delete'
@@ -244,6 +247,7 @@ function ToolForm() {
 						))}
 					</div>
 				</div>
+
 				<div>
 					<label>Videos</label>
 					<div className='file-upload'>
@@ -269,13 +273,13 @@ function ToolForm() {
 								</button>
 							</div>
 						))}
-
 						<button type='button' className='add' onClick={addVideo}>
 							Añadir video
 						</button>
 					</div>
 				</div>
 			</div>
+
 			<div className='selectfamily'>
 				<label>Categorización:</label>
 				<Editables
@@ -299,6 +303,7 @@ function ToolForm() {
 						name: item.name || 'error',
 					}))}
 				/>
+
 				<Editables
 					what='Subcategoría'
 					valueOf={subcategoryName}
@@ -309,11 +314,12 @@ function ToolForm() {
 						name: item.name || 'error',
 					}))}
 				/>
+
 				{specifications.length > 0 && (
 					<>
 						<label>Especificaciones</label>
 						<div className='specifications'>
-							{specifications.map(spec => (
+							{specifications.map((spec, index) => (
 								<div key={spec.id}>
 									<label htmlFor={spec.id}>{spec.name}</label>
 									<div className='input-container'>
@@ -321,19 +327,42 @@ function ToolForm() {
 											type='text'
 											id={spec.id}
 											required
-											value={specValues[spec.id || ''] || ''}
-											onChange={(e: ChangeEvent<HTMLInputElement>) =>
-												handleInputChange(spec.id || '', e.target.value)
-											}
+											value={findKeyInSpecs(spec.id) || ''}
+											onChange={e => handleSpecUpdate(e.target.value, index)}
 										/>
 										<span>{spec.unit}</span>
 									</div>
 								</div>
 							))}
 						</div>
+						{/* specifications.length > 0 && (
+							<>
+								<label>Especificaciones</label>
+								<div className='specifications'>
+									{specifications.map(spec => (
+										<div key={spec.id}>
+											<label htmlFor={spec.id}>{spec.name}</label>
+											<div className='input-container'>
+												<input
+													type='text'
+													id={spec.id}
+													required
+													value={specValues[spec.id || ''] || ''}
+													onChange={e =>
+														handleInputChange(spec.id || '', e.target.value)
+													}
+												/>
+												<span>{spec.unit}</span>
+											</div>
+										</div>
+									))}
+								</div>
+							</>
+						) */}
 					</>
 				)}
 			</div>
+
 			<button type='submit' className='save'>
 				Crear herramienta
 			</button>

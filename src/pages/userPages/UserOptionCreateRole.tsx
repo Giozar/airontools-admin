@@ -17,7 +17,7 @@ function CreateRoleForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name;
+	const createdBy = authContext?.user?.id;
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 	const [updateRole, setUpdateRole] = useState(false);

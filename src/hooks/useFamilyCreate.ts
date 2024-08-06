@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-import {
-	FamilyFrontend,
-	transformFamilyDataBack,
-} from '@adapters/family.adapter';
+import { FamilyDataToSend } from '@interfaces/Family.interface';
 import { useState } from 'react';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './common/useErrorHandling';
@@ -18,14 +15,14 @@ const useFamilyCreate = () => {
 	const { successLog, showSuccess } = useSuccessHandling();
 	const [familyId, setFamilyId] = useState<string>('');
 
-	const createFamily = async (familyData: FamilyFrontend) => {
+	const createFamily = async (familyData: FamilyDataToSend) => {
 		try {
 			const response = await axios.post(
 				import.meta.env.VITE_API_URL + '/families',
-				transformFamilyDataBack({
+				{
 					...familyData,
 					path: cleanNameURL(familyData.name),
-				}),
+				},
 			);
 			setFamilyId(response.data._id);
 			showSuccess('Familia Creada Con Éxito');

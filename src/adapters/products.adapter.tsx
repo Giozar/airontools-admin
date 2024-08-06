@@ -1,4 +1,52 @@
-export interface ProductBackend {
+import {
+	ProductDataBackend,
+	ProductDataFrontend,
+	ProductDataToSend,
+} from '@interfaces/Product.interface';
+import { transformUserData } from './user.adapter';
+
+export const transformProductDataToFrontend = (
+	Product: ProductDataBackend,
+): ProductDataFrontend => {
+	return {
+		id: Product._id,
+		name: Product.name,
+		model: Product.model,
+		description: Product.description,
+		characteristics: Product.characteristics,
+		specifications: Product.specifications,
+		images: Product.images,
+		manuals: Product.manuals,
+		videos: Product.videos,
+		family: Product.family,
+		category: Product.category,
+		subcategory: Product.subcategory,
+		createdBy: transformUserData(Product.createdBy),
+	};
+};
+
+export const transformProductDataToBackend = (
+	Product: ProductDataFrontend,
+): ProductDataToSend => {
+	return {
+		_id: Product.id,
+		name: Product.name,
+		model: Product.model,
+		description: Product.description,
+		characteristics: Product.characteristics,
+		specifications: Product.specifications,
+
+		family: Product.family._id || '',
+		category: Product.category._id || '',
+		subcategory: Product.subcategory._id || '',
+
+		images: Product.images,
+		manuals: Product.manuals,
+		videos: Product.videos,
+		createdBy: Product.createdBy.id,
+	};
+};
+/* export interface ProductBackend {
 	_id: string;
 	name: string;
 	model: string;
@@ -7,8 +55,8 @@ export interface ProductBackend {
 	subcategoryId?: string;
 	description: string;
 	characteristics: string[];
-	specifications: Array<{ [key: string]: string }>;
-	imagesUrl?: string[];
+	Productifications: Array<{ [key: string]: string }>;
+	images?: string[];
 	manuals?: string[];
 	videos?: string[];
 	createdBy?: string;
@@ -23,8 +71,8 @@ export interface ProductFrontend {
 	subcategoryId?: string;
 	description: string;
 	characteristics: string[];
-	specifications: Array<{ [key: string]: string }>;
-	imagesUrl?: string[];
+	Productifications: Array<{ [key: string]: string }>;
+	images?: string[];
 	manuals?: string[];
 	videos?: string[];
 	createdBy?: string;
@@ -40,11 +88,11 @@ const ProductMapping: Record<keyof ProductBackend, keyof ProductFrontend> = {
 	subcategoryId: 'subcategoryId',
 	description: 'description',
 	characteristics: 'characteristics',
-	imagesUrl: 'imagesUrl',
+	images: 'images',
 	manuals: 'manuals',
 	videos: 'videos',
 	createdBy: 'createdBy',
-	specifications: 'specifications',
+	Productifications: 'Productifications',
 };
 const ProductMappingBack: Record<keyof ProductFrontend, keyof ProductBackend> =
 	{
@@ -56,11 +104,11 @@ const ProductMappingBack: Record<keyof ProductFrontend, keyof ProductBackend> =
 		subcategoryId: 'subcategoryId',
 		description: 'description',
 		characteristics: 'characteristics',
-		imagesUrl: 'imagesUrl',
+		images: 'images',
 		manuals: 'manuals',
 		videos: 'videos',
 		createdBy: 'createdBy',
-		specifications: 'specifications',
+		Productifications: 'Productifications',
 	};
 
 // Transform data generico, este se podra usar para transformar otros datos que vengan del backend
@@ -84,7 +132,7 @@ const transformData = <T extends object, U extends object>(
 	return transformedData;
 };
 
-// Funcion especifica para transformar datos de usuario
+// Funcion eProductifica para transformar datos de usuario
 export const transformProductData = (data: ProductBackend): ProductFrontend => {
 	return transformData<ProductBackend, ProductFrontend>(
 		data,
@@ -100,3 +148,4 @@ export const transformProductDataBack = (
 		ProductMappingBack,
 	) as ProductBackend;
 };
+*/

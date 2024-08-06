@@ -1,9 +1,5 @@
+import { CategoryDataToSend } from '@interfaces/Category.interface';
 import axios from 'axios';
-
-import {
-	CategoryFrontend,
-	transformCategoryDataBack,
-} from '@adapters/category.adapter';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
@@ -18,14 +14,14 @@ const useCategoryUpdate = () => {
 	const { successLog: successLogCategory, showSuccess: showSuccessCategory } =
 		useSuccessHandling();
 
-	const updateCategory = async (categoryData: CategoryFrontend) => {
+	const updateCategory = async (categoryData: CategoryDataToSend) => {
 		try {
 			await axios.patch(
-				import.meta.env.VITE_API_URL + `/categories/${categoryData.id}`,
-				transformCategoryDataBack({
+				import.meta.env.VITE_API_URL + `/categories/${categoryData._id}`,
+				{
 					...categoryData,
 					path: cleanNameURL(categoryData.name),
-				}),
+				},
 			);
 			showSuccessCategory('Categoria actualizada Con Éxito');
 		} catch (error) {

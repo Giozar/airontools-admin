@@ -1,6 +1,5 @@
-import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
-
 import useSubcategoryCreate from '@hooks/useSubcategoryCreate';
+import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
 import Editables from './Editables';
 import ErrorMessage from './ErrorMessage';
@@ -9,21 +8,23 @@ import TrashIcon from './svg/TrashIcon';
 
 function CreateSubcategory({
 	createdBy,
-	familyId,
-	categoryId,
+	family,
+	category,
 	update,
 }: {
 	createdBy: string;
-	familyId: string;
-	categoryId: string;
+	family: string;
+	category: string;
 	update: () => void;
 }) {
 	const { errorLog, successLog, createSubategory } = useSubcategoryCreate();
 	const [newSubcategories, setNewSubcategories] = useState<
-		SubcategoryFrontend[]
+		SubcategoryDataToSend[]
 	>([]);
 
-	const handleCreateSubcategory = async (subcategory: SubcategoryFrontend) => {
+	const handleCreateSubcategory = async (
+		subcategory: SubcategoryDataToSend,
+	) => {
 		try {
 			await createSubategory({
 				...subcategory,
@@ -41,9 +42,8 @@ function CreateSubcategory({
 				name: '',
 				description: '',
 				createdBy,
-				path: '',
-				familyId,
-				categoryId,
+				family,
+				category,
 			},
 		]);
 	};
@@ -64,7 +64,7 @@ function CreateSubcategory({
 		updatedSubcategories[categoryIndex - 1].description = value;
 		setNewSubcategories(updatedSubcategories);
 	};
-	const handleDelete = (subcategory: SubcategoryFrontend) => {
+	const handleDelete = (subcategory: SubcategoryDataToSend) => {
 		setNewSubcategories(newSubcategories.filter(c => c !== subcategory));
 	};
 	return (
@@ -95,7 +95,7 @@ function CreateSubcategory({
 						/>
 						<Editables
 							what='Descripción'
-							valueOf={subcategory.description}
+							valueOf={subcategory.description || ''}
 							type='textarea'
 							whichOne={subcategoryIndex + 1}
 							onUpdateOne={handleSubcategoryDescriptionChange}

@@ -1,4 +1,38 @@
-export interface SubcategoryBackend {
+import {
+	SubcategoryDataBackend,
+	SubcategoryDataFrontend,
+	SubcategoryDataToSend,
+} from '@interfaces/subcategory.interface';
+import { transformFamilyDataToFrontend } from './family.adapter';
+import { transformUserData } from './user.adapter';
+
+export const transformSubcategoryDataToFrontend = (
+	subcategory: SubcategoryDataBackend,
+): SubcategoryDataFrontend => {
+	console.log(subcategory.category);
+	return {
+		id: subcategory._id,
+		name: subcategory.name,
+		description: subcategory.description,
+		family: transformFamilyDataToFrontend(subcategory.family),
+		category: subcategory.category,
+		createdBy: transformUserData(subcategory.createdBy),
+	};
+};
+
+export const transformSubcategoryDataToBackend = (
+	subcategory: SubcategoryDataFrontend,
+): SubcategoryDataToSend => {
+	return {
+		_id: subcategory.id,
+		name: subcategory.name,
+		description: subcategory.description,
+		family: subcategory.family.id,
+		category: subcategory.category._id || '',
+		createdBy: subcategory.createdBy.id,
+	};
+};
+/* export interface SubcategoryBackend {
 	_id: string;
 	name: string;
 	description: string;
@@ -99,3 +133,4 @@ export const transformSubategoryDataBack = (
 		subcategoryMappingBack,
 	) as SubcategoryBackend;
 };
+*/

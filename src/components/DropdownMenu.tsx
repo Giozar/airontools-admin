@@ -1,16 +1,16 @@
-import { CategoryFrontend } from '@adapters/category.adapter';
-import { FamilyFrontend } from '@adapters/family.adapter';
-import { SpecsFrontend } from '@adapters/specifications.adapter';
-import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import '@components/css/dropdownmenu.css';
+import { CategoryDataFrontend } from '@interfaces/Category.interface';
+import { FamilyDataFrontend } from '@interfaces/Family.interface';
+import { SpecDataFrontend } from '@interfaces/Specifications.interface';
+import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
 import DownArrow from './svg/DownArrow';
 import RightArrow from './svg/RightArrow';
 interface props {
-	family: FamilyFrontend;
-	filteredCategories: CategoryFrontend[];
-	filteredSubcategories: SubcategoryFrontend[];
-	specifications: SpecsFrontend[];
+	family: FamilyDataFrontend;
+	filteredCategories: CategoryDataFrontend[];
+	filteredSubcategories: SubcategoryDataFrontend[];
+	specifications: SpecDataFrontend[];
 }
 function DropdownMenu({
 	filteredCategories,
@@ -32,7 +32,7 @@ function DropdownMenu({
 			<div className='dropdown-content'>
 				<ul>
 					{filteredCategories
-						.filter(category => category.familyId === family.id)
+						.filter(category => category.family.id === family.id)
 						.map(category => (
 							<li key={category.id}>
 								<div onClick={() => handleCategoryClick(category.id || '')}>
@@ -47,15 +47,15 @@ function DropdownMenu({
 									<>
 										{specifications.some(
 											specs =>
-												specs.categoryId === category.id &&
-												!specs.subcategoryId,
+												specs.category._id === category.id &&
+												!specs.subcategory._id,
 										) && <span>Especificaciones:</span>}
 										<ul>
 											{specifications
 												.filter(
 													specs =>
-														specs.categoryId === category.id &&
-														!specs.subcategoryId,
+														specs.category._id === category.id &&
+														!specs.subcategory._id,
 												)
 												.map(specs => (
 													<li key={specs.id}>
@@ -64,27 +64,28 @@ function DropdownMenu({
 												))}
 										</ul>
 										{filteredSubcategories.some(
-											subcategory => subcategory.categoryId === category.id,
+											subcategory => subcategory.category._id === category.id,
 										) && <span>Subcategorias:</span>}
 										<ul>
 											{filteredSubcategories
 												.filter(
-													subcategory => subcategory.categoryId === category.id,
+													subcategory =>
+														subcategory.category._id === category.id,
 												)
 												.map(subcategory => (
 													<>
 														<li key={subcategory.id}>{subcategory.name}</li>
 														{specifications.some(
-															specs => specs.subcategoryId === subcategory.id,
+															specs => specs.subcategory._id === subcategory.id,
 														) && <span>Especificaciones:</span>}
 														<ul>
 															{specifications
 																.filter(
 																	specs =>
-																		specs.subcategoryId === subcategory.id,
+																		specs.subcategory._id === subcategory.id,
 																)
 																.map(specs => (
-																	<li key={specs.id}>
+																	<li key={`spec${specs.id}`}>
 																		{specs.name}
 																		{specs.unit && `(${specs.unit})`}
 																	</li>

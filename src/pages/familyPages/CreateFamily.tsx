@@ -1,5 +1,3 @@
-import { CategoryFrontend } from '@adapters/category.adapter';
-import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
 import SuccessMessage from '@components/SuccessMessage';
@@ -9,6 +7,8 @@ import { AuthContext } from '@contexts/AuthContext';
 import useCategoryCreate from '@hooks/useCategoryCreate';
 import useFamilyCreate from '@hooks/useFamilyCreate';
 import useSubcategoryCreate from '@hooks/useSubcategoryCreate';
+import { CategoryDataToSend } from '@interfaces/Category.interface';
+import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/createFamily.css';
@@ -16,17 +16,17 @@ import { useContext, useState } from 'react';
 
 interface SubcategoryAux {
 	categoryIndex: number;
-	subcategory: SubcategoryFrontend;
+	subcategory: SubcategoryDataToSend;
 }
 function CreateFamilyForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
+	const createdBy = authContext?.user?.id || 'user';
 	const { errorLog, successLog, createFamily } = useFamilyCreate();
 	const { createCategory } = useCategoryCreate();
 	const { createSubategory } = useSubcategoryCreate();
-	const [categories, setCategories] = useState<CategoryFrontend[]>([]);
+	const [categories, setCategories] = useState<CategoryDataToSend[]>([]);
 	const [subcategories, setSubcategories] = useState<SubcategoryAux[]>([]);
 
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -37,12 +37,12 @@ function CreateFamilyForm() {
 			createdBy,
 			path: '',
 		})
-			.then(async familyId => {
-				console.log('Family ID:', familyId);
+			.then(async _id => {
+				console.log('Family ID:', _id);
 				const createdCategoryPromises = categories.map(async category => {
 					return await createCategory({
 						...category,
-						familyId,
+						family: _id,
 						createdBy,
 					});
 				});
@@ -53,10 +53,11 @@ function CreateFamilyForm() {
 				console.log();
 				const createdSubcategoryPromises = subcategories.map(
 					async subcategory => {
+						console.log(createdCategories[subcategory.categoryIndex]._id);
 						return await createSubategory({
 							...subcategory.subcategory,
-							familyId: createdCategories[subcategory.categoryIndex].familyId,
-							categoryId: createdCategories[subcategory.categoryIndex]._id,
+							family: createdCategories[subcategory.categoryIndex].family._id,
+							category: createdCategories[subcategory.categoryIndex]._id,
 						});
 					},
 				);
@@ -83,20 +84,18 @@ function CreateFamilyForm() {
 				name: '',
 				description: '',
 				createdBy,
-				path: '',
-				familyId: '',
+				family: '',
 			},
 		]);
 	};
 
 	const addSubcategoryInput = (categoryIndex: number) => {
-		const newSubcategory: SubcategoryFrontend = {
+		const newSubcategory: SubcategoryDataToSend = {
 			name: '',
 			description: '',
 			createdBy,
-			path: '',
-			familyId: '',
-			categoryId: '',
+			family: '',
+			category: '',
 		};
 
 		setSubcategories([

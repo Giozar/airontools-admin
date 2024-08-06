@@ -1,5 +1,9 @@
-import { CategoryFrontend } from '@adapters/category.adapter';
+import { transformCategoryDataToBackend } from '@adapters/category.adapter';
 import useCategoryManagement from '@hooks/useCategoryManegement';
+import {
+	CategoryDataFrontend,
+	CategoryDataToSend,
+} from '@interfaces/Category.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DeletionModal from './DeletionModal';
@@ -8,15 +12,17 @@ import SubcategoryModal from './SubcategoryModal';
 import TrashIcon from './svg/TrashIcon';
 
 interface ShowManageCategoryProps {
-	categories: CategoryFrontend[];
+	categories: CategoryDataFrontend[] | any[];
 	countOfCategories?: number;
 	handleCategoryNameChange: (newName: string, index: number) => void;
 	handleCategoryDescriptionChange: (
 		newDescription: string,
 		index: number,
 	) => void;
-	handleUpdateCategory: (updatedCategory: CategoryFrontend) => void;
-	handleCloseModalDeletion: (updatedCategory: CategoryFrontend) => void;
+	handleUpdateCategory: (updatedCategory: CategoryDataToSend) => void;
+	handleCloseModalDeletion:
+		| ((updatedCategory: CategoryDataFrontend) => void)
+		| ((updatedCategory: any) => void);
 }
 
 function ShowManageCategory({
@@ -98,63 +104,66 @@ function ShowManageCategory({
 	};
 	return (
 		<>
-			{categories.map((category, categoryIndex) => (
-				<div className='category' key={categoryIndex}>
-					{showDeletionModalFor === category.id && (
-						<DeletionModal
-							id={category.id}
-							name={category.name}
-							onClose={() => handleCloseModal()}
-							onCloseDelete={() => handleCloseModalDeletion(category)}
-							onDelete={() => handleDelete(category.id || '', category.name)}
-							message={deletionMessage}
-							confirmationInfo={confirmationInfo()}
+			{categories &&
+				categories.map((category, categoryIndex) => (
+					<div className='category' key={categoryIndex}>
+						{showDeletionModalFor === category.id && (
+							<DeletionModal
+								id={category.id}
+								name={category.name}
+								onClose={() => handleCloseModal()}
+								onCloseDelete={() => handleCloseModalDeletion(category)}
+								onDelete={() => handleDelete(category.id || '', category.name)}
+								message={deletionMessage}
+								confirmationInfo={confirmationInfo()}
+							/>
+						)}
+						<button
+							className='delete'
+							onClick={() =>
+								category.id
+									? setShowDeletionModalFor(category.id || '')
+									: handleCloseModalDeletion(category)
+							}
+						>
+							<TrashIcon />
+						</button>
+						<h2>
+							<span> Categoría</span>
+							{category.name}
+						</h2>
+						<Editables
+							what='Nombre'
+							valueOf={category?.name}
+							type='input'
+							whichOne={categoryIndex + 1}
+							onUpdateOne={handleCategoryNameChange}
 						/>
-					)}
-					<button
-						className='delete'
-						onClick={() =>
-							category.id
-								? setShowDeletionModalFor(category.id || '')
-								: handleCloseModalDeletion(category)
-						}
-					>
-						<TrashIcon />
-					</button>
-					<h2>
-						<span> Categoría</span>
-						{category.name}
-					</h2>
-					<Editables
-						what='Nombre'
-						valueOf={category.name}
-						type='input'
-						whichOne={categoryIndex + 1}
-						onUpdateOne={handleCategoryNameChange}
-					/>
-					<Editables
-						what='Descripción'
-						valueOf={category.description}
-						type='textarea'
-						whichOne={categoryIndex + 1}
-						onUpdateOne={handleCategoryDescriptionChange}
-					/>
-					{category.id && (
-						<SubcategoryModal
-							categoryId={category.id}
-							categoryName={category.name}
-							familyId={category.familyId}
-							createdBy={category.createdBy}
+						<Editables
+							what='Descripción'
+							valueOf={category?.description || ''}
+							type='textarea'
+							whichOne={categoryIndex + 1}
+							onUpdateOne={handleCategoryDescriptionChange}
 						/>
-					)}
-					<button
-						className='save'
-						onClick={() => handleUpdateCategory(category)}
-					>
-						{category.id ? 'Guardar Cambios' : 'Crear Categoría'}
-					</button>
-				</div>
-			))}
+						{category.id && (
+							<SubcategoryModal
+								categoryId={category.id}
+								categoryName={category.name}
+								familyId={category.family.id}
+								createdBy={category.createdBy.id}
+							/>
+						)}
+						<button
+							className='save'
+							onClick={() =>
+								handleUpdateCategory(transformCategoryDataToBackend(category))
+							}
+						>
+							{category.id ? 'Guardar Cambios' : 'Crear Categoría'}
+						</button>
+					</div>
+				))}
 		</>
 	);
 }
