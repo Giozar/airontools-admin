@@ -47,7 +47,6 @@ function ListOfTools() {
 
 		fetchProducts();
 	}, []);
-	console.log(products);
 	const handleCloseModalDeletion = (toolid: string) => {
 		setProducts(products.filter(tool => tool.id !== toolid));
 		handleCloseModal();
@@ -119,7 +118,7 @@ function ListOfTools() {
 								name={tool.name}
 								onClose={() => handleCloseModal()}
 								onCloseDelete={() => handleCloseModalDeletion(tool.id)}
-								onDelete={() => handleDelete(tool.id, tool.name)}
+								onDelete={() => handleDelete(tool)}
 								message={deletionMessage}
 							/>
 						)}

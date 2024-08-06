@@ -91,7 +91,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	};
 	const handleCloseModalDeletionImages = (image: string) => {
 		if (images?.length === 1)
-			setManuals([]); // Por alguna razon hay un bug aqui que necesita esta condicion
+			setImages([]); // Por alguna razon hay un bug aqui que necesita esta condicion
 		else setImages(images?.filter(img => img !== image));
 	};
 	const handleCloseModalDeletionManuals = (manual: string) => {
@@ -101,14 +101,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	};
 	const handleSubmit = async () => {
 		try {
-			console.log(specs);
-			console.log(toolToEdit.specifications);
-			console.log(
-				toolToEdit.specifications.map(item => ({
-					id: item.specification._id,
-					value: item.value,
-				})),
-			);
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
 				_id: id,
 				name,
