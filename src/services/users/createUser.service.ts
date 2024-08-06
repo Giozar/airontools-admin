@@ -1,4 +1,4 @@
-import { transformUserData } from '@adapters/user.adapter';
+import { transformUserDataFront } from '@adapters/user.adapter';
 import {
 	RegisterResponse,
 	UserDataFrontend,
@@ -15,7 +15,7 @@ export default async function createUser(
 			`${import.meta.env.VITE_API_URL}/auth`,
 			userData,
 		);
-		const userCreated = transformUserData(response.data.user);
+		const userCreated = transformUserDataFront(response.data.user);
 		return userCreated;
 	} catch (error) {
 		errorHandler(error);

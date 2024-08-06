@@ -1,4 +1,7 @@
-import { UserDataBackend, transformUserData } from '@adapters/user.adapter';
+import {
+	UserDataBackend,
+	transformUserDataFront,
+} from '@adapters/user.adapter';
 import ErrorMessage from '@components/ErrorMessage';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
@@ -44,7 +47,7 @@ function Login() {
 				if (decodedToken.exp > now) {
 					authContext?.setAuth({
 						isAuthenticated: true,
-						user: transformUserData(decodedToken.user),
+						user: transformUserDataFront(decodedToken.user),
 					});
 				} else {
 					localStorage.removeItem('token');
@@ -72,7 +75,7 @@ function Login() {
 
 			authContext?.setAuth({
 				isAuthenticated: true,
-				user: transformUserData(response.data.user),
+				user: transformUserDataFront(response.data.user),
 			});
 		} catch (error) {
 			if (error instanceof AxiosError) {

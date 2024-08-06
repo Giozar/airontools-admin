@@ -1,4 +1,7 @@
-import { UserDataBackend, transformUserData } from '@adapters/user.adapter';
+import {
+	UserDataBackend,
+	transformUserDataFront,
+} from '@adapters/user.adapter';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import { useRoles } from '@hooks/roles/useRoles';
 import { Role } from '@interfaces/Role.interface';
@@ -39,7 +42,7 @@ function RoleChangeModal({
 		try {
 			await axios.patch<RegisterResponse>(
 				import.meta.env.VITE_API_URL + `/auth/${userToEdit._id}`,
-				transformUserData({
+				transformUserDataFront({
 					...userToEdit,
 					role,
 				}),

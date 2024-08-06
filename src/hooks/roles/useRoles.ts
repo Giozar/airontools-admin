@@ -1,9 +1,10 @@
 import { ErrorResponse } from '@interfaces/ErrorResponse';
+import { RoleDataFront } from '@interfaces/Role.interface';
 import { getRoles } from '@services/roles';
 import { useEffect, useState } from 'react';
 
 export const useRoles = () => {
-	const [userRoles, setUserRoles] = useState([]);
+	const [userRoles, setUserRoles] = useState<RoleDataFront>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<ErrorResponse>();
 
