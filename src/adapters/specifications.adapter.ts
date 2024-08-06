@@ -3,7 +3,7 @@ import {
 	SpecDataFrontend,
 	SpecDataToSend,
 } from '@interfaces/Specifications.interface';
-import { transformUserData } from './user.adapter';
+import { transformUserDataFront } from './user.adapter';
 
 export const transformSpecDataToFrontend = (
 	Spec: SpecDataBackend,
@@ -16,7 +16,7 @@ export const transformSpecDataToFrontend = (
 		family: Spec.family,
 		category: Spec.category,
 		subcategory: Spec.subcategory,
-		createdBy: transformUserData(Spec.createdBy),
+		createdBy: transformUserDataFront(Spec.createdBy),
 	};
 };
 

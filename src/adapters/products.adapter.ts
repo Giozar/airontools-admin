@@ -3,7 +3,7 @@ import {
 	ProductDataFrontend,
 	ProductDataToSend,
 } from '@interfaces/Product.interface';
-import { transformUserData } from './user.adapter';
+import { transformUserDataFront } from './user.adapter';
 
 export const transformProductDataToFrontend = (
 	Product: ProductDataBackend,
@@ -21,7 +21,7 @@ export const transformProductDataToFrontend = (
 		family: Product.family,
 		category: Product.category,
 		subcategory: Product.subcategory,
-		createdBy: transformUserData(Product.createdBy),
+		createdBy: transformUserDataFront(Product.createdBy),
 	};
 };
 

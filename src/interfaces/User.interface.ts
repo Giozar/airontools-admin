@@ -1,4 +1,4 @@
-import { Role, RoleDataFront } from './Role.interface';
+import { RoleDataBack, RoleDataFront } from './Role.interface';
 
 export interface UserDataSend {
 	name: string;
@@ -14,7 +14,7 @@ export interface UserDataBackend {
 	_id: string;
 	email: string;
 	name: string;
-	role: Role;
+	role: RoleDataBack;
 	imageUrl: string;
 	password?: string;
 	createdBy?: UserDataBackend;

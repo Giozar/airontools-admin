@@ -1,35 +1,35 @@
 import {
-	FamilyDataBackend,
-	FamilyDataFrontend,
-	FamilyDataToSend,
-} from '@interfaces/Family.interface';
-import { transformUserData } from './user.adapter';
+	CategoryDataBackend,
+	CategoryDataFrontend,
+	CategoryDataToSend,
+} from '@interfaces/Category.interface';
+import { transformFamilyDataToFrontend } from './family.adapter';
+import { transformUserDataFront } from './user.adapter';
 
-export const transformFamilyDataToFrontend = (
-	Family: FamilyDataBackend,
-): FamilyDataFrontend => {
+export const transformCategoryDataToFrontend = (
+	Category: CategoryDataBackend,
+): CategoryDataFrontend => {
 	return {
-		id: Family._id,
-		name: Family.name,
-		path: Family.path,
-		description: Family.description,
-		createdBy: transformUserData(Family.createdBy),
+		id: Category._id,
+		name: Category.name,
+		description: Category.description,
+		family: transformFamilyDataToFrontend(Category.family),
+		createdBy: transformUserDataFront(Category.createdBy),
 	};
 };
 
-export const transformFamilyDataToBackend = (
-	Family: FamilyDataFrontend,
-): FamilyDataToSend => {
+export const transformCategoryDataToBackend = (
+	Category: CategoryDataFrontend,
+): CategoryDataToSend => {
 	return {
-		_id: Family.id,
-		name: Family.name,
-		path: Family.path,
-		description: Family.description,
-		createdBy: Family.createdBy.id,
+		_id: Category.id,
+		name: Category.name,
+		description: Category.description,
+		family: Category.family.id,
+		createdBy: Category.createdBy.id,
 	};
 };
-
-/* export interface FamilyBackend {
+/* export interface CategoryBackend {
 	_id: string;
 	name: string;
 	description: string;
@@ -39,9 +39,10 @@ export const transformFamilyDataToBackend = (
 	updatedAt?: string;
 	__v?: number;
 	path: string;
+	Category: string;
 }
 
-export interface FamilyFrontend {
+export interface CategoryFrontend {
 	id?: string;
 	name: string;
 	description: string;
@@ -51,10 +52,11 @@ export interface FamilyFrontend {
 	updatedAt?: string;
 	__v?: number;
 	path: string;
+	Category: string;
 }
 
 // el mapeo de los datos de usuario
-const familyMapping: Record<keyof FamilyBackend, keyof FamilyFrontend> = {
+const categoryMapping: Record<keyof CategoryBackend, keyof CategoryFrontend> = {
 	_id: 'id',
 	name: 'name',
 	description: 'description',
@@ -64,8 +66,12 @@ const familyMapping: Record<keyof FamilyBackend, keyof FamilyFrontend> = {
 	updatedAt: 'updatedAt',
 	__v: '__v',
 	path: 'path',
+	CategoryId: 'CategoryId',
 };
-const familyMappingBack: Record<keyof FamilyFrontend, keyof FamilyBackend> = {
+const categoryMappingBack: Record<
+	keyof CategoryFrontend,
+	keyof CategoryBackend
+> = {
 	id: '_id',
 	name: 'name',
 	description: 'description',
@@ -75,6 +81,7 @@ const familyMappingBack: Record<keyof FamilyFrontend, keyof FamilyBackend> = {
 	updatedAt: 'updatedAt',
 	__v: '__v',
 	path: 'path',
+	CategoryId: 'CategoryId',
 };
 
 // Transform data generico, este se podra usar para transformar otros datos que vengan del backend
@@ -99,19 +106,21 @@ const transformData = <T extends object, U extends object>(
 };
 
 // Funcion especifica para transformar datos de usuario
-export const transformFamilyData = (data: FamilyBackend): FamilyFrontend => {
-	return transformData<FamilyBackend, FamilyFrontend>(
+export const transformCategoryData = (
+	data: CategoryBackend,
+): CategoryFrontend => {
+	return transformData<CategoryBackend, CategoryFrontend>(
 		data,
-		familyMapping,
-	) as FamilyFrontend;
+		categoryMapping,
+	) as CategoryFrontend;
 };
 
-export const transformFamilyDataBack = (
-	data: FamilyFrontend,
-): FamilyBackend => {
-	return transformData<FamilyFrontend, FamilyBackend>(
+export const transformCategoryDataBack = (
+	data: CategoryFrontend,
+): CategoryBackend => {
+	return transformData<CategoryFrontend, CategoryBackend>(
 		data,
-		familyMappingBack,
-	) as FamilyBackend;
+		categoryMappingBack,
+	) as CategoryBackend;
 };
 */
