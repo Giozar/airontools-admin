@@ -5,13 +5,15 @@ export function useUserForm() {
 	const [email, setEmail] = useState('');
 	const [imageUrl, setImageUrl] = useState('');
 	const [name, setName] = useState('');
-	const [role, setRole] = useState('Elige un rol');
+	const [role, setRole] = useState(''); // Cambiado a un valor vacío inicial
 	const [createdBy, setCreatedBy] = useState('');
 	const authContext = useContext(AuthContext);
 
 	useEffect(() => {
-		authContext?.user && setCreatedBy(authContext?.user?.id);
-	}, [imageUrl]);
+		if (authContext?.user) {
+			setCreatedBy(authContext.user.id);
+		}
+	}, [authContext]);
 
 	return {
 		email,

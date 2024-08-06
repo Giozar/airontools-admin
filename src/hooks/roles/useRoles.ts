@@ -4,7 +4,7 @@ import { getRoles } from '@services/roles';
 import { useEffect, useState } from 'react';
 
 export const useRoles = () => {
-	const [userRoles, setUserRoles] = useState<RoleDataFront>([]);
+	const [roles, setRoles] = useState<RoleDataFront[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<ErrorResponse>();
 
@@ -13,7 +13,7 @@ export const useRoles = () => {
 			try {
 				setLoading(true);
 				const data = await getRoles();
-				setUserRoles(data);
+				setRoles(data);
 			} catch (err) {
 				const error = err as ErrorResponse;
 				setError(error);
@@ -25,5 +25,5 @@ export const useRoles = () => {
 		fetchUserRoles();
 	}, []);
 
-	return { userRoles, loading, error };
+	return { roles, loading, error };
 };
