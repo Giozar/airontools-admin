@@ -1,7 +1,4 @@
-import {
-	transformUserDataFront,
-	UserDataBackend,
-} from '@adapters/user.adapter';
+import { UserDataBackend, UserDataSend } from '@interfaces/User.interface';
 import axios from 'axios';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
@@ -19,11 +16,11 @@ const useUserUpdate = () => {
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 
-	const updateUser = async (userId: string, userData: UserDataBackend) => {
+	const updateUser = async (userId: string, userData: UserDataSend) => {
 		try {
 			const response = await axios.patch<RegisterResponse>(
 				import.meta.env.VITE_API_URL + `/auth/${userId}`,
-				transformUserDataFront(userData),
+				userData,
 			);
 			const { user } = response.data;
 			console.log(user);
