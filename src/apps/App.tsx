@@ -8,7 +8,7 @@ import {
 	Routes,
 } from 'react-router-dom';
 
-import { UserRole } from '@interfaces/UserRole';
+import { Role } from '@interfaces/Role.interface';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
 import CreateFamily from '@pages/familyPages/CreateFamily';
 import EditFamily from '@pages/familyPages/EditFamily';
@@ -105,7 +105,7 @@ const PrivateRouteOptionUser = () => {
 
 const PrivateRouteOptionUserAdmin = () => {
 	const authContext = React.useContext(AuthContext);
-	const role = authContext?.user?.role as UserRole;
+	const role = authContext?.user?.role as Role;
 	if (!authContext) return null;
 	return authContext.isAuthenticated && role?.name === 'Administrador' ? (
 		<Outlet />

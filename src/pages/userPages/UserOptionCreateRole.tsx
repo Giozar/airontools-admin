@@ -17,7 +17,7 @@ function CreateRoleForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.id;
+	const createdBy = authContext?.user;
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 	const [updateRole, setUpdateRole] = useState(false);
@@ -30,7 +30,7 @@ function CreateRoleForm() {
 				{
 					name,
 					description,
-					createdBy,
+					createdBy: createdBy?.id,
 				},
 			);
 			console.log('Role created successfully:', response.data);
@@ -79,13 +79,13 @@ function CreateRoleForm() {
 						required
 					/>
 
-					<label htmlFor='createdBy'>Creado Por:</label>
+					<label htmlFor='createdBy'>Creado Por: {createdBy?.name}</label>
 					<input
 						className='createdby'
 						id='createdBy'
 						type='text'
 						placeholder='Introduce el nombre del creador'
-						value={createdBy}
+						value={createdBy?.id}
 						readOnly
 					/>
 

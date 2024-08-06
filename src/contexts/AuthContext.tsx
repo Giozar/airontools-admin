@@ -1,11 +1,11 @@
+import { Role } from '@interfaces/Role.interface';
 import { UserDataFrontend } from '@interfaces/User.interface';
-import { UserRole } from '@interfaces/UserRole';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 
 interface AuthContextType {
 	isAuthenticated: boolean;
 	user: UserDataFrontend | null;
-	role: UserRole | null;
+	role: Role | null;
 	setAuth: (auth: {
 		isAuthenticated: boolean;
 		user: UserDataFrontend | null;
@@ -20,7 +20,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 	children,
 }) => {
 	const [user, setUser] = useState<UserDataFrontend | null>(null);
-	const [role, setRole] = useState<UserRole | null>(null);
+	const [role, setRole] = useState<Role | null>(null);
 	const [auth, setAuth] = useState<{
 		isAuthenticated: boolean;
 		user: UserDataFrontend | null;
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
 	useEffect(() => {
 		setUser(auth.user);
-		setRole(auth.user?.role as UserRole);
+		setRole(auth.user?.role as Role);
 	}, [auth.isAuthenticated]);
 
 	return (

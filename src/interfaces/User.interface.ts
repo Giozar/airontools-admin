@@ -1,30 +1,35 @@
-import { UserRole } from './UserRole';
+import { Role, RoleDataFront } from './Role.interface';
 
-export interface sendingUserData {
+export interface UserDataSend {
 	name: string;
 	imageUrl: string;
 	email: string;
 	password?: string;
 	role: string;
-	createdBy: string;
+	createdBy?: string;
+	updatedBy?: string;
 }
 
 export interface UserDataBackend {
 	_id: string;
-	imageUrl: string;
 	email: string;
-	password?: string;
 	name: string;
-	role: UserRole;
+	role: Role;
+	imageUrl: string;
+	password?: string;
+	createdBy?: UserDataBackend;
+	updatedBy?: UserDataBackend;
 }
 
 export interface UserDataFrontend {
 	id: string;
-	imageUrl: string;
-	email: string;
-	password?: string;
 	name: string;
-	role: UserRole;
+	email: string;
+	imageUrl: string;
+	password?: string;
+	role: RoleDataFront;
+	createdBy?: UserDataFrontend;
+	updatedBy?: UserDataFrontend;
 }
 
 export interface RegisterResponse {

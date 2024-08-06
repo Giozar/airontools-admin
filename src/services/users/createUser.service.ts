@@ -1,21 +1,21 @@
-import { transformUserData } from '@adapters/user.adapter';
+import { transformUserDataFront } from '@adapters/user.adapter';
 import {
 	RegisterResponse,
-	sendingUserData,
 	UserDataFrontend,
+	UserDataSend,
 } from '@interfaces/User.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 export default async function createUser(
-	userData: sendingUserData,
+	userData: UserDataSend,
 ): Promise<UserDataFrontend> {
 	try {
 		const response = await axios.post<RegisterResponse>(
 			`${import.meta.env.VITE_API_URL}/auth`,
 			userData,
 		);
-		const userCreated = transformUserData(response.data.user);
+		const userCreated = transformUserDataFront(response.data.user);
 		return userCreated;
 	} catch (error) {
 		errorHandler(error);

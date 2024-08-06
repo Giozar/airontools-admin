@@ -1,11 +1,11 @@
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
-import { useUserRoles } from '@hooks/userRoles/useUserRoles';
+import { useRoles } from '@hooks/roles/useRoles';
 import { useUserForm } from '@hooks/users/useUserForm';
-import { UserRole } from '@interfaces/UserRole';
+import { RoleDataFront } from '@interfaces/Role.interface';
 import createUser from '@services/users/createUser.service';
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 import ErrorMessage from './ErrorMessage';
 import FileUpload from './FileUpload';
 import SuccessMessage from './SuccessMessage';
@@ -26,9 +26,16 @@ export default function UserForm() {
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 
+	// Se obtiene la lista de roles para el usuario
+	const { roles: roleOptions } = useRoles();
+
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setRole(e.target.value);
 	};
+
+	useEffect(() => {
+		console.log(role);
+	}, [handleOptionChange]);
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
@@ -69,8 +76,6 @@ export default function UserForm() {
 				console.error('Error al copiar la contraseña: ', err);
 			});
 	};
-	// Se obtiene la lista de roles para el usuario
-	const { userRoles: roleOptions } = useUserRoles();
 	return (
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
@@ -78,7 +83,11 @@ export default function UserForm() {
 
 			<div className='register'>
 				<form onSubmit={handleSubmit}>
-					<FileUpload setImageUrl={setImageUrl} />
+					<FileUpload
+						setImageUrl={setImageUrl}
+						fileType='images'
+						fileFeature='employees'
+					/>
 					<p style={{ color: 'red' }}>
 						{imageUrl === ''
 							? 'No ha subido una imagen, ¿Quiere continuar?'
@@ -118,8 +127,9 @@ export default function UserForm() {
 
 					<label htmlFor='options'>Rol:</label>
 					<select id='options' value={role} onChange={handleOptionChange}>
-						{roleOptions.map((roleOption: UserRole, index) => (
-							<option key={index} value={roleOption.name}>
+						<option value=''>Elige un rol</option>
+						{roleOptions.map((roleOption: RoleDataFront, index) => (
+							<option key={index} value={roleOption.id}>
 								{roleOption.name}
 							</option>
 						))}

@@ -1,4 +1,7 @@
-import { transformUserData, UserDataBackend } from '@adapters/user.adapter';
+import {
+	transformUserDataFront,
+	UserDataBackend,
+} from '@adapters/user.adapter';
 import axios from 'axios';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
@@ -20,7 +23,7 @@ const useUserUpdate = () => {
 		try {
 			const response = await axios.patch<RegisterResponse>(
 				import.meta.env.VITE_API_URL + `/auth/${userId}`,
-				transformUserData(userData),
+				transformUserDataFront(userData),
 			);
 			const { user } = response.data;
 			console.log(user);

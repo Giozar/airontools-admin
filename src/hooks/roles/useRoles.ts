@@ -1,9 +1,10 @@
 import { ErrorResponse } from '@interfaces/ErrorResponse';
-import { getUserRoles } from '@services/userRoles';
+import { RoleDataFront } from '@interfaces/Role.interface';
+import { getRoles } from '@services/roles';
 import { useEffect, useState } from 'react';
 
-export const useUserRoles = () => {
-	const [userRoles, setUserRoles] = useState([]);
+export const useRoles = () => {
+	const [roles, setRoles] = useState<RoleDataFront[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<ErrorResponse>();
 
@@ -11,8 +12,8 @@ export const useUserRoles = () => {
 		const fetchUserRoles = async () => {
 			try {
 				setLoading(true);
-				const data = await getUserRoles();
-				setUserRoles(data);
+				const data = await getRoles();
+				setRoles(data);
 			} catch (err) {
 				const error = err as ErrorResponse;
 				setError(error);
@@ -24,5 +25,5 @@ export const useUserRoles = () => {
 		fetchUserRoles();
 	}, []);
 
-	return { userRoles, loading, error };
+	return { roles, loading, error };
 };

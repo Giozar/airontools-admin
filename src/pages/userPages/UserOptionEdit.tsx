@@ -1,12 +1,12 @@
-import { UserDataFrontend } from '@adapters/user.adapter';
 import ErrorMessage from '@components/ErrorMessage';
 import FileUpload from '@components/FileUpload';
 import HeaderTitle from '@components/HeaderTitle';
 import SuccessMessage from '@components/SuccessMessage';
 import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
-import { useUserRoles } from '@hooks/userRoles/useUserRoles';
+import { useRoles } from '@hooks/roles/useRoles';
 import useUserUpdate from '@hooks/useUserUpdate';
-import { UserRole } from '@interfaces/UserRole';
+import { RoleDataFront } from '@interfaces/Role.interface';
+import { UserDataFrontend } from '@interfaces/User.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
@@ -17,18 +17,18 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 	const pastImageUrl = userToEdit.imageUrl;
 	const [imageUrl, setImageUrl] = useState(userToEdit.imageUrl);
 	const [name, setName] = useState(userToEdit.name);
-	const [roles, setRoles] = useState(userToEdit.roles);
+	const [role, setRole] = useState(userToEdit.role._id);
 
 	const { errorLog, successLog, updateUser } = useUserUpdate();
 	const { password, generatePassword } = usePasswordGenerator({
 		pastPassword: userToEdit.password,
 	});
-	const { userRoles: roleOptions } = useUserRoles();
+	const { roles: roleOptions } = useRoles();
 
 	useEffect(() => {}, [imageUrl]);
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setRoles(e.target.value);
+		setRole(e.target.value);
 	};
 
 	const handleSubmit = async (e: FormEvent) => {
@@ -37,7 +37,7 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 			const updatedUserData = {
 				email,
 				name,
-				roles,
+				role,
 				imageUrl,
 			};
 
@@ -104,9 +104,9 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 					</div>
 
 					<label htmlFor='options'>Rol:</label>
-					<select id='options' value={roles} onChange={handleOptionChange}>
-						{roleOptions.map((roleOption: UserRole, index) => (
-							<option key={index} value={roleOption.name}>
+					<select id='options' value={role} onChange={handleOptionChange}>
+						{roleOptions.map((roleOption: RoleDataFront, index) => (
+							<option key={index} value={roleOption.id}>
 								{roleOption.name}
 							</option>
 						))}
