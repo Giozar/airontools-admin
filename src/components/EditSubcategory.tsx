@@ -1,6 +1,7 @@
-import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
+import { transformSubcategoryDataToBackend } from '@adapters/subcategory.adapter';
 import useSubcategoryManagement from '@hooks/useSubcategoryManagement';
 import useSubcategoryUpdate from '@hooks/useSubcategoryUpdate';
+import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DeletionModal from './DeletionModal';
@@ -14,8 +15,8 @@ function EditSubcategory({
 	setSubcategories,
 	update,
 }: {
-	subcategories: SubcategoryFrontend[];
-	setSubcategories: (subcategories: SubcategoryFrontend[]) => void;
+	subcategories: SubcategoryDataFrontend[];
+	setSubcategories: (subcategories: SubcategoryDataFrontend[]) => void;
 	update: () => void;
 }) {
 	const {
@@ -28,11 +29,13 @@ function EditSubcategory({
 	const { errorLogSubcategory, successLogSubcategory, updateSubategory } =
 		useSubcategoryUpdate();
 
-	const handleUpdateSubcategory = async (subcategory: SubcategoryFrontend) => {
+	const handleUpdateSubcategory = async (
+		subcategory: SubcategoryDataFrontend,
+	) => {
 		try {
-			await updateSubategory({
-				...subcategory,
-			});
+			await updateSubategory(
+				transformSubcategoryDataToBackend({ ...subcategory }),
+			);
 		} catch (error) {
 			console.error('Error:', error);
 		}
@@ -143,7 +146,7 @@ function EditSubcategory({
 						/>
 						<Editables
 							what='Descripción'
-							valueOf={subcategory.description}
+							valueOf={subcategory.description || ''}
 							type='textarea'
 							whichOne={subcategoryIndex + 1}
 							onUpdateOne={handleSubcategoryDescriptionChange}

@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-import {
-	FamilyFrontend,
-	transformFamilyDataBack,
-} from '@adapters/family.adapter';
+import { FamilyDataToSend } from '@interfaces/Family.interface';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
@@ -18,14 +15,14 @@ const useFamilyUpdate = () => {
 	const { successLog: successLogFamily, showSuccess: showSuccessFamily } =
 		useSuccessHandling();
 
-	const updateFamily = async (familyData: FamilyFrontend) => {
+	const updateFamily = async (familyData: FamilyDataToSend) => {
 		try {
 			await axios.patch(
-				import.meta.env.VITE_API_URL + `/families/${familyData.id}`,
-				transformFamilyDataBack({
+				import.meta.env.VITE_API_URL + `/families/${familyData._id}`,
+				{
 					...familyData,
 					path: cleanNameURL(familyData.name),
-				}),
+				},
 			);
 			showSuccessFamily('Familia Actualizada Con Éxito');
 		} catch (error) {

@@ -1,6 +1,6 @@
-import { CategoryFrontend } from '@adapters/category.adapter';
 import useCategoryCreate from '@hooks/useCategoryCreate';
-import { useState } from 'react';
+import { CategoryDataToSend } from '@interfaces/Category.interface';
+import { useEffect, useState } from 'react';
 import ErrorMessage from './ErrorMessage';
 import ShowManageCategory from './ShowManageCategory';
 import SuccessMessage from './SuccessMessage';
@@ -16,8 +16,7 @@ function CreateCategory({
 }) {
 	const { errorLogCategoryCreate, successLogCategoryCreate, createCategory } =
 		useCategoryCreate();
-	const [newCategories, setNewCategories] = useState<CategoryFrontend[]>([]);
-
+	const [newCategories, setNewCategories] = useState<CategoryDataToSend[]>([]);
 	const addCategoryInput = () => {
 		setNewCategories([
 			...newCategories,
@@ -25,8 +24,7 @@ function CreateCategory({
 				name: '',
 				description: '',
 				createdBy,
-				path: '',
-				familyId: '',
+				family: '',
 			},
 		]);
 	};
@@ -47,44 +45,48 @@ function CreateCategory({
 		updatedCategories[categoryIndex - 1].description = value;
 		setNewCategories(updatedCategories);
 	};
-	const handleCreateCategory = async (category: CategoryFrontend) => {
+	const handleCreateCategory = async (category: CategoryDataToSend) => {
 		try {
 			await createCategory({
 				...category,
-				familyId,
+				family: familyId,
 				createdBy,
 			});
 			console.log(familyId, createdBy);
-			updateCategoryList();
-			setNewCategories(newCategories.filter(c => c !== category));
+			handleCategoryDeleteFromList(category);
 		} catch (error) {
 			console.error('Error:', error);
 		}
 	};
-	const handleCategoryDeleteFromList = (category: CategoryFrontend) => {
-		setNewCategories(newCategories.filter(c => c !== category));
+
+	const handleCategoryDeleteFromList = (category: CategoryDataToSend) => {
+		setNewCategories(newCategories.filter(c => c.name !== category.name));
 		updateCategoryList();
 	};
+	useEffect(() => {
+		console.log(newCategories);
+	}, [newCategories]);
 	return (
-		<div className='categoryedit new'>
-			<button onClick={addCategoryInput} className='add'>
-				Agregar categorias
-			</button>
-
+		<>
 			{successLogCategoryCreate.isSuccess && (
 				<SuccessMessage message={successLogCategoryCreate.message} />
 			)}
 			{errorLogCategoryCreate.isError && (
 				<ErrorMessage message={errorLogCategoryCreate.message} />
 			)}
-			<ShowManageCategory
-				categories={newCategories}
-				handleCategoryNameChange={handleNewCategoryNameChange}
-				handleCategoryDescriptionChange={handleNewCategoryDescriptionChange}
-				handleUpdateCategory={handleCreateCategory}
-				handleCloseModalDeletion={handleCategoryDeleteFromList}
-			/>
-		</div>
+			<div className='categoryedit new'>
+				<button onClick={addCategoryInput} className='add'>
+					Agregar categorias
+				</button>
+				<ShowManageCategory
+					categories={newCategories}
+					handleCategoryNameChange={handleNewCategoryNameChange}
+					handleCategoryDescriptionChange={handleNewCategoryDescriptionChange}
+					handleUpdateCategory={handleCreateCategory}
+					handleCloseModalDeletion={handleCategoryDeleteFromList}
+				/>
+			</div>
+		</>
 	);
 }
 export default CreateCategory;

@@ -69,7 +69,7 @@ function FamilySpecifications() {
 					<AutoCompleteInput
 						inputName='Categoria'
 						options={categories.map(category =>
-							category.familyId === selectedFamily
+							category.family.id === selectedFamily
 								? {
 										id: category.id || 'error',
 										name: category.name || 'error',
@@ -84,7 +84,7 @@ function FamilySpecifications() {
 					<AutoCompleteInput
 						inputName='Subcategoria'
 						options={subcategories.map(subcategory =>
-							subcategory.categoryId === selectedCategory
+							subcategory.category._id === selectedCategory
 								? {
 										id: subcategory.id || 'error',
 										name: subcategory.name || 'error',

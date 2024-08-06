@@ -1,7 +1,3 @@
-import {
-	SpecsFrontend,
-	transformSpecsData,
-} from '@adapters/specifications.adapter';
 import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
 import DropdownMenu from '@components/DropdownMenu';
@@ -13,6 +9,7 @@ import useFamilyManagement from '@hooks/useFamilyManagement';
 import useFetchCategories from '@hooks/useFetchCategories';
 import useFetchFamilies from '@hooks/useFetchFamilies';
 import useFetchSubcategories from '@hooks/useFetchSubcategories';
+import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/familyList.css';
@@ -42,19 +39,18 @@ function ListofFamilies() {
 	} = useFetchFamilies(updateListFlag);
 	const { filteredCategories } = useFetchCategories();
 	const { filteredSubcategories } = useFetchSubcategories();
-
 	const handleCloseModalDeletion = (familyid: string) => {
 		setFamilies(families.filter(family => family.id !== familyid));
 		setFilteredFamilies(
 			filteredFamilies.filter(family => family.id !== familyid),
 		);
 	};
-	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 	useEffect(() => {
 		const fetchSpecifications = async () => {
 			try {
 				const specs = await getSpecifications();
-				setSpecifications(specs.map(transformSpecsData));
+				setSpecifications(specs);
 				console.log(specs);
 			} catch (error) {
 				console.error(error);
@@ -73,14 +69,14 @@ function ListofFamilies() {
 	}
 	const calc = (familyId: string) => {
 		const categories = filteredCategories.filter(
-			category => category.familyId === familyId,
+			category => category.family.id === familyId,
 		);
 
 		const subcategories = filteredSubcategories.filter(subcategory =>
-			categories.some(category => category.id === subcategory.categoryId),
+			categories.some(category => category.id === subcategory.category._id),
 		);
 		const specificationsn = specifications.filter(
-			specs => specs.familyId === familyId,
+			specs => specs.family._id === familyId,
 		);
 		const categoriesLength = categories.length;
 		const subcategoriesLength = subcategories.length;

@@ -1,4 +1,4 @@
-import { FamilyFrontend } from '@adapters/family.adapter';
+import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ const useFamilyManagement = () => {
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
-	const handleEdit = (family: FamilyFrontend) => {
+	const handleEdit = (family: FamilyDataFrontend) => {
 		localStorage.setItem(
 			'familyToEdit',
 			JSON.stringify({

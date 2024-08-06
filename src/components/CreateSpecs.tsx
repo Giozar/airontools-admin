@@ -1,12 +1,9 @@
-import {
-	SpecsFrontend,
-	transformSpecsDataBack,
-} from '@adapters/specifications.adapter';
 import '@components/css/createSpecs.css';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { CreateSpecsProps } from '@interfaces/CreateSpecsProps';
+import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useContext, useEffect, useState } from 'react';
@@ -17,10 +14,10 @@ function CreateSpecs({
 	categoryId,
 	subcategoryId,
 }: CreateSpecsProps) {
-	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const { showError, errorLog } = useErrorHandling();
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
+	const createdBy = authContext?.user?.id || 'user';
 	const { showSuccess, successLog } = useSuccessHandling();
 
 	// Aquí se inicializa el Array con un objeto vacío al primer render del dom
@@ -32,10 +29,9 @@ function CreateSpecs({
 				description: '',
 				unit: '',
 				createdBy,
-				path: '',
-				familyId,
-				categoryId,
-				subcategoryId: subcategoryId || '',
+				family: familyId,
+				category: categoryId,
+				subcategory: subcategoryId || '',
 			},
 		]);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,10 +46,9 @@ function CreateSpecs({
 				description: '',
 				unit: '',
 				createdBy,
-				path: '',
-				familyId,
-				categoryId,
-				subcategoryId: subcategoryId || '',
+				family: familyId,
+				category: categoryId,
+				subcategory: subcategoryId || '',
 			},
 		]);
 	};
@@ -65,7 +60,7 @@ function CreateSpecs({
 
 	const handleInputChangeInSpec = (
 		index: number,
-		field: keyof SpecsFrontend,
+		field: keyof SpecDataToSend,
 		value: string,
 	) => {
 		const newspecifications = [...specifications];
@@ -80,7 +75,7 @@ function CreateSpecs({
 		for (const specification of specifications) {
 			try {
 				await createSpecification({
-					specification: transformSpecsDataBack(specification),
+					specification,
 				});
 				showSuccess('Especificación creado con éxito');
 			} catch (error) {

@@ -21,13 +21,13 @@
 	overflow: hidden; /* Ensure content doesn't overflow */
 }
 
-.image-preview img {
+.image-preview > img {
 	display: block; /* Remove any extra space below images */
 	width: 100%;
 	height: auto; /* Maintain aspect ratio of images */
 }
 
-.image-preview .delete {
+.image-preview > .delete {
 	position: absolute;
 	top: 10px; /* Adjusted for better placement */
 	right: 10px; /* Align to the right */

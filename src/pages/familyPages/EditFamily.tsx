@@ -1,4 +1,3 @@
-import { FamilyFrontend } from '@adapters/family.adapter';
 import CreateCategory from '@components/CreateCategory';
 import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
@@ -18,10 +17,12 @@ import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/editFamily.css';
 import axios from 'axios';
 
+import { transformFamilyDataToBackend } from '@adapters/family.adapter';
+import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
-	familyToEdit: FamilyFrontend;
+	familyToEdit: FamilyDataFrontend;
 }
 function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	// Datos recuperados y que se pueden modificar
@@ -29,7 +30,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const [description, setDescription] = useState(familyToEdit.description);
 	const familyId = familyToEdit.id || '';
 	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.name || 'user';
+	const createdBy = authContext?.user?.id || 'user';
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
 		showDeletionModalFor,
@@ -72,11 +73,13 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 				description === familyToEdit.description
 			)
 				return;
-			await updateFamily({
-				...familyToEdit,
-				name,
-				description,
-			});
+			await updateFamily(
+				transformFamilyDataToBackend({
+					...familyToEdit,
+					name,
+					description,
+				}),
+			);
 			// Esto tal vez cause bugs cuando de refresh...
 			localStorage.setItem(
 				'familyToEdit',
@@ -191,7 +194,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 					/>
 					<Editables
 						what='Descripción'
-						valueOf={description}
+						valueOf={description || ''}
 						type='textarea'
 						onUpdate={handleDescriptionUpdate}
 					/>

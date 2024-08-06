@@ -4,50 +4,51 @@ import { SubcategoryDataToSend } from './subcategory.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
 
 // Datos para enviar al backend - PATCH, POST, PUT
-export interface SpecDataToSend {
+export interface ProductDataToSend {
 	_id?: string;
 	name: string;
+	model?: string;
 	description?: string;
-	unit?: string;
+	characteristics?: string[];
+	specifications: Array<{ [key: string]: string }>;
 	family: string;
 	category: string;
-	subcategory: string;
+	subcategory?: string;
+	images?: string[];
+	manuals?: string[];
+	videos?: string[];
 	createdBy: string;
 }
 // Datos que vienen del backend - GET
-export interface SpecDataBackend {
+export interface ProductDataBackend {
 	_id: string;
 	name: string;
+	model?: string;
 	description?: string;
-	unit?: string;
+	characteristics?: string[];
+	specifications: Array<{ [key: string]: string }>;
 	family: FamilyDataToSend;
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
+	images?: string[];
+	manuals?: string[];
+	videos?: string[];
 	createdBy: UserDataBackend;
 }
 // Datos que se usan en el frontend - Visualización (solo frontend)
-export interface SpecDataFrontend {
+export interface ProductDataFrontend {
 	id: string;
 	name: string;
+	model?: string;
 	description?: string;
-	unit?: string;
+	characteristics?: string[];
+	specifications: Array<{ [key: string]: string }>;
 	family: FamilyDataToSend;
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
+	images?: string[];
+	manuals?: string[];
+	videos?: string[];
 	createdBy: UserDataFrontend;
 }
 // DELETE se hace directo con ids
-
-/* export interface Specification {
-	id_: string;
-	name: string;
-	description?: string;
-	units?: string;
-	familyId: string;
-	SpecId: string;
-	subSpecId?: string;
-	createdBy?: string;
-	updatedBy?: string;
-}
-export interface SpecificationSuccessResponse {}
-*/

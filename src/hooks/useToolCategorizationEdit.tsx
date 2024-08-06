@@ -1,8 +1,8 @@
-import { CategoryFrontend } from '@adapters/category.adapter';
-import { SubcategoryFrontend } from '@adapters/subcategory.adapter';
 import useFetchCategories from '@hooks/useFetchCategories';
 import useFetchFamilies from '@hooks/useFetchFamilies';
 import useFetchSubcategories from '@hooks/useFetchSubcategories';
+import { CategoryDataFrontend } from '@interfaces/Category.interface';
+import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useEffect, useState } from 'react';
 function useToolCategorizationEdit({
 	initialFamilyId,
@@ -25,21 +25,21 @@ function useToolCategorizationEdit({
 	const { categories } = useFetchCategories();
 	const { subcategories } = useFetchSubcategories();
 	const [filteredCategories, setFilteredCategories] = useState<
-		CategoryFrontend[]
+		CategoryDataFrontend[]
 	>([]);
 	const [filteredSubcategories, setFilteredSubcategories] = useState<
-		SubcategoryFrontend[]
+		SubcategoryDataFrontend[]
 	>([]);
 
 	useEffect(() => {
 		if (categories) {
-			setFilteredCategories(categories.filter(c => c.familyId === familyId));
+			setFilteredCategories(categories.filter(c => c.family.id === familyId));
 		}
 	}, [categories, familyId]);
 	useEffect(() => {
 		if (categories) {
 			setFilteredSubcategories(
-				subcategories.filter(c => c.categoryId === categoryId),
+				subcategories.filter(c => c.category._id === categoryId),
 			);
 		}
 	}, [subcategories, categoryId, categories]);
@@ -66,7 +66,7 @@ function useToolCategorizationEdit({
 		setFamilyId(newValue);
 		const family = families.find(f => f.id === newValue);
 		setFamilyName(family ? family.name : '');
-		setFilteredCategories(categories.filter(f => f.familyId === newValue));
+		setFilteredCategories(categories.filter(f => f.family.id === newValue));
 		setCategoryId('');
 		setCategoryName('');
 		setSubcategoryId('');
@@ -78,7 +78,7 @@ function useToolCategorizationEdit({
 		const category = filteredCategories.find(f => f.id === newValue);
 		setCategoryName(category ? category.name : '');
 		setFilteredSubcategories(
-			subcategories.filter(f => f.categoryId === newValue),
+			subcategories.filter(f => f.category._id === newValue),
 		);
 		setSubcategoryId('');
 		setSubcategoryName('');

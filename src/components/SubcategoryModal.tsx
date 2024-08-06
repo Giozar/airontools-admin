@@ -36,7 +36,7 @@ function SubcategoryModal({
 	const updatedSubcategories = () => {
 		setUpdate(!update);
 	};
-
+	console.log(subcategories);
 	return (
 		<>
 			<div className='subcategories-container'>
@@ -73,8 +73,8 @@ function SubcategoryModal({
 						/>
 						<CreateSubcategory
 							createdBy={createdBy}
-							familyId={familyId}
-							categoryId={categoryId}
+							family={familyId}
+							category={categoryId}
 							update={updatedSubcategories}
 						/>
 					</div>

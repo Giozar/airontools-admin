@@ -1,6 +1,6 @@
-import { CategoryFrontend } from '@adapters/category.adapter';
 import useCategoryUpdate from '@hooks/useCategoryUpdate';
 import useFetchCategoriesFromFamily from '@hooks/useFetchCategoriesFromFamily';
+import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { useEffect } from 'react';
 import ErrorMessage from './ErrorMessage';
 import ShowManageCategory from './ShowManageCategory';
@@ -21,6 +21,7 @@ function EditCategory({
 		useFetchCategoriesFromFamily();
 
 	useEffect(() => {
+		console.log(familyId);
 		if (familyId) {
 			fetchCategories(familyId);
 		}
@@ -41,7 +42,7 @@ function EditCategory({
 		updatedCategories[categoryIndex - 1].description = value;
 		setCategories(updatedCategories);
 	};
-	const handleUpdateCategory = async (category: CategoryFrontend) => {
+	const handleUpdateCategory = async (category: CategoryDataToSend) => {
 		try {
 			await updateCategory({
 				...category,

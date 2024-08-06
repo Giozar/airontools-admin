@@ -1,25 +1,25 @@
 import { useState } from 'react';
 
 interface SlideshowProps {
-	imagesUrl: string[];
+	images: string[];
 }
 
-function Slideshow({ imagesUrl }: SlideshowProps) {
+function Slideshow({ images }: SlideshowProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
 	const goToPrevious = () => {
 		setCurrentIndex(prevIndex =>
-			prevIndex === 0 ? imagesUrl.length - 1 : prevIndex - 1,
+			prevIndex === 0 ? images.length - 1 : prevIndex - 1,
 		);
 	};
 
 	const goToNext = () => {
 		setCurrentIndex(prevIndex =>
-			prevIndex === imagesUrl.length - 1 ? 0 : prevIndex + 1,
+			prevIndex === images.length - 1 ? 0 : prevIndex + 1,
 		);
 	};
 
-	if (imagesUrl.length === 0) return <p>No hay imágenes disponibles</p>;
+	if (images.length === 0) return <p>No hay imágenes disponibles</p>;
 
 	return (
 		<div className='slideshow-container'>
@@ -27,7 +27,7 @@ function Slideshow({ imagesUrl }: SlideshowProps) {
 				&lt;
 			</button>
 			<img
-				src={imagesUrl[currentIndex]}
+				src={images[currentIndex]}
 				alt={`Slide ${currentIndex + 1}`}
 				className='slideshow-image'
 			/>

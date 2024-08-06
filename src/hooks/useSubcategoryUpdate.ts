@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-import {
-	SubcategoryFrontend,
-	transformSubategoryDataBack,
-} from '@adapters/subcategory.adapter';
+import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
@@ -20,14 +17,14 @@ const useSubcategoryUpdate = () => {
 		showSuccess: showSuccessSubcategory,
 	} = useSuccessHandling();
 
-	const updateSubategory = async (subcategoryData: SubcategoryFrontend) => {
+	const updateSubategory = async (subcategoryData: SubcategoryDataToSend) => {
 		try {
 			const response = await axios.patch(
-				import.meta.env.VITE_API_URL + `/subcategories/${subcategoryData.id}`,
-				transformSubategoryDataBack({
+				import.meta.env.VITE_API_URL + `/subcategories/${subcategoryData._id}`,
+				{
 					...subcategoryData,
 					path: cleanNameURL(subcategoryData.name),
-				}),
+				},
 			);
 			showSuccessSubcategory('Subcategoria actualizada Con Éxito');
 			return response.data;

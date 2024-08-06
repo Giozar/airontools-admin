@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { SpecsBackend, SpecsFrontend } from '@adapters/specifications.adapter';
 import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
@@ -11,6 +10,7 @@ import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useSpecificationsManagement from '@hooks/useSpecificationsManagement';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
+import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { errorHandler } from '@utils/errorHandler.util';
@@ -19,8 +19,12 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
-	const id = specToEdit.id;
+function EditSpecificationsForm({
+	specToEdit,
+}: {
+	specToEdit: SpecDataToSend;
+}) {
+	const id = specToEdit._id;
 	const [name, setName] = useState(specToEdit.name);
 	const [description, setDescription] = useState(specToEdit.description);
 	const [unit, setUnit] = useState(specToEdit.unit);
@@ -39,9 +43,9 @@ function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 		handleCategoryIdUpdate,
 		handleSubcategoryIdUpdate,
 	} = useToolCategorizationEdit({
-		initialFamilyId: specToEdit.familyId,
-		initialCategoryId: specToEdit.categoryId,
-		initialSubcategoryId: specToEdit.subcategoryId,
+		initialFamilyId: specToEdit.family,
+		initialCategoryId: specToEdit.category,
+		initialSubcategoryId: specToEdit.subcategory,
 	});
 
 	const { showError, errorLog } = useErrorHandling();
@@ -59,10 +63,18 @@ function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 	};
 
 	const handleSave = async () => {
+		console.log(id);
 		try {
-			await axios.patch<SpecsBackend>(
+			await axios.patch(
 				`${import.meta.env.VITE_API_URL}/specifications/${id}`,
-				{ name, description, unit, familyId, categoryId, subcategoryId },
+				{
+					name,
+					description,
+					unit,
+					family: familyId,
+					category: categoryId,
+					subcategory: subcategoryId,
+				},
 			);
 			showSuccess('Especificación editada con éxito');
 		} catch (error) {
@@ -116,13 +128,13 @@ function EditSpecificationsForm({ specToEdit }: { specToEdit: SpecsFrontend }) {
 						/>
 						<Editables
 							what='Descripción'
-							valueOf={description}
+							valueOf={description || ''}
 							type='textarea'
 							onUpdate={handleDescriptionUpdate}
 						/>
 						<Editables
 							what='Unidades'
-							valueOf={unit}
+							valueOf={unit || ''}
 							type='input'
 							onUpdate={handleUnitUpdate}
 						/>
