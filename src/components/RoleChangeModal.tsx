@@ -1,25 +1,18 @@
-import {
-	UserDataBackend,
-	transformUserDataFront,
-} from '@adapters/user.adapter';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import { useRoles } from '@hooks/roles/useRoles';
-import { Role } from '@interfaces/Role.interface';
+import { RoleDataFront } from '@interfaces/Role.interface';
+import { RegisterResponse, UserDataFrontend } from '@interfaces/User.interface';
 import axios from 'axios';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './css/roleChangeModal.css';
 import ErrorMessage from './ErrorMessage';
 
-interface RegisterResponse {
-	token: string;
-	user: UserDataBackend;
-}
 interface ValidationError {
 	message: string[];
 }
 
 interface RoleChangeModalProps {
-	userToEdit: UserDataBackend;
+	userToEdit: UserDataFrontend;
 	onCloseModal: () => void;
 	onUpdateList: () => void;
 }
@@ -29,23 +22,30 @@ function RoleChangeModal({
 	onCloseModal,
 	onUpdateList,
 }: RoleChangeModalProps) {
-	const { userRoles: roleOptions } = useRoles();
-	const [role, setRoles] = useState(userToEdit.role);
+	const [role, setRole] = useState(userToEdit.role.id);
 	const { errorLog, showError } = useErrorHandling();
 
+	// Se obtiene la lista de roles para el usuario
+	const { roles: roleOptions } = useRoles();
+
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setRoles(e.target.value);
+		setRole(e.target.value);
 	};
+
+	useEffect(() => {
+		console.log(userToEdit);
+		console.log(role);
+	}, [handleOptionChange]);
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
 			await axios.patch<RegisterResponse>(
-				import.meta.env.VITE_API_URL + `/auth/${userToEdit._id}`,
-				transformUserDataFront({
+				import.meta.env.VITE_API_URL + `/auth/${userToEdit.id}`,
+				{
 					...userToEdit,
 					role,
-				}),
+				},
 			);
 			onUpdateList();
 			onCloseModal();
@@ -74,8 +74,8 @@ function RoleChangeModal({
 					value={role as string}
 					onChange={handleOptionChange}
 				>
-					{roleOptions.map((roleOption: Role, index) => (
-						<option key={index} value={roleOption.name}>
+					{roleOptions.map((roleOption: RoleDataFront, index) => (
+						<option key={index} value={roleOption.id}>
 							{roleOption.name}
 						</option>
 					))}
