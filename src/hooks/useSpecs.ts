@@ -1,43 +1,142 @@
-import { SpecsFrontend } from '@adapters/specifications.adapter';
+import { SpecDataFrontend } from '@interfaces/Specifications.interface';
+import { fetchSpecificationsByCategoryId } from '@services/specifications/fetchSpecificationsByCategoryId.service';
+import { useCallback, useEffect, useState } from 'react';
+
+interface Spec {
+	catId: string;
+	initialSpecs?: Array<{ specification: string; value: string }>;
+}
+
+function useSpecs({ catId, initialSpecs }: Spec) {
+	const [specs, setSpecs] = useState<
+		Array<{ specification: string; value: string }>
+	>(initialSpecs || []);
+	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
+	const [flag, setFlag] = useState(true);
+
+	// Fetch specifications based on category ID
+
+	const fetchSpecifications = async () => {
+		if (!catId) return;
+
+		try {
+			const data = await fetchSpecificationsByCategoryId(catId);
+			console.log(data);
+			setSpecifications(data);
+		} catch (error) {
+			console.error('Failed to fetch specifications:', error);
+		}
+	};
+
+	useEffect(() => {
+		if (flag) {
+			fetchSpecifications();
+			setFlag(false);
+		} else {
+			setSpecs([]);
+			fetchSpecifications();
+		}
+	}, [catId]);
+
+	const editOrCreateKeyInSpecs = useCallback(
+		(keyToFind: string, newValue: string) => {
+			setSpecs(prevSpecs => {
+				const updatedSpecs = prevSpecs.map(spec =>
+					spec.specification === keyToFind
+						? { ...spec, value: newValue }
+						: spec,
+				);
+
+				if (!updatedSpecs.find(spec => spec.specification === keyToFind)) {
+					updatedSpecs.push({ specification: keyToFind, value: newValue });
+				}
+
+				return updatedSpecs;
+			});
+		},
+		[],
+	);
+
+	// Find value by key
+	const findKeyInSpecs = useCallback(
+		(keyToFind: string) => {
+			const spec = specs.find(spec => spec.specification === keyToFind);
+			return spec ? spec.value : '';
+		},
+		[specs],
+	);
+
+	// Handle specification update
+	const handleSpecUpdate = useCallback(
+		(newValue: string, index: number) => {
+			const specId = specifications[index]?.id;
+			if (specId) {
+				editOrCreateKeyInSpecs(specId, newValue);
+			}
+		},
+		[specifications, editOrCreateKeyInSpecs],
+	);
+
+	// Handle input changes
+	const handleInputChange = useCallback((id: string, value: string) => {
+		setSpecs(prevSpecs => {
+			const updatedSpecs = prevSpecs.map(spec =>
+				spec.specification === id ? { ...spec, value } : spec,
+			);
+			return updatedSpecs;
+		});
+	}, []);
+
+	return {
+		specs,
+		specifications,
+		editOrCreateKeyInSpecs,
+		findKeyInSpecs,
+		handleSpecUpdate,
+		handleInputChange,
+	};
+}
+
+export default useSpecs;
+
+/* import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { fetchSpecificationsByCategoryId } from '@services/specifications/fetchSpecificationsByCategoryId.service';
 import { useEffect, useState } from 'react';
 
-interface spec {
+interface Spec {
 	catId: string;
-	initialSpecs?: Array<{ [key: string]: string }>;
+	initialSpecs?: Array<{ specification: string; value: string }>;
 }
-function useSpecs({ catId, initialSpecs }: spec) {
-	const [specs, setSpecs] = useState(initialSpecs);
-	const [specifications, setSpecifications] = useState<SpecsFrontend[]>([]);
+
+function useSpecs({ catId, initialSpecs }: Spec) {
+	console.log(initialSpecs);
+	const [specs, setSpecs] = useState<Array<{ specification: string; value: string }>>(
+		initialSpecs || [],
+	);
+	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 	const [flag, setFlag] = useState(true);
 	const [specValues, setSpecValues] = useState<Record<string, string>>({});
 
 	const editOrCreateKeyInSpecs = (keyToFind: string, newValue: string) => {
 		let keyFound = false;
-		if (!specs) return;
 		const updatedSpecs = specs.map(spec => {
-			if (keyToFind in spec) {
+			if (spec.specification === keyToFind) {
 				keyFound = true;
-				return { ...spec, [keyToFind]: newValue };
+				return { ...spec, value: newValue };
 			}
 			return spec;
 		});
 
 		if (!keyFound) {
-			updatedSpecs.push({ [keyToFind]: newValue });
+			updatedSpecs.push({ specification: keyToFind, value: newValue });
 		}
 
 		setSpecs(updatedSpecs);
 	};
 
 	const findKeyInSpecs = (keyToFind: string) => {
-		if (!specs) return;
-		for (const spec of specs) {
-			if (keyToFind in spec) {
-				return spec[keyToFind];
-			}
-		}
-		return null;
+		const spec = specs.find(spec => spec.specification === keyToFind);
+		return spec ? spec.value : null;
 	};
 
 	const handleSpecUpdate = (newValue: string, index: number) => {
@@ -68,12 +167,14 @@ function useSpecs({ catId, initialSpecs }: spec) {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [catId]);
+
 	const handleInputChange = (id: string, value: string) => {
 		setSpecValues(prevValues => ({
 			...prevValues,
 			[id]: value,
 		}));
 	};
+
 	return {
 		specs,
 		specifications,
@@ -86,3 +187,4 @@ function useSpecs({ catId, initialSpecs }: spec) {
 }
 
 export default useSpecs;
+*/

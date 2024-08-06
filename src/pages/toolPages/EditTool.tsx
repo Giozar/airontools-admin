@@ -38,7 +38,10 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	});
 	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
 		catId: categoryId,
-		initialSpecs: toolToEdit.specifications,
+		initialSpecs: toolToEdit.specifications.map(item => ({
+			specification: item.specification._id,
+			value: item.value,
+		})),
 	});
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
@@ -98,7 +101,14 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	};
 	const handleSubmit = async () => {
 		try {
-			console.log(subcategoryId);
+			console.log(specs);
+			console.log(toolToEdit.specifications);
+			console.log(
+				toolToEdit.specifications.map(item => ({
+					id: item.specification._id,
+					value: item.value,
+				})),
+			);
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
 				_id: id,
 				name,
@@ -109,8 +119,9 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 				subcategory: subcategoryId || '',
 				description,
 				videos,
-				specifications: specs || toolToEdit.specifications,
+				specifications: specs,
 			});
+
 			// Paso 2: subir imagenes
 			const uploadedUrlImages = await handleImageUpload(id || '');
 			// Paso 3: Actualizar producto con imagenes
@@ -139,6 +150,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
+
 			<div className='editspecification'>
 				<div className='familyedit'>
 					<div className='titulo'>
@@ -179,9 +191,10 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 							/>
 						</div>
 					</div>
+
 					<div className='column'>
 						<div className='familycontent'>
-							{familyName}
+							<div>{familyName}</div>
 							<Editables
 								what='Familia'
 								valueOf={familyName}
@@ -192,7 +205,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									name: item.name || 'error',
 								}))}
 							/>
-
 							<Editables
 								what='Categoría'
 								valueOf={categoryName}
@@ -215,30 +227,27 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 							/>
 						</div>
 					</div>
+
 					<div className='column'>
 						<div className='familycontent'>
-							<p>Especificaciones: </p>
-							{specifications &&
-								specifications.map((spec, index) => (
-									<div key={spec.id}>
-										{handleSpecUpdate && (
-											<Editables
-												what={spec.name}
-												valueOf={findKeyInSpecs(spec.id) || 'N/A'}
-												unit={spec.unit}
-												type='input'
-												whichOne={index + 1}
-												onUpdateOne={handleSpecUpdate}
-											/>
-										)}
-										<p></p>
-									</div>
-								))}
+							<p>Especificaciones:</p>
+							{specifications.map((spec, index) => (
+								<div key={spec.id}>
+									<Editables
+										what={spec.name}
+										valueOf={findKeyInSpecs(spec.id)}
+										unit={spec.unit}
+										type='input'
+										whichOne={index + 1}
+										onUpdateOne={newValue => handleSpecUpdate(newValue, index)}
+									/>
+								</div>
+							))}
 						</div>
 					</div>
 
 					<div className='column'>
-						<p> Imágenes: </p>
+						<p>Imágenes:</p>
 						<div className='image-upload'>
 							{images &&
 								images.map((preview, index) => (
@@ -262,17 +271,14 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 											className='image-placeholder'
 										/>
 										<button
-											// borra la imagen del servidor?
 											onClick={() => setShowDeletionModalFor(preview)}
-											// deberia de poder borrar del servidor y aqui solo cambiar la lista (borrar el string de la imagen)
 											className='delete'
 										>
 											<TrashIcon />
 										</button>
 									</div>
 								))}
-							<br></br>
-							<p>Imagenes nuevas: </p>
+							<p>Imagenes nuevas:</p>
 							{filePreviews.images?.map((preview, index) => (
 								<div key={index} className='image-preview'>
 									<img
@@ -302,12 +308,12 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 							</div>
 						</div>
 					</div>
+
 					<div className='column'>
 						<p>Manuales:</p>
 						<div className='image-upload'>
 							{manuals?.map(preview => (
 								<div key={preview} className='image-preview'>
-									{preview}
 									{showDeletionModalFor === preview && (
 										<DeletionModal
 											id={preview}
@@ -332,7 +338,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									>
 										<TrashIcon />
 									</button>
-
 									<div className='buttons'>
 										<a href={preview} target='_blank' rel='noopener noreferrer'>
 											Ver documento completo
@@ -340,8 +345,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									</div>
 								</div>
 							))}
-							<br></br>
-							<p>Manuales nuevos: </p>
+							<p>Manuales nuevos:</p>
 							{filePreviews.manuals?.map((preview, index) => (
 								<div key={index} className='image-preview'>
 									<embed
@@ -349,8 +353,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 										width='250'
 										height='200'
 										className='image-placeholder'
-									></embed>
-
+									/>
 									<button
 										onClick={() => handleRemoveFile('manuals', index)}
 										className='delete'
@@ -375,7 +378,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 					</div>
 
 					<div className='column'>
-						<p> Videos: </p>
+						<p>Videos:</p>
 						<Editables
 							what='Videos'
 							valueOf={(videos || ['']).join('<br>')}
@@ -384,6 +387,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 							strlist={videos}
 						/>
 					</div>
+
 					<div className='titulo'>
 						<button onClick={handleSubmit} className='save'>
 							Guardar Cambios
