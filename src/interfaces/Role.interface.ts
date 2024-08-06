@@ -24,6 +24,8 @@ export interface RoleDataBack {
 	permissions: object;
 	createdBy?: UserDataBackend;
 	updatedBy?: UserDataBackend;
+	createdAt?: string;
+	updatedAt?: string;
 }
 
 export interface RoleDataFront {
@@ -33,4 +35,6 @@ export interface RoleDataFront {
 	permissions: object;
 	createdBy?: UserDataFrontend;
 	updatedBy?: UserDataFrontend;
+	createdAt?: string;
+	updatedAt?: string;
 }

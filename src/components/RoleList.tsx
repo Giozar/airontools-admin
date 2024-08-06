@@ -1,21 +1,12 @@
+import { transformRoleDataFront } from '@adapters/role.adapter';
+import { RoleDataBack, RoleDataFront } from '@interfaces/Role.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ComboBox from './ComboBox';
 import DeletionModal from './DeletionModal';
 
-interface Role {
-	_id: string;
-	name: string;
-	description: string;
-	permissions: string[];
-	createdBy: string;
-	createdAt: string;
-	updatedAt: string;
-	updatedBy: string;
-}
-
 interface RoleListState {
-	roles: Role[];
+	roles: RoleDataFront[];
 	loading: boolean;
 	error: string | null;
 }
@@ -35,11 +26,11 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 	useEffect(() => {
 		const fetchRoles = async () => {
 			try {
-				const response = await axios.get<Role[]>(
+				const response = await axios.get<RoleDataBack[]>(
 					import.meta.env.VITE_API_URL + '/roles',
 				);
 				setState({
-					roles: response.data,
+					roles: response.data.map(role => transformRoleDataFront(role)),
 					loading: false,
 					error: null,
 				});
@@ -85,25 +76,25 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 			<h2>Lista de roles existentes</h2>
 			<ul>
 				{roles.map(role => (
-					<li key={role._id}>
+					<li key={role.id}>
 						<div>
 							<ComboBox
 								option={role.name}
 								options={[
-									`id: ${role._id}`,
+									`id: ${role.id}`,
 									`Descripción: ${role.description}`,
-									`Creado por: ${role.createdBy}`,
-									`Fecha de creación: ${new Date(role.createdAt).toLocaleDateString()}`,
-									`Última Actualización: ${new Date(role.updatedAt).toLocaleDateString()}`,
+									`Creado por: ${role.createdBy?.name}`,
+									`Fecha de creación: ${new Date(role.createdAt as string).toLocaleDateString()}`,
+									`Última Actualización: ${new Date(role.updatedAt as string).toLocaleDateString()}`,
 								]}
 							/>
 						</div>
-						<button onClick={() => setShowDeletionModalFor(role._id)}>
+						<button onClick={() => setShowDeletionModalFor(role.id as string)}>
 							Eliminar rol
 						</button>
-						{showDeletionModalFor === role._id && (
+						{showDeletionModalFor === role.id && (
 							<DeletionModal
-								id={role._id}
+								id={role.id}
 								name={`el rol ${role.name}`}
 								onClose={() => {
 									setShowDeletionModalFor(null);
@@ -111,7 +102,10 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 								}}
 								onCloseDelete={() => setUpdateRolei(!updateRolei)}
 								onDelete={() =>
-									handleDelete({ roleName: role.name, roleId: role._id })
+									handleDelete({
+										roleName: role.name,
+										roleId: role.id as string,
+									})
 								}
 								message={deletionMessage}
 							/>

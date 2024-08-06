@@ -9,5 +9,7 @@ export const transformRoleDataFront = (role: RoleDataBack): RoleDataFront => {
 		permissions: role.permissions,
 		createdBy: role.createdBy && transformUserDataFront(role.createdBy),
 		updatedBy: role.updatedBy && transformUserDataFront(role.updatedBy),
+		createdAt: role.createdAt,
+		updatedAt: role.updatedAt,
 	};
 };
