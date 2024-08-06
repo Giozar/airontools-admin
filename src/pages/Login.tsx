@@ -1,7 +1,4 @@
-import {
-	UserDataBackend,
-	transformUserDataFront,
-} from '@adapters/user.adapter';
+import { transformUserDataFront } from '@adapters/user.adapter';
 import ErrorMessage from '@components/ErrorMessage';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
@@ -13,6 +10,7 @@ import './css/Login.css';
 // eslint-disable-next-line import/no-absolute-path
 import EyeIcon from '@components/svg/EyeIcon';
 import EyeOffIcon from '@components/svg/EyeOffIcon';
+import { UserDataBackend } from '@interfaces/User.interface';
 import aironLogo from './Logo-Blanco.png';
 
 interface LoginResponse {
@@ -69,7 +67,6 @@ function Login() {
 					password,
 				},
 			);
-
 			const { token } = response.data;
 			localStorage.setItem('token', token);
 

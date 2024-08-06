@@ -10,6 +10,6 @@ export const transformUserDataFront = (
 		email: user.email,
 		password: user.password,
 		name: user.name,
-		role: transformRoleDataFront(user.role),
+		role: user.role ? transformRoleDataFront(user.role) : null,
 	};
 };
