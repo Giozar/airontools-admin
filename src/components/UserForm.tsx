@@ -83,7 +83,11 @@ export default function UserForm() {
 
 			<div className='register'>
 				<form onSubmit={handleSubmit}>
-					<FileUpload setImageUrl={setImageUrl} />
+					<FileUpload
+						setImageUrl={setImageUrl}
+						fileType='images'
+						fileFeature='employees'
+					/>
 					<p style={{ color: 'red' }}>
 						{imageUrl === ''
 							? 'No ha subido una imagen, ¿Quiere continuar?'

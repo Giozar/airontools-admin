@@ -3,6 +3,8 @@ import { ChangeEvent, useState } from 'react';
 
 const useFileUpload = () => {
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const [fileType, setFileType] = useState<string | undefined>('');
+	const [fileFeature, setfileFeature] = useState<string | undefined>('');
 	const [fileUrl, setFileUrl] = useState<string>('');
 	const [fileName, setFileName] = useState('No hay archivo seleccionado');
 	// Para tener una imagen de preview
@@ -28,7 +30,7 @@ const useFileUpload = () => {
 
 	const getFileUrl = async () => {
 		if (selectedFile) {
-			const url = await uploadFile(selectedFile);
+			const url = await uploadFile(selectedFile, fileType, fileFeature);
 			setFileUrl(url);
 		}
 	};
@@ -41,6 +43,8 @@ const useFileUpload = () => {
 		previewUrl,
 		handleFileSelect,
 		handleFileUpload,
+		setFileType,
+		setfileFeature,
 	};
 };
 
