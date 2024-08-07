@@ -52,7 +52,7 @@
 .role-list ul li {
 	display: grid;
 }
-.role-list ul li button {
+.role-list ul li > button {
 	margin-left: 50%;
 	border-bottom: 2px solid var(--bg-secondary);
 	border-radius: 10px;
@@ -61,7 +61,7 @@
 }
 .role-list ul li .combobox {
 	margin: 10px 0;
-
+	color: var(--text-primary);
 	font-size: 1.1rem;
 }
 .role-list ul li .combobox:hover {
