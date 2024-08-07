@@ -6,12 +6,14 @@ import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
 import DownArrow from './svg/DownArrow';
 import RightArrow from './svg/RightArrow';
+
 interface props {
 	family: FamilyDataFrontend;
 	filteredCategories: CategoryDataFrontend[];
 	filteredSubcategories: SubcategoryDataFrontend[];
 	specifications: SpecDataFrontend[];
 }
+
 function DropdownMenu({
 	filteredCategories,
 	filteredSubcategories,
@@ -73,8 +75,8 @@ function DropdownMenu({
 														subcategory.category._id === category.id,
 												)
 												.map(subcategory => (
-													<>
-														<li key={subcategory.id}>{subcategory.name}</li>
+													<li key={subcategory.id}>
+														{subcategory.name}
 														{specifications.some(
 															specs => specs.subcategory._id === subcategory.id,
 														) && <span>Especificaciones:</span>}
@@ -85,13 +87,13 @@ function DropdownMenu({
 																		specs.subcategory._id === subcategory.id,
 																)
 																.map(specs => (
-																	<li key={`spec${specs.id}`}>
+																	<li key={specs.id}>
 																		{specs.name}
 																		{specs.unit && `(${specs.unit})`}
 																	</li>
 																))}
 														</ul>
-													</>
+													</li>
 												))}
 										</ul>
 									</>
