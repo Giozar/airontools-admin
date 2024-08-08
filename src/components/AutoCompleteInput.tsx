@@ -87,7 +87,7 @@ function AutoCompleteInput({
 
 	return (
 		<div className='autocomplete'>
-			<form className='autocomplete-input'>
+			<div className='autocomplete-input'>
 				<label htmlFor={inputName}>{inputName}</label>
 				<input
 					id={inputName}
@@ -98,7 +98,7 @@ function AutoCompleteInput({
 					onFocus={handleInputFocus}
 				/>
 				{renderOptions()}
-			</form>
+			</div>
 		</div>
 	);
 }
