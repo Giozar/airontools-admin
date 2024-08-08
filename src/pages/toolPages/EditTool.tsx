@@ -83,11 +83,11 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		setVideos(newValues);
 	};
 	const handleImageUpload = async (productId: string) => {
-		return await handleFileUpload('/images/' + productId, 'images');
+		return await handleFileUpload('images', productId, 'images');
 	};
 
 	const handleManualUpload = async (productId: string) => {
-		return await handleFileUpload('/manuals/' + productId, 'manuals');
+		return await handleFileUpload('manuals', productId, 'manuals');
 	};
 	const handleCloseModalDeletionImages = (image: string) => {
 		if (images?.length === 1)

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const uploadFile = async (
 	file: File,
-	folder?: string | undefined,
+	type?: string | undefined,
 	feature?: string | undefined,
 ): Promise<string> => {
 	const formData = new FormData();
@@ -11,11 +11,11 @@ const uploadFile = async (
 	try {
 		console.log(
 			import.meta.env.VITE_API_URL +
-				`/files/upload/${folder ? folder + '/' : ''}${feature ? feature + '/' : ''}`,
+				`/files/upload/${type ? type + '/' : ''}${feature ? feature + '/' : ''}`,
 		);
 		const response = await axios.post(
 			import.meta.env.VITE_API_URL +
-				`/files/upload/${folder ? folder + '/' : ''}${feature ? feature + '/' : ''}`,
+				`/files/upload/${type ? type + '/' : ''}${feature ? feature + '/' : ''}`,
 			formData,
 			{
 				headers: {

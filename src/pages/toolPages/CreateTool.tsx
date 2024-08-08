@@ -56,11 +56,11 @@ function ToolForm() {
 		useMultipleFileUpload();
 
 	const handleImageUpload = async (productId: string) => {
-		return await handleFileUpload('/images/' + productId, 'images');
+		return await handleFileUpload('images', productId, 'images');
 	};
 
 	const handleManualUpload = async (productId: string) => {
-		return await handleFileUpload('/manuals/' + productId, 'manuals');
+		return await handleFileUpload('manuals', productId, 'manuals');
 	};
 
 	const handleUrlChange = (
@@ -95,7 +95,8 @@ function ToolForm() {
 				createToolData,
 			);
 			const productId = response.data._id;
-			console.log(productId);
+			const createdProduct = response.data;
+			console.log(createdProduct);
 			// Paso 2: Subir imagenes
 			const uploadedUrlImages = await handleImageUpload(productId);
 			// Paso 3: Actualizar producto con imagenes
@@ -108,10 +109,12 @@ function ToolForm() {
 			// Paso 4: Subir manuales
 			const uploadedUrlManuals = await handleManualUpload(productId);
 			// Paso 3: Actualizar producto con manuales
-			await axios.patch(
+			const productUpladedImages = await axios.patch(
 				import.meta.env.VITE_API_URL + '/products/' + productId,
 				{ manuals: uploadedUrlManuals },
 			);
+
+			console.log(productUpladedImages.data);
 			/* falta decir si fallo alguna subida de imagenes o manuales... */
 			showSuccess('Herramienta creada con éxito');
 		} catch (error) {
