@@ -52,8 +52,8 @@ const ToolInfoModal = ({
 						<div style={{ margin: '20px 0' }}>
 							<strong>Características:</strong>
 							<ul>
-								{product.characteristics?.map(char => (
-									<li key={char}>{char}</li>
+								{product.characteristics?.map((char, index) => (
+									<li key={index}>{char}</li>
 								))}
 							</ul>
 						</div>

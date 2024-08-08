@@ -82,18 +82,22 @@ function Editables({
 			<label htmlFor={what}>{what}:</label>
 			<div className='content'>
 				{!editing ? (
-					<p onClick={handleEditClick}>
-						{valueOf.includes('<br>')
-							? valueOf.split('<br>').map(value => (
-									<p key={value}>
-										{value} <br></br> <br></br>
-									</p>
-								))
-							: valueOf}{' '}
-						{unit || ''}
-					</p>
+					<div onClick={handleEditClick}>
+						{valueOf.includes('<br>') ? (
+							valueOf.split('<br>').map(value => (
+								<React.Fragment key={value}>
+									<p>{value}</p>
+									<br />
+								</React.Fragment>
+							))
+						) : (
+							<p>
+								{valueOf} {unit || ''}
+							</p>
+						)}
+					</div>
 				) : (
-					<form>
+					<div>
 						{type === 'input' && (
 							<div style={{ display: 'flex', alignItems: 'center' }}>
 								<input
@@ -128,7 +132,7 @@ function Editables({
 								onCancel={handleEditClick}
 							/>
 						)}
-					</form>
+					</div>
 				)}
 				<div className='buttons'>
 					{editing && !onUpdateMany && (
@@ -151,4 +155,5 @@ function Editables({
 		</div>
 	);
 }
+
 export default Editables;
