@@ -52,11 +52,15 @@ const useMultipleFileUpload = () => {
 	};
 
 	// Handle file upload
-	const handleFileUpload = async (folder: string, fileType: string) => {
+	const handleFileUpload = async (
+		type: string,
+		feature: string,
+		fileType: string,
+	) => {
 		const urls: string[] = [];
 		for (const file of files[fileType] || []) {
 			try {
-				const url = await uploadFile(file, folder);
+				const url = await uploadFile(file, type, feature);
 				urls.push(url);
 			} catch (error) {
 				console.error('No se pudo subir archivos:', file.name, error);

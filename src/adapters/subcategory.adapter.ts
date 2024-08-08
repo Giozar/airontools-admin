@@ -8,7 +8,7 @@ import { transformUserDataFront } from './user.adapter';
 export const transformSubcategoryDataToFrontend = (
 	subcategory: SubcategoryDataBackend,
 ): SubcategoryDataFrontend => {
-	console.log(subcategory.category);
+	// console.log(subcategory.category);
 	return {
 		id: subcategory._id,
 		name: subcategory.name,
