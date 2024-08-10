@@ -1,0 +1,79 @@
+/* MonitoringMenu.css */
+.container {
+	margin: 0 auto;
+	padding: 16px;
+	max-width: 1120px;
+}
+
+.activity-card {
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
+	margin-bottom: 16px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	--accent-secondary: #093f63;
+	padding: 16px;
+}
+
+.activity-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.activity-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.activity-title {
+	--text-secondary: #666666; /* Medium grey for secondary text */
+	font-weight: bold;
+	font-size: 1.25rem;
+}
+
+.toggle-button {
+	transition: background-color 0.2s;
+	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	background-color: #007bff;
+	padding: 8px 16px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.toggle-button:hover {
+	background-color: #0056b3;
+}
+
+.activity-list {
+	padding: 0;
+	list-style: none;
+}
+
+.activity-item {
+	border-bottom: 1px solid #e0e0e0;
+	padding: 16px 0;
+}
+
+.activity-item:last-child {
+	border-bottom: none;
+}
+
+.activity-item-title {
+	--text-primary: #333333; /* Dark grey for readable text */
+	font-weight: 500;
+	font-size: 1rem;
+}
+
+.activity-details {
+	margin-top: 8px;
+	--text-secondary: #666666; /* Medium grey for secondary text */
+	font-size: 0.875rem;
+}
+
+.activity-details p {
+	margin: 4px 0;
+}

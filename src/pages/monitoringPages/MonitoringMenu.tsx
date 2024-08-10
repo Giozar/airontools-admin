@@ -1,6 +1,7 @@
 import { ComputerActivity } from '@interfaces/Monitoring.interface';
 import fetchComputerActivities from '@services/monitoring/getMonitoring.service';
 import { useEffect, useState } from 'react';
+import './MonitoringMenu.css'; // Importa el CSS
 
 const MonitoringMenu = () => {
 	const [computerActivities, setComputerActivities] = useState<
@@ -20,7 +21,7 @@ const MonitoringMenu = () => {
 				setLoading(false);
 			}
 		};
-
+		console.log(computerActivities);
 		getComputerActivities();
 	}, []);
 
@@ -48,7 +49,7 @@ const MonitoringMenu = () => {
 							className='toggle-button'
 							onClick={() => handleToggle(index)}
 						>
-							Toggle Details
+							Ver detalles
 						</button>
 					</div>
 					<ul className='activity-list'>
