@@ -14,6 +14,7 @@ import CreateFamily from '@pages/familyPages/CreateFamily';
 import EditFamily from '@pages/familyPages/EditFamily';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
+import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
@@ -82,6 +83,7 @@ const App = () => {
 									path='/home/herramientas/editar-herramienta'
 									element={<EditTool />}
 								/>
+								<Route path='/home/monitor' element={<MonitoringMenu />} />
 							</Route>
 						</Route>
 					</Route>

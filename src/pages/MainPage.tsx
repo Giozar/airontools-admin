@@ -29,6 +29,10 @@ function ContentMainPage() {
 								title='Herramientas'
 								path={location.pathname + '/herramientas'}
 							/>
+							<ActionCard
+								title='Monitor'
+								path={location.pathname + '/monitor'}
+							/>
 						</>
 					) : (
 						<ActionCard
