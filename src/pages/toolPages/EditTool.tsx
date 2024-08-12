@@ -46,11 +46,11 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 	const {
-		showDeletionModalFor,
-		setShowDeletionModalFor,
-		deletionMessage,
-		handleCloseModal,
-		handleDelete,
+		setShowDeletionModalForFile,
+		showDeletionModalForFile,
+		deletionMessageFile,
+		handleCloseModalFile,
+		handleDeleteFile,
 	} = useFileManagement();
 
 	const id = toolToEdit.id;
@@ -244,17 +244,17 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 							{images &&
 								images.map((preview, index) => (
 									<div key={index} className='image-preview'>
-										{showDeletionModalFor === preview && (
+										{showDeletionModalForFile === preview && (
 											<DeletionModal
 												id={preview}
 												name={preview}
 												image={preview}
-												onClose={() => handleCloseModal()}
+												onClose={() => handleCloseModalFile()}
 												onCloseDelete={() =>
 													handleCloseModalDeletionImages(preview)
 												}
-												onDelete={() => handleDelete(preview, '')}
-												message={deletionMessage}
+												onDelete={() => handleDeleteFile(preview, '')}
+												message={deletionMessageFile}
 											/>
 										)}
 										<img
@@ -263,7 +263,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 											className='image-placeholder'
 										/>
 										<button
-											onClick={() => setShowDeletionModalFor(preview)}
+											onClick={() => setShowDeletionModalForFile(preview)}
 											className='delete'
 										>
 											<TrashIcon />
@@ -306,16 +306,16 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 						<div className='image-upload'>
 							{manuals?.map(preview => (
 								<div key={preview} className='image-preview'>
-									{showDeletionModalFor === preview && (
+									{showDeletionModalForFile === preview && (
 										<DeletionModal
 											id={preview}
 											name={preview}
-											onClose={() => handleCloseModal()}
+											onClose={() => handleCloseModalFile()}
 											onCloseDelete={() =>
 												handleCloseModalDeletionManuals(preview)
 											}
-											onDelete={() => handleDelete(preview, '')}
-											message={deletionMessage}
+											onDelete={() => handleDeleteFile(preview, '')}
+											message={deletionMessageFile}
 										/>
 									)}
 									<embed
@@ -326,7 +326,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									/>
 									<button
 										className='delete'
-										onClick={() => setShowDeletionModalFor(preview)}
+										onClick={() => setShowDeletionModalForFile(preview)}
 									>
 										<TrashIcon />
 									</button>

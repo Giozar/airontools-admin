@@ -71,6 +71,7 @@ const useMultipleFileUpload = () => {
 			[fileType]: urls,
 		}));
 		console.log(urls);
+		setFilePreviews({});
 		return urls;
 	};
 

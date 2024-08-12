@@ -18,6 +18,8 @@ import '@pages/css/editFamily.css';
 import axios from 'axios';
 
 import { transformFamilyDataToBackend } from '@adapters/family.adapter';
+import useFileManagement from '@hooks/useFileManagement';
+import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +33,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const familyId = familyToEdit.id || '';
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
+	const [images, setImages] = useState(familyToEdit.images);
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
 		showDeletionModalFor,
@@ -39,6 +42,14 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		handleCloseModal,
 		handleDelete,
 	} = useFamilyManagement();
+	const {
+		setShowDeletionModalForFile,
+		showDeletionModalForFile,
+		deletionMessageFile,
+		handleCloseModalFile,
+		handleDeleteFile,
+	} = useFileManagement();
+
 	const [update, setUpdate] = useState(false);
 	const [numberOfCategories, setNumberOfCategories] = useState<number | null>(
 		null,
@@ -50,7 +61,8 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		number | null
 	>(null);
 	const [numberOfProducts, setNumberOfProducts] = useState<number | null>(null);
-
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
 	const updateCategoryList = () => {
 		setUpdate(!update);
 	};
@@ -66,20 +78,33 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const handleCloseModalDeletion = () => {
 		navigate('/home/categorizacion');
 	};
+	const handleCloseModalDeletionImages = (image: string) => {
+		if (images?.length === 1) setImages([]);
+		else setImages(images?.filter(img => img !== image));
+	};
+
+	const handleImageUpload = async (productId: string) => {
+		return await handleFileUpload('images', productId, 'images');
+	};
+	useEffect(() => {
+		console.log(images);
+	}, [images]);
 	const handleUpdateFamily = async () => {
 		try {
-			if (
-				name === familyToEdit.name &&
-				description === familyToEdit.description
-			)
-				return;
+			const uploadedUrlImages = await handleImageUpload(familyId);
+			console.log(uploadedUrlImages);
+
 			await updateFamily(
 				transformFamilyDataToBackend({
 					...familyToEdit,
 					name,
 					description,
+					images: images
+						? [...images, ...uploadedUrlImages]
+						: uploadedUrlImages,
 				}),
 			);
+			setImages([...images, ...uploadedUrlImages]);
 			// Esto tal vez cause bugs cuando de refresh...
 			localStorage.setItem(
 				'familyToEdit',
@@ -198,7 +223,74 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 						type='textarea'
 						onUpdate={handleDescriptionUpdate}
 					/>
-					<button className='save' onClick={handleUpdateFamily}>
+
+					<div className='column'>
+						<p>Imágenes:</p>
+						<div className='image-upload'>
+							{images &&
+								images.map((preview, index) => (
+									<div key={index} className='image-preview'>
+										{showDeletionModalForFile === preview && (
+											<DeletionModal
+												id={preview}
+												name={preview}
+												image={preview}
+												onClose={() => handleCloseModalFile()}
+												onCloseDelete={() =>
+													handleCloseModalDeletionImages(preview)
+												}
+												onDelete={() => handleDeleteFile(preview, '')}
+												message={deletionMessageFile}
+											/>
+										)}
+										<img
+											src={preview}
+											alt={`preview-${index}`}
+											className='image-placeholder'
+										/>
+										<button
+											onClick={() => setShowDeletionModalForFile(preview)}
+											className='delete'
+										>
+											<TrashIcon />
+										</button>
+									</div>
+								))}
+							<p>Imagenes nuevas:</p>
+							{filePreviews.images?.map((preview, index) => (
+								<div key={index} className='image-preview'>
+									<img
+										src={preview}
+										alt={`preview-${index}`}
+										className='image-placeholder'
+									/>
+									<button
+										onClick={() => handleRemoveFile('images', index)}
+										className='delete'
+										type='button'
+									>
+										<TrashIcon />
+									</button>
+								</div>
+							))}
+							<div className='image-placeholder add-image'>
+								<label htmlFor='file-input'>Subir imagen +</label>
+								<input
+									type='file'
+									id='file-input'
+									multiple
+									accept='image/*'
+									onChange={event => handleFileSelect(event, 'images')}
+									style={{ display: 'none' }}
+								/>
+							</div>
+						</div>
+					</div>
+					<button
+						className='save'
+						onClick={handleUpdateFamily}
+						style={{ marginTop: '2em' }}
+					>
 						Guardar Cambios
 					</button>
 				</div>
