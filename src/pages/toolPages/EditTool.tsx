@@ -2,6 +2,7 @@ import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
+import ImageUpdate from '@components/ImageUpdate';
 import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
@@ -52,12 +53,12 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		handleCloseModalFile,
 		handleDeleteFile,
 	} = useFileManagement();
-
 	const id = toolToEdit.id;
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
 	const [images, setImages] = useState(toolToEdit.images);
+	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 	const [manuals, setManuals] = useState(toolToEdit.manuals);
 	const [videos, setVideos] = useState(toolToEdit.videos);
 	const [char, setChar] = useState(toolToEdit.characteristics);
@@ -85,14 +86,23 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const handleImageUpload = async (productId: string) => {
 		return await handleFileUpload('images', productId, 'images');
 	};
-
+	const handleCloseModalDeletionImages = async (image: string) => {
+		setImages(images?.filter(img => img !== image));
+	};
+	useEffect(() => {}, [images]);
+	const handleDeleteFileFor = (imageToDelete: string) => {
+		console.log(imageToDelete);
+		setImagesToDelete(prevImagesToDelete => {
+			const updatedImagesToDelete = new Set([
+				...prevImagesToDelete,
+				imageToDelete,
+			]);
+			return Array.from(updatedImagesToDelete);
+		});
+		handleCloseModalDeletionImages(imageToDelete);
+	};
 	const handleManualUpload = async (productId: string) => {
 		return await handleFileUpload('manuals', productId, 'manuals');
-	};
-	const handleCloseModalDeletionImages = (image: string) => {
-		if (images?.length === 1)
-			setImages([]); // Por alguna razon hay un bug aqui que necesita esta condicion
-		else setImages(images?.filter(img => img !== image));
 	};
 	const handleCloseModalDeletionManuals = (manual: string) => {
 		if (manuals?.length === 1)
@@ -113,12 +123,17 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 				videos,
 				specifications: specs,
 			});
-
+			const uploadedUrlImages = await handleImageUpload(familyId);
+			const deletePromises = imagesToDelete.map(async image => {
+				return await handleDeleteFile(image, '');
+			});
+			const deletedFiles = await Promise.all(deletePromises);
 			// Paso 2: subir imagenes
-			const uploadedUrlImages = await handleImageUpload(id || '');
 			// Paso 3: Actualizar producto con imagenes
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-				images: images ? [...images, ...uploadedUrlImages] : uploadedUrlImages,
+				images: deletedFiles
+					? [...deletedFiles, ...uploadedUrlImages]
+					: [...(images || ['']), ...uploadedUrlImages],
 			});
 
 			// Paso 4: Subir manuales
@@ -238,68 +253,18 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 						</div>
 					</div>
 
-					<div className='column'>
-						<p>Imágenes:</p>
-						<div className='image-upload'>
-							{images &&
-								images.map((preview, index) => (
-									<div key={index} className='image-preview'>
-										{showDeletionModalForFile === preview && (
-											<DeletionModal
-												id={preview}
-												name={preview}
-												image={preview}
-												onClose={() => handleCloseModalFile()}
-												onCloseDelete={() =>
-													handleCloseModalDeletionImages(preview)
-												}
-												onDelete={() => handleDeleteFile(preview, '')}
-												message={deletionMessageFile}
-											/>
-										)}
-										<img
-											src={preview}
-											alt={`preview-${index}`}
-											className='image-placeholder'
-										/>
-										<button
-											onClick={() => setShowDeletionModalForFile(preview)}
-											className='delete'
-										>
-											<TrashIcon />
-										</button>
-									</div>
-								))}
-							<p>Imagenes nuevas:</p>
-							{filePreviews.images?.map((preview, index) => (
-								<div key={index} className='image-preview'>
-									<img
-										src={preview}
-										alt={`preview-${index}`}
-										className='image-placeholder'
-									/>
-									<button
-										onClick={() => handleRemoveFile('images', index)}
-										className='delete'
-										type='button'
-									>
-										<TrashIcon />
-									</button>
-								</div>
-							))}
-							<div className='image-placeholder add-image'>
-								<label htmlFor='file-input'>Subir imagen +</label>
-								<input
-									type='file'
-									id='file-input'
-									multiple
-									accept='image/*'
-									onChange={event => handleFileSelect(event, 'images')}
-									style={{ display: 'none' }}
-								/>
-							</div>
-						</div>
-					</div>
+					<ImageUpdate
+						images={images || []}
+						filePreviews={filePreviews}
+						handleRemoveFile={handleRemoveFile}
+						handleFileSelect={handleFileSelect}
+						setShowDeletionModalForFile={setShowDeletionModalForFile}
+						showDeletionModalForFile={showDeletionModalForFile}
+						deletionMessageFile={deletionMessageFile}
+						handleCloseModalFile={handleCloseModalFile}
+						handleDeleteFileFor={handleDeleteFileFor}
+						handleCloseModalDeletionImages={handleCloseModalDeletionImages}
+					/>
 
 					<div className='column'>
 						<p>Manuales:</p>
