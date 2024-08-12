@@ -22,10 +22,13 @@ import useFileManagement from '@hooks/useFileManagement';
 import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useContext, useEffect, useState } from 'react';
+
+import ImageUpdate from '@components/ImageUpdate';
 import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
 	familyToEdit: FamilyDataFrontend;
 }
+
 function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	// Datos recuperados y que se pueden modificar
 	const [name, setName] = useState(familyToEdit.name);
@@ -80,10 +83,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		navigate('/home/categorizacion');
 	};
 	const handleCloseModalDeletionImages = async (image: string) => {
-		console.log('borrar');
-		if (images?.length === 1) setImages([]);
-		else setImages(images?.filter(img => img !== image));
-		console.log(images?.filter(img => img !== image));
+		setImages(images?.filter(img => img !== image));
 	};
 	const handleDeleteFileFor = (imageToDelete: string) => {
 		console.log(imageToDelete);
@@ -97,12 +97,9 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		handleCloseModalDeletionImages(imageToDelete);
 	};
 	const handleImageUpload = async (productId: string) => {
-		console.log(filePreviews);
 		return await handleFileUpload('images', productId, 'images');
 	};
-	useEffect(() => {
-		console.log(images);
-	}, [images]);
+	useEffect(() => {}, [images]); // para que se actualicen las imagenes
 	const handleUpdateFamily = async () => {
 		try {
 			console.log(imagesToDelete);
@@ -229,81 +226,33 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 					<span>Editando la Familia</span> {name}
 				</h2>
 				<div className='familycontent'>
-					<Editables
-						what='Nombre'
-						valueOf={name}
-						type='input'
-						onUpdate={handleNameUpdate}
-					/>
-					<Editables
-						what='Descripción'
-						valueOf={description || ''}
-						type='textarea'
-						onUpdate={handleDescriptionUpdate}
+					<div className='column'>
+						<Editables
+							what='Nombre'
+							valueOf={name}
+							type='input'
+							onUpdate={handleNameUpdate}
+						/>
+						<Editables
+							what='Descripción'
+							valueOf={description || ''}
+							type='textarea'
+							onUpdate={handleDescriptionUpdate}
+						/>
+					</div>
+					<ImageUpdate
+						images={images}
+						filePreviews={filePreviews}
+						handleRemoveFile={handleRemoveFile}
+						handleFileSelect={handleFileSelect}
+						setShowDeletionModalForFile={setShowDeletionModalForFile}
+						showDeletionModalForFile={showDeletionModalForFile}
+						deletionMessageFile={deletionMessageFile}
+						handleCloseModalFile={handleCloseModalFile}
+						handleDeleteFileFor={handleDeleteFileFor}
+						handleCloseModalDeletionImages={handleCloseModalDeletionImages}
 					/>
 
-					<div className='column'>
-						<p>Imágenes:</p>
-						<div className='image-upload'>
-							{images &&
-								images.map((preview, index) => (
-									<div key={index} className='image-preview'>
-										{showDeletionModalForFile === preview && (
-											<DeletionModal
-												id={preview}
-												name={preview}
-												image={preview}
-												onClose={() => handleCloseModalFile()}
-												onCloseDelete={() =>
-													handleCloseModalDeletionImages(preview)
-												}
-												onDelete={() => handleDeleteFileFor(preview)}
-												message={deletionMessageFile}
-											/>
-										)}
-										<img
-											src={preview}
-											alt={`preview-${index}`}
-											className='image-placeholder'
-										/>
-										<button
-											onClick={() => setShowDeletionModalForFile(preview)}
-											className='delete'
-										>
-											<TrashIcon />
-										</button>
-									</div>
-								))}
-							<p>Imagenes nuevas:</p>
-							{filePreviews.images?.map((preview, index) => (
-								<div key={index} className='image-preview'>
-									<img
-										src={preview}
-										alt={`preview-${index}`}
-										className='image-placeholder'
-									/>
-									<button
-										onClick={() => handleRemoveFile('images', index)}
-										className='delete'
-										type='button'
-									>
-										<TrashIcon />
-									</button>
-								</div>
-							))}
-							<div className='image-placeholder add-image'>
-								<label htmlFor='file-input'>Subir imagen +</label>
-								<input
-									type='file'
-									id='file-input'
-									multiple
-									accept='image/*'
-									onChange={event => handleFileSelect(event, 'images')}
-									style={{ display: 'none' }}
-								/>
-							</div>
-						</div>
-					</div>
 					<button
 						className='save'
 						onClick={handleUpdateFamily}

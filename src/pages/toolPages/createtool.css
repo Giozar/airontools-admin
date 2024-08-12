@@ -30,7 +30,6 @@
 .image-preview > .delete {
 	position: absolute;
 	top: 10px; /* Adjusted for better placement */
-	right: 10px; /* Align to the right */
 	cursor: pointer;
 	border: none;
 	border-radius: 50%;
@@ -56,7 +55,7 @@
 }
 
 .image-placeholder {
-	max-width: 100%;
+	max-width: 200px;
 	max-height: 100%;
 	object-fit: contain; /* Fit images within the placeholder */
 }
