@@ -34,6 +34,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
 	const [images, setImages] = useState(familyToEdit.images);
+	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
 		showDeletionModalFor,
@@ -78,12 +79,25 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const handleCloseModalDeletion = () => {
 		navigate('/home/categorizacion');
 	};
-	const handleCloseModalDeletionImages = (image: string) => {
+	const handleCloseModalDeletionImages = async (image: string) => {
+		console.log('borrar');
 		if (images?.length === 1) setImages([]);
 		else setImages(images?.filter(img => img !== image));
+		console.log(images?.filter(img => img !== image));
 	};
-
+	const handleDeleteFileFor = (imageToDelete: string) => {
+		console.log(imageToDelete);
+		setImagesToDelete(prevImagesToDelete => {
+			const updatedImagesToDelete = new Set([
+				...prevImagesToDelete,
+				imageToDelete,
+			]);
+			return Array.from(updatedImagesToDelete);
+		});
+		handleCloseModalDeletionImages(imageToDelete);
+	};
 	const handleImageUpload = async (productId: string) => {
+		console.log(filePreviews);
 		return await handleFileUpload('images', productId, 'images');
 	};
 	useEffect(() => {
@@ -91,21 +105,25 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	}, [images]);
 	const handleUpdateFamily = async () => {
 		try {
+			console.log(imagesToDelete);
 			const uploadedUrlImages = await handleImageUpload(familyId);
-			console.log(uploadedUrlImages);
+			const deletePromises = imagesToDelete.map(async image => {
+				return await handleDeleteFile(image, '');
+			});
+			const deletedFiles = await Promise.all(deletePromises);
 
+			console.log(deletedFiles);
+			console.log(uploadedUrlImages);
+			console.log(images);
 			await updateFamily(
 				transformFamilyDataToBackend({
 					...familyToEdit,
 					name,
 					description,
-					images: images
-						? [...images, ...uploadedUrlImages]
-						: uploadedUrlImages,
+					images: [...images, ...uploadedUrlImages],
 				}),
 			);
-			setImages([...images, ...uploadedUrlImages]);
-			// Esto tal vez cause bugs cuando de refresh...
+			setImages(prevImages => [...prevImages, ...uploadedUrlImages]);
 			localStorage.setItem(
 				'familyToEdit',
 				JSON.stringify({
@@ -239,7 +257,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 												onCloseDelete={() =>
 													handleCloseModalDeletionImages(preview)
 												}
-												onDelete={() => handleDeleteFile(preview, '')}
+												onDelete={() => handleDeleteFileFor(preview)}
 												message={deletionMessageFile}
 											/>
 										)}
