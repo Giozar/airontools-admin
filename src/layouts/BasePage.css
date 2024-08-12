@@ -178,7 +178,6 @@ header {
 	border: 0px;
 	border-radius: 0.5rem;
 	background-color: var(--accent-primary);
-	padding: 2em;
 	overflow: hidden;
 	text-align: center;
 }
@@ -189,7 +188,6 @@ header {
 
 .content main .options .card svg {
 	align-self: center;
-	margin: 1rem 0;
 	width: 6rem;
 	height: 6rem;
 	color: var(--bg-primary);
