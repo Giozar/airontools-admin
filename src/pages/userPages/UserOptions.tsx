@@ -74,7 +74,7 @@ function ReturnUsers() {
 							style={{ backgroundImage: `url(${user.imageUrl})` }}
 						></div>
 
-						<p>{user.role.name}</p>
+						<p>{user.role?.name}</p>
 
 						<button
 							className='editrol'
@@ -136,6 +136,7 @@ function ContentMainPage() {
 						path={location.pathname + '/crear-rol'}
 					/>
 				</div>
+
 				<ReturnUsers />
 			</main>
 		</BasePage>
