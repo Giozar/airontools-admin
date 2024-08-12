@@ -329,7 +329,6 @@ function ToolForm() {
 										<input
 											type='text'
 											id={spec.id}
-											required
 											value={findKeyInSpecs(spec.id) || ''}
 											onChange={e => handleSpecUpdate(e.target.value, index)}
 										/>
