@@ -5,8 +5,8 @@ import RoleChangeModal from '@components/RoleChangeModal';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
 import EditUserIcon from '@components/svg/EditUserIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import useUserManagement from '@hooks/useUserManagement';
-import useUsers from '@hooks/useUsers';
+import useUserManagement from '@hooks/users/useUserManagement';
+import useUsers from '@hooks/users/useUsers';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/UserOptions.css';
@@ -74,7 +74,7 @@ function ReturnUsers() {
 							style={{ backgroundImage: `url(${user.imageUrl})` }}
 						></div>
 
-						<p>{user.role.name}</p>
+						<p>{user?.role?.name}</p>
 
 						<button
 							className='editrol'

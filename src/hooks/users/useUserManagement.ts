@@ -1,5 +1,5 @@
-import { UserDataFrontend } from '@adapters/user.adapter';
-import axios from 'axios';
+import { UserDataFrontend } from '@interfaces/User.interface';
+import { deleteUserService } from '@services/users/deleteUser.service';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -22,19 +22,21 @@ const useUserManagement = () => {
 		setShowDeletionModalFor(null);
 		setDeletionMessage(null);
 	};
+
 	const handleUpdateList = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
-	const handleDelete = async (userid: string, username: string) => {
+
+	const handleDelete = async (userId: string, userName: string) => {
 		try {
-			await axios.delete(import.meta.env.VITE_API_URL + `/auth/${userid}`);
+			await deleteUserService(userId);
 			setDeletionMessage(
-				`Usuario ${username} (${userid}) ha sido eliminado correctamente.`,
+				`Usuario ${userName} (${userId}) ha sido eliminado correctamente.`,
 			);
-			console.log(`Usuario ${userid} eliminado correctamente.`);
+			console.log(`Usuario ${userId} eliminado correctamente.`);
 		} catch (error) {
-			setDeletionMessage(`No se ha podido eliminar al usuario ${userid}.`);
-			console.error(`Error al eliminar usuario ${userid}:`, error);
+			setDeletionMessage(`No se ha podido eliminar al usuario ${userId}.`);
+			console.error(`Error al eliminar usuario ${userId}:`, error);
 		}
 	};
 
