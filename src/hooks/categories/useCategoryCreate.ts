@@ -1,8 +1,8 @@
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { createCategoryRequest } from '@services/categories/createCategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
-import useErrorHandling from './common/useErrorHandling';
-import useSuccessHandling from './common/useSuccessHandling';
+import useErrorHandling from '../common/useErrorHandling';
+import useSuccessHandling from '../common/useSuccessHandling';
 
 const useCategoryCreate = () => {
 	const {

@@ -1,4 +1,4 @@
-import useCategoryCreate from '@hooks/useCategoryCreate';
+import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { useEffect, useState } from 'react';
 import ErrorMessage from './ErrorMessage';

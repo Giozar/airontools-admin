@@ -4,7 +4,7 @@ import SuccessMessage from '@components/SuccessMessage';
 import PlusIcon from '@components/svg/PlusIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { AuthContext } from '@contexts/AuthContext';
-import useCategoryCreate from '@hooks/useCategoryCreate';
+import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import useFamilyCreate from '@hooks/useFamilyCreate';
 import useSubcategoryCreate from '@hooks/useSubcategoryCreate';
 import { CategoryDataToSend } from '@interfaces/Category.interface';

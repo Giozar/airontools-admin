@@ -1,4 +1,4 @@
-import useCategoryUpdate from '@hooks/useCategoryUpdate';
+import useCategoryUpdate from '@hooks/categories/useCategoryUpdate';
 import useFetchCategoriesFromFamily from '@hooks/useFetchCategoriesFromFamily';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { useEffect } from 'react';
