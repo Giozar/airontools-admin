@@ -25,7 +25,8 @@ const useProductManagement = () => {
 	const handleUpdateList = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
-	const handleDelete = async (Product: ProductDataFrontend) => {
+	const handleDelete = async (Product: ProductDataFrontend | null) => {
+		if (!Product) return;
 		try {
 			const hola = await Promise.all(
 				(Product.images || [])

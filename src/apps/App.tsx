@@ -31,7 +31,7 @@ const App = () => {
 		<AuthProvider>
 			<BrowserRouter>
 				<Routes>
-					<Route path='/login' element={<Login />} />
+					<Route path='/' element={<Login />} />
 					<Route element={<PrivateRoute />}>
 						<Route element={<PrivateRouteOptionUser />}>
 							<Route path='/home' element={<Home />} />

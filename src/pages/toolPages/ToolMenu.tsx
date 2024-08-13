@@ -1,6 +1,7 @@
 import { transformProductDataToFrontend } from '@adapters/products.adapter';
 import ActionCard from '@components/ActionCard';
 import DeletionModal from '@components/DeletionModal';
+import TableComponent from '@components/DynamicTable';
 import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
@@ -51,7 +52,47 @@ function ListOfTools() {
 		setProducts(products.filter(tool => tool.id !== toolid));
 		handleCloseModal();
 	};
-
+	const tableData = {
+		headers: [
+			'ID',
+			'Nombre',
+			'Modelo',
+			'Familia',
+			'Categoría',
+			'Subcategoría',
+			'Ver',
+			'Editar',
+			'Borrar',
+		],
+		rows: products.map(tool => [
+			tool.id,
+			tool.name,
+			tool.model,
+			tool.family.name,
+			tool.category.name,
+			tool.subcategory.name || '---',
+			<button
+				className='view'
+				onClick={() => {
+					setSelectedProduct(tool);
+					setModalOpen(true);
+				}}
+				key='view'
+			>
+				<EyeIcon />
+			</button>,
+			<button className='edit' onClick={() => handleEdit(tool)} key='edit'>
+				<EditIcon />
+			</button>,
+			<button
+				className='delete'
+				onClick={() => setShowDeletionModalFor(tool.id)}
+				key='delete'
+			>
+				<TrashIcon />
+			</button>,
+		]),
+	};
 	return (
 		<div className='toollist'>
 			<h2 className='listtitle'>Lista de herramientas</h2>
@@ -70,61 +111,22 @@ function ListOfTools() {
 				onClose={() => setModalOpen(false)}
 				product={selectedProduct}
 			/>
-			<ul>
-				<li className='title'>
-					<p>ID</p>
-					<p>Nombre</p>
-					<p>Modelo</p>
-					<p>Familia</p>
-					<p>Categoría</p>
-					<p>Subcategoría</p>
-					<p>Ver</p>
-					<p>Editar</p>
-					<p>Borrar</p>
-				</li>
-				{products.map(tool => (
-					<li key={tool.id}>
-						<p>{tool.id}</p>
-						<p>{tool.name}</p>
-						<p>{tool.model}</p>
-						<p>{tool.family.name}</p>
-						<p>{tool.category.name}</p>
-						<p>{tool.subcategory.name || '---'}</p>
+			<TableComponent data={tableData} />
 
-						<button
-							className='view'
-							onClick={() => {
-								setSelectedProduct(tool);
-								setModalOpen(true);
-							}}
-						>
-							<EyeIcon />
-						</button>
-
-						<button className='edit' onClick={() => handleEdit(tool)}>
-							<EditIcon />
-						</button>
-
-						<button
-							className='delete'
-							onClick={() => setShowDeletionModalFor(tool.id)}
-						>
-							<TrashIcon />
-						</button>
-
-						{showDeletionModalFor === tool.id && (
-							<DeletionModal
-								id={tool.id}
-								name={tool.name}
-								onClose={() => handleCloseModal()}
-								onCloseDelete={() => handleCloseModalDeletion(tool.id)}
-								onDelete={() => handleDelete(tool)}
-								message={deletionMessage}
-							/>
-						)}
-					</li>
-				))}
-			</ul>
+			{showDeletionModalFor && (
+				<DeletionModal
+					id={showDeletionModalFor}
+					name={products.find(p => p.id === showDeletionModalFor)?.name || ''}
+					onClose={() => handleCloseModal()}
+					onCloseDelete={() => handleCloseModalDeletion(showDeletionModalFor)}
+					onDelete={() =>
+						handleDelete(
+							products.find(p => p.id === showDeletionModalFor) || null,
+						)
+					}
+					message={deletionMessage}
+				/>
+			)}
 		</div>
 	);
 }
