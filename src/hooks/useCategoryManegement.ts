@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { deleteCategory } from '@services/categories/deleteCategory.service';
 import { useState } from 'react';
 
 const useCategoryManagement = () => {
@@ -18,23 +18,15 @@ const useCategoryManagement = () => {
 	};
 	const handleDelete = async (categoryid: string, categoryname: string) => {
 		try {
-			await axios.delete(
-				import.meta.env.VITE_API_URL + `/categories/${categoryid}`,
-			).then(
-				  await axios.delete(
-            import.meta.env.VITE_API_URL + `/subcategories/category/${categoryid}`,
-				),
-      );
-        
+			await deleteCategory(categoryid);
 			setDeletionMessage(
 				`${categoryname} (${categoryid}) ha sido eliminado correctamente.`,
 			);
-			console.log(`${categoryid} eliminado correctamente.`);
 		} catch (error) {
 			setDeletionMessage(
 				`No se ha podido eliminar la categoria ${categoryid}.`,
 			);
-			console.error(`Error al eliminar la categoria ${categoryid}:`, error);
+			// console.error(`Error al eliminar la categoria ${categoryid}:`, error);
 		}
 	};
 

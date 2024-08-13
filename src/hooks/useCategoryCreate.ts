@@ -1,12 +1,8 @@
 import { CategoryDataToSend } from '@interfaces/Category.interface';
-import axios from 'axios';
-import { cleanNameURL } from './cleanNameUtil';
+import { createCategoryRequest } from '@services/categories/createCategory.service';
+import { errorHandler } from '@utils/errorHandler.util';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
-
-interface ValidationError {
-	message: string[];
-}
 
 const useCategoryCreate = () => {
 	const {
@@ -20,28 +16,11 @@ const useCategoryCreate = () => {
 
 	const createCategory = async (categoryData: CategoryDataToSend) => {
 		try {
-			const response = await axios.post(
-				import.meta.env.VITE_API_URL + '/categories',
-				{
-					...categoryData,
-					path: cleanNameURL(categoryData.name),
-				},
-			);
-			showSuccessCategoryCreate('Categoria Creada Con Éxito');
-			return response.data;
+			await createCategoryRequest(categoryData);
+			showSuccessCategoryCreate('Categoría creada con éxito');
 		} catch (error) {
-			if (!axios.isAxiosError<ValidationError>(error)) {
-				console.error('Registration failed', error);
-				throw error;
-			}
-			if (!error.response) return;
-			console.log(error);
-			const errorMessage = error.response.data.message;
-			const message = Array.isArray(errorMessage)
-				? errorMessage.join(', ')
-				: errorMessage;
-			showErrorCategoryCreate(message);
-			console.log(message);
+			showErrorCategoryCreate('No se puedo crear la categoría');
+			errorHandler(error);
 		}
 	};
 	return { errorLogCategoryCreate, successLogCategoryCreate, createCategory };

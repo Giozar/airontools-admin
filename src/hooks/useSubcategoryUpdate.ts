@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
-import { cleanNameURL } from './cleanNameUtil';
+import { formatString } from '@utils/formatString.utils';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
 
@@ -23,7 +23,7 @@ const useSubcategoryUpdate = () => {
 				import.meta.env.VITE_API_URL + `/subcategories/${subcategoryData._id}`,
 				{
 					...subcategoryData,
-					path: cleanNameURL(subcategoryData.name),
+					path: formatString(subcategoryData.name),
 				},
 			);
 			showSuccessSubcategory('Subcategoria actualizada Con Éxito');

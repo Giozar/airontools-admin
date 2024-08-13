@@ -1,9 +1,6 @@
 import { transformCategoryDataToFrontend } from '@adapters/category.adapter';
-import {
-	CategoryDataBackend,
-	CategoryDataFrontend,
-} from '@interfaces/Category.interface';
-import axios from 'axios';
+import { CategoryDataFrontend } from '@interfaces/Category.interface';
+import { getCategories } from '@services/categories/getCategories.service';
 import { useEffect, useState } from 'react';
 import useErrorHandling from './common/useErrorHandling';
 
@@ -19,17 +16,18 @@ function useFetchCategories() {
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
-				const response = await axios.get<CategoryDataBackend[]>(
-					import.meta.env.VITE_API_URL + '/categories',
-				);
-				setCategories(response.data.map(transformCategoryDataToFrontend));
-				setFilteredCategories(
-					response.data.map(transformCategoryDataToFrontend),
-				);
+				const categoriesResponse = await getCategories();
+				categoriesResponse &&
+					setCategories(
+						categoriesResponse.map(transformCategoryDataToFrontend),
+					);
+				categoriesResponse &&
+					setFilteredCategories(
+						categoriesResponse.map(transformCategoryDataToFrontend),
+					);
 				setLoading(false);
 			} catch (error) {
-				console.error('Failed to fetch categories:', error);
-				showError('Error al cargar las categorias');
+				showError('Error al cargar las categorías');
 				setLoading(false);
 			}
 		};

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 import { FamilyDataToSend } from '@interfaces/Family.interface';
+import { formatString } from '@utils/formatString.utils';
 import { useState } from 'react';
-import { cleanNameURL } from './cleanNameUtil';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
 
@@ -21,7 +21,7 @@ const useFamilyCreate = () => {
 				import.meta.env.VITE_API_URL + '/families',
 				{
 					...familyData,
-					path: cleanNameURL(familyData.name),
+					path: formatString(familyData.name),
 				},
 			);
 			setFamilyId(response.data._id);

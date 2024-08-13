@@ -1,12 +1,7 @@
 import { CategoryDataToSend } from '@interfaces/Category.interface';
-import axios from 'axios';
-import { cleanNameURL } from './cleanNameUtil';
+import { updateCategoryRequest } from '@services/categories/updateCategory.service';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
-
-interface ValidationError {
-	message: string[];
-}
 
 const useCategoryUpdate = () => {
 	const { errorLog: errorLogCategory, showError: showErrorCategory } =
@@ -16,26 +11,10 @@ const useCategoryUpdate = () => {
 
 	const updateCategory = async (categoryData: CategoryDataToSend) => {
 		try {
-			await axios.patch(
-				import.meta.env.VITE_API_URL + `/categories/${categoryData._id}`,
-				{
-					...categoryData,
-					path: cleanNameURL(categoryData.name),
-				},
-			);
-			showSuccessCategory('Categoria actualizada Con Éxito');
+			updateCategoryRequest(categoryData._id as string, categoryData);
+			showSuccessCategory('Categoría actualizada Con Éxito');
 		} catch (error) {
-			if (!axios.isAxiosError<ValidationError>(error)) {
-				console.error('Registration failed', error);
-				return;
-			}
-			if (!error.response) return;
-			console.log(error);
-			const errorMessage = error.response.data.message;
-			const message = Array.isArray(errorMessage)
-				? errorMessage.join(', ')
-				: errorMessage;
-			showErrorCategory(message);
+			showErrorCategory('Error al actualizar la categoría');
 		}
 	};
 	return { errorLogCategory, successLogCategory, updateCategory };

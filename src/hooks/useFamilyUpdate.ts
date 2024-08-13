@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { FamilyDataToSend } from '@interfaces/Family.interface';
-import { cleanNameURL } from './cleanNameUtil';
+import { formatString } from '@utils/formatString.utils';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
 
@@ -21,7 +21,7 @@ const useFamilyUpdate = () => {
 				import.meta.env.VITE_API_URL + `/families/${familyData._id}`,
 				{
 					...familyData,
-					path: cleanNameURL(familyData.name),
+					path: formatString(familyData.name),
 				},
 			);
 			showSuccessFamily('Familia Actualizada Con Éxito');

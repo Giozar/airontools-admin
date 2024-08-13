@@ -1,4 +1,4 @@
-export function cleanNameURL(name: string) {
+export function formatString(name: string) {
 	// Replaces special characters with their non-accented equivalents
 	const cleanedName = name
 		.trim()

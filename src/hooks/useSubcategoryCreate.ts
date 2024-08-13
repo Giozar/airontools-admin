@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
-import { cleanNameURL } from './cleanNameUtil';
+import { formatString } from '@utils/formatString.utils';
 import useErrorHandling from './common/useErrorHandling';
 import useSuccessHandling from './common/useSuccessHandling';
 
@@ -20,7 +20,7 @@ const useSubcategoryCreate = () => {
 				import.meta.env.VITE_API_URL + '/subcategories',
 				{
 					...subcategoryData,
-					path: cleanNameURL(subcategoryData.name),
+					path: formatString(subcategoryData.name),
 				},
 			);
 			showSuccess('Subcategoria Creada Con Éxito');
