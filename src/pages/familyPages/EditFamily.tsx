@@ -10,8 +10,8 @@ import HeaderTitle from '@components/HeaderTitle';
 import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 
-import useFamilyManagement from '@hooks/useFamilyManagement';
-import useFamilyUpdate from '@hooks/useFamilyUpdate';
+import useFamilyManagement from '@hooks/families/useFamilyManagement';
+import useFamilyUpdate from '@hooks/families/useFamilyUpdate';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/editFamily.css';

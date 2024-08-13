@@ -1,5 +1,7 @@
+// src/hooks/useFamilyManagement.ts
+
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
-import axios from 'axios';
+import { deleteFamilyService } from '@services/families/deleteFamily.service';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -14,43 +16,27 @@ const useFamilyManagement = () => {
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
 	const handleEdit = (family: FamilyDataFrontend) => {
-		localStorage.setItem(
-			'familyToEdit',
-			JSON.stringify({
-				family,
-			}),
-		);
-		navigate(location.pathname + `/editar-familia`);
+		localStorage.setItem('familyToEdit', JSON.stringify({ family }));
+		navigate(`${location.pathname}/editar-familia`);
 	};
 
 	const handleCloseModal = () => {
 		setShowDeletionModalFor(null);
 		setDeletionMessage(null);
 	};
+
 	const handleUpdateList = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
-	const handleDelete = async (familyid: string, familyname: string) => {
+
+	const handleDelete = async (familyId: string, familyName: string) => {
 		try {
-			await axios
-				.delete(import.meta.env.VITE_API_URL + `/families/${familyid}`)
-				.then(
-					await axios.delete(
-						import.meta.env.VITE_API_URL + `/categories/family/${familyid}`,
-					),
-				)
-				.then(
-					await axios.delete(
-						import.meta.env.VITE_API_URL + `/subcategories/family/${familyid}`,
-					),
-				);
+			await deleteFamilyService(familyId);
 			setDeletionMessage(
-				`${familyname} (${familyid}) ha sido eliminado correctamente.`,
+				`${familyName} (${familyId}) ha sido eliminado correctamente.`,
 			);
-			console.log(`${familyid} eliminado correctamente.`);
 		} catch (error) {
-			setDeletionMessage(`No se ha podido eliminar la familia ${familyid}.`);
-			console.error(`Error al eliminar la familia ${familyid}:`, error);
+			setDeletionMessage(`No se ha podido eliminar la familia ${familyId}.`);
 		}
 	};
 

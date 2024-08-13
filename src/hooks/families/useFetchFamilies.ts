@@ -1,11 +1,8 @@
-import { transformFamilyDataToFrontend } from '@adapters/family.adapter';
-import {
-	FamilyDataBackend,
-	FamilyDataFrontend,
-} from '@interfaces/Family.interface';
-import axios from 'axios';
+// hooks/useFetchFamilies.ts
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import { FamilyDataFrontend } from '@interfaces/Family.interface';
+import { getFamiliesService } from '@services/families/getFamilies.service';
 import { useEffect, useState } from 'react';
-import useErrorHandling from './common/useErrorHandling';
 
 function useFetchFamilies(updateListFlag?: boolean) {
 	const { errorLog, showError } = useErrorHandling();
@@ -17,22 +14,20 @@ function useFetchFamilies(updateListFlag?: boolean) {
 	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
-		const fetchFamilies = async () => {
+		const loadFamilies = async () => {
 			try {
-				const response = await axios.get<FamilyDataBackend[]>(
-					import.meta.env.VITE_API_URL + '/families',
-				);
-				setFamilies(response.data.map(transformFamilyDataToFrontend));
-				setFilteredFamilies(response.data.map(transformFamilyDataToFrontend));
-				setLoading(false);
+				const fetchedFamilies = await getFamiliesService();
+				setFamilies(fetchedFamilies);
+				setFilteredFamilies(fetchedFamilies);
 			} catch (error) {
 				console.error('Failed to fetch families:', error);
 				showError('Error al cargar las familias');
+			} finally {
 				setLoading(false);
 			}
 		};
 
-		fetchFamilies();
+		loadFamilies();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updateListFlag]); // Empty dependency array ensures this effect runs only once
 
