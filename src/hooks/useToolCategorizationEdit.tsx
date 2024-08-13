@@ -1,6 +1,6 @@
+import useFetchCategories from '@hooks/categories/useFetchCategories';
 import useFetchFamilies from '@hooks/families/useFetchFamilies';
-import useFetchCategories from '@hooks/useFetchCategories';
-import useFetchSubcategories from '@hooks/useFetchSubcategories';
+import useFetchSubcategories from '@hooks/subcategories/useFetchSubcategories';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useEffect, useState } from 'react';

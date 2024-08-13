@@ -1,4 +1,4 @@
-import useSubcategoryCreate from '@hooks/useSubcategoryCreate';
+import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
 import Editables from './Editables';

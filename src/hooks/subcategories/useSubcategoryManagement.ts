@@ -1,4 +1,6 @@
-import axios from 'axios';
+// src/hooks/useSubcategoryManagement.ts
+
+import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
 import { useState } from 'react';
 
 const useSubcategoryManagement = () => {
@@ -13,27 +15,27 @@ const useSubcategoryManagement = () => {
 		setShowDeletionModalFor(null);
 		setDeletionMessage(null);
 	};
+
 	const handleUpdateList = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
+
 	const handleDelete = async (
-		subcategoryid: string,
-		subcategoryname: string,
+		subcategoryId: string,
+		subcategoryName: string,
 	) => {
 		try {
-			await axios.delete(
-				import.meta.env.VITE_API_URL + `/subcategories/${subcategoryid}`,
-			);
+			await deleteSubcategoryService(subcategoryId);
 			setDeletionMessage(
-				`${subcategoryname} (${subcategoryid}) ha sido eliminado correctamente.`,
+				`${subcategoryName} (${subcategoryId}) ha sido eliminado correctamente.`,
 			);
-			console.log(`${subcategoryid} eliminado correctamente.`);
+			console.log(`${subcategoryId} eliminado correctamente.`);
 		} catch (error) {
 			setDeletionMessage(
-				`No se ha podido eliminar la subcategoria ${subcategoryid}.`,
+				`No se ha podido eliminar la subcategoría ${subcategoryId}.`,
 			);
 			console.error(
-				`Error al eliminar la subcategoria ${subcategoryid}:`,
+				`Error al eliminar la subcategoría ${subcategoryId}:`,
 				error,
 			);
 		}

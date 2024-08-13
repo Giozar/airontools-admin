@@ -1,8 +1,8 @@
 import { transformCategoryDataToFrontend } from '@adapters/category.adapter';
+import useErrorHandling from '@hooks/common/useErrorHandling';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { getCategories } from '@services/categories/getCategories.service';
 import { useEffect, useState } from 'react';
-import useErrorHandling from './common/useErrorHandling';
 
 function useFetchCategories() {
 	const { errorLog, showError } = useErrorHandling();

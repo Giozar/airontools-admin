@@ -6,7 +6,7 @@ import TrashIcon from '@components/svg/TrashIcon';
 import { AuthContext } from '@contexts/AuthContext';
 import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import useFamilyCreate from '@hooks/families/useFamilyCreate';
-import useSubcategoryCreate from '@hooks/useSubcategoryCreate';
+import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import BasePage from '@layouts/BasePage';
@@ -25,7 +25,7 @@ function CreateFamilyForm() {
 	const createdBy = authContext?.user?.id || 'user';
 	const { errorLog, successLog, createFamily } = useFamilyCreate();
 	const { createCategory } = useCategoryCreate();
-	const { createSubategory } = useSubcategoryCreate();
+	const { createSubcategory } = useSubcategoryCreate();
 	const [categories, setCategories] = useState<CategoryDataToSend[]>([]);
 	const [subcategories, setSubcategories] = useState<SubcategoryAux[]>([]);
 
@@ -54,7 +54,7 @@ function CreateFamilyForm() {
 				const createdSubcategoryPromises = subcategories.map(
 					async subcategory => {
 						console.log(createdCategories[subcategory.categoryIndex]._id);
-						return await createSubategory({
+						return await createSubcategory({
 							...subcategory.subcategory,
 							family: createdCategories[subcategory.categoryIndex].family._id,
 							category: createdCategories[subcategory.categoryIndex]._id,
