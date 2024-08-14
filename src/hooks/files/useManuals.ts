@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { uploadManuals } from '@services/files/manualUpload.service';
 import { useState } from 'react';
 
 interface Manual {
@@ -9,6 +9,8 @@ interface Manual {
 
 function useManuals() {
 	const [manuals, setManuals] = useState<Manual[]>([]);
+	const [error, setError] = useState<string | null>(null);
+	const [success, setSuccess] = useState<string | null>(null);
 
 	const addManual = () => {
 		setManuals([...manuals, { id: Date.now(), file: null, fileUrl: '' }]);
@@ -24,29 +26,26 @@ function useManuals() {
 		);
 	};
 
-	const uploadManuals = async () => {
-		const formData = new FormData();
-
-		manuals.forEach((manual, index) => {
-			if (manual.file) {
-				formData.append(`manuals[${index}]`, manual.file);
-			}
-		});
-
+	const handleUpload = async () => {
 		try {
-			const response = await axios.post('/api/upload-manuals', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
-			console.log('Upload successful:', response.data);
-			// Handle success (e.g., update state with file URLs)
+			const response = await uploadManuals(manuals);
+			setSuccess('Upload successful');
+			console.log('Upload successful:', response);
+			// Actualiza el estado con las URLs de los archivos subidos si es necesario
 		} catch (error) {
-			console.error('Upload failed:', error);
+			setError('Upload failed');
 		}
 	};
 
-	return { manuals, addManual, removeManual, updateManual, uploadManuals };
+	return {
+		manuals,
+		addManual,
+		removeManual,
+		updateManual,
+		handleUpload,
+		error,
+		success,
+	};
 }
 
 export default useManuals;

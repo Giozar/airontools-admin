@@ -1,4 +1,4 @@
-import uploadFile from '@services/fileUpload/fileUpload.service';
+import uploadFile from '@services/files/fileUpload.service';
 import { ChangeEvent, useState } from 'react';
 
 const useFileUpload = () => {

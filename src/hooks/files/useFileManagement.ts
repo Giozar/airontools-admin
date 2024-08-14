@@ -1,4 +1,6 @@
-import axios from 'axios';
+// src/hooks/useFileManagement.ts
+
+import { deleteFileService } from '@services/files/deleteFile.service';
 import { useState } from 'react';
 
 const useFileManagement = () => {
@@ -13,21 +15,19 @@ const useFileManagement = () => {
 		setShowDeletionModalFor(null);
 		setDeletionMessage(null);
 	};
+
 	const handleUpdateList = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
-	const handleDelete = async (Fileid: string, Filename: string) => {
+
+	const handleDelete = async (fileId: string) => {
 		try {
-			console.log(Fileid, Filename);
-			console.log();
-			await axios.delete(Fileid);
-			setDeletionMessage(
-				`El archivo ${Fileid} ha sido eliminado correctamente.`,
-			);
-			console.log(`El archivo ${Fileid} eliminado correctamente.`);
+			const message = await deleteFileService(fileId);
+			setDeletionMessage(message);
+			console.log(message);
 		} catch (error) {
-			setDeletionMessage(`No se ha podido eliminar al archivo ${Fileid}.`);
-			console.error(`Error al eliminar archivo ${Fileid}:`, error);
+			setDeletionMessage(`Error al eliminar archivo ${fileId}`);
+			// console.error(`Error al eliminar archivo ${fileId}:`, error);
 		}
 	};
 
