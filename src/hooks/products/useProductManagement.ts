@@ -27,7 +27,8 @@ const useProductManagement = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
 
-	const handleDelete = async (product: ProductDataFrontend) => {
+	const handleDelete = async (product: ProductDataFrontend | null) => {
+		if (!product) return;
 		try {
 			const message = await deleteProduct(product);
 			setDeletionMessage(message);

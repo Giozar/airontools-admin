@@ -18,12 +18,17 @@ import '@pages/css/editFamily.css';
 import axios from 'axios';
 
 import { transformFamilyDataToBackend } from '@adapters/family.adapter';
+import useFileManagement from '@hooks/useFileManagement';
+import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useContext, useEffect, useState } from 'react';
+
+import ImageUpdate from '@components/ImageUpdate';
 import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
 	familyToEdit: FamilyDataFrontend;
 }
+
 function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	// Datos recuperados y que se pueden modificar
 	const [name, setName] = useState(familyToEdit.name);
@@ -31,6 +36,8 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const familyId = familyToEdit.id || '';
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
+	const [images, setImages] = useState(familyToEdit.images);
+	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
 		showDeletionModalFor,
@@ -39,6 +46,14 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		handleCloseModal,
 		handleDelete,
 	} = useFamilyManagement();
+	const {
+		setShowDeletionModalForFile,
+		showDeletionModalForFile,
+		deletionMessageFile,
+		handleCloseModalFile,
+		handleDeleteFile,
+	} = useFileManagement();
+
 	const [update, setUpdate] = useState(false);
 	const [numberOfCategories, setNumberOfCategories] = useState<number | null>(
 		null,
@@ -50,7 +65,8 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		number | null
 	>(null);
 	const [numberOfProducts, setNumberOfProducts] = useState<number | null>(null);
-
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
 	const updateCategoryList = () => {
 		setUpdate(!update);
 	};
@@ -66,21 +82,45 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const handleCloseModalDeletion = () => {
 		navigate('/home/categorizacion');
 	};
+	const handleCloseModalDeletionImages = async (image: string) => {
+		setImages(images?.filter(img => img !== image));
+	};
+	const handleDeleteFileFor = (imageToDelete: string) => {
+		console.log(imageToDelete);
+		setImagesToDelete(prevImagesToDelete => {
+			const updatedImagesToDelete = new Set([
+				...prevImagesToDelete,
+				imageToDelete,
+			]);
+			return Array.from(updatedImagesToDelete);
+		});
+		handleCloseModalDeletionImages(imageToDelete);
+	};
+	const handleImageUpload = async (productId: string) => {
+		return await handleFileUpload('images', productId, 'images');
+	};
+	useEffect(() => {}, [images]); // para que se actualicen las imagenes
 	const handleUpdateFamily = async () => {
 		try {
-			if (
-				name === familyToEdit.name &&
-				description === familyToEdit.description
-			)
-				return;
+			console.log(imagesToDelete);
+			const uploadedUrlImages = await handleImageUpload(familyId);
+			const deletePromises = imagesToDelete.map(async image => {
+				return await handleDeleteFile(image, '');
+			});
+			const deletedFiles = await Promise.all(deletePromises);
+
+			console.log(deletedFiles);
+			console.log(uploadedUrlImages);
+			console.log(images);
 			await updateFamily(
 				transformFamilyDataToBackend({
 					...familyToEdit,
 					name,
 					description,
+					images: [...images, ...uploadedUrlImages],
 				}),
 			);
-			// Esto tal vez cause bugs cuando de refresh...
+			setImages(prevImages => [...prevImages, ...uploadedUrlImages]);
 			localStorage.setItem(
 				'familyToEdit',
 				JSON.stringify({
@@ -186,19 +226,38 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 					<span>Editando la Familia</span> {name}
 				</h2>
 				<div className='familycontent'>
-					<Editables
-						what='Nombre'
-						valueOf={name}
-						type='input'
-						onUpdate={handleNameUpdate}
+					<div className='column'>
+						<Editables
+							what='Nombre'
+							valueOf={name}
+							type='input'
+							onUpdate={handleNameUpdate}
+						/>
+						<Editables
+							what='Descripción'
+							valueOf={description || ''}
+							type='textarea'
+							onUpdate={handleDescriptionUpdate}
+						/>
+					</div>
+					<ImageUpdate
+						images={images}
+						filePreviews={filePreviews}
+						handleRemoveFile={handleRemoveFile}
+						handleFileSelect={handleFileSelect}
+						setShowDeletionModalForFile={setShowDeletionModalForFile}
+						showDeletionModalForFile={showDeletionModalForFile}
+						deletionMessageFile={deletionMessageFile}
+						handleCloseModalFile={handleCloseModalFile}
+						handleDeleteFileFor={handleDeleteFileFor}
+						handleCloseModalDeletionImages={handleCloseModalDeletionImages}
 					/>
-					<Editables
-						what='Descripción'
-						valueOf={description || ''}
-						type='textarea'
-						onUpdate={handleDescriptionUpdate}
-					/>
-					<button className='save' onClick={handleUpdateFamily}>
+
+					<button
+						className='save'
+						onClick={handleUpdateFamily}
+						style={{ marginTop: '2em' }}
+					>
 						Guardar Cambios
 					</button>
 				</div>

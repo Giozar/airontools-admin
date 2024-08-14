@@ -4,6 +4,7 @@ import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 
 import HeaderTitle from '@components/HeaderTitle';
+import SelectInput from '@components/SelectInput';
 import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
@@ -28,25 +29,17 @@ function EditSpecificationsForm({
 	const [name, setName] = useState(specToEdit.name);
 	const [description, setDescription] = useState(specToEdit.description);
 	const [unit, setUnit] = useState(specToEdit.unit);
-
 	const {
 		families,
-		familyId,
+		selectedFamily,
+		selectedCategory,
+		selectedSubcategory,
 		filteredCategories,
-		categoryId,
 		filteredSubcategories,
-		subcategoryId,
-		familyName,
-		categoryName,
-		subcategoryName,
-		handleFamilyIdUpdate,
-		handleCategoryIdUpdate,
-		handleSubcategoryIdUpdate,
-	} = useToolCategorizationEdit({
-		initialFamilyId: specToEdit.family,
-		initialCategoryId: specToEdit.category,
-		initialSubcategoryId: specToEdit.subcategory,
-	});
+		handleFamilyChange,
+		handleCategoryChange,
+		handleSubcategoryChange,
+	} = useToolCategorizationEdit();
 
 	const { showError, errorLog } = useErrorHandling();
 	const { showSuccess, successLog } = useSuccessHandling();
@@ -71,9 +64,9 @@ function EditSpecificationsForm({
 					name,
 					description,
 					unit,
-					family: familyId,
-					category: categoryId,
-					subcategory: subcategoryId,
+					family: selectedFamily?.id,
+					category: selectedCategory?.id,
+					subcategory: selectedSubcategory?.id,
 				},
 			);
 			showSuccess('Especificación editada con éxito');
@@ -139,37 +132,41 @@ function EditSpecificationsForm({
 							onUpdate={handleUnitUpdate}
 						/>
 						<hr></hr>
-						<Editables
-							what='Familia'
-							valueOf={familyName}
-							type='select'
-							onUpdate={handleFamilyIdUpdate}
-							list={families.map(item => ({
-								id: item.id || 'error',
-								name: item.name || 'error',
+						<SelectInput
+							id='familiaselect'
+							name='Selecciona una familia'
+							options={families.map(family => ({
+								value: family.id,
+								label: family.name,
 							}))}
+							value={selectedFamily?.name || ''}
+							onChange={handleFamilyChange}
 						/>
-
-						<Editables
-							what='Categoría'
-							valueOf={categoryName}
-							type='select'
-							onUpdate={handleCategoryIdUpdate}
-							list={filteredCategories.map(item => ({
-								id: item.id || 'error',
-								name: item.name || 'error',
-							}))}
-						/>
-						<Editables
-							what='SubCategoría'
-							valueOf={subcategoryName}
-							type='select'
-							onUpdate={handleSubcategoryIdUpdate}
-							list={filteredSubcategories.map(item => ({
-								id: item.id || 'error',
-								name: item.name || 'error',
-							}))}
-						/>
+						{filteredCategories.length > 0 && (
+							<SelectInput
+								id='catselect'
+								name='Selecciona una categoría'
+								options={filteredCategories.map(category => ({
+									value: category.id,
+									label: category.name,
+								}))}
+								value={selectedCategory?.name || ''}
+								onChange={handleCategoryChange}
+							/>
+						)}
+						{filteredSubcategories.length > 0 && (
+							<SelectInput
+								id='subcatselect'
+								name='Selecciona una subcategoría'
+								options={filteredSubcategories.map(subcategory => ({
+									value: subcategory.id,
+									label: subcategory.name,
+								}))}
+								value={selectedSubcategory?.name || ''}
+								onChange={handleSubcategoryChange}
+							/>
+						)}
+						<hr></hr>
 
 						<button className='save' onClick={handleSave}>
 							Guardar Cambios

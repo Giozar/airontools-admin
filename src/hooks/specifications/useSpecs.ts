@@ -8,39 +8,37 @@ interface Spec {
 }
 
 function useSpecs({ catId, initialSpecs }: Spec) {
-	const [specs, setSpecs] = useState<
+	const [specificationValues, setSpecificationValues] = useState<
 		Array<{ specification: string; value: string }>
 	>(initialSpecs || []);
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
-	const [flag, setFlag] = useState(true);
-
-	// Fetch specifications based on category ID
 
 	const fetchSpecifications = async () => {
 		if (!catId) return;
 
 		try {
 			const data = await fetchSpecificationsByCategoryId(catId);
-			console.log(data);
 			setSpecifications(data);
+			if (!initialSpecs) {
+				const initialSpecsData = data.map(spec => ({
+					specification: spec.id,
+					value: '',
+				}));
+				setSpecificationValues(initialSpecsData);
+			}
 		} catch (error) {
 			console.error('Failed to fetch specifications:', error);
 		}
 	};
 
 	useEffect(() => {
-		if (flag) {
-			fetchSpecifications();
-			setFlag(false);
-		} else {
-			setSpecs([]);
-			fetchSpecifications();
-		}
+		fetchSpecifications();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [catId]);
 
 	const editOrCreateKeyInSpecs = useCallback(
 		(keyToFind: string, newValue: string) => {
-			setSpecs(prevSpecs => {
+			setSpecificationValues(prevSpecs => {
 				const updatedSpecs = prevSpecs.map(spec =>
 					spec.specification === keyToFind
 						? { ...spec, value: newValue }
@@ -57,16 +55,6 @@ function useSpecs({ catId, initialSpecs }: Spec) {
 		[],
 	);
 
-	// Find value by key
-	const findKeyInSpecs = useCallback(
-		(keyToFind: string) => {
-			const spec = specs.find(spec => spec.specification === keyToFind);
-			return spec ? spec.value : '';
-		},
-		[specs],
-	);
-
-	// Handle specification update
 	const handleSpecUpdate = useCallback(
 		(newValue: string, index: number) => {
 			const specId = specifications[index]?.id;
@@ -77,23 +65,11 @@ function useSpecs({ catId, initialSpecs }: Spec) {
 		[specifications, editOrCreateKeyInSpecs],
 	);
 
-	// Handle input changes
-	const handleInputChange = useCallback((id: string, value: string) => {
-		setSpecs(prevSpecs => {
-			const updatedSpecs = prevSpecs.map(spec =>
-				spec.specification === id ? { ...spec, value } : spec,
-			);
-			return updatedSpecs;
-		});
-	}, []);
-
 	return {
-		specs,
+		specificationValues,
 		specifications,
 		editOrCreateKeyInSpecs,
-		findKeyInSpecs,
 		handleSpecUpdate,
-		handleInputChange,
 	};
 }
 

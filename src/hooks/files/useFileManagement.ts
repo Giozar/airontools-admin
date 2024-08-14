@@ -1,19 +1,19 @@
-// src/hooks/useFileManagement.ts
-
 import { deleteFileService } from '@services/files/deleteFile.service';
 import { useState } from 'react';
 
 const useFileManagement = () => {
-	const [deletionMessage, setDeletionMessage] = useState<string | null>(null);
-	const [showDeletionModalFor, setShowDeletionModalFor] = useState<
+	const [deletionMessageFile, setDeletionMessageFile] = useState<string | null>(
+		null,
+	);
+	const [showDeletionModalForFile, setShowDeletionModalForFile] = useState<
 		string | null
 	>(null);
-	const [showModalFor, setShowModalFor] = useState<string | null>(null);
+	const [showModalForFile, setShowModalForFile] = useState<string | null>(null);
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
-	const handleCloseModal = () => {
-		setShowDeletionModalFor(null);
-		setDeletionMessage(null);
+	const handleCloseModalFile = () => {
+		setShowDeletionModalForFile(null);
+		setDeletionMessageFile(null);
 	};
 
 	const handleUpdateList = () => {
@@ -23,21 +23,21 @@ const useFileManagement = () => {
 	const handleDelete = async (fileId: string) => {
 		try {
 			const message = await deleteFileService(fileId);
-			setDeletionMessage(message);
+			setDeletionMessageFile(message);
 			console.log(message);
 		} catch (error) {
-			setDeletionMessage(`Error al eliminar archivo ${fileId}`);
+			setDeletionMessageFile(`Error al eliminar archivo ${fileId}`);
 			// console.error(`Error al eliminar archivo ${fileId}:`, error);
 		}
 	};
 
 	return {
-		showDeletionModalFor,
-		setShowDeletionModalFor,
-		showModalFor,
-		setShowModalFor,
-		deletionMessage,
-		handleCloseModal,
+		setShowModalForFile,
+		setShowDeletionModalForFile,
+		showDeletionModalForFile,
+		showModalForFile,
+		deletionMessageFile,
+		handleCloseModalFile,
 		handleDelete,
 		handleUpdateList,
 		updateListFlag,

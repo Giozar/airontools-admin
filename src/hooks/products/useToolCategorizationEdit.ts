@@ -2,28 +2,20 @@ import useFetchCategories from '@hooks/categories/useFetchCategories';
 import useFetchFamilies from '@hooks/families/useFetchFamilies';
 import useFetchSubcategories from '@hooks/subcategories/useFetchSubcategories';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
+import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useEffect, useState } from 'react';
-function useToolCategorizationEdit({
-	initialFamilyId,
-	initialCategoryId,
-	initialSubcategoryId,
-}: {
-	initialFamilyId: string;
-	initialCategoryId: string;
-	initialSubcategoryId?: string;
-}) {
-	const [familyId, setFamilyId] = useState(initialFamilyId);
-	const [categoryId, setCategoryId] = useState(initialCategoryId);
-	const [subcategoryId, setSubcategoryId] = useState(initialSubcategoryId);
 
-	const [familyName, setFamilyName] = useState('');
-	const [categoryName, setCategoryName] = useState('');
-	const [subcategoryName, setSubcategoryName] = useState('');
-
+const useToolCategorizationEdit = () => {
 	const { families } = useFetchFamilies();
 	const { categories } = useFetchCategories();
 	const { subcategories } = useFetchSubcategories();
+	const [selectedFamily, setSelectedFamily] =
+		useState<FamilyDataFrontend | null>();
+	const [selectedCategory, setSelectedCategory] =
+		useState<CategoryDataFrontend | null>();
+	const [selectedSubcategory, setSelectedSubcategory] =
+		useState<SubcategoryDataFrontend | null>();
 	const [filteredCategories, setFilteredCategories] = useState<
 		CategoryDataFrontend[]
 	>([]);
@@ -32,81 +24,74 @@ function useToolCategorizationEdit({
 	>([]);
 
 	useEffect(() => {
-		if (categories) {
-			setFilteredCategories(categories.filter(c => c.family.id === familyId));
-		}
-	}, [categories, familyId]);
-	useEffect(() => {
-		if (categories) {
-			setFilteredSubcategories(
-				subcategories.filter(c => c.category._id === categoryId),
+		if (selectedFamily) {
+			const filtered = categories.filter(
+				category => category.family.id === selectedFamily.id,
 			);
+			setFilteredCategories(filtered);
+			// Clear the selected category if it is no longer valid
+			if (
+				selectedCategory &&
+				!filtered.some(category => category.id === selectedCategory.id)
+			) {
+				setSelectedCategory(null);
+			}
+		} else {
+			setFilteredCategories([]);
 		}
-	}, [subcategories, categoryId, categories]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedFamily, categories]);
 
 	useEffect(() => {
-		const family = families.find(f => f.id === familyId);
-		setFamilyName(family ? family.name : '');
+		if (selectedCategory) {
+			const filtered = subcategories.filter(
+				subcategory => subcategory.category._id === selectedCategory.id,
+			);
+			setFilteredSubcategories(filtered);
+			// Clear the selected subcategory if it is no longer valid
+			if (
+				selectedSubcategory &&
+				!filtered.some(subcategory => subcategory.id === selectedSubcategory.id)
+			) {
+				setSelectedSubcategory(null);
+			}
+		} else {
+			setFilteredSubcategories([]);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedCategory, subcategories]);
 
-		const category = filteredCategories.find(c => c.id === categoryId);
-		setCategoryName(category ? category.name : '');
-
-		const subcategory = filteredSubcategories.find(s => s.id === subcategoryId);
-		setSubcategoryName(subcategory ? subcategory.name : '');
-	}, [
-		families,
-		familyId,
-		categoryId,
-		subcategoryId,
-		filteredCategories,
-		filteredSubcategories,
-	]);
-
-	const handleFamilyIdUpdate = (newValue: string) => {
-		setFamilyId(newValue);
-		const family = families.find(f => f.id === newValue);
-		setFamilyName(family ? family.name : '');
-		setFilteredCategories(categories.filter(f => f.family.id === newValue));
-		setCategoryId('');
-		setCategoryName('');
-		setSubcategoryId('');
-		setSubcategoryName('');
+	// Function to handle family selection change
+	const handleFamilyChange = (value: string) => {
+		setSelectedFamily(families.find(family => family.id === value) || null);
 	};
 
-	const handleCategoryIdUpdate = (newValue: string) => {
-		setCategoryId(newValue);
-		const category = filteredCategories.find(f => f.id === newValue);
-		setCategoryName(category ? category.name : '');
-		setFilteredSubcategories(
-			subcategories.filter(f => f.category._id === newValue),
+	// Function to handle category selection change
+	const handleCategoryChange = (value: string) => {
+		setSelectedCategory(
+			filteredCategories.find(category => category.id === value) || null,
 		);
-		setSubcategoryId('');
-		setSubcategoryName('');
 	};
 
-	const handleSubcategoryIdUpdate = (newValue: string) => {
-		setSubcategoryId(newValue);
-		const subcategory = filteredSubcategories.find(f => f.id === newValue);
-		setSubcategoryName(subcategory ? subcategory.name : '');
+	// Function to handle subcategory selection change
+	const handleSubcategoryChange = (value: string) => {
+		setSelectedSubcategory(
+			filteredSubcategories.find(subcategory => subcategory.id === value) ||
+				null,
+		);
 	};
 
+	// Return selected values and functions
 	return {
 		families,
-		familyId,
-		setFamilyId,
+		selectedFamily,
+		selectedCategory,
+		selectedSubcategory,
 		filteredCategories,
-		categoryId,
-		setCategoryId,
 		filteredSubcategories,
-		subcategoryId,
-		setSubcategoryId,
-		familyName,
-		categoryName,
-		subcategoryName,
-		handleFamilyIdUpdate,
-		handleCategoryIdUpdate,
-		handleSubcategoryIdUpdate,
+		handleFamilyChange,
+		handleCategoryChange,
+		handleSubcategoryChange,
 	};
-}
-
+};
 export default useToolCategorizationEdit;

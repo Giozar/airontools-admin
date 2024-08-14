@@ -1,61 +1,55 @@
-/* MonitoringMenu.css */
 .container {
-	margin: 0 auto;
-	padding: 16px;
-	max-width: 1120px;
+	border-radius: 8px;
+	background-color: var(--bg-secondary);
+	padding: 20px;
 }
 
 .activity-card {
-	transition:
-		transform 0.2s,
-		box-shadow 0.2s;
-	margin-bottom: 16px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	border-radius: 8px;
-	--accent-secondary: #093f63;
-	padding: 16px;
-}
-
-.activity-card:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	margin-bottom: 20px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	background-color: var(--card-bg);
+	overflow: hidden;
 }
 
 .activity-header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	background-color: var(--bg-tertiary);
+	padding: 15px;
 }
 
 .activity-title {
-	--text-secondary: #666666; /* Medium grey for secondary text */
-	font-weight: bold;
-	font-size: 1.25rem;
+	margin: 0;
+	color: var(--text-primary);
+	font-size: 1.2rem;
 }
 
 .toggle-button {
-	transition: background-color 0.2s;
+	transition: background-color 0.3s ease;
 	cursor: pointer;
 	border: none;
 	border-radius: 4px;
-	background-color: #007bff;
-	padding: 8px 16px;
-	color: #fff;
-	font-weight: bold;
+	background-color: var(--accent-primary);
+	padding: 8px 12px;
+	color: var(--button-text);
 }
 
 .toggle-button:hover {
-	background-color: #0056b3;
+	background-color: var(--hover);
 }
 
 .activity-list {
+	margin: 0;
 	padding: 0;
-	list-style: none;
+	list-style-type: none;
 }
 
 .activity-item {
-	border-bottom: 1px solid #e0e0e0;
-	padding: 16px 0;
+	border-bottom: 1px solid var(--divider);
+	padding: 15px;
 }
 
 .activity-item:last-child {
@@ -63,17 +57,33 @@
 }
 
 .activity-item-title {
-	--text-primary: #333333; /* Dark grey for readable text */
-	font-weight: 500;
-	font-size: 1rem;
+	display: block;
+	margin-bottom: 8px;
+	color: var(--text-primary);
+	font-weight: bold;
 }
 
 .activity-details {
-	margin-top: 8px;
-	--text-secondary: #666666; /* Medium grey for secondary text */
-	font-size: 0.875rem;
+	margin-top: 10px;
+	border-radius: 4px;
+	background-color: var(--bg-tertiary);
+	padding: 10px;
 }
 
 .activity-details p {
-	margin: 4px 0;
+	margin: 5px 0;
+	color: var(--text-secondary);
+	font-size: 0.9rem;
+}
+
+/* Estilos adicionales para mejorar la responsividad */
+@media (max-width: 768px) {
+	.activity-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.toggle-button {
+		margin-top: 10px;
+	}
 }
