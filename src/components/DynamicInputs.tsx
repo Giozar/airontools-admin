@@ -47,7 +47,7 @@ const DynamicInputs: React.FC<DynamicInputsProps> = ({
 					</button>
 				</div>
 			))}
-			<button onClick={handleAdd}>Añadir Característica</button>
+			<button onClick={handleAdd}>Añadir {label}</button>
 		</div>
 	);
 };

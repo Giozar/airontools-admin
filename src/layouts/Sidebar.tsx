@@ -21,7 +21,7 @@ function Sidebar() {
 		authContext?.setAuth({ isAuthenticated: false, user: null });
 		localStorage.setItem('token', '');
 		localStorage.setItem('location', '');
-		navigate('/login');
+		navigate('/');
 	};
 	return (
 		<div className='sidebar'>
@@ -67,7 +67,7 @@ function Sidebar() {
 				<nav>
 					<a href='#'>Información personal</a>
 					<a href='#'>Seguridad</a>
-					<Link to='/login' onClick={handleClose}>
+					<Link to='/' onClick={handleClose}>
 						Cerrar sesión
 					</Link>
 				</nav>

@@ -1,16 +1,19 @@
 import DynamicInputs from '@components/DynamicInputs';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
+import ImageUploader from '@components/ImageUploader';
+import ManualUploader from '@components/ManualUploader';
+import SelectInput from '@components/SelectInput';
 import SuccessMessage from '@components/SuccessMessage';
-import TrashIcon from '@components/svg/TrashIcon';
+import TableRow from '@components/TableRow';
+import TextAreaInput from '@components/TextAreaInput';
+import TextInput from '@components/TextInput';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
-import useCharacteristics from '@hooks/useCharacteristics';
 import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
-import useVideos from '@hooks/useVideos';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { errorHandler } from '@utils/errorHandler.util';
@@ -109,12 +112,12 @@ const Atornillador = () => {
 	const [toolDescription, setToolDescription] = useState<string>('');
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
-	const {
-		characteristics,
-		addCharacteristic,
-		removeCharacteristic,
-		updateCharacteristic,
-	} = useCharacteristics();
+	const [characteristics, setChar] = useState<string[]>([]);
+	const [recommendations, setRecommendations] = useState<string[]>([]);
+	const [requeriments, setRequeriments] = useState<string[]>([]);
+	const [includes, setIncludes] = useState<string[]>([]);
+	const [accessories, setAccessories] = useState<string[]>([]);
+
 	const {
 		families,
 		familyId,
@@ -122,21 +125,22 @@ const Atornillador = () => {
 		categoryId,
 		filteredSubcategories,
 		subcategoryId,
-		handleFamilyIdUpdate,
-		handleCategoryIdUpdate,
-		handleSubcategoryIdUpdate,
 		familyName,
 		categoryName,
 		subcategoryName,
+		handleFamilyIdUpdate,
+		handleCategoryIdUpdate,
+		handleSubcategoryIdUpdate,
 	} = useToolCategorizationEdit({
 		initialFamilyId: '',
 		initialCategoryId: '',
 		initialSubcategoryId: '',
 	});
-	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
+	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
 		catId: categoryId,
 	});
-	const { videos, addVideo, removeVideo, updateVideo } = useVideos();
+	const [videos, setVideos] = useState<string[]>([]);
+	// const { videos, addVideo, removeVideo, updateVideo } = useVideos();
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 
@@ -160,7 +164,7 @@ const Atornillador = () => {
 		e.preventDefault();
 		try {
 			console.log(subcategoryId);
-			console.log(specs);
+			console.log(specificationValues);
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
@@ -169,7 +173,7 @@ const Atornillador = () => {
 				category: categoryId,
 				subcategory: subcategoryId,
 				description: toolDescription,
-				specifications: specs,
+				specifications: specificationValues,
 				videos: videos.map(video => video.url),
 				createdBy,
 			};
@@ -216,143 +220,106 @@ const Atornillador = () => {
 					{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
 					<div className='toolinfo'>
-						<div>
-							<label htmlFor='toolName'>Nombre de herramienta</label>
-							<input
-								type='text'
-								id='toolName'
-								value={toolName}
-								onChange={e => setToolName(e.target.value)}
-							/>
-						</div>
+						<TextInput
+							id='toolName'
+							label='Nombre de herramienta'
+							value={toolName}
+							onChange={e => setToolName(e.target.value)}
+						/>
 
-						<div>
-							<label htmlFor='toolModel'>Modelo de herramienta</label>
-							<input
-								type='text'
-								id='toolModel'
-								placeholder='----'
-								value={toolModel}
-								onChange={e => setToolModel(e.target.value)}
-							/>
-						</div>
+						<TextInput
+							id='toolModel'
+							label='Modelo de herramienta'
+							value={toolModel}
+							onChange={e => setToolModel(e.target.value)}
+						/>
 					</div>
 				</form>
 			</div>
 			<div className='content'>
 				<div className='left-column'>
-					<label htmlFor='toolDescription'>Descripción de herramienta</label>
-					<textarea
+					<TextAreaInput
 						id='toolDescription'
-						rows={3}
+						label='Descripción de herramienta'
 						placeholder='Descripción general de la herramienta'
 						value={toolDescription}
 						onChange={e => setToolDescription(e.target.value)}
+						rows={5}
 					/>
-					<DynamicInputs label='Características' />
-					<DynamicInputs label='Recomendaciones' />
-					<DynamicInputs label='Requisitos de operación' />
+					<DynamicInputs label='Características' onValuesChange={setChar} />
+					<DynamicInputs
+						label='Recomendaciones'
+						onValuesChange={setRecommendations}
+					/>
+					<DynamicInputs
+						label='Requisitos de operación'
+						onValuesChange={setRequeriments}
+					/>
 				</div>
-				<div className='right-column'>
-					<label>Fotos de herramienta</label>
-					<div className='image-upload'>
-						<div className='image-placeholder add-image'>
-							<label htmlFor='file-input'>Subir imagen +</label>
-							<input
-								type='file'
-								id='file-input'
-								multiple
-								accept='image/*'
-								onChange={event => handleFileSelect(event, 'images')}
-								style={{ display: 'none' }}
-							/>
-						</div>
-						{filePreviews.images?.map((preview, index) => (
-							<div key={index} className='image-preview'>
-								<img
-									src={preview}
-									alt={`preview-${index}`}
-									className='image-placeholder'
-								/>
-								<button
-									onClick={() => handleRemoveFile('images', index)}
-									className='delete'
-									type='button'
-								>
-									<TrashIcon />
-								</button>
-							</div>
-						))}
-					</div>
 
+				<div className='right-column'>
+					<ImageUploader
+						title='Fotos de herramienta'
+						filePreviews={filePreviews}
+						onFileSelect={handleFileSelect}
+						onRemoveFile={handleRemoveFile}
+					/>
+					<ManualUploader
+						title='Manuales de herramienta'
+						filePreviews={filePreviews}
+						onFileSelect={handleFileSelect}
+						onRemoveFile={handleRemoveFile}
+					/>
+					<DynamicInputs label='Videos' onValuesChange={setVideos} />
+					<SelectInput
+						id='familiaselect'
+						label='Selecciona una familia'
+						options={families.map(family => ({
+							value: family.id,
+							label: family.name,
+						}))}
+						value={familyName}
+						onChange={handleFamilyIdUpdate}
+					/>
+					<SelectInput
+						id='catselect'
+						label='Selecciona una categoria'
+						options={filteredCategories.map(cat => ({
+							value: cat.id,
+							label: cat.name,
+						}))}
+						value={categoryName}
+						onChange={handleCategoryIdUpdate}
+					/>
+					<SelectInput
+						id='subcatselect'
+						label='Selecciona una subcategoria'
+						options={filteredSubcategories.map(subcat => ({
+							value: subcat.id,
+							label: subcat.name,
+						}))}
+						value={subcategoryName}
+						onChange={handleSubcategoryIdUpdate}
+					/>
 					<h2>Especificaciones</h2>
 					<table>
 						<tbody>
-							<tr>
-								<th>Rango de Torque</th>
-								<td>5-13 Nm</td>
-							</tr>
-							<tr>
-								<th>Velocidad</th>
-								<td>1,800 rpm</td>
-							</tr>
-							<tr>
-								<th>Tipo de Mecanismo</th>
-								<td>Clutch positivo</td>
-							</tr>
-							<tr>
-								<th>Peso</th>
-								<td>1.2 Kg</td>
-							</tr>
+							{specifications.map((spec, index) => (
+								<TableRow
+									key={spec.id} // Ensure unique key for each row
+									label={spec.name}
+									unit={spec.unit || ''}
+									value={specificationValues[index]?.value || ''} // Adjust this if specificationValues doesn't align with specifications
+									onValueChange={newValue => handleSpecUpdate(newValue, index)}
+								/>
+							))}
 						</tbody>
 					</table>
-					<label>Incluye:</label>
-					<div className='characteristics'>
-						{characteristics.map(char => (
-							<div key={char.id} className='characteristic-item'>
-								<input
-									type='text'
-									placeholder='(ej: cable,...)'
-									value={char.value}
-									onChange={e => updateCharacteristic(char.id, e.target.value)}
-								/>
-								<button
-									type='button'
-									className='delete'
-									onClick={() => removeCharacteristic(char.id)}
-								>
-									<TrashIcon />
-								</button>
-							</div>
-						))}
-						<button type='button' className='add' onClick={addCharacteristic}>
-							Añadir extra
-						</button>
-					</div>
-
-					<label>Accesorios opcionales</label>
-					<div className='characteristics'>
-						{characteristics.map(char => (
-							<div key={char.id} className='characteristic-item'>
-								<input
-									type='text'
-									placeholder='Accesorio'
-									value={char.value}
-									onChange={e => updateCharacteristic(char.id, e.target.value)}
-								/>
-								<button
-									type='button'
-									className='delete'
-									onClick={() => removeCharacteristic(char.id)}
-								>
-									<TrashIcon />
-								</button>
-							</div>
-						))}
-						<button type='button' className='add' onClick={addCharacteristic}>
-							Añadir accesorio
-						</button>
-					</div>
+					<DynamicInputs label='Extras' onValuesChange={setIncludes} />
+					<DynamicInputs
+						label='Accesorios opcionales'
+						onValuesChange={setAccessories}
+					/>
 				</div>
 			</div>
 		</div>

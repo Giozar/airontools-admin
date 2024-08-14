@@ -96,7 +96,7 @@ const App = () => {
 const PrivateRoute = () => {
 	const authContext = React.useContext(AuthContext);
 	if (!authContext) return null;
-	return authContext.isAuthenticated ? <Outlet /> : <Navigate to='/login' />;
+	return authContext.isAuthenticated ? <Outlet /> : <Navigate to='/' />;
 };
 
 const PrivateRouteOptionUser = () => {

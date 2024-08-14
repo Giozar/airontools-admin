@@ -61,7 +61,7 @@ function Login() {
 		e.preventDefault();
 		try {
 			const response = await axios.post<LoginResponse>(
-				import.meta.env.VITE_API_URL + '/auth/login',
+				import.meta.env.VITE_API_URL + '/auth/',
 				{
 					email,
 					password,
