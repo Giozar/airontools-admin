@@ -6,7 +6,7 @@ import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import ToolInfoModal from '@components/ToolInfoModal';
-import useProductManagement from '@hooks/useProductManagement';
+import useProductManagement from '@hooks/products/useProductManagement';
 import {
 	ProductDataBackend,
 	ProductDataFrontend,

@@ -8,8 +8,8 @@ import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useFileManagement from '@hooks/files/useFileManagement';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
-import useSpecs from '@hooks/useSpecs';
-import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
+import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
+import useSpecs from '@hooks/specifications/useSpecs';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 
 import BasePage from '@layouts/BasePage';

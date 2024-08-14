@@ -109,24 +109,4 @@ function useToolCategorizationEdit({
 	};
 }
 
-/*
-	const {
-	  familyId,
-	  setFamilyId,
-	  categoryId,
-	  setCategoryId,
-	  subcategoryId,
-	  setSubcategoryId,
-	  familyName,
-	  categoryName,
-	  subcategoryName,
-	  specifications,
-	  handleFamilyIdUpdate,
-	  handleCategoryIdUpdate,
-	  handleSubcategoryIdUpdate
-	} = useToolCategorizationEdit({
-	  initialFamilyId: toolToEdit.familyId,
-	  initialCategoryId: toolToEdit.categoryId,
-	  initialSubcategoryId: toolToEdit.subcategoryId
-	}); */
 export default useToolCategorizationEdit;

@@ -1,5 +1,5 @@
 import { ProductDataFrontend } from '@interfaces/Product.interface';
-import axios from 'axios';
+import { deleteProduct } from '@services/products/deleteProduct.service';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -13,36 +13,28 @@ const useProductManagement = () => {
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
-	const handleEdit = (Product: ProductDataFrontend) => {
-		localStorage.setItem('ProductToEdit', JSON.stringify(Product));
-		navigate(location.pathname + `/editar-herramienta`);
+	const handleEdit = (product: ProductDataFrontend) => {
+		localStorage.setItem('ProductToEdit', JSON.stringify(product));
+		navigate(`${location.pathname}/editar-herramienta`);
 	};
 
 	const handleCloseModal = () => {
 		setShowDeletionModalFor(null);
 		setDeletionMessage(null);
 	};
+
 	const handleUpdateList = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
-	const handleDelete = async (Product: ProductDataFrontend) => {
+
+	const handleDelete = async (product: ProductDataFrontend) => {
 		try {
-			const hola = await Promise.all(
-				(Product.images || [])
-					.concat(Product.manuals || [])
-					.map(item => axios.delete(item)),
-			);
-			console.log(hola);
-			await axios.delete(
-				import.meta.env.VITE_API_URL + `/products/${Product.id}`,
-			);
-			setDeletionMessage(
-				`El producto ${Product.name} (${Product.id}) ha sido eliminado correctamente.`,
-			);
-			console.log(`El producto ${Product.id} eliminado correctamente.`);
+			const message = await deleteProduct(product);
+			setDeletionMessage(message);
+			console.log(message);
 		} catch (error) {
-			setDeletionMessage(`No se ha podido eliminar al producto ${Product.id}.`);
-			console.error(`Error al eliminar producto ${Product.id}:`, error);
+			setDeletionMessage(`Error al eliminar producto ${product.id}`);
+			console.error(`Error al eliminar producto ${product.id}:`, error);
 		}
 	};
 
