@@ -3,8 +3,10 @@ import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
 import ImageUpdate from '@components/ImageUpdate';
+import SelectInput from '@components/SelectInput';
 import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
+import TableRow from '@components/TableRow';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useFileManagement from '@hooks/useFileManagement';
@@ -21,28 +23,18 @@ import { useEffect, useState } from 'react';
 function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const {
 		families,
-		familyId,
+		selectedFamily,
+		selectedCategory,
+		selectedSubcategory,
 		filteredCategories,
-		categoryId,
 		filteredSubcategories,
-		subcategoryId,
-		familyName,
-		categoryName,
-		subcategoryName,
-		handleFamilyIdUpdate,
-		handleCategoryIdUpdate,
-		handleSubcategoryIdUpdate,
-	} = useToolCategorizationEdit({
-		initialFamilyId: toolToEdit.family._id || '',
-		initialCategoryId: toolToEdit.category._id || '',
-		initialSubcategoryId: toolToEdit.subcategory._id || '',
-	});
-	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
-		catId: categoryId,
-		initialSpecs: toolToEdit.specifications.map(item => ({
-			specification: item.specification._id,
-			value: item.value,
-		})),
+		handleFamilyChange,
+		handleCategoryChange,
+		handleSubcategoryChange,
+	} = useToolCategorizationEdit();
+
+	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
+		catId: selectedCategory?.id || '',
 	});
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
@@ -116,14 +108,14 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 				name,
 				model,
 				characteristics: char,
-				family: familyId,
-				category: categoryId,
-				subcategory: subcategoryId || '',
+				family: selectedFamily?.id,
+				category: selectedCategory?.id,
+				subcategory: selectedSubcategory?.id,
 				description,
 				videos,
-				specifications: specs,
+				specifications: specificationValues,
 			});
-			const uploadedUrlImages = await handleImageUpload(familyId);
+			const uploadedUrlImages = await handleImageUpload(id);
 			const deletePromises = imagesToDelete.map(async image => {
 				return await handleDeleteFile(image, '');
 			});
@@ -200,57 +192,59 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 					</div>
 
 					<div className='column'>
-						<div className='familycontent'>
-							<div>{familyName}</div>
-							<Editables
-								what='Familia'
-								valueOf={familyName}
-								type='select'
-								onUpdate={handleFamilyIdUpdate}
-								list={families.map(item => ({
-									id: item.id || 'error',
-									name: item.name || 'error',
+						<SelectInput
+							id='familiaselect'
+							name='Selecciona una familia'
+							options={families.map(family => ({
+								value: family.id,
+								label: family.name,
+							}))}
+							value={selectedFamily?.name || ''}
+							onChange={handleFamilyChange}
+						/>
+						{filteredCategories.length > 0 && (
+							<SelectInput
+								id='catselect'
+								name='Selecciona una categoría'
+								options={filteredCategories.map(category => ({
+									value: category.id,
+									label: category.name,
 								}))}
+								value={selectedCategory?.name || ''}
+								onChange={handleCategoryChange}
 							/>
-							<Editables
-								what='Categoría'
-								valueOf={categoryName}
-								type='select'
-								onUpdate={handleCategoryIdUpdate}
-								list={filteredCategories.map(item => ({
-									id: item.id || 'error',
-									name: item.name || 'error',
+						)}
+						{filteredSubcategories.length > 0 && (
+							<SelectInput
+								id='subcatselect'
+								name='Selecciona una subcategoría'
+								options={filteredSubcategories.map(subcategory => ({
+									value: subcategory.id,
+									label: subcategory.name,
 								}))}
+								value={selectedSubcategory?.name || ''}
+								onChange={handleSubcategoryChange}
 							/>
-							<Editables
-								what='Subcategoría'
-								valueOf={subcategoryName}
-								type='select'
-								onUpdate={handleSubcategoryIdUpdate}
-								list={filteredSubcategories.map(item => ({
-									id: item.id || 'error',
-									name: item.name || 'error',
-								}))}
-							/>
-						</div>
+						)}
 					</div>
 
 					<div className='column'>
-						<div className='familycontent'>
-							<p>Especificaciones:</p>
-							{specifications.map((spec, index) => (
-								<div key={spec.id}>
-									<Editables
-										what={spec.name}
-										valueOf={findKeyInSpecs(spec.id)}
-										unit={spec.unit}
-										type='input'
-										whichOne={index + 1}
-										onUpdateOne={newValue => handleSpecUpdate(newValue, index)}
+						<label htmlFor='spec'>Especificaciones</label>
+						<table id='spec'>
+							<tbody>
+								{specifications.map((spec, index) => (
+									<TableRow
+										key={spec.id} // Ensure unique key for each row
+										label={spec.name}
+										unit={spec.unit || ''}
+										value={specificationValues[index]?.value || ''} // Adjust this if specificationValues doesn't align with specifications
+										onValueChange={newValue =>
+											handleSpecUpdate(newValue, index)
+										}
 									/>
-								</div>
-							))}
-						</div>
+								))}
+							</tbody>
+						</table>
 					</div>
 
 					<ImageUpdate

@@ -12,7 +12,6 @@ function useSpecs({ catId, initialSpecs }: Spec) {
 		Array<{ specification: string; value: string }>
 	>(initialSpecs || []);
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
-	const [flag, setFlag] = useState(true);
 
 	const fetchSpecifications = async () => {
 		if (!catId) return;
