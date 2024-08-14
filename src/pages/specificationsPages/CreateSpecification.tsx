@@ -3,9 +3,9 @@ import AutoCompleteInput from '@components/AutoCompleteInput';
 import CreateSpecs from '@components/CreateSpecs';
 
 import HeaderTitle from '@components/HeaderTitle';
-import useFetchCategoriesFromFamily from '@hooks/useFetchCategoriesFromFamily';
-import useFetchFamilies from '@hooks/useFetchFamilies';
-import useFetchSubcategoriesFromFamily from '@hooks/useFetchSubcategoriesFromFamily';
+import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesFromFamily';
+import useFetchFamilies from '@hooks/families/useFetchFamilies';
+import useFetchSubcategoriesFromFamily from '@hooks/subcategories/useFetchSubcategoriesFromFamily';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 

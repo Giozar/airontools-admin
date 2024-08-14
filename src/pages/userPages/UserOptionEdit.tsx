@@ -4,7 +4,7 @@ import HeaderTitle from '@components/HeaderTitle';
 import SuccessMessage from '@components/SuccessMessage';
 import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
 import { useRoles } from '@hooks/roles/useRoles';
-import useUserUpdate from '@hooks/useUserUpdate';
+import useUserUpdate from '@hooks/users/useUserUpdate';
 import { RoleDataFront } from '@interfaces/Role.interface';
 import { UserDataFrontend } from '@interfaces/User.interface';
 import BasePage from '@layouts/BasePage';

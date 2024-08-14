@@ -11,9 +11,10 @@ import TextInput from '@components/TextInput';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
-import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
-import useSpecs from '@hooks/useSpecs';
-import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
+import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
+
+import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
+import useSpecs from '@hooks/specifications/useSpecs';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
 import { errorHandler } from '@utils/errorHandler.util';

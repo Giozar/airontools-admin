@@ -1,4 +1,4 @@
-import useSubcategoryCreate from '@hooks/useSubcategoryCreate';
+import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
 import Editables from './Editables';
@@ -17,7 +17,7 @@ function CreateSubcategory({
 	category: string;
 	update: () => void;
 }) {
-	const { errorLog, successLog, createSubategory } = useSubcategoryCreate();
+	const { errorLog, successLog, createSubcategory } = useSubcategoryCreate();
 	const [newSubcategories, setNewSubcategories] = useState<
 		SubcategoryDataToSend[]
 	>([]);
@@ -26,7 +26,7 @@ function CreateSubcategory({
 		subcategory: SubcategoryDataToSend,
 	) => {
 		try {
-			await createSubategory({
+			await createSubcategory({
 				...subcategory,
 			});
 			handleDelete(subcategory);

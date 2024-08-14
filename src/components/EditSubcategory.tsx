@@ -1,6 +1,6 @@
 import { transformSubcategoryDataToBackend } from '@adapters/subcategory.adapter';
-import useSubcategoryManagement from '@hooks/useSubcategoryManagement';
-import useSubcategoryUpdate from '@hooks/useSubcategoryUpdate';
+import useSubcategoryManagement from '@hooks/subcategories/useSubcategoryManagement';
+import useSubcategoryUpdate from '@hooks/subcategories/useSubcategoryUpdate';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -26,14 +26,14 @@ function EditSubcategory({
 		handleCloseModal,
 		handleDelete,
 	} = useSubcategoryManagement();
-	const { errorLogSubcategory, successLogSubcategory, updateSubategory } =
+	const { errorLogSubcategory, successLogSubcategory, updateSubcategory } =
 		useSubcategoryUpdate();
 
 	const handleUpdateSubcategory = async (
 		subcategory: SubcategoryDataFrontend,
 	) => {
 		try {
-			await updateSubategory(
+			await updateSubcategory(
 				transformSubcategoryDataToBackend({ ...subcategory }),
 			);
 		} catch (error) {

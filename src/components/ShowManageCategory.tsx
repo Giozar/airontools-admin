@@ -1,5 +1,5 @@
 import { transformCategoryDataToBackend } from '@adapters/category.adapter';
-import useCategoryManagement from '@hooks/useCategoryManegement';
+import useCategoryManagement from '@hooks/categories/useCategoryManegement';
 import {
 	CategoryDataFrontend,
 	CategoryDataToSend,

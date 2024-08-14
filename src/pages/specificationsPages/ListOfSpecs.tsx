@@ -5,7 +5,7 @@ import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSpecificationsManagement from '@hooks/useSpecificationsManagement';
+import useSpecificationsManagement from '@hooks/specifications/useSpecificationsManagement';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
