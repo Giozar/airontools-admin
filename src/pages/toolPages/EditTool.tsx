@@ -34,7 +34,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	} = useToolCategorizationEdit();
 
 	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
-		catId: selectedCategory?.id || '',
+		catId: selectedCategory?.id || toolToEdit.category._id || '',
 	});
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
@@ -46,6 +46,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		handleDeleteFile,
 	} = useFileManagement();
 	const id = toolToEdit.id;
+	console.log(toolToEdit);
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
@@ -144,7 +145,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 			console.error(error);
 		}
 	};
-
+	console.log(toolToEdit.specifications);
 	return (
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
@@ -169,6 +170,13 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 								type='input'
 								onUpdate={handleNameUpdate}
 							/>
+							{/* <TextInput
+								id='nombre'
+								label='Nombre de herramienta'
+								value={name}
+								placeholder='Herramienta 1'
+								onChange={e => setName(e.target.value)}
+							/> */}
 							<Editables
 								what='Modelo'
 								valueOf={model || ''}
@@ -192,6 +200,21 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 					</div>
 
 					<div className='column'>
+						<p>
+							<strong>Familia actual: </strong>
+							{toolToEdit.family.name}
+						</p>
+						<p>
+							<strong>Categoria actual: </strong>
+							{toolToEdit.category.name}
+						</p>
+						<p>
+							<strong>Subcategoria actual: </strong>
+							{toolToEdit.subcategory.name}
+						</p>
+						<br></br>
+						<h4>Cambiar categorización y especificaciones:</h4>
+						<br></br>
 						<SelectInput
 							id='familiaselect'
 							name='Selecciona una familia'
@@ -237,7 +260,11 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 										key={spec.id} // Ensure unique key for each row
 										label={spec.name}
 										unit={spec.unit || ''}
-										value={specificationValues[index]?.value || ''} // Adjust this if specificationValues doesn't align with specifications
+										value={
+											specificationValues[index]?.value ||
+											toolToEdit.specifications[index]?.value ||
+											''
+										} // Adjust this if specificationValues doesn't align with specifications
 										onValueChange={newValue =>
 											handleSpecUpdate(newValue, index)
 										}

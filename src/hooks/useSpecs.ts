@@ -33,8 +33,7 @@ function useSpecs({ catId, initialSpecs }: Spec) {
 
 	useEffect(() => {
 		fetchSpecifications();
-		console.log(catId);
-		console.log(specifications);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [catId]);
 
 	const editOrCreateKeyInSpecs = useCallback(
