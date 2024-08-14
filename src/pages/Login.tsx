@@ -38,6 +38,7 @@ function Login() {
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
+
 		if (token) {
 			try {
 				const decodedToken = jwtDecode<LoginResponse>(token);
@@ -59,14 +60,18 @@ function Login() {
 
 	const handleLogin = async (e: FormEvent) => {
 		e.preventDefault();
+		console.log(email, password);
+		console.log(import.meta.env.VITE_API_URL + '/auth/');
 		try {
 			const response = await axios.post<LoginResponse>(
-				import.meta.env.VITE_API_URL + '/auth/',
+				import.meta.env.VITE_API_URL + '/auth/login',
 				{
 					email,
 					password,
 				},
 			);
+			console.log(response);
+
 			const { token } = response.data;
 			localStorage.setItem('token', token);
 
@@ -77,6 +82,8 @@ function Login() {
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				const errorMessage = error.response?.data?.message;
+
+				console.log(errorMessage);
 				if (typeof errorMessage === 'string') {
 					showError(errorMessage);
 				} else if (Array.isArray(errorMessage)) {

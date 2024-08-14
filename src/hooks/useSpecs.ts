@@ -34,6 +34,8 @@ function useSpecs({ catId, initialSpecs }: Spec) {
 
 	useEffect(() => {
 		fetchSpecifications();
+		console.log(catId);
+		console.log(specifications);
 	}, [catId]);
 
 	const editOrCreateKeyInSpecs = useCallback(

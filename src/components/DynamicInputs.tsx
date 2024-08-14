@@ -4,11 +4,13 @@ import TrashIcon from './svg/TrashIcon';
 interface DynamicInputsProps {
 	label: string;
 	onValuesChange?: (values: string[]) => void;
+	placeholder: string;
 }
 
 const DynamicInputs: React.FC<DynamicInputsProps> = ({
 	label,
 	onValuesChange,
+	placeholder,
 }) => {
 	const [inputs, setInputs] = useState([{ id: Date.now(), value: '' }]);
 
@@ -33,21 +35,28 @@ const DynamicInputs: React.FC<DynamicInputsProps> = ({
 	}, [inputs, onValuesChange]);
 
 	return (
-		<div>
+		<div className='dynamicInputs'>
 			<label>{label}</label>
 			{inputs.map((input, index) => (
-				<div key={index}>
+				<div key={index} className='input-group'>
 					<input
 						type='text'
 						value={input.value}
 						onChange={e => handleChange(index, e.target.value)}
+						placeholder={placeholder}
 					/>
-					<button onClick={() => handleRemove(index)}>
+					<button
+						onClick={() => handleRemove(index)}
+						type='button'
+						className='delete'
+					>
 						<TrashIcon />
 					</button>
 				</div>
 			))}
-			<button onClick={handleAdd}>Añadir {label}</button>
+			<button onClick={handleAdd} type='button'>
+				Añadir {label}
+			</button>
 		</div>
 	);
 };

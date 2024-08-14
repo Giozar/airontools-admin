@@ -18,12 +18,12 @@ const TableRow: React.FC<TableRowProps> = ({
 	};
 
 	return (
-		<tr>
-			<th>{label}</th>
-			<td>
+		<tr className='tableRow'>
+			<td className='cell'>
+				<div className='label'>{label}</div>
 				<input type='text' value={value} onChange={handleChange} />
+				<div className='unit'>{unit}</div>
 			</td>
-			<td>{unit}</td>
 		</tr>
 	);
 };

@@ -50,7 +50,7 @@
 	object-fit: cover;
 }
 
-.delete {
+.image-preview .delete {
 	position: absolute;
 	top: 0.5rem; /* equivalent to top-2 */
 	right: 0.5rem; /* equivalent to right-2 */

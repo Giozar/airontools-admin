@@ -2,7 +2,7 @@ import React from 'react';
 
 interface SelectInputProps {
 	id: string;
-	label: string;
+	name: string;
 	options: { value: string; label: string }[];
 	value: string;
 	onChange: (value: string) => void;
@@ -10,7 +10,7 @@ interface SelectInputProps {
 
 const SelectInput: React.FC<SelectInputProps> = ({
 	id,
-	label,
+	name,
 	options,
 	value,
 	onChange,
@@ -19,12 +19,10 @@ const SelectInput: React.FC<SelectInputProps> = ({
 		onChange(e.target.value);
 	};
 	return (
-		<div>
-			<label htmlFor={id}>{label}</label>
-			<select id={id} value={value} onChange={handleChange}>
-				<option value='' disabled>
-					Selecciona una opción
-				</option>
+		<div className='selectInput'>
+			<label htmlFor={id}>{name}</label>
+			<select id={id} value={value?.name} onChange={handleChange}>
+				<option value=''>Selecciona una opción</option>
 				{options.map(option => (
 					<option key={option.value} value={option.value}>
 						{option.label}

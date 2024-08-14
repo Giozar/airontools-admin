@@ -18,7 +18,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
 	onChange,
 }) => {
 	return (
-		<div>
+		<div className='textAreaInput'>
 			<label htmlFor={id}>{label}</label>
 			<textarea
 				id={id}
