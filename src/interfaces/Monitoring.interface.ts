@@ -1,4 +1,5 @@
 export interface Activity {
+	computerId: string;
 	activityType: string;
 	fileName: string;
 	sourcePath: string;

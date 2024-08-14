@@ -1,57 +1,55 @@
-import Editables from '@components/Editables';
+import DynamicInputs from '@components/DynamicInputs';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
+import ImageUploader from '@components/ImageUploader';
+import ManualUploader from '@components/ManualUploader';
+import SelectInput from '@components/SelectInput';
 import SuccessMessage from '@components/SuccessMessage';
-import TrashIcon from '@components/svg/TrashIcon';
+import TableRow from '@components/TableRow';
+import TextAreaInput from '@components/TextAreaInput';
+import TextInput from '@components/TextInput';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
-import useCharacteristics from '@hooks/useCharacteristics';
 import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import useSpecs from '@hooks/useSpecs';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
-import useVideos from '@hooks/useVideos';
 import BasePage from '@layouts/BasePage';
 import HeaderApp from '@layouts/HeaderApp';
-import '@pages/toolPages/createtool.css';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
-import { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import { FormEvent, useContext, useState } from 'react';
+import './createtool.css';
 
-function ToolForm() {
-	const [toolName, setToolName] = useState<string>('Herramienta 1');
+const Atornillador = () => {
+	const [toolName, setToolName] = useState<string>('');
 	const [toolModel, setToolModel] = useState<string>('');
 	const [toolDescription, setToolDescription] = useState<string>('');
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
-	const {
-		characteristics,
-		addCharacteristic,
-		removeCharacteristic,
-		updateCharacteristic,
-	} = useCharacteristics();
+	const [characteristics, setChar] = useState<string[]>([]);
+	const [recommendations, setRecommendations] = useState<string[]>([]);
+	const [requeriments, setRequeriments] = useState<string[]>([]);
+	const [includes, setIncludes] = useState<string[]>([]);
+	const [accessories, setAccessories] = useState<string[]>([]);
+	const [videos, setVideos] = useState<string[]>([]);
 	const {
 		families,
-		familyId,
+		selectedFamily,
+		selectedCategory,
+		selectedSubcategory,
 		filteredCategories,
-		categoryId,
 		filteredSubcategories,
-		subcategoryId,
-		handleFamilyIdUpdate,
-		handleCategoryIdUpdate,
-		handleSubcategoryIdUpdate,
-		familyName,
-		categoryName,
-		subcategoryName,
-	} = useToolCategorizationEdit({
-		initialFamilyId: '',
-		initialCategoryId: '',
-		initialSubcategoryId: '',
+		handleFamilyChange,
+		handleCategoryChange,
+		handleSubcategoryChange,
+	} = useToolCategorizationEdit();
+
+	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
+		catId: selectedCategory?.id || '',
 	});
-	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
-		catId: categoryId,
-	});
-	const { videos, addVideo, removeVideo, updateVideo } = useVideos();
+
+	// const { videos, addVideo, removeVideo, updateVideo } = useVideos();
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 
@@ -63,29 +61,27 @@ function ToolForm() {
 		return await handleFileUpload('manuals', productId, 'manuals');
 	};
 
-	const handleUrlChange = (
-		id: number,
-		event: ChangeEvent<HTMLInputElement>,
-	) => {
-		updateVideo(id, event.target.value);
-	};
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			console.log(subcategoryId);
-			console.log(specs);
+			// console.log(subcategoryId);
+			console.log(specificationValues);
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
-				characteristics: characteristics.map(char => char.value),
-				family: familyId,
-				category: categoryId,
-				subcategory: subcategoryId,
+				family: selectedFamily?.id,
+				category: selectedCategory?.id,
+				subcategory: selectedSubcategory?.id,
+				characteristics,
+				recommendations,
+				requeriments,
+				includes,
+				accessories,
 				description: toolDescription,
-				specifications: specs,
-				videos: videos.map(video => video.url),
+				specifications: specificationValues,
+				videos,
 				createdBy,
 			};
 
@@ -121,265 +117,174 @@ function ToolForm() {
 			errorHandler(error, showError);
 		}
 	};
-
 	return (
-		<form className='createtoolform' onSubmit={handleSubmit}>
-			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
-			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-
-			<div className='toolinfo'>
-				<div>
-					<label htmlFor='toolName'>Nombre de herramienta</label>
-					<input
-						type='text'
+		<div className='createtoolform'>
+			<form className='toolform' onSubmit={handleSubmit}>
+				{successLog.isSuccess && (
+					<SuccessMessage message={successLog.message} />
+				)}
+				{errorLog.isError && <ErrorMessage message={errorLog.message} />}
+				<div
+					className='form-header'
+					style={{ justifyContent: 'flex-end', marginTop: '-50px' }}
+				>
+					<button
+						onClick={handleSubmit}
+						style={{ border: '0px' }}
+						className='save'
+					>
+						Crear herramienta
+					</button>
+				</div>
+				<div className='form-header'>
+					<TextInput
 						id='toolName'
+						label='Nombre de herramienta'
 						value={toolName}
+						placeholder='Herramienta 1'
 						onChange={e => setToolName(e.target.value)}
 					/>
-				</div>
 
-				<div>
-					<label htmlFor='toolModel'>Modelo de herramienta</label>
-					<input
-						type='text'
+					<TextInput
 						id='toolModel'
-						placeholder='----'
+						label='Modelo de herramienta'
 						value={toolModel}
+						placeholder='---'
 						onChange={e => setToolModel(e.target.value)}
 					/>
 				</div>
-			</div>
 
-			<label>Fotos de herramienta</label>
-			<div className='image-upload'>
-				<div className='image-placeholder add-image'>
-					<label htmlFor='file-input'>Subir imagen +</label>
-					<input
-						type='file'
-						id='file-input'
-						multiple
-						accept='image/*'
-						onChange={event => handleFileSelect(event, 'images')}
-						style={{ display: 'none' }}
-					/>
-				</div>
-				{filePreviews.images?.map((preview, index) => (
-					<div key={index} className='image-preview'>
-						<img
-							src={preview}
-							alt={`preview-${index}`}
-							className='image-placeholder'
+				<div className='form-content'>
+					<div className='left-column'>
+						<TextAreaInput
+							id='toolDescription'
+							label='Descripción de herramienta'
+							placeholder='Descripción general de la herramienta'
+							value={toolDescription}
+							onChange={e => setToolDescription(e.target.value)}
+							rows={5}
 						/>
-						<button
-							onClick={() => handleRemoveFile('images', index)}
-							className='delete'
-							type='button'
-						>
-							<TrashIcon />
-						</button>
-					</div>
-				))}
-			</div>
-
-			<label htmlFor='toolDescription'>Descripción de herramienta</label>
-			<textarea
-				id='toolDescription'
-				rows={3}
-				placeholder='Descripción general de la herramienta'
-				value={toolDescription}
-				onChange={e => setToolDescription(e.target.value)}
-			/>
-
-			<label>Características</label>
-			<div className='characteristics'>
-				{characteristics.map(char => (
-					<div key={char.id} className='characteristic-item'>
-						<input
-							type='text'
-							placeholder='Característica'
-							value={char.value}
-							onChange={e => updateCharacteristic(char.id, e.target.value)}
-						/>
-						<button
-							type='button'
-							className='delete'
-							onClick={() => removeCharacteristic(char.id)}
-						>
-							<TrashIcon />
-						</button>
-					</div>
-				))}
-				<button type='button' className='add' onClick={addCharacteristic}>
-					Añadir característica
-				</button>
-			</div>
-
-			<div className='toolinfo'>
-				<div>
-					<label>Manuales</label>
-					<div className='file-upload'>
-						<div className='file-upload'>
-							<label htmlFor='manual-input' className='add'>
-								Añadir manual
-							</label>
-							<input
-								type='file'
-								id='manual-input'
-								multiple
-								accept='.pdf, .doc, .docx'
-								onChange={event => handleFileSelect(event, 'manuals')}
-								style={{ display: 'none' }}
+						<div>
+							<hr></hr>
+							<SelectInput
+								id='familiaselect'
+								name='Selecciona una familia'
+								options={families.map(family => ({
+									value: family.id,
+									label: family.name,
+								}))}
+								value={selectedFamily?.name || ''}
+								onChange={handleFamilyChange}
 							/>
-						</div>
-						{filePreviews.manuals?.map((preview, index) => (
-							<div key={index} className='image-preview'>
-								<embed
-									src={preview}
-									width='250'
-									height='200'
-									className='image-placeholder'
+							{filteredCategories.length > 0 && (
+								<SelectInput
+									id='catselect'
+									name='Selecciona una categoría'
+									options={filteredCategories.map(category => ({
+										value: category.id,
+										label: category.name,
+									}))}
+									value={selectedCategory?.name || ''}
+									onChange={handleCategoryChange}
 								/>
-								<button
-									onClick={() => handleRemoveFile('manuals', index)}
-									className='delete'
-									type='button'
-								>
-									<TrashIcon />
-								</button>
-							</div>
-						))}
-					</div>
-				</div>
-
-				<div>
-					<label>Videos</label>
-					<div className='file-upload'>
-						{videos.map(video => (
-							<div key={video.id}>
-								<input
-									type='text'
-									placeholder='URL del video'
-									value={video.url}
-									onChange={event => handleUrlChange(video.id, event)}
+							)}
+							{filteredSubcategories.length > 0 && (
+								<SelectInput
+									id='subcatselect'
+									name='Selecciona una subcategoría'
+									options={filteredSubcategories.map(subcategory => ({
+										value: subcategory.id,
+										label: subcategory.name,
+									}))}
+									value={selectedSubcategory?.name || ''}
+									onChange={handleSubcategoryChange}
 								/>
-								{video.url && (
-									<a href={video.url} target='_blank' rel='noopener noreferrer'>
-										Ver Video
-									</a>
-								)}
-								<button
-									type='button'
-									onClick={() => removeVideo(video.id)}
-									className='delete'
-								>
-									<TrashIcon />
-								</button>
-							</div>
-						))}
-						<button type='button' className='add' onClick={addVideo}>
-							Añadir video
-						</button>
-					</div>
-				</div>
-			</div>
-
-			<div className='selectfamily'>
-				<label>Categorización:</label>
-				<Editables
-					what='Familia'
-					valueOf={familyName}
-					type='select'
-					onUpdate={handleFamilyIdUpdate}
-					list={families.map(item => ({
-						id: item.id || 'error',
-						name: item.name || 'error',
-					}))}
-				/>
-
-				<Editables
-					what='Categoría'
-					valueOf={categoryName}
-					type='select'
-					onUpdate={handleCategoryIdUpdate}
-					list={filteredCategories.map(item => ({
-						id: item.id || 'error',
-						name: item.name || 'error',
-					}))}
-				/>
-
-				<Editables
-					what='Subcategoría'
-					valueOf={subcategoryName}
-					type='select'
-					onUpdate={handleSubcategoryIdUpdate}
-					list={filteredSubcategories.map(item => ({
-						id: item.id || 'error',
-						name: item.name || 'error',
-					}))}
-				/>
-
-				{specifications.length > 0 && (
-					<>
-						<label>Especificaciones</label>
-						<div className='specifications'>
-							{specifications.map((spec, index) => (
-								<div key={spec.id}>
-									<label htmlFor={spec.id}>{spec.name}</label>
-									<div className='input-container'>
-										<input
-											type='text'
-											id={spec.id}
-											required
-											value={findKeyInSpecs(spec.id) || ''}
-											onChange={e => handleSpecUpdate(e.target.value, index)}
+							)}
+							<hr></hr>
+							<label htmlFor='spec'>Especificaciones</label>
+							<table id='spec'>
+								<tbody>
+									{specifications.map((spec, index) => (
+										<TableRow
+											key={spec.id} // Ensure unique key for each row
+											label={spec.name}
+											unit={spec.unit || ''}
+											value={specificationValues[index]?.value || ''} // Adjust this if specificationValues doesn't align with specifications
+											onValueChange={newValue =>
+												handleSpecUpdate(newValue, index)
+											}
 										/>
-										<span>{spec.unit}</span>
-									</div>
-								</div>
-							))}
-						</div>
-						{/* specifications.length > 0 && (
-							<>
-								<label>Especificaciones</label>
-								<div className='specifications'>
-									{specifications.map(spec => (
-										<div key={spec.id}>
-											<label htmlFor={spec.id}>{spec.name}</label>
-											<div className='input-container'>
-												<input
-													type='text'
-													id={spec.id}
-													required
-													value={specValues[spec.id || ''] || ''}
-													onChange={e =>
-														handleInputChange(spec.id || '', e.target.value)
-													}
-												/>
-												<span>{spec.unit}</span>
-											</div>
-										</div>
 									))}
-								</div>
-							</>
-						) */}
-					</>
-				)}
-			</div>
+								</tbody>
+							</table>
+							<hr></hr>
+						</div>
+						<DynamicInputs
+							label='Características'
+							onValuesChange={setChar}
+							placeholder='Carácteristica'
+						/>
+						<hr></hr>
+						<DynamicInputs
+							label='Recomendaciones'
+							onValuesChange={setRecommendations}
+							placeholder='Recomendación'
+						/>
+						<hr></hr>
+						<DynamicInputs
+							label='Requisitos de operación'
+							onValuesChange={setRequeriments}
+							placeholder='Requisito'
+						/>
+						<hr></hr>
+					</div>
 
-			<button type='submit' className='save'>
-				Crear herramienta
-			</button>
-		</form>
+					<div className='right-column'>
+						<ImageUploader
+							title='Fotos de herramienta'
+							filePreviews={filePreviews}
+							onFileSelect={handleFileSelect}
+							onRemoveFile={handleRemoveFile}
+						/>
+						<hr></hr>
+						<ManualUploader
+							title='Manuales de herramienta'
+							filePreviews={filePreviews}
+							onFileSelect={handleFileSelect}
+							onRemoveFile={handleRemoveFile}
+						/>
+						<hr></hr>
+						<DynamicInputs
+							label='Videos'
+							onValuesChange={setVideos}
+							placeholder='URL de video'
+						/>
+						<hr></hr>
+						<DynamicInputs
+							label='Extras'
+							onValuesChange={setIncludes}
+							placeholder='Incuye...'
+						/>
+						<hr></hr>
+						<DynamicInputs
+							label='Accesorios opcionales'
+							onValuesChange={setAccessories}
+							placeholder='Accesorio opcional'
+						/>
+						<hr></hr>
+					</div>
+				</div>
+			</form>
+		</div>
 	);
-}
-
+};
 function ContentMainPage() {
 	return (
 		<BasePage>
 			<HeaderApp />
 			<main>
 				<HeaderTitle title='Herramientas' />
-				<ToolForm />
+				<Atornillador />
 			</main>
 		</BasePage>
 	);

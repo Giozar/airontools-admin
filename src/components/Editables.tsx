@@ -1,6 +1,5 @@
 import '@components/css/editables.css';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import AutoCompleteInput from './AutoCompleteInput';
 import EditableList from './EditablesList';
 
 interface Option {
@@ -11,7 +10,7 @@ interface EditablesProps {
 	what: string;
 	valueOf: string;
 	unit?: string;
-	type: 'input' | 'textarea' | 'select' | 'list';
+	type: 'input' | 'textarea' | 'list';
 	whichOne?: number;
 	onUpdate?: (value: string) => void;
 	onUpdateOne?: (value: string, whichOne: number) => void;
@@ -28,7 +27,6 @@ function Editables({
 	whichOne,
 	onUpdate,
 	onUpdateOne,
-	list,
 	strlist,
 	onUpdateMany,
 }: EditablesProps) {
@@ -56,9 +54,6 @@ function Editables({
 		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
 	) => {
 		setInput(e.target.value);
-	};
-	const handleChangeSelect = (value: string) => {
-		setInput(value);
 	};
 	const handleKeyDown = (
 		e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -116,13 +111,6 @@ function Editables({
 								onChange={handleChange}
 								id={what}
 								onKeyDown={handleKeyDown}
-							/>
-						)}
-						{type === 'select' && list && onUpdate && (
-							<AutoCompleteInput
-								inputName={what}
-								options={list}
-								onSelect={handleChangeSelect}
 							/>
 						)}
 						{type === 'list' && strlist && onUpdateMany && (

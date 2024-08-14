@@ -2,8 +2,11 @@ import DeletionModal from '@components/DeletionModal';
 import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
+import ImageUpdate from '@components/ImageUpdate';
+import SelectInput from '@components/SelectInput';
 import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
+import TableRow from '@components/TableRow';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useFileManagement from '@hooks/useFileManagement';
@@ -20,44 +23,35 @@ import { useEffect, useState } from 'react';
 function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const {
 		families,
-		familyId,
+		selectedFamily,
+		selectedCategory,
+		selectedSubcategory,
 		filteredCategories,
-		categoryId,
 		filteredSubcategories,
-		subcategoryId,
-		familyName,
-		categoryName,
-		subcategoryName,
-		handleFamilyIdUpdate,
-		handleCategoryIdUpdate,
-		handleSubcategoryIdUpdate,
-	} = useToolCategorizationEdit({
-		initialFamilyId: toolToEdit.family._id || '',
-		initialCategoryId: toolToEdit.category._id || '',
-		initialSubcategoryId: toolToEdit.subcategory._id || '',
-	});
-	const { specs, specifications, findKeyInSpecs, handleSpecUpdate } = useSpecs({
-		catId: categoryId,
-		initialSpecs: toolToEdit.specifications.map(item => ({
-			specification: item.specification._id,
-			value: item.value,
-		})),
+		handleFamilyChange,
+		handleCategoryChange,
+		handleSubcategoryChange,
+	} = useToolCategorizationEdit();
+
+	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
+		catId: selectedCategory?.id || toolToEdit.category._id || '',
 	});
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 	const {
-		showDeletionModalFor,
-		setShowDeletionModalFor,
-		deletionMessage,
-		handleCloseModal,
-		handleDelete,
+		setShowDeletionModalForFile,
+		showDeletionModalForFile,
+		deletionMessageFile,
+		handleCloseModalFile,
+		handleDeleteFile,
 	} = useFileManagement();
-
 	const id = toolToEdit.id;
+	console.log(toolToEdit);
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
 	const [images, setImages] = useState(toolToEdit.images);
+	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 	const [manuals, setManuals] = useState(toolToEdit.manuals);
 	const [videos, setVideos] = useState(toolToEdit.videos);
 	const [char, setChar] = useState(toolToEdit.characteristics);
@@ -85,14 +79,23 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const handleImageUpload = async (productId: string) => {
 		return await handleFileUpload('images', productId, 'images');
 	};
-
+	const handleCloseModalDeletionImages = async (image: string) => {
+		setImages(images?.filter(img => img !== image));
+	};
+	useEffect(() => {}, [images]);
+	const handleDeleteFileFor = (imageToDelete: string) => {
+		console.log(imageToDelete);
+		setImagesToDelete(prevImagesToDelete => {
+			const updatedImagesToDelete = new Set([
+				...prevImagesToDelete,
+				imageToDelete,
+			]);
+			return Array.from(updatedImagesToDelete);
+		});
+		handleCloseModalDeletionImages(imageToDelete);
+	};
 	const handleManualUpload = async (productId: string) => {
 		return await handleFileUpload('manuals', productId, 'manuals');
-	};
-	const handleCloseModalDeletionImages = (image: string) => {
-		if (images?.length === 1)
-			setImages([]); // Por alguna razon hay un bug aqui que necesita esta condicion
-		else setImages(images?.filter(img => img !== image));
 	};
 	const handleCloseModalDeletionManuals = (manual: string) => {
 		if (manuals?.length === 1)
@@ -106,19 +109,24 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 				name,
 				model,
 				characteristics: char,
-				family: familyId,
-				category: categoryId,
-				subcategory: subcategoryId || '',
+				family: selectedFamily?.id,
+				category: selectedCategory?.id,
+				subcategory: selectedSubcategory?.id,
 				description,
 				videos,
-				specifications: specs,
+				specifications: specificationValues,
 			});
-
+			const uploadedUrlImages = await handleImageUpload(id);
+			const deletePromises = imagesToDelete.map(async image => {
+				return await handleDeleteFile(image, '');
+			});
+			const deletedFiles = await Promise.all(deletePromises);
 			// Paso 2: subir imagenes
-			const uploadedUrlImages = await handleImageUpload(id || '');
 			// Paso 3: Actualizar producto con imagenes
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-				images: images ? [...images, ...uploadedUrlImages] : uploadedUrlImages,
+				images: deletedFiles
+					? [...deletedFiles, ...uploadedUrlImages]
+					: [...(images || ['']), ...uploadedUrlImages],
 			});
 
 			// Paso 4: Subir manuales
@@ -137,7 +145,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 			console.error(error);
 		}
 	};
-
+	console.log(toolToEdit.specifications);
 	return (
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
@@ -162,6 +170,13 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 								type='input'
 								onUpdate={handleNameUpdate}
 							/>
+							{/* <TextInput
+								id='nombre'
+								label='Nombre de herramienta'
+								value={name}
+								placeholder='Herramienta 1'
+								onChange={e => setName(e.target.value)}
+							/> */}
 							<Editables
 								what='Modelo'
 								valueOf={model || ''}
@@ -185,137 +200,108 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 					</div>
 
 					<div className='column'>
-						<div className='familycontent'>
-							<div>{familyName}</div>
-							<Editables
-								what='Familia'
-								valueOf={familyName}
-								type='select'
-								onUpdate={handleFamilyIdUpdate}
-								list={families.map(item => ({
-									id: item.id || 'error',
-									name: item.name || 'error',
+						<p>
+							<strong>Familia actual: </strong>
+							{toolToEdit.family.name}
+						</p>
+						<p>
+							<strong>Categoria actual: </strong>
+							{toolToEdit.category.name}
+						</p>
+						<p>
+							<strong>Subcategoria actual: </strong>
+							{toolToEdit.subcategory.name}
+						</p>
+						<br></br>
+						<h4>Cambiar categorización y especificaciones:</h4>
+						<br></br>
+						<SelectInput
+							id='familiaselect'
+							name='Selecciona una familia'
+							options={families.map(family => ({
+								value: family.id,
+								label: family.name,
+							}))}
+							value={selectedFamily?.name || ''}
+							onChange={handleFamilyChange}
+						/>
+						{filteredCategories.length > 0 && (
+							<SelectInput
+								id='catselect'
+								name='Selecciona una categoría'
+								options={filteredCategories.map(category => ({
+									value: category.id,
+									label: category.name,
 								}))}
+								value={selectedCategory?.name || ''}
+								onChange={handleCategoryChange}
 							/>
-							<Editables
-								what='Categoría'
-								valueOf={categoryName}
-								type='select'
-								onUpdate={handleCategoryIdUpdate}
-								list={filteredCategories.map(item => ({
-									id: item.id || 'error',
-									name: item.name || 'error',
+						)}
+						{filteredSubcategories.length > 0 && (
+							<SelectInput
+								id='subcatselect'
+								name='Selecciona una subcategoría'
+								options={filteredSubcategories.map(subcategory => ({
+									value: subcategory.id,
+									label: subcategory.name,
 								}))}
+								value={selectedSubcategory?.name || ''}
+								onChange={handleSubcategoryChange}
 							/>
-							<Editables
-								what='Subcategoría'
-								valueOf={subcategoryName}
-								type='select'
-								onUpdate={handleSubcategoryIdUpdate}
-								list={filteredSubcategories.map(item => ({
-									id: item.id || 'error',
-									name: item.name || 'error',
-								}))}
-							/>
-						</div>
+						)}
 					</div>
 
 					<div className='column'>
-						<div className='familycontent'>
-							<p>Especificaciones:</p>
-							{specifications.map((spec, index) => (
-								<div key={spec.id}>
-									<Editables
-										what={spec.name}
-										valueOf={findKeyInSpecs(spec.id)}
-										unit={spec.unit}
-										type='input'
-										whichOne={index + 1}
-										onUpdateOne={newValue => handleSpecUpdate(newValue, index)}
+						<label htmlFor='spec'>Especificaciones</label>
+						<table id='spec'>
+							<tbody>
+								{specifications.map((spec, index) => (
+									<TableRow
+										key={spec.id} // Ensure unique key for each row
+										label={spec.name}
+										unit={spec.unit || ''}
+										value={
+											specificationValues[index]?.value ||
+											toolToEdit.specifications[index]?.value ||
+											''
+										} // Adjust this if specificationValues doesn't align with specifications
+										onValueChange={newValue =>
+											handleSpecUpdate(newValue, index)
+										}
 									/>
-								</div>
-							))}
-						</div>
-					</div>
-
-					<div className='column'>
-						<p>Imágenes:</p>
-						<div className='image-upload'>
-							{images &&
-								images.map((preview, index) => (
-									<div key={index} className='image-preview'>
-										{showDeletionModalFor === preview && (
-											<DeletionModal
-												id={preview}
-												name={preview}
-												image={preview}
-												onClose={() => handleCloseModal()}
-												onCloseDelete={() =>
-													handleCloseModalDeletionImages(preview)
-												}
-												onDelete={() => handleDelete(preview, '')}
-												message={deletionMessage}
-											/>
-										)}
-										<img
-											src={preview}
-											alt={`preview-${index}`}
-											className='image-placeholder'
-										/>
-										<button
-											onClick={() => setShowDeletionModalFor(preview)}
-											className='delete'
-										>
-											<TrashIcon />
-										</button>
-									</div>
 								))}
-							<p>Imagenes nuevas:</p>
-							{filePreviews.images?.map((preview, index) => (
-								<div key={index} className='image-preview'>
-									<img
-										src={preview}
-										alt={`preview-${index}`}
-										className='image-placeholder'
-									/>
-									<button
-										onClick={() => handleRemoveFile('images', index)}
-										className='delete'
-										type='button'
-									>
-										<TrashIcon />
-									</button>
-								</div>
-							))}
-							<div className='image-placeholder add-image'>
-								<label htmlFor='file-input'>Subir imagen +</label>
-								<input
-									type='file'
-									id='file-input'
-									multiple
-									accept='image/*'
-									onChange={event => handleFileSelect(event, 'images')}
-									style={{ display: 'none' }}
-								/>
-							</div>
-						</div>
+							</tbody>
+						</table>
 					</div>
+
+					<ImageUpdate
+						images={images || []}
+						filePreviews={filePreviews}
+						handleRemoveFile={handleRemoveFile}
+						handleFileSelect={handleFileSelect}
+						setShowDeletionModalForFile={setShowDeletionModalForFile}
+						showDeletionModalForFile={showDeletionModalForFile}
+						deletionMessageFile={deletionMessageFile}
+						handleCloseModalFile={handleCloseModalFile}
+						handleDeleteFileFor={handleDeleteFileFor}
+						handleCloseModalDeletionImages={handleCloseModalDeletionImages}
+					/>
 
 					<div className='column'>
 						<p>Manuales:</p>
 						<div className='image-upload'>
 							{manuals?.map(preview => (
 								<div key={preview} className='image-preview'>
-									{showDeletionModalFor === preview && (
+									{showDeletionModalForFile === preview && (
 										<DeletionModal
 											id={preview}
 											name={preview}
-											onClose={() => handleCloseModal()}
+											onClose={() => handleCloseModalFile()}
 											onCloseDelete={() =>
 												handleCloseModalDeletionManuals(preview)
 											}
-											onDelete={() => handleDelete(preview, '')}
-											message={deletionMessage}
+											onDelete={() => handleDeleteFile(preview, '')}
+											message={deletionMessageFile}
 										/>
 									)}
 									<embed
@@ -326,7 +312,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									/>
 									<button
 										className='delete'
-										onClick={() => setShowDeletionModalFor(preview)}
+										onClick={() => setShowDeletionModalForFile(preview)}
 									>
 										<TrashIcon />
 									</button>

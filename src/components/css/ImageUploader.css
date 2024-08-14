@@ -1,0 +1,66 @@
+/* Container for the uploader */
+.image-uploader-container {
+	margin: 0 auto;
+	padding: 1rem; /* equivalent to p-4 */
+	max-width: 28rem; /* equivalent to max-w-md */
+}
+
+/* Label styling */
+.image-uploader-label {
+	display: block;
+	margin-bottom: 0.5rem; /* equivalent to mb-2 */
+	font-weight: 500; /* equivalent to font-medium */
+	font-size: 1.125rem; /* equivalent to text-lg */
+}
+
+/* Image upload placeholder styling */
+.image-upload {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem; /* equivalent to gap-4 */
+}
+
+.image-placeholder {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	border: 2px dashed #d1d5db; /* equivalent to border-gray-300 */
+	border-radius: 0.375rem; /* equivalent to rounded */
+	width: 10rem; /* equivalent to w-40 */
+	height: 10rem; /* equivalent to h-40 */
+}
+
+.image-placeholder label {
+	color: #4b5563; /* equivalent to text-gray-600 */
+	font-size: 1.125rem; /* equivalent to text-lg */
+}
+
+/* Image preview styling */
+.image-preview {
+	position: relative;
+	width: 10rem; /* equivalent to w-40 */
+	height: 10rem; /* equivalent to h-40 */
+}
+
+.image-preview > img {
+	border-radius: 0.375rem; /* equivalent to rounded */
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.image-preview > .delete {
+	position: absolute;
+	top: 0.5rem; /* equivalent to top-2 */
+	right: 0.5rem; /* equivalent to right-2 */
+	border-radius: 0.375rem; /* equivalent to rounded */
+	background-color: #ef4444; /* equivalent to bg-red-500 */
+	padding: 0.5rem 1rem; /* equivalent to py-2 px-4 */
+	color: #ffffff; /* equivalent to text-white */
+	font-weight: 700; /* equivalent to font-bold */
+}
+
+.delete:hover {
+	background-color: #dc2626; /* equivalent to hover:bg-red-700 */
+}

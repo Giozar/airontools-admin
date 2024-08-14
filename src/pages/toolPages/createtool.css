@@ -1,4 +1,4 @@
-.toolinfo {
+/* .toolinfo {
 	display: flex;
 	justify-content: space-between;
 }
@@ -13,31 +13,30 @@
 .image-upload {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-	gap: 10px; /* Add some gap for better spacing */
+	gap: 10px; 
 }
 
 .image-preview {
 	position: relative;
-	overflow: hidden; /* Ensure content doesn't overflow */
+	overflow: hidden; 
 }
 
 .image-preview > img {
-	display: block; /* Remove any extra space below images */
+	display: block; 
 	width: 100%;
-	height: auto; /* Maintain aspect ratio of images */
+	height: auto;
 }
 
 .image-preview > .delete {
 	position: absolute;
-	top: 10px; /* Adjusted for better placement */
-	right: 10px; /* Align to the right */
+	top: 10px; 
 	cursor: pointer;
 	border: none;
 	border-radius: 50%;
 	background-color: var(--bg-secondary);
 	padding: 5px;
-	color: var(--error); /* Better contrast for the delete button text */
-	font-size: 16px; /* Adjust font size as needed */
+	color: var(--error); 
+	font-size: 16px; 
 }
 
 .image-placeholder {
@@ -45,20 +44,20 @@
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
-	box-sizing: border-box; /* Include padding in width/height */
+	box-sizing: border-box;
 	border: 1px dashed var(--neutral);
 	border-radius: 10px;
 	background-color: var(--neutral);
 	padding: 10px;
 	width: 200px;
 	height: 200px;
-	text-align: center; /* Center text within the placeholder */
+	text-align: center; 
 }
 
 .image-placeholder {
-	max-width: 100%;
+	max-width: 200px;
 	max-height: 100%;
-	object-fit: contain; /* Fit images within the placeholder */
+	object-fit: contain; 
 }
 
 .add-image {
@@ -145,4 +144,344 @@
 }
 .selectfamily .editable .options-container {
 	top: 100%;
+}*/
+
+/* Left Column Styles */
+.left-column {
+	flex: 2;
+	padding-right: 20px;
+}
+
+.left-column h2 {
+	margin-bottom: 10px;
+	border-bottom: 2px solid var(--divider);
+	padding-bottom: 5px;
+	color: var(--text-primary);
+	font-size: 1.5em;
+}
+
+.left-column p,
+.left-column ul {
+	margin: 0;
+	padding: 0;
+}
+
+.left-column ul {
+	padding-left: 20px;
+	list-style-type: disc;
+}
+
+.left-column ul li {
+	margin-bottom: 5px;
+	color: var(--text-secondary);
+}
+
+/* Right Column Styles */
+.right-column {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	align-items: center;
+}
+
+.right-column img {
+	margin-bottom: 20px;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	max-width: 100%;
+	height: auto;
+}
+
+.right-column h2 {
+	margin-bottom: 10px;
+	border-bottom: 2px solid var(--divider);
+	padding-bottom: 5px;
+	color: var(--text-primary);
+	font-size: 1.5em;
+}
+
+.right-column table {
+	margin-bottom: 20px;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.right-column th,
+.right-column td {
+	border: 1px solid var(--divider);
+	padding: 10px;
+	color: var(--text-primary);
+	text-align: left;
+}
+
+.right-column th {
+	background-color: var(--bg-tertiary);
+}
+
+.right-column td {
+	background-color: var(--card-bg);
+}
+
+.right-column p {
+	color: var(--text-secondary);
+	font-size: 1em;
+}
+
+.add-image {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.add-image label {
+	display: block;
+	cursor: pointer;
+	border-radius: 5px;
+	background-color: var(--accent-primary);
+	padding: 10px;
+	color: var(--text-primary);
+}
+
+.add-image input[type='file'] {
+	display: none;
+}
+
+/* Estilo de la tabla */
+table {
+	border-collapse: collapse; /* Para evitar bordes dobles */
+	width: 100%;
+}
+
+/* Estilo del encabezado */
+thead {
+	opacity: 0.8;
+	background-color: var(--accent-primary);
+	color: var(--text-primary);
+}
+
+thead th {
+	border-bottom: 2px solid var(--bg-secondary);
+	padding: 10px;
+	text-align: center;
+}
+tbody {
+	text-align: center;
+}
+tbody tr {
+	border-bottom: 2px solid var(--bg-secondary);
+}
+/* Estilo de las filas del cuerpo */
+tbody tr {
+	background-color: var(--bg-tertiary);
+	color: var(--text-primary);
+}
+
+tbody td {
+	padding: 10px;
+}
+
+/* Estilo de la primera columna */
+tbody td {
+	white-space: normal; /* Permite el ajuste del texto */
+	word-break: break-all; /* Rompe palabras largas para ajustar el texto */
+}
+
+/* Estilo de los botones dentro de las celdas */
+tbody td > button {
+	background: none;
+	color: var(--text-primary);
+}
+
+tbody td > button:hover {
+	opacity: 0.8; /* Efecto hover para los botones */
+}
+
+/* Estilo del pie de la tabla */
+tfoot {
+	border-top: 1px solid var(--accent-primary); /* Línea horizontal en el pie de la tabla */
+}
+
+tfoot td {
+	padding: 10px;
+}
+
+/* Media queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+	thead th,
+	tbody td {
+		padding: 8px; /* Reduce el padding para pantallas pequeñas */
+	}
+
+	/* Ajuste de tamaño de fuente en pantallas pequeñas */
+	thead th,
+	tbody td {
+		font-size: 14px;
+	}
+
+	/* Ajuste para la tabla en pantallas muy pequeñas */
+	table {
+		font-size: 12px; /* Ajuste general del tamaño de fuente */
+	}
+
+	tbody td button {
+		font-size: 12px; /* Ajusta el tamaño del texto en los botones */
+	}
+}
+
+@media (max-width: 480px) {
+	thead th,
+	tbody td {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+	}
+
+	thead th {
+		background-color: var(--accent-primary);
+		padding: 10px 0;
+		color: #fff;
+	}
+
+	tbody td {
+		border-bottom: 1px solid var(--accent-secondary);
+		padding: 10px 0;
+	}
+
+	tbody td::before {
+		display: block;
+		margin-bottom: 5px;
+		content: attr(data-label);
+		font-weight: bold;
+	}
+
+	tbody tr {
+		display: block;
+		margin-bottom: 10px;
+	}
+}
+
+.view {
+	background-color: var(--accent-primary);
+}
+/* General Styles */
+.createtoolform {
+	margin: 20px;
+	font-family: Arial, sans-serif;
+}
+
+.toolform {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	max-width: 900px;
+}
+
+.form-header,
+.form-content {
+	display: flex;
+	gap: 20px;
+}
+
+.left-column,
+.right-column {
+	flex: 1;
+}
+
+/* Form Header Styles */
+.form-header {
+	gap: 20px;
+}
+
+.form-header .textInput,
+.form-header .textAreaInput {
+	flex: 1;
+}
+
+/* Input & Label Styles */
+.textInput,
+.textAreaInput {
+	display: flex;
+	flex-direction: column;
+}
+
+.textInput label,
+.textAreaInput label {
+	margin-bottom: 8px;
+	font-weight: bold;
+}
+
+.textInput input,
+.textAreaInput textarea {
+	border-radius: 4px;
+	padding: 8px;
+	font-size: 14px;
+}
+
+.textAreaInput textarea {
+	resize: vertical;
+}
+
+/* Dynamic Inputs Styles */
+.dynamicInputs {
+	margin-top: 20px;
+}
+
+.dynamicInputs label {
+	font-weight: bold;
+}
+
+.dynamicInputs .input-group {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.dynamicInputs .input-group input {
+	flex: 1;
+	border-radius: 4px;
+	padding: 8px;
+}
+.dynamicInputs .input-group button {
+	margin-top: 0;
+	border: none;
+	border-radius: 4px;
+	padding: 5px 5px;
+}
+/* Select Input Styles */
+.selectInput {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+}
+
+.selectInput label {
+	margin-bottom: 8px;
+	font-weight: bold;
+}
+
+.selectInput select {
+	border-radius: 4px;
+	padding: 8px;
+	font-size: 14px;
+}
+
+.tableRow .cell {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Label Styles */
+.tableRow .label {
+	border-bottom: 1px solid var(--divider);
+	padding: 8px;
+	font-weight: bold;
+}
+
+.tableRow input {
+	margin: 4px 0;
+	border-radius: 4px;
+	background-color: var(--bg-secondary);
+	padding: 8px;
+}
+.tableRow .unit {
+	margin-top: 4px;
 }

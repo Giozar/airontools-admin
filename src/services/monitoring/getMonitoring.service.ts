@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const fetchComputerActivities = async (): Promise<ComputerActivity[]> => {
 	try {
-		const response = await axios.get<ComputerActivity[]>(
+		const response = await axios.get(
 			`${import.meta.env.VITE_API_URL}/monitoring`,
 		);
 		console.log(response.data);

@@ -13,6 +13,7 @@ export const transformFamilyDataToFrontend = (
 		name: Family.name,
 		path: Family.path,
 		description: Family.description,
+		images: Family.images,
 		createdBy: transformUserDataFront(Family.createdBy),
 	};
 };
@@ -25,6 +26,7 @@ export const transformFamilyDataToBackend = (
 		name: Family.name,
 		path: Family.path,
 		description: Family.description,
+		images: Family.images,
 		createdBy: Family.createdBy.id,
 	};
 };
