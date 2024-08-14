@@ -1,13 +1,12 @@
-import { transformCategoryDataToFrontend } from '@adapters/category.adapter';
-import {
-	CategoryDataBackend,
-	CategoryDataFrontend,
-} from '@interfaces/Category.interface';
-import axios from 'axios';
-import { useState } from 'react';
-import useErrorHandling from './common/useErrorHandling';
+// src/hooks/useFetchCategoriesFromFamily.ts
 
-function useFetchCategoriesFromFamily() {
+import { transformCategoryDataToFrontend } from '@adapters/category.adapter';
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import { CategoryDataFrontend } from '@interfaces/Category.interface';
+import { getCategoriesFromFamilyService } from '@services/categories/getCategoriesFromFamily.service';
+import { useEffect, useState } from 'react';
+
+const useFetchCategoriesFromFamily = () => {
 	const { errorLog, showError } = useErrorHandling();
 	const [categories, setCategories] = useState<CategoryDataFrontend[]>([]);
 	const [filteredCategories, setFilteredCategories] = useState<
@@ -17,16 +16,18 @@ function useFetchCategoriesFromFamily() {
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const fetchCategories = async (familyId: string) => {
+		setLoading(true);
 		try {
-			const response = await axios.get<CategoryDataBackend[]>(
-				import.meta.env.VITE_API_URL + `/categories?family=${familyId}`,
+			const backendCategories = await getCategoriesFromFamilyService(familyId);
+			const frontendCategories = backendCategories.map(
+				transformCategoryDataToFrontend,
 			);
-			setCategories(response.data.map(transformCategoryDataToFrontend));
-			setFilteredCategories(response.data.map(transformCategoryDataToFrontend));
-			setLoading(false);
+			setCategories(frontendCategories);
+			setFilteredCategories(frontendCategories);
 		} catch (error) {
 			console.error('Failed to fetch categories:', error);
-			showError('Error al cargar las categorias');
+			showError('Error al cargar las categorías');
+		} finally {
 			setLoading(false);
 		}
 	};
@@ -40,6 +41,11 @@ function useFetchCategoriesFromFamily() {
 		setFilteredCategories(filtered);
 	};
 
+	useEffect(() => {
+		// Optionally, fetch categories initially or based on some condition
+		// fetchCategories(someFamilyId);
+	}, []);
+
 	return {
 		categories,
 		loading,
@@ -50,6 +56,6 @@ function useFetchCategoriesFromFamily() {
 		handleSearch,
 		fetchCategories,
 	};
-}
+};
 
 export default useFetchCategoriesFromFamily;

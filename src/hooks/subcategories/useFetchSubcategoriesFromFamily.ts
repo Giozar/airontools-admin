@@ -1,13 +1,12 @@
-import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
-import {
-	SubcategoryDataBackend,
-	SubcategoryDataFrontend,
-} from '@interfaces/subcategory.interface';
-import axios from 'axios';
-import { useState } from 'react';
-import useErrorHandling from './common/useErrorHandling';
+// src/hooks/useFetchSubcategoriesFromFamily.ts
 
-function useFetchSubcategoriesFromFamily() {
+import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
+import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
+import { getSubcategoriesFromFamilyService } from '@services/subcategories/getSubcategoriesFromFamily.service';
+import { useState } from 'react';
+import useErrorHandling from '../common/useErrorHandling';
+
+const useFetchSubcategoriesFromFamily = () => {
 	const { errorLog, showError } = useErrorHandling();
 	const [subcategories, setSubcategories] = useState<SubcategoryDataFrontend[]>(
 		[],
@@ -19,18 +18,19 @@ function useFetchSubcategoriesFromFamily() {
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const fetchSubcategories = async (categoryId: string) => {
+		setLoading(true);
 		try {
-			const response = await axios.get<SubcategoryDataBackend[]>(
-				import.meta.env.VITE_API_URL + `/subcategories?category=${categoryId}`,
+			const backendSubcategories =
+				await getSubcategoriesFromFamilyService(categoryId);
+			const frontendSubcategories = backendSubcategories.map(
+				transformSubcategoryDataToFrontend,
 			);
-			setSubcategories(response.data.map(transformSubcategoryDataToFrontend));
-			setFilteredSubcategories(
-				response.data.map(transformSubcategoryDataToFrontend),
-			);
-			setLoading(false);
+			setSubcategories(frontendSubcategories);
+			setFilteredSubcategories(frontendSubcategories);
 		} catch (error) {
 			console.error('Failed to fetch subcategories:', error);
-			showError('Error al cargar las categorias');
+			showError('Error al cargar las subcategorías');
+		} finally {
 			setLoading(false);
 		}
 	};
@@ -54,6 +54,6 @@ function useFetchSubcategoriesFromFamily() {
 		handleSearch,
 		fetchSubcategories,
 	};
-}
+};
 
 export default useFetchSubcategoriesFromFamily;
