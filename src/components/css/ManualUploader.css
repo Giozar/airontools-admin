@@ -38,7 +38,7 @@
 	height: 12.5rem; /* 200px */
 }
 
-.embed-preview .delete {
+.embed-preview > .delete {
 	position: absolute;
 	top: 0.5rem; /* 8px */
 	right: 0.5rem; /* 8px */
