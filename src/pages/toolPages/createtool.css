@@ -270,13 +270,9 @@ tbody tr {
 	border-bottom: 2px solid var(--bg-secondary);
 }
 /* Estilo de las filas del cuerpo */
-tbody tr:nth-child(odd) {
+tbody tr {
 	background-color: var(--bg-tertiary);
 	color: var(--text-primary);
-}
-
-tbody tr:nth-child(even) {
-	background-color: var(--accent-secondary);
 }
 
 tbody td {
