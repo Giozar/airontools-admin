@@ -1,6 +1,6 @@
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { errorHandler } from '@utils/errorHandler.util';
-import { formatString } from '@utils/formatString.utils';
+import { formatPathName } from '@utils/formatPathName.utils';
 import axios from 'axios';
 
 export async function updateCategoryRequest(
@@ -10,7 +10,7 @@ export async function updateCategoryRequest(
 	try {
 		await axios.patch(import.meta.env.VITE_API_URL + `/categories/${id}`, {
 			...categoryData,
-			path: formatString(categoryData.name),
+			path: formatPathName(categoryData.name),
 		});
 	} catch (error) {
 		errorHandler(error);

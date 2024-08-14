@@ -2,7 +2,7 @@
 
 import { FamilyDataToSend } from '@interfaces/Family.interface';
 import { errorHandler } from '@utils/errorHandler.util';
-import { formatString } from '@utils/formatString.utils';
+import { formatPathName } from '@utils/formatPathName.utils';
 import axios from 'axios';
 
 interface ValidationError {
@@ -15,7 +15,7 @@ export const createFamilyService = async (familyData: FamilyDataToSend) => {
 	try {
 		const response = await axios.post(API_URL, {
 			...familyData,
-			path: formatString(familyData.name),
+			path: formatPathName(familyData.name),
 		});
 		return response.data;
 	} catch (error) {

@@ -1,6 +1,6 @@
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { ValidationError } from '@interfaces/User.interface';
-import { formatString } from '@utils/formatString.utils';
+import { formatPathName } from '@utils/formatPathName.utils';
 import axios from 'axios';
 
 export async function createCategoryRequest(categoryData: CategoryDataToSend) {
@@ -9,7 +9,7 @@ export async function createCategoryRequest(categoryData: CategoryDataToSend) {
 			import.meta.env.VITE_API_URL + '/categories',
 			{
 				...categoryData,
-				path: formatString(categoryData.name),
+				path: formatPathName(categoryData.name),
 			},
 		);
 		return response.data;

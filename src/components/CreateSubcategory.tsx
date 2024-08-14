@@ -17,7 +17,7 @@ function CreateSubcategory({
 	category: string;
 	update: () => void;
 }) {
-	const { errorLog, successLog, createSubategory } = useSubcategoryCreate();
+	const { errorLog, successLog, createSubcategory } = useSubcategoryCreate();
 	const [newSubcategories, setNewSubcategories] = useState<
 		SubcategoryDataToSend[]
 	>([]);
@@ -26,7 +26,7 @@ function CreateSubcategory({
 		subcategory: SubcategoryDataToSend,
 	) => {
 		try {
-			await createSubategory({
+			await createSubcategory({
 				...subcategory,
 			});
 			handleDelete(subcategory);

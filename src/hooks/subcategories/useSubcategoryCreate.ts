@@ -1,8 +1,9 @@
 // hooks/useSubcategoryCreate.ts
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import { createSubcategoryService } from '@services/subcategories/createSubcategory.service';
-import useErrorHandling from '../common/useErrorHandling';
-import useSuccessHandling from '../common/useSuccessHandling';
+import { errorHandler } from '@utils/errorHandler.util';
 
 const useSubcategoryCreate = () => {
 	const { errorLog, showError } = useErrorHandling();
@@ -16,6 +17,7 @@ const useSubcategoryCreate = () => {
 			showSuccess('Subcategoría creada con éxito');
 			return data;
 		} catch (error) {
+			errorHandler(error);
 			showError('Error al crear la subcategoría');
 		}
 	};
