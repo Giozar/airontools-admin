@@ -68,6 +68,7 @@ function RoleChangeModal({
 		<>
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 			<form onSubmit={handleSubmit} className='choserol'>
+				<p>Nuevo rol para: {userToEdit.name}</p>
 				<label htmlFor='options'>Nuevo rol:</label>
 				<select
 					id='options'
