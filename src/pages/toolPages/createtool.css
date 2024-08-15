@@ -262,6 +262,7 @@ thead th {
 	border-bottom: 2px solid var(--bg-secondary);
 	padding: 10px;
 	text-align: center;
+	word-break: break-all;
 }
 tbody {
 	text-align: center;
@@ -281,13 +282,14 @@ tbody td {
 
 /* Estilo de la primera columna */
 tbody td {
+	width: fit-content;
 	white-space: normal; /* Permite el ajuste del texto */
 	word-break: break-all; /* Rompe palabras largas para ajustar el texto */
 }
 
 /* Estilo de los botones dentro de las celdas */
 tbody td > button {
-	background: none;
+	transform: scale(0.7);
 	color: var(--text-primary);
 }
 

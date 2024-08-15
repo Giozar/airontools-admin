@@ -27,16 +27,17 @@ const useUserManagement = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
 
-	const handleDelete = async (userId: string, userName: string) => {
+	const handleDelete = async (user: UserDataFrontend | null) => {
+		if (!user) return;
 		try {
-			await deleteUserService(userId);
+			await deleteUserService(user.id);
 			setDeletionMessage(
-				`Usuario ${userName} (${userId}) ha sido eliminado correctamente.`,
+				`Usuario ${user.name} (${user.id}) ha sido eliminado correctamente.`,
 			);
-			console.log(`Usuario ${userId} eliminado correctamente.`);
+			console.log(`Usuario ${user.id} eliminado correctamente.`);
 		} catch (error) {
-			setDeletionMessage(`No se ha podido eliminar al usuario ${userId}.`);
-			console.error(`Error al eliminar usuario ${userId}:`, error);
+			setDeletionMessage(`No se ha podido eliminar al usuario ${user.id}.`);
+			console.error(`Error al eliminar usuario ${user.id}:`, error);
 		}
 	};
 

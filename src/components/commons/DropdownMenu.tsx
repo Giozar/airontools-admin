@@ -7,7 +7,7 @@ import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
 
-interface props {
+interface DropdownMenuProps {
 	family: FamilyDataFrontend;
 	filteredCategories: CategoryDataFrontend[];
 	filteredSubcategories: SubcategoryDataFrontend[];
@@ -19,25 +19,49 @@ function DropdownMenu({
 	filteredSubcategories,
 	specifications,
 	family,
-}: props) {
+}: DropdownMenuProps) {
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
 	const handleCategoryClick = (categoryId: string) => {
 		setActiveCategory(prevCategoryId =>
-			prevCategoryId === categoryId ? '' : categoryId,
+			prevCategoryId === categoryId ? null : categoryId,
 		);
 	};
 
+	const renderSpecifications = (specs: SpecDataFrontend[]) => (
+		<>
+			<span className='subtitle'>Especificaciones:</span>
+			<ul className='specs-list'>
+				{specs.map(spec => (
+					<li key={spec.id}>
+						{spec.name} {spec.unit && `(${spec.unit})`}
+					</li>
+				))}
+			</ul>
+		</>
+	);
+
 	return (
 		<div className='dropdown'>
-			<span>Categorías:</span>
-			<div className='dropdown-content'>
-				<ul>
-					{filteredCategories
-						.filter(category => category.family.id === family.id)
-						.map(category => (
-							<li key={category.id}>
-								<div onClick={() => handleCategoryClick(category.id || '')}>
+			<span className='dropdown-title'>Categorías:</span>
+			<ul className='category-list'>
+				{filteredCategories
+					.filter(category => category.family.id === family.id)
+					.map(category => {
+						const categorySpecs = specifications.filter(
+							spec =>
+								spec.category._id === category.id && !spec.subcategory._id,
+						);
+						const categorySubcategories = filteredSubcategories.filter(
+							subcategory => subcategory.category._id === category.id,
+						);
+
+						return (
+							<li key={category.id} className='category-item'>
+								<div
+									className='category-header'
+									onClick={() => handleCategoryClick(category.id || '')}
+								>
 									{category.name}
 									{activeCategory === category.id ? (
 										<RightArrow />
@@ -46,62 +70,37 @@ function DropdownMenu({
 									)}
 								</div>
 								{activeCategory === category.id && (
-									<>
-										{specifications.some(
-											specs =>
-												specs.category._id === category.id &&
-												!specs.subcategory._id,
-										) && <span>Especificaciones:</span>}
-										<ul>
-											{specifications
-												.filter(
-													specs =>
-														specs.category._id === category.id &&
-														!specs.subcategory._id,
-												)
-												.map(specs => (
-													<li key={specs.id}>
-														{specs.name} {specs.unit && `(${specs.unit})`}
-													</li>
-												))}
-										</ul>
-										{filteredSubcategories.some(
-											subcategory => subcategory.category._id === category.id,
-										) && <span>Subcategorias:</span>}
-										<ul>
-											{filteredSubcategories
-												.filter(
-													subcategory =>
-														subcategory.category._id === category.id,
-												)
-												.map(subcategory => (
-													<li key={subcategory.id}>
-														{subcategory.name}
-														{specifications.some(
-															specs => specs.subcategory._id === subcategory.id,
-														) && <span>Especificaciones:</span>}
-														<ul>
-															{specifications
-																.filter(
-																	specs =>
-																		specs.subcategory._id === subcategory.id,
-																)
-																.map(specs => (
-																	<li key={specs.id}>
-																		{specs.name}
-																		{specs.unit && `(${specs.unit})`}
-																	</li>
-																))}
-														</ul>
-													</li>
-												))}
-										</ul>
-									</>
+									<div className='category-content'>
+										{categorySpecs.length > 0 &&
+											renderSpecifications(categorySpecs)}
+										{categorySubcategories.length > 0 && (
+											<>
+												<span className='subtitle'>Subcategorías:</span>
+												<ul className='subcategory-list'>
+													{categorySubcategories.map(subcategory => {
+														const subcategorySpecs = specifications.filter(
+															spec => spec.subcategory._id === subcategory.id,
+														);
+														return (
+															<li
+																key={subcategory.id}
+																className='subcategory-item'
+															>
+																{subcategory.name}
+																{subcategorySpecs.length > 0 &&
+																	renderSpecifications(subcategorySpecs)}
+															</li>
+														);
+													})}
+												</ul>
+											</>
+										)}
+									</div>
 								)}
 							</li>
-						))}
-				</ul>
-			</div>
+						);
+					})}
+			</ul>
 		</div>
 	);
 }
