@@ -13,11 +13,9 @@ import ManualUploader from '@components/commons/ManualUploader';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import HeaderTitle from '@components/HeaderTitle';
 import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
 import useSpecs from '@hooks/specifications/useSpecs';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 import { FormEvent, useContext, useState } from 'react';
@@ -282,12 +280,8 @@ const Atornillador = () => {
 };
 function ContentMainPage() {
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Herramientas' />
-				<Atornillador />
-			</main>
+		<BasePage title='Crear herramienta'>
+			<Atornillador />
 		</BasePage>
 	);
 }

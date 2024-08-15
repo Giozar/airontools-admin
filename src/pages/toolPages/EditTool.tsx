@@ -4,7 +4,6 @@ import SelectInput from '@components/commons/SelectInput';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TableRow from '@components/commons/TableRow';
 import Editables from '@components/Editables';
-import HeaderTitle from '@components/HeaderTitle';
 import ImageUpdate from '@components/ImageUpdate';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
@@ -16,7 +15,6 @@ import useSpecs from '@hooks/specifications/useSpecs';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -391,13 +389,8 @@ function ContentMainPage() {
 		localStorage.setItem('ProductToEdit', JSON.stringify(state));
 	}, [state]);
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				{state.id}
-				<HeaderTitle title='Editar Herramienta' />
-				<EditToolForm toolToEdit={state} />
-			</main>
+		<BasePage title='Editar Herramienta'>
+			<EditToolForm toolToEdit={state} />
 		</BasePage>
 	);
 }

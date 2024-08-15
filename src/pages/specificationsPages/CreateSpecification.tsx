@@ -2,12 +2,10 @@
 import AutoCompleteInput from '@components/commons/AutoCompleteInput';
 import CreateSpecs from '@components/CreateSpecs';
 
-import HeaderTitle from '@components/HeaderTitle';
 import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesFromFamily';
 import useFetchFamilies from '@hooks/families/useFetchFamilies';
 import useFetchSubcategoriesFromFamily from '@hooks/subcategories/useFetchSubcategoriesFromFamily';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 
 import { useEffect, useState } from 'react';
 
@@ -117,12 +115,8 @@ function FamilySpecifications() {
 
 function ContentMainPage() {
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Crear Especificaciones' />
-				<FamilySpecifications />
-			</main>
+		<BasePage title='Crear Especificaciones'>
+			<FamilySpecifications />
 		</BasePage>
 	);
 }

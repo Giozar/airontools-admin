@@ -3,7 +3,6 @@ import DeletionModal from '@components/commons/DeletionModal';
 import DropdownMenu from '@components/commons/DropdownMenu';
 import ErrorMessage from '@components/commons/ErrorMessage';
 
-import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useFetchCategories from '@hooks/categories/useFetchCategories';
@@ -12,7 +11,6 @@ import useFetchFamilies from '@hooks/families/useFetchFamilies';
 import useFetchSubcategories from '@hooks/subcategories/useFetchSubcategories';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/familyList.css';
 import { getSpecifications } from '@services/specifications/getSpecifications.service';
 import { useEffect, useState } from 'react';
@@ -156,22 +154,18 @@ function ListofFamilies() {
 function ContentMainPage() {
 	const location = useLocation();
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Categorización' />
-				<div className='options users'>
-					<ActionCard
-						title='Crear Familia'
-						path={location.pathname + '/crear-familia'}
-					/>
-					<ActionCard
-						title='Especificaciones'
-						path={location.pathname + '/especificaciones'}
-					/>
-				</div>
-				<ListofFamilies />
-			</main>
+		<BasePage title='Categorización'>
+			<div className='options users'>
+				<ActionCard
+					title='Crear Familia'
+					path={location.pathname + '/crear-familia'}
+				/>
+				<ActionCard
+					title='Especificaciones'
+					path={location.pathname + '/especificaciones'}
+				/>
+			</div>
+			<ListofFamilies />
 		</BasePage>
 	);
 }

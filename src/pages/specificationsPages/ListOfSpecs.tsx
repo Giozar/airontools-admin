@@ -1,14 +1,12 @@
 import ActionCard from '@components/commons/ActionCard';
 import DeletionModal from '@components/commons/DeletionModal';
 import ErrorMessage from '@components/commons/ErrorMessage';
-import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSpecificationsManagement from '@hooks/specifications/useSpecificationsManagement';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/listofspecs.css';
 import { getSpecifications } from '@services/specifications/getSpecifications.service';
 import { errorHandler } from '@utils/errorHandler.util';
@@ -112,19 +110,15 @@ function SpecificationsGrid() {
 function ContentMainPage() {
 	const location = useLocation();
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Especificaciones' />
-				<div className='options users'>
-					<ActionCard
-						title='Crear Especificaciones'
-						path={location.pathname + '/crear-especificaciones'}
-					/>
-				</div>
-				<h2 className='listtitle'>Lista de especificaciones</h2>
-				<SpecificationsGrid />
-			</main>
+		<BasePage title='Especificaciones'>
+			<div className='options users'>
+				<ActionCard
+					title='Crear Especificaciones'
+					path={location.pathname + '/crear-especificaciones'}
+				/>
+			</div>
+			<h2 className='listtitle'>Lista de especificaciones</h2>
+			<SpecificationsGrid />
 		</BasePage>
 	);
 }

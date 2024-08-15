@@ -2,14 +2,12 @@ import DeletionModal from '@components/commons/DeletionModal';
 import CreateCategory from '@components/CreateCategory';
 import Editables from '@components/Editables';
 import EditCategory from '@components/EditCategory';
-import HeaderTitle from '@components/HeaderTitle';
 import TrashIcon from '@components/svg/TrashIcon';
 import { AuthContext } from '@contexts/AuthContext';
 
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
 import useFamilyUpdate from '@hooks/families/useFamilyUpdate';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/editFamily.css';
 import axios from 'axios';
 
@@ -290,12 +288,8 @@ function ContentMainPage() {
 
 	const { family } = state;
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Editar Familia' />
-				<EditFamilyForm familyToEdit={family} />
-			</main>
+		<BasePage title='Editar Familia'>
+			<EditFamilyForm familyToEdit={family} />
 		</BasePage>
 	);
 }

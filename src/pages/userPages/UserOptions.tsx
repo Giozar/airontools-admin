@@ -1,6 +1,5 @@
 import ActionCard from '@components/commons/ActionCard';
 import DeletionModal from '@components/commons/DeletionModal';
-import HeaderTitle from '@components/HeaderTitle';
 import RoleChangeModal from '@components/RoleChangeModal';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
 import EditUserIcon from '@components/svg/EditUserIcon';
@@ -8,7 +7,6 @@ import TrashIcon from '@components/svg/TrashIcon';
 import useUserManagement from '@hooks/users/useUserManagement';
 import useUsers from '@hooks/users/useUsers';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/UserOptions.css';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -122,23 +120,16 @@ function ReturnUsers() {
 function ContentMainPage() {
 	const location = useLocation();
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Usuarios' />
-				<div className='options users'>
-					<ActionCard
-						title='Crear Usuario'
-						path={location.pathname + '/crear-usuario'}
-					/>
-					<ActionCard
-						title='Crear Rol'
-						path={location.pathname + '/crear-rol'}
-					/>
-				</div>
+		<BasePage title='Usuarios'>
+			<div className='options users'>
+				<ActionCard
+					title='Crear Usuario'
+					path={location.pathname + '/crear-usuario'}
+				/>
+				<ActionCard title='Crear Rol' path={location.pathname + '/crear-rol'} />
+			</div>
 
-				<ReturnUsers />
-			</main>
+			<ReturnUsers />
 		</BasePage>
 	);
 }
