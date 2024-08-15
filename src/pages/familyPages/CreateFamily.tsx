@@ -1,6 +1,6 @@
-import ErrorMessage from '@components/ErrorMessage';
+import ErrorMessage from '@components/commons/ErrorMessage';
+import SuccessMessage from '@components/commons/SuccessMessage';
 import HeaderTitle from '@components/HeaderTitle';
-import SuccessMessage from '@components/SuccessMessage';
 import PlusIcon from '@components/svg/PlusIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { AuthContext } from '@contexts/AuthContext';

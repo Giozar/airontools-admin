@@ -1,5 +1,5 @@
-import './css/errorMessage.css';
-import CrossIcon from './svg/CrossIcon';
+import '@components/css/errorMessage.css';
+import CrossIcon from '@components/svg/CrossIcon';
 
 interface ErrorMessageProps {
 	message: string;

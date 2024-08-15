@@ -1,11 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import DeletionModal from '@components/DeletionModal';
+import DeletionModal from '@components/commons/DeletionModal';
 import Editables from '@components/Editables';
-import ErrorMessage from '@components/ErrorMessage';
 
+import SelectInput from '@components/commons/SelectInput';
 import HeaderTitle from '@components/HeaderTitle';
-import SelectInput from '@components/SelectInput';
-import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
@@ -17,6 +15,8 @@ import HeaderApp from '@layouts/HeaderApp';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
+import ErrorMessage from '@components/commons/ErrorMessage';
+import SuccessMessage from '@components/commons/SuccessMessage';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

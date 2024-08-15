@@ -1,7 +1,8 @@
-import ActionCard from '@components/ActionCard';
-import DeletionModal from '@components/DeletionModal';
-import DropdownMenu from '@components/DropdownMenu';
-import ErrorMessage from '@components/ErrorMessage';
+import ActionCard from '@components/commons/ActionCard';
+import DeletionModal from '@components/commons/DeletionModal';
+import DropdownMenu from '@components/commons/DropdownMenu';
+import ErrorMessage from '@components/commons/ErrorMessage';
+
 import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';

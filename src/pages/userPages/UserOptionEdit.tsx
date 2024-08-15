@@ -1,7 +1,7 @@
-import ErrorMessage from '@components/ErrorMessage';
+import ErrorMessage from '@components/commons/ErrorMessage';
+import SuccessMessage from '@components/commons/SuccessMessage';
 import FileUpload from '@components/FileUpload';
 import HeaderTitle from '@components/HeaderTitle';
-import SuccessMessage from '@components/SuccessMessage';
 import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
 import { useRoles } from '@hooks/roles/useRoles';
 import useUserUpdate from '@hooks/users/useUserUpdate';

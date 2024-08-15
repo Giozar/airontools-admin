@@ -1,9 +1,10 @@
 import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { useEffect, useState } from 'react';
-import ErrorMessage from './ErrorMessage';
+
 import ShowManageCategory from './ShowManageCategory';
-import SuccessMessage from './SuccessMessage';
+import ErrorMessage from './commons/ErrorMessage';
+import SuccessMessage from './commons/SuccessMessage';
 
 function CreateCategory({
 	createdBy,

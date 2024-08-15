@@ -7,9 +7,9 @@ import '@pages/css/UserOptionsCreateRole.css';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 
-import ErrorMessage from '@components/ErrorMessage';
+import ErrorMessage from '@components/commons/ErrorMessage';
+import SuccessMessage from '@components/commons/SuccessMessage';
 import RoleList from '@components/RoleList';
-import SuccessMessage from '@components/SuccessMessage';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 

@@ -1,4 +1,5 @@
 import { transformCategoryDataToBackend } from '@adapters/category.adapter';
+import TrashIcon from '@components/svg/TrashIcon';
 import useCategoryManagement from '@hooks/categories/useCategoryManegement';
 import {
 	CategoryDataFrontend,
@@ -6,10 +7,9 @@ import {
 } from '@interfaces/Category.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import DeletionModal from './DeletionModal';
+import DeletionModal from './commons/DeletionModal';
 import Editables from './Editables';
 import SubcategoryModal from './SubcategoryModal';
-import TrashIcon from './svg/TrashIcon';
 
 interface ShowManageCategoryProps {
 	categories: CategoryDataFrontend[] | any[];

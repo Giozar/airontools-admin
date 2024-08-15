@@ -1,11 +1,11 @@
 import '@components/css/dropdownmenu.css';
+import DownArrow from '@components/svg/DownArrow';
+import RightArrow from '@components/svg/RightArrow';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
-import DownArrow from './svg/DownArrow';
-import RightArrow from './svg/RightArrow';
 
 interface props {
 	family: FamilyDataFrontend;

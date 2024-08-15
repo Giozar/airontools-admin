@@ -1,5 +1,5 @@
-import './css/successMessage.css';
-import CheckIcon from './svg/CheckIcon';
+import '@components/css/successMessage.css';
+import CheckIcon from '@components/svg/CheckIcon';
 
 interface SuccessMessageProps {
 	message: string;

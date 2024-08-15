@@ -1,14 +1,14 @@
 import { transformSubcategoryDataToBackend } from '@adapters/subcategory.adapter';
+import TrashIcon from '@components/svg/TrashIcon';
 import useSubcategoryManagement from '@hooks/subcategories/useSubcategoryManagement';
 import useSubcategoryUpdate from '@hooks/subcategories/useSubcategoryUpdate';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import DeletionModal from './DeletionModal';
+import DeletionModal from './commons/DeletionModal';
+import ErrorMessage from './commons/ErrorMessage';
+import SuccessMessage from './commons/SuccessMessage';
 import Editables from './Editables';
-import ErrorMessage from './ErrorMessage';
-import SuccessMessage from './SuccessMessage';
-import TrashIcon from './svg/TrashIcon';
 
 function EditSubcategory({
 	subcategories,

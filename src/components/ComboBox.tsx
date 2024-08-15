@@ -1,5 +1,5 @@
+import DownArrow from '@components/svg/DownArrow';
 import { useState } from 'react';
-import DownArrow from './svg/DownArrow';
 
 function ComboBox({
 	option,

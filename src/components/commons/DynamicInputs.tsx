@@ -1,5 +1,5 @@
+import TrashIcon from '@components/svg/TrashIcon';
 import React, { useEffect, useState } from 'react';
-import TrashIcon from './svg/TrashIcon';
 
 interface DynamicInputsProps {
 	label: string;

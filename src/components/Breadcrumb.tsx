@@ -1,7 +1,7 @@
 import '@components/css/breadcrumb.css';
+import RightArrow from '@components/svg/RightArrow';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import RightArrow from './svg/RightArrow';
 
 function Breadcrumb({
 	separator = <RightArrow />,

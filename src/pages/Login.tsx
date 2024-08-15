@@ -1,5 +1,4 @@
 import { transformUserDataFront } from '@adapters/user.adapter';
-import ErrorMessage from '@components/ErrorMessage';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import axios, { AxiosError } from 'axios';
@@ -8,6 +7,7 @@ import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import './css/Login.css';
 // eslint-disable-next-line import/no-absolute-path
+import ErrorMessage from '@components/commons/ErrorMessage';
 import EyeIcon from '@components/svg/EyeIcon';
 import EyeOffIcon from '@components/svg/EyeOffIcon';
 import { UserDataBackend } from '@interfaces/User.interface';

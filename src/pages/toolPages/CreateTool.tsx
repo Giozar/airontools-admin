@@ -1,18 +1,19 @@
-import DynamicInputs from '@components/DynamicInputs';
-import ErrorMessage from '@components/ErrorMessage';
-import HeaderTitle from '@components/HeaderTitle';
-import ImageUploader from '@components/ImageUploader';
-import ManualUploader from '@components/ManualUploader';
-import SelectInput from '@components/SelectInput';
-import SuccessMessage from '@components/SuccessMessage';
-import TableRow from '@components/TableRow';
-import TextAreaInput from '@components/TextAreaInput';
-import TextInput from '@components/TextInput';
+import SelectInput from '@components/commons/SelectInput';
+import TableRow from '@components/commons/TableRow';
+
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 
+import DynamicInputs from '@components/commons/DynamicInputs';
+import ErrorMessage from '@components/commons/ErrorMessage';
+import ImageUploader from '@components/commons/ImageUploader';
+import ManualUploader from '@components/commons/ManualUploader';
+import SuccessMessage from '@components/commons/SuccessMessage';
+import TextAreaInput from '@components/commons/TextAreaInput';
+import TextInput from '@components/commons/TextInput';
+import HeaderTitle from '@components/HeaderTitle';
 import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
 import useSpecs from '@hooks/specifications/useSpecs';
 import BasePage from '@layouts/BasePage';

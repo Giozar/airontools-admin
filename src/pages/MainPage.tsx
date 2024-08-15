@@ -1,4 +1,4 @@
-import ActionCard from '@components/ActionCard';
+import ActionCard from '@components/commons/ActionCard';
 import HeaderTitle from '@components/HeaderTitle';
 import { AuthContext } from '@contexts/AuthContext';
 import BasePage from '@layouts/BasePage';

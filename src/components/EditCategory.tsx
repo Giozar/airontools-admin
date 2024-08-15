@@ -2,9 +2,9 @@ import useCategoryUpdate from '@hooks/categories/useCategoryUpdate';
 import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesFromFamily';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { useEffect } from 'react';
-import ErrorMessage from './ErrorMessage';
 import ShowManageCategory from './ShowManageCategory';
-import SuccessMessage from './SuccessMessage';
+import ErrorMessage from './commons/ErrorMessage';
+import SuccessMessage from './commons/SuccessMessage';
 
 function EditCategory({
 	familyId,

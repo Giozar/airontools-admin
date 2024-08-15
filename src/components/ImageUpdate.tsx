@@ -1,6 +1,6 @@
+import TrashIcon from '@components/svg/TrashIcon';
 import { ChangeEvent, SetStateAction } from 'react';
-import DeletionModal from './DeletionModal';
-import TrashIcon from './svg/TrashIcon';
+import DeletionModal from './commons/DeletionModal';
 
 const ImageUpdate = ({
 	images,

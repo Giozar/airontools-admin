@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import AutoCompleteInput from '@components/AutoCompleteInput';
+import AutoCompleteInput from '@components/commons/AutoCompleteInput';
 import CreateSpecs from '@components/CreateSpecs';
 
 import HeaderTitle from '@components/HeaderTitle';

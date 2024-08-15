@@ -7,8 +7,9 @@ import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useContext, useEffect, useState } from 'react';
-import ErrorMessage from './ErrorMessage';
-import SuccessMessage from './SuccessMessage';
+import ErrorMessage from './commons/ErrorMessage';
+import SuccessMessage from './commons/SuccessMessage';
+
 function CreateSpecs({
 	familyId,
 	categoryId,

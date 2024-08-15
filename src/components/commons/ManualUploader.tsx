@@ -1,6 +1,6 @@
 import '@components/css/ManualUploader.css'; // Import the CSS file
+import TrashIcon from '@components/svg/TrashIcon';
 import React, { useState } from 'react';
-import TrashIcon from './svg/TrashIcon';
 
 interface ManualUploaderProps {
 	title: string;

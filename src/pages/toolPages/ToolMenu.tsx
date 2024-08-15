@@ -1,7 +1,7 @@
 import { transformProductDataToFrontend } from '@adapters/products.adapter';
-import ActionCard from '@components/ActionCard';
-import DeletionModal from '@components/DeletionModal';
-import TableComponent from '@components/DynamicTable';
+import ActionCard from '@components/commons/ActionCard';
+import DeletionModal from '@components/commons/DeletionModal';
+import TableComponent from '@components/commons/DynamicTable';
 import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';

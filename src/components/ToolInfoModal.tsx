@@ -1,6 +1,6 @@
+import CloseIcon from '@components/svg/CloseIcon';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
-import Slideshow from './Slideshow';
-import CloseIcon from './svg/CloseIcon';
+import Slideshow from './commons/Slideshow';
 
 const ToolInfoModal = ({
 	isOpen,
@@ -64,8 +64,7 @@ const ToolInfoModal = ({
 								{product.specifications.length ? (
 									product.specifications.map(spec => (
 										<li key={spec.id}>
-											{spec.specification.name}: {spec.value}{' '}
-											{spec.specification.unit}
+											{spec.name}: {spec.value} {spec.unit}
 										</li>
 									))
 								) : (

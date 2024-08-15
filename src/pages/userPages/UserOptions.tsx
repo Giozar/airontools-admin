@@ -1,5 +1,5 @@
-import ActionCard from '@components/ActionCard';
-import DeletionModal from '@components/DeletionModal';
+import ActionCard from '@components/commons/ActionCard';
+import DeletionModal from '@components/commons/DeletionModal';
 import HeaderTitle from '@components/HeaderTitle';
 import RoleChangeModal from '@components/RoleChangeModal';
 import EditRoleIcon from '@components/svg/EditRoleIcon';

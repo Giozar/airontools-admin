@@ -1,5 +1,5 @@
+import '@components/css/deletionModal.css'; // Assuming your CSS file path is correct
 import { SetStateAction, useState } from 'react';
-import './css/deletionModal.css'; // Assuming your CSS file path is correct
 
 interface DeletionModalProps {
 	id: string | null;

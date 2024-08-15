@@ -1,12 +1,12 @@
-import DeletionModal from '@components/DeletionModal';
+import DeletionModal from '@components/commons/DeletionModal';
+import ErrorMessage from '@components/commons/ErrorMessage';
+import SelectInput from '@components/commons/SelectInput';
+import SuccessMessage from '@components/commons/SuccessMessage';
+import TableRow from '@components/commons/TableRow';
 import Editables from '@components/Editables';
-import ErrorMessage from '@components/ErrorMessage';
 import HeaderTitle from '@components/HeaderTitle';
 import ImageUpdate from '@components/ImageUpdate';
-import SelectInput from '@components/SelectInput';
-import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
-import TableRow from '@components/TableRow';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useFileManagement from '@hooks/files/useFileManagement';
@@ -43,7 +43,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		showDeletionModalForFile,
 		deletionMessageFile,
 		handleCloseModalFile,
-		handleDeleteFile,
+		handleDelete: handleDeleteFile,
 	} = useFileManagement();
 	const id = toolToEdit.id;
 	console.log(toolToEdit);
@@ -118,7 +118,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 			});
 			const uploadedUrlImages = await handleImageUpload(id);
 			const deletePromises = imagesToDelete.map(async image => {
-				return await handleDeleteFile(image, '');
+				return await handleDeleteFile(image);
 			});
 			const deletedFiles = await Promise.all(deletePromises);
 			// Paso 2: subir imagenes
@@ -300,7 +300,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 											onCloseDelete={() =>
 												handleCloseModalDeletionManuals(preview)
 											}
-											onDelete={() => handleDeleteFile(preview, '')}
+											onDelete={() => handleDeleteFile(preview)}
 											message={deletionMessageFile}
 										/>
 									)}

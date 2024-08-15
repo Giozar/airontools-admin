@@ -4,8 +4,8 @@ import { RoleDataFront } from '@interfaces/Role.interface';
 import { RegisterResponse, UserDataFrontend } from '@interfaces/User.interface';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import ErrorMessage from './commons/ErrorMessage';
 import './css/roleChangeModal.css';
-import ErrorMessage from './ErrorMessage';
 
 interface ValidationError {
 	message: string[];
@@ -22,7 +22,7 @@ function RoleChangeModal({
 	onCloseModal,
 	onUpdateList,
 }: RoleChangeModalProps) {
-	const [role, setRole] = useState(userToEdit.role.id);
+	const [role, setRole] = useState(userToEdit.role?.id);
 	const { errorLog, showError } = useErrorHandling();
 
 	// Se obtiene la lista de roles para el usuario

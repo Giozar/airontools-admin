@@ -1,5 +1,5 @@
+import TrashIcon from '@components/svg/TrashIcon';
 import { ChangeEvent, useState } from 'react';
-import TrashIcon from './svg/TrashIcon';
 
 interface EditableListProps {
 	value: string[];

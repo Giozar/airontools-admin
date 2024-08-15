@@ -1,5 +1,5 @@
+import FlashIcon from '@components/svg/FlashIcon';
 import { useNavigate } from 'react-router-dom';
-import FlashIcon from './svg/FlashIcon';
 
 function ActionCard({ title, path }: { title: string; path: string }) {
 	const navigate = useNavigate();

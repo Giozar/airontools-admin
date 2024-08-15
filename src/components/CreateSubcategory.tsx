@@ -1,10 +1,10 @@
+import TrashIcon from '@components/svg/TrashIcon';
 import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import { useState } from 'react';
+import ErrorMessage from './commons/ErrorMessage';
+import SuccessMessage from './commons/SuccessMessage';
 import Editables from './Editables';
-import ErrorMessage from './ErrorMessage';
-import SuccessMessage from './SuccessMessage';
-import TrashIcon from './svg/TrashIcon';
 
 function CreateSubcategory({
 	createdBy,

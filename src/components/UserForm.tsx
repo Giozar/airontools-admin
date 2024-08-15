@@ -6,9 +6,10 @@ import { useUserForm } from '@hooks/users/useUserForm';
 import { RoleDataFront } from '@interfaces/Role.interface';
 import createUser from '@services/users/createUser.service';
 import { ChangeEvent, FormEvent, useEffect } from 'react';
-import ErrorMessage from './ErrorMessage';
+
 import FileUpload from './FileUpload';
-import SuccessMessage from './SuccessMessage';
+import ErrorMessage from './commons/ErrorMessage';
+import SuccessMessage from './commons/SuccessMessage';
 
 export default function UserForm() {
 	const {
