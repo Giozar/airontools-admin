@@ -1,6 +1,5 @@
 import Editables from '@components/Editables';
 import ErrorMessage from '@components/ErrorMessage';
-import HeaderTitle from '@components/HeaderTitle';
 import SuccessMessage from '@components/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import { AuthContext } from '@contexts/AuthContext';
@@ -12,7 +11,6 @@ import useSpecs from '@hooks/useSpecs';
 import useToolCategorizationEdit from '@hooks/useToolCategorizationEdit';
 import useVideos from '@hooks/useVideos';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/createtool.css';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
@@ -374,12 +372,8 @@ function ToolForm() {
 
 function ContentMainPage() {
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Herramientas' />
-				<ToolForm />
-			</main>
+		<BasePage title='Herramientas'>
+			<ToolForm />
 		</BasePage>
 	);
 }

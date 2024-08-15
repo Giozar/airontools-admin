@@ -1,6 +1,4 @@
-import HeaderApp from '@layouts/HeaderApp';
 // import {useLocation} from 'react-router-dom';
-import HeaderTitle from '@components/HeaderTitle';
 import { AuthContext } from '@contexts/AuthContext';
 import BasePage from '@layouts/BasePage';
 import '@pages/css/UserOptionsCreateRole.css';
@@ -100,12 +98,8 @@ function CreateRoleForm() {
 function ContentMainPage() {
 	// const location = useLocation();
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Crear rol de Usuario' />
-				<CreateRoleForm />
-			</main>
+		<BasePage title='Crear rol de Usuario'>
+			<CreateRoleForm />
 		</BasePage>
 	);
 }

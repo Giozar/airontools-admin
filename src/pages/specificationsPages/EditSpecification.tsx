@@ -3,7 +3,6 @@ import DeletionModal from '@components/commons/DeletionModal';
 import Editables from '@components/Editables';
 
 import SelectInput from '@components/commons/SelectInput';
-import HeaderTitle from '@components/HeaderTitle';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
@@ -11,7 +10,6 @@ import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit
 import useSpecificationsManagement from '@hooks/specifications/useSpecificationsManagement';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
@@ -193,12 +191,8 @@ function ContentMainPage() {
 	}, [state]);
 
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Editar Especificación' />
-				<EditSpecificationsForm specToEdit={state} />
-			</main>
+		<BasePage title='Editar Especificación'>
+			<EditSpecificationsForm specToEdit={state} />
 		</BasePage>
 	);
 }

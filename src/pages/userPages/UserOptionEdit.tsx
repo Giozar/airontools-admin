@@ -1,14 +1,12 @@
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import FileUpload from '@components/FileUpload';
-import HeaderTitle from '@components/HeaderTitle';
 import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
 import { useRoles } from '@hooks/roles/useRoles';
 import useUserUpdate from '@hooks/users/useUserUpdate';
 import { RoleDataFront } from '@interfaces/Role.interface';
 import { UserDataFrontend } from '@interfaces/User.interface';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
@@ -139,12 +137,8 @@ function ContentMainPage() {
 	}, [state]);
 
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Editar Usuario' />
-				<EditUserForm userToEdit={state} />
-			</main>
+		<BasePage title='Editar Usuario'>
+			<EditUserForm userToEdit={state} />
 		</BasePage>
 	);
 }

@@ -10,13 +10,37 @@ import { Link, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-absolute-path
 import aironLogo from '/Logo-Blanco.png';
 
-function Sidebar() {
+const routeMap: {
+	'Ver herramientas': string;
+	'Crear herramientas': string;
+	'Ver usuarios': string;
+	'Crear usuarios': string;
+	'Crear rol de usuarios': string;
+	'Ver especificaciones': string;
+	'Crear especificaciones': string;
+} = {
+	'Ver herramientas': '/home/herramientas',
+	'Crear herramientas': '/home/herramientas/crear-herramienta',
+	'Ver usuarios': '/home/usuarios',
+	'Crear usuarios': '/home/usuarios/crear-usuario',
+	'Crear rol de usuarios': '/home/usuarios/crear-rol',
+	'Ver especificaciones': '/home/categorizacion/especificaciones',
+	'Crear especificaciones':
+		'/home/categorizacion/especificaciones/crear-especificaciones',
+};
+const Sidebar = () => {
 	const navigate = useNavigate();
 	const authContext = useContext(AuthContext);
 
 	const handleOptionSelected = (selectedOption: string) => {
-		console.log('opcion seleccionada:', selectedOption);
+		console.log('Opción seleccionada:', selectedOption);
+		const route = routeMap[selectedOption as keyof typeof routeMap];
+		// console.log(route);
+		if (route) {
+			navigate(route);
+		}
 	};
+
 	const handleClose = () => {
 		authContext?.setAuth({ isAuthenticated: false, user: null });
 		localStorage.setItem('token', '');
@@ -27,46 +51,44 @@ function Sidebar() {
 		<div className='sidebar'>
 			<div className='top'>
 				<div className='title'>
-					<img src={aironLogo} alt='AironTools Logo' />
-					<h1>Administrador AironTools</h1>
+					<Link to='/home'>
+						<img src={aironLogo} alt='AironTools Logo' />
+						<h1>Administrador AironTools</h1>
+					</Link>
 				</div>
-				<a href='#'>
+				<Link to='/notificaciones'>
 					<BellIcon />
 					Notificaciones
-				</a>
+				</Link>
 				<ComboBox
 					option='Herramientas'
-					options={['Ver', 'Crear', 'Actualizar', 'Eliminar'].map(
-						val => val + ' Herramientas',
-					)}
+					options={['Ver', 'Crear'].map(val => val + ' herramientas')}
 					onOptionSelected={handleOptionSelected}
 				/>
 				<ComboBox
-					option='Empleados'
-					options={['Ver', 'Crear', 'Actualizar', 'Eliminar'].map(
-						val => val + ' Empleados',
+					option='Usuarios'
+					options={['Ver', 'Crear', 'Crear rol de'].map(
+						val => val + ' usuarios',
 					)}
 					onOptionSelected={handleOptionSelected}
 				/>
 				<ComboBox
 					option='Especificaciones'
-					options={['Ver', 'Crear', 'Actualizar', 'Eliminar'].map(
-						val => val + ' Especificaciones',
-					)}
+					options={['Ver', 'Crear'].map(val => val + ' especificaciones')}
 					onOptionSelected={handleOptionSelected}
 				/>
-				<ComboBox
+				{/* <ComboBox
 					option='Roles'
 					options={['Ver', 'Crear', 'Actualizar', 'Eliminar'].map(
-						val => val + ' Roles',
+						val => val + ' roles',
 					)}
 					onOptionSelected={handleOptionSelected}
-				/>
+				/> */}
 			</div>
 			<div className='bottom'>
 				<nav>
-					<a href='#'>Información personal</a>
-					<a href='#'>Seguridad</a>
+					<Link to='/informacion-personal'>Información personal</Link>
+					<Link to='/seguridad'>Seguridad</Link>
 					<Link to='/' onClick={handleClose}>
 						Cerrar sesión
 					</Link>
@@ -74,6 +96,6 @@ function Sidebar() {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Sidebar;

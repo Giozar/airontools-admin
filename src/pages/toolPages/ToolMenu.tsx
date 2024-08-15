@@ -2,7 +2,6 @@ import { transformProductDataToFrontend } from '@adapters/products.adapter';
 import ActionCard from '@components/commons/ActionCard';
 import DeletionModal from '@components/commons/DeletionModal';
 import TableComponent from '@components/commons/DynamicTable';
-import HeaderTitle from '@components/HeaderTitle';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
@@ -13,7 +12,6 @@ import {
 	ProductDataFrontend,
 } from '@interfaces/Product.interface';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import '@pages/toolPages/ToolMenu.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -132,18 +130,14 @@ function ListOfTools() {
 }
 function ContentMainPage() {
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Herramientas' />
-				<div className='options users'>
-					<ActionCard
-						title='Crear Herramienta'
-						path={location.pathname + '/crear-herramienta'}
-					/>
-				</div>
-				<ListOfTools />
-			</main>
+		<BasePage title='Herramientas'>
+			<div className='options users'>
+				<ActionCard
+					title='Crear Herramienta'
+					path={location.pathname + '/crear-herramienta'}
+				/>
+			</div>
+			<ListOfTools />
 		</BasePage>
 	);
 }

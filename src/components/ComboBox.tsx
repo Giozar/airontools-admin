@@ -17,6 +17,7 @@ function ComboBox({
 	}
 	function handleOptionClick(action: string) {
 		if (onOptionSelected) {
+			console.log(action);
 			onOptionSelected(action);
 			setIsOpen(false);
 		}

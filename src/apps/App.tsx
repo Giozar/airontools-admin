@@ -9,6 +9,9 @@ import {
 } from 'react-router-dom';
 
 import { Role } from '@interfaces/Role.interface';
+import Notifications from '@pages/css/miscPages.tsx/notifications';
+import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
+import Security from '@pages/css/miscPages.tsx/security';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
 import CreateFamily from '@pages/familyPages/CreateFamily';
 import EditFamily from '@pages/familyPages/EditFamily';
@@ -35,6 +38,9 @@ const App = () => {
 					<Route element={<PrivateRoute />}>
 						<Route element={<PrivateRouteOptionUser />}>
 							<Route path='/home' element={<Home />} />
+							<Route path='/notificaciones' element={<Notifications />} />
+							<Route path='/seguridad' element={<Security />} />
+							<Route path='/informacion-personal' element={<Personal />} />
 							<Route path='/home/solo-editor' element={<Home />} />
 							<Route element={<PrivateRouteOptionUserAdmin />}>
 								<Route path='/home/usuarios' element={<UserOptions />} />

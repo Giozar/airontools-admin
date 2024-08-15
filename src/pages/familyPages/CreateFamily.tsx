@@ -1,6 +1,5 @@
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
-import HeaderTitle from '@components/HeaderTitle';
 import PlusIcon from '@components/svg/PlusIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { AuthContext } from '@contexts/AuthContext';
@@ -10,7 +9,6 @@ import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import BasePage from '@layouts/BasePage';
-import HeaderApp from '@layouts/HeaderApp';
 import '@pages/css/createFamily.css';
 import { useContext, useState } from 'react';
 
@@ -276,13 +274,8 @@ function CreateFamilyForm() {
 
 function ContentMainPage() {
 	return (
-		<BasePage>
-			<HeaderApp />
-			<main>
-				<HeaderTitle title='Categorización' />
-
-				<CreateFamilyForm />
-			</main>
+		<BasePage title='Crear familia'>
+			<CreateFamilyForm />
 		</BasePage>
 	);
 }

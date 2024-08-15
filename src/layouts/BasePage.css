@@ -44,11 +44,10 @@
 .sidebar a svg {
 	margin-right: 1rem;
 }
-
 .sidebar a:hover,
 .sidebar .comboboxOptions li span:hover {
-	background-color: var(--text-primary);
-	color: black;
+	opacity: 0.8;
+	color: var(--text-secondary);
 }
 
 .sidebar .combobox {
