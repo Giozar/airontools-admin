@@ -112,3 +112,91 @@
 	top: 100%;
 	left: -5%;
 }
+
+/* Grid layout styles */
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+	gap: 20px;
+}
+
+/* Card styles */
+.card {
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+/* Card header styles */
+.cardHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid var(--text-secondary);
+	padding: 15px;
+}
+
+/* Card title styles */
+.cardTitle {
+	margin: 0;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+/* Card content styles */
+.cardContent {
+	padding: 15px;
+}
+/* dropdownmenu.css */
+.dropdown {
+	margin-bottom: 20px;
+	font-family: Arial, sans-serif;
+}
+
+.dropdown-title {
+	display: block;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+.category-list {
+	padding: 0;
+	list-style-type: none;
+}
+
+.category-item {
+	margin-bottom: 10px;
+}
+
+.category-header {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	border-radius: 4px;
+	padding: 5px 10px;
+}
+
+.category-header svg {
+	margin-left: 10px;
+}
+
+.category-content {
+	margin-top: 10px;
+	margin-left: 20px;
+}
+
+.subtitle {
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.specs-list,
+.subcategory-list {
+	padding-left: 20px;
+	list-style-type: none;
+}
+
+.subcategory-item {
+	margin-bottom: 10px;
+}
