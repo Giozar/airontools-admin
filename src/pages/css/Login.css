@@ -8,7 +8,7 @@ header {
 	grid-template-columns: repeat(2, 200px);
 	background-color: var(--menu-bg);
 	padding: 20px 0;
-	min-width: 100vw;
+	min-width: 100%;
 }
 
 header .logoimg {
