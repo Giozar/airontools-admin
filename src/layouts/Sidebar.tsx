@@ -51,8 +51,10 @@ const Sidebar = () => {
 		<div className='sidebar'>
 			<div className='top'>
 				<div className='title'>
-					<img src={aironLogo} alt='AironTools Logo' />
-					<h1>Administrador AironTools</h1>
+					<Link to='/home'>
+						<img src={aironLogo} alt='AironTools Logo' />
+						<h1>Administrador AironTools</h1>
+					</Link>
 				</div>
 				<Link to='/notificaciones'>
 					<BellIcon />
