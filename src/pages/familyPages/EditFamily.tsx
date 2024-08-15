@@ -18,12 +18,12 @@ import '@pages/css/editFamily.css';
 import axios from 'axios';
 
 import { transformFamilyDataToBackend } from '@adapters/family.adapter';
-import useFileManagement from '@hooks/useFileManagement';
-import useMultipleFileUpload from '@hooks/useMultipleFileUpload';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useContext, useEffect, useState } from 'react';
 
 import ImageUpdate from '@components/ImageUpdate';
+import useFileManagement from '@hooks/files/useFileManagement';
+import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
 	familyToEdit: FamilyDataFrontend;
@@ -51,7 +51,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		showDeletionModalForFile,
 		deletionMessageFile,
 		handleCloseModalFile,
-		handleDeleteFile,
+		handleDelete: handleDeleteFile,
 	} = useFileManagement();
 
 	const [update, setUpdate] = useState(false);
@@ -105,7 +105,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 			console.log(imagesToDelete);
 			const uploadedUrlImages = await handleImageUpload(familyId);
 			const deletePromises = imagesToDelete.map(async image => {
-				return await handleDeleteFile(image, '');
+				return await handleDeleteFile(image);
 			});
 			const deletedFiles = await Promise.all(deletePromises);
 
