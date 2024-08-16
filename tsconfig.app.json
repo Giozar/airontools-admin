@@ -6,6 +6,7 @@
       "@apps/*": ["src/apps/*"],
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
+      "@handlers/*": ["src/handlers/*"],
       "@hooks/*": ["src/hooks/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@layouts/*": ["src/layouts/*"],

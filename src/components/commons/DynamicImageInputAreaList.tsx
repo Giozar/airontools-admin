@@ -64,7 +64,10 @@ const DynamicImageInputAreaList = ({
 				}}
 			>
 				{components.map((component, index) => (
-					<div key={index} style={{ display: 'flex', margin: '20px' }}>
+					<div
+						key={index + 'dymimginarli'}
+						style={{ display: 'flex', margin: '20px' }}
+					>
 						<div>
 							<TextInput
 								id={`name-${index}`}
