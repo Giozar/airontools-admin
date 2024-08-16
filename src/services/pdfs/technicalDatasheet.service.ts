@@ -27,3 +27,20 @@ export const getTechnicalDatasheet = async (
 		throw error; // Re-lanzar el error para que el consumidor pueda manejarlo
 	}
 };
+
+export const downloadTechnicalDatasheet = async (productId: string) => {
+	try {
+		const pdfBlob = await getTechnicalDatasheet(productId);
+		// Crear un enlace para descargar el PDF
+		const url = URL.createObjectURL(pdfBlob);
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = 'technical_datasheet.pdf'; // Nombre del archivo para la descarga
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		URL.revokeObjectURL(url); // Limpia la URL del objeto
+	} catch (error) {
+		console.error('Error al descargar el PDF:', error);
+	}
+};
