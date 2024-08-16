@@ -1,0 +1,42 @@
+.image-uploader-container-single {
+	display: flex;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid var(--text-primary);
+	border-radius: 0.5rem; /* 8px */
+	padding: 1rem; /* 16px */
+	width: 8rem;
+	height: 8rem; /* 64px * 4 = 256px */
+}
+
+.image-uploader-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.image-uploader-overlay {
+	display: flex;
+	position: absolute;
+	top: 0;
+	left: 0;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+
+.image-uploader-overlay input[type='file'] {
+	display: none;
+}
+
+.image-uploader-overlay label {
+	cursor: pointer;
+	border-radius: 0.5rem; /* 8px */
+	background-color: var(--bg-secondary);
+	padding: 0.5rem 1rem; /* 8px 16px */
+}

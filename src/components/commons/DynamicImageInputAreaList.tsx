@@ -1,27 +1,34 @@
 import TrashIcon from '@components/svg/TrashIcon';
-import { useEffect, useState } from 'react';
-import SelectInput from './SelectInput';
+import { ChangeEvent, useEffect, useState } from 'react';
+import ImageUploaderSingle from './ImageUploaderSingle';
 import TextAreaInput from './TextAreaInput';
 import TextInput from './TextInput';
-interface DynamicSelectInputArea {
+interface DynamicInputArea {
 	name: string;
 	description: string;
-	selected: string;
 }
 
-interface DynamicSelectInputAreaListProps {
+interface DynamicInputAreaProps {
 	name: string;
-	optionsName: string;
-	selectOptions: { value: string; label: string }[];
-	onChange?: (components: DynamicSelectInputArea[]) => void;
+	type: string;
+	filePreviews: {
+		[key: string]: string[];
+	};
+	onFileSelect: (event: ChangeEvent<HTMLInputElement>, type: string) => void;
+	onRemoveFile: (type: string, index: number) => void;
+	onChange?: (components: DynamicInputArea[]) => void;
 }
-const DynamicSelectInputAreaList = ({
+
+const DynamicImageInputAreaList = ({
 	name,
-	optionsName,
-	selectOptions,
+	type,
+	filePreviews,
+	onFileSelect,
+	onRemoveFile,
 	onChange,
-}: DynamicSelectInputAreaListProps) => {
-	const [components, setComponents] = useState<DynamicSelectInputArea[]>([]);
+}: DynamicInputAreaProps) => {
+	const [components, setComponents] = useState<DynamicInputArea[]>([]);
+
 	useEffect(() => {
 		if (onChange) onChange(components);
 	}, [components, onChange]);
@@ -37,14 +44,9 @@ const DynamicSelectInputAreaList = ({
 		newComponents[index].description = newDescription;
 		setComponents(newComponents);
 	};
-	const handleSelectChange = (index: number, newValue: string) => {
-		const newComponents = [...components];
-		newComponents[index].selected = newValue;
-		setComponents(newComponents);
-	};
 
 	const handleAddComponent = () => {
-		setComponents([...components, { name: '', description: '', selected: '' }]);
+		setComponents([...components, { name: '', description: '' }]);
 	};
 
 	const handleRemoveComponent = (index: number) => {
@@ -64,13 +66,6 @@ const DynamicSelectInputAreaList = ({
 				{components.map((component, index) => (
 					<div key={index} style={{ display: 'flex', margin: '20px' }}>
 						<div>
-							<SelectInput
-								id={`select-${index}`}
-								name={`Seleccionar ${optionsName}`}
-								options={selectOptions}
-								value={component.selected}
-								onChange={value => handleSelectChange(index, value)}
-							/>
 							<TextInput
 								id={`name-${index}`}
 								label={`Nombre de ${name} ${index + 1}:`}
@@ -87,6 +82,14 @@ const DynamicSelectInputAreaList = ({
 								placeholder={`Introduce la descripción de la ${name} ${index + 1}...`}
 								onChange={e => handleDescriptionChange(index, e.target.value)}
 								rows={2}
+							/>
+							<ImageUploaderSingle
+								title={`Imagen de ${name} ${index + 1}:`}
+								filePreviews={filePreviews}
+								onFileSelect={onFileSelect}
+								onRemoveFile={onRemoveFile}
+								type={type}
+								index={index + 1}
 							/>
 						</div>
 						<div>
@@ -109,4 +112,4 @@ const DynamicSelectInputAreaList = ({
 	);
 };
 
-export default DynamicSelectInputAreaList;
+export default DynamicImageInputAreaList;

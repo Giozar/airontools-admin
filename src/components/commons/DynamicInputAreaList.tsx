@@ -13,9 +13,7 @@ interface DynamicInputAreaProps {
 }
 
 const DynamicInputAreaList = ({ name, onChange }: DynamicInputAreaProps) => {
-	const [components, setComponents] = useState<DynamicInputArea[]>([
-		{ name: '', description: '' },
-	]);
+	const [components, setComponents] = useState<DynamicInputArea[]>([]);
 
 	useEffect(() => {
 		if (onChange) onChange(components);
