@@ -6,10 +6,10 @@ import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { AuthContext } from '@contexts/AuthContext';
-import useCategoryCreate from '@hooks/categories/useCategoryCreate';
+import useCreateCategories from '@handlers/categories.handler';
+import useCreateSubcategories from '@handlers/subcategories.handler';
 import useFamilyCreate from '@hooks/families/useFamilyCreate';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
-import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import BasePage from '@layouts/BasePage';
 import '@pages/css/createFamily.css';
 import axios from 'axios';
@@ -32,9 +32,6 @@ function CreateFamilyForm() {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
 	const { errorLog, successLog, createFamily } = useFamilyCreate();
-	const { createCategory } = useCategoryCreate();
-	const { createSubcategory } = useSubcategoryCreate();
-
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 
@@ -46,7 +43,7 @@ function CreateFamilyForm() {
 		index: number,
 	) => {
 		return await handleFileUpload(
-			'images.category' + '.' + index,
+			'images.category',
 			categoryId,
 			'images.category' + '.' + index,
 		);
@@ -56,7 +53,7 @@ function CreateFamilyForm() {
 		index: number,
 	) => {
 		return await handleFileUpload(
-			'images.subcategory' + '.' + index,
+			'images.subcategory',
 			categoryId,
 			'images.subcategory' + '.' + index,
 		);
@@ -71,6 +68,12 @@ function CreateFamilyForm() {
 	) => {
 		setSubcategories(subcategories);
 	};
+
+	const { createCategories } = useCreateCategories(handleImageUploadCategory);
+	const { createSubcategories } = useCreateSubcategories(
+		handleImageUploadSubcategory,
+	);
+
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 
@@ -83,86 +86,6 @@ function CreateFamilyForm() {
 				path: '',
 				images: [],
 			});
-
-			console.log('ID de la familia:', familyId);
-
-			// Crear categorías
-			const createdCategories = await Promise.all(
-				categories.map(async (category, index) => {
-					// Crea la categoría
-					const createdCategory = await createCategory({
-						name: category.name,
-						description: category.description,
-						family: familyId,
-						createdBy,
-					});
-
-					// Subir imágenes asociadas a la categoría
-					const categoryUploadedUrlImages = await handleImageUploadCategory(
-						createdCategory._id,
-						index + 1,
-					);
-					console.log(
-						`Imágenes subidas para la categoría ${createdCategory._id}:`,
-						categoryUploadedUrlImages,
-					);
-
-					// Actualiza la categoría con las URLs de las imágenes
-					await axios.patch(
-						`${import.meta.env.VITE_API_URL}/categories/${createdCategory._id}`,
-						{ images: categoryUploadedUrlImages },
-					);
-
-					return createdCategory;
-				}),
-			);
-
-			console.log('Categorías creadas y actualizadas:', createdCategories);
-
-			// Crear subcategorías
-			const createdSubcategories = await Promise.all(
-				subcategories.map(async (subcategory, index) => {
-					// Encuentra la categoría correspondiente a la subcategoría
-					const category = createdCategories.find(
-						cat => subcategory.selected === cat.name,
-					);
-
-					if (!category) {
-						throw new Error(
-							`Categoría no encontrada para la subcategoría ${subcategory.name}`,
-						);
-					}
-
-					// Crea la subcategoría
-					const createdSubcategory = await createSubcategory({
-						name: subcategory.name,
-						description: subcategory.description,
-						family: category.family._id,
-						category: category._id,
-						createdBy,
-					});
-
-					// Subir imágenes asociadas a la subcategoría
-					const subcategoryUploadedUrlImages =
-						await handleImageUploadSubcategory(
-							createdSubcategory._id,
-							index + 1,
-						);
-					console.log(
-						`Imágenes subidas para la subcategoría ${createdSubcategory._id}:`,
-						subcategoryUploadedUrlImages,
-					);
-
-					// Actualiza la subcategoría con las URLs de las imágenes
-					await axios.patch(
-						`${import.meta.env.VITE_API_URL}/subcategories/${createdSubcategory._id}`,
-						{ images: subcategoryUploadedUrlImages },
-					);
-
-					return createdSubcategory;
-				}),
-			);
-			console.log('Subcategorías creadas:', createdSubcategories);
 			// Actualizar familia para imagen
 			const uploadedUrlImages = await handleImageUpload(familyId);
 			console.log(uploadedUrlImages);
@@ -170,6 +93,21 @@ function CreateFamilyForm() {
 				import.meta.env.VITE_API_URL + '/families/' + familyId,
 				{ images: uploadedUrlImages },
 			);
+
+			console.log('ID de la familia:', familyId);
+			const createdCategories = await createCategories(
+				categories,
+				familyId,
+				createdBy,
+			);
+			console.log('Categorías creadas y actualizadas:', createdCategories);
+			const createdSubcategories = await createSubcategories(
+				subcategories,
+				createdCategories,
+				createdBy,
+			);
+			console.log('Subcategorías creadas:', createdSubcategories);
+
 			setName('');
 			setDescription('');
 			setCategories([]);

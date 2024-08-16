@@ -23,8 +23,8 @@ const SelectInput: React.FC<SelectInputProps> = ({
 			<label htmlFor={id}>{name}</label>
 			<select id={id} value={value?.name || value} onChange={handleChange}>
 				<option value=''>Selecciona una opción</option>
-				{options.map(option => (
-					<option key={option.value} value={option.value}>
+				{options.map((option, index) => (
+					<option key={option.value + index + 'select'} value={option.value}>
 						{option.label}
 					</option>
 				))}
