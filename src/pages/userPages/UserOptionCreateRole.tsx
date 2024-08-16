@@ -7,6 +7,8 @@ import React, { useContext, useState } from 'react';
 
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
+import TextAreaInput from '@components/commons/TextAreaInput';
+import TextInput from '@components/commons/TextInput';
 import RoleList from '@components/RoleList';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
@@ -58,35 +60,30 @@ function CreateRoleForm() {
 
 				<h2>Crear Nuevo Rol</h2>
 				<form onSubmit={handleSubmit}>
-					<label htmlFor='name'>Nombre del Rol:</label>
-					<input
+					<TextInput
 						id='name'
-						type='text'
-						placeholder='Introduce el nombre del rol'
+						label='Nombre del Rol:'
 						value={name}
+						placeholder='Introduce el nombre del rol'
 						onChange={e => setName(e.target.value)}
-						required
+						required={true}
 					/>
-
-					<label htmlFor='description'>Descripción:</label>
-					<textarea
-						id='description'
+					<TextAreaInput
+						id={'description'}
+						label={'Descripción:'}
 						placeholder='Introduce la descripción del rol'
 						value={description}
 						onChange={e => setDescription(e.target.value)}
-						required
 					/>
-
-					<label htmlFor='createdBy'>Creado Por: {createdBy?.name}</label>
-					<input
+					<TextInput
 						className='createdby'
-						id='createdBy'
-						type='text'
+						id='createdby'
+						label='Creado por:'
+						value={createdBy?.name || ''}
 						placeholder='Introduce el nombre del creador'
-						value={createdBy?.id}
-						readOnly
+						onChange={e => console.log(e.target.value)}
+						readOnly={true}
 					/>
-
 					<button type='submit'>Crear Rol</button>
 				</form>
 			</div>

@@ -89,9 +89,13 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 								]}
 							/>
 						</div>
-						<button onClick={() => setShowDeletionModalFor(role.id as string)}>
-							Eliminar rol
-						</button>
+						{role.name !== 'Administrador' && (
+							<button
+								onClick={() => setShowDeletionModalFor(role.id as string)}
+							>
+								Eliminar rol
+							</button>
+						)}
 						{showDeletionModalFor === role.id && (
 							<DeletionModal
 								id={role.id}

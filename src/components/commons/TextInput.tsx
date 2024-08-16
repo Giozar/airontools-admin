@@ -6,6 +6,9 @@ interface TextInputProps {
 	value: string;
 	placeholder: string;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	required?: boolean;
+	readOnly?: boolean;
+	className?: string;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -14,9 +17,12 @@ const TextInput: React.FC<TextInputProps> = ({
 	value,
 	placeholder,
 	onChange,
+	required,
+	readOnly,
+	className,
 }) => {
 	return (
-		<div className='textInput'>
+		<div className={className || `textInput`}>
 			<label htmlFor={id}>{label}</label>
 			<input
 				type='text'
@@ -24,6 +30,8 @@ const TextInput: React.FC<TextInputProps> = ({
 				value={value}
 				onChange={onChange}
 				placeholder={placeholder}
+				required={required}
+				readOnly={readOnly}
 			/>
 		</div>
 	);
