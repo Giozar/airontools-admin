@@ -1,277 +1,266 @@
+import DynamicImageInputAreaList from '@components/commons/DynamicImageInputAreaList';
+import DynamicImageSelectInputAreaList from '@components/commons/DynamicImageSelectInputAreaList';
 import ErrorMessage from '@components/commons/ErrorMessage';
+import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
 import SuccessMessage from '@components/commons/SuccessMessage';
-import PlusIcon from '@components/svg/PlusIcon';
-import TrashIcon from '@components/svg/TrashIcon';
+import TextAreaInput from '@components/commons/TextAreaInput';
+import TextInput from '@components/commons/TextInput';
 import { AuthContext } from '@contexts/AuthContext';
 import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import useFamilyCreate from '@hooks/families/useFamilyCreate';
+import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
-import { CategoryDataToSend } from '@interfaces/Category.interface';
-import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import BasePage from '@layouts/BasePage';
 import '@pages/css/createFamily.css';
+import axios from 'axios';
 import { useContext, useState } from 'react';
 
-interface SubcategoryAux {
-	categoryIndex: number;
-	subcategory: SubcategoryDataToSend;
+interface Category {
+	name: string;
+	description: string;
+}
+interface Subcategory {
+	name: string;
+	description: string;
+	selected: string;
 }
 function CreateFamilyForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
+	const [categories, setCategories] = useState<Category[]>([]);
+	const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
 	const { errorLog, successLog, createFamily } = useFamilyCreate();
 	const { createCategory } = useCategoryCreate();
 	const { createSubcategory } = useSubcategoryCreate();
-	const [categories, setCategories] = useState<CategoryDataToSend[]>([]);
-	const [subcategories, setSubcategories] = useState<SubcategoryAux[]>([]);
 
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
+
+	const handleImageUpload = async (familyId: string) => {
+		return await handleFileUpload('images.family', familyId, 'images.family');
+	};
+	const handleImageUploadCategory = async (
+		categoryId: string,
+		index: number,
+	) => {
+		return await handleFileUpload(
+			'images.category' + '.' + index,
+			categoryId,
+			'images.category' + '.' + index,
+		);
+	};
+	const handleImageUploadSubcategory = async (
+		categoryId: string,
+		index: number,
+	) => {
+		return await handleFileUpload(
+			'images.subcategory' + '.' + index,
+			categoryId,
+			'images.subcategory' + '.' + index,
+		);
+	};
+	const handleCategoriesChange = (
+		categories: { name: string; description: string }[],
+	) => {
+		setCategories(categories);
+	};
+	const handleSubcategoriesChange = (
+		subcategories: { name: string; description: string; selected: string }[],
+	) => {
+		setSubcategories(subcategories);
+	};
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-		await createFamily({
-			name,
-			description,
-			createdBy,
-			path: '',
-		})
-			.then(async _id => {
-				console.log('Family ID:', _id);
-				const createdCategoryPromises = categories.map(async category => {
-					return await createCategory({
-						...category,
-						family: _id,
-						createdBy,
-					});
-				});
-				return Promise.all(createdCategoryPromises);
-			})
-			.then(createdCategories => {
-				console.log('Created categories:', createdCategories);
-				console.log();
-				const createdSubcategoryPromises = subcategories.map(
-					async subcategory => {
-						console.log(createdCategories[subcategory.categoryIndex]._id);
-						return await createSubcategory({
-							...subcategory.subcategory,
-							family: createdCategories[subcategory.categoryIndex].family._id,
-							category: createdCategories[subcategory.categoryIndex]._id,
-						});
-					},
-				);
-				return Promise.all(createdSubcategoryPromises);
-			})
-			.then(createdSubcategories => {
-				console.log('Created subcategories:', createdSubcategories);
-			})
-			.then(() => {
-				setName('');
-				setDescription('');
-			})
-			.catch(error => {
-				console.error('Error:', error);
+
+		try {
+			// Crear la familia
+			const familyId = await createFamily({
+				name,
+				description,
+				createdBy,
+				path: '',
+				images: [],
 			});
 
-		console.log('Form submitted with:', { name, description, categories });
-	};
+			console.log('ID de la familia:', familyId);
 
-	const addCategoryInput = () => {
-		setCategories([
-			...categories,
-			{
-				name: '',
-				description: '',
-				createdBy,
-				family: '',
-			},
-		]);
-	};
+			// Crear categorías
+			const createdCategories = await Promise.all(
+				categories.map(async (category, index) => {
+					// Crea la categoría
+					const createdCategory = await createCategory({
+						name: category.name,
+						description: category.description,
+						family: familyId,
+						createdBy,
+					});
 
-	const addSubcategoryInput = (categoryIndex: number) => {
-		const newSubcategory: SubcategoryDataToSend = {
-			name: '',
-			description: '',
-			createdBy,
-			family: '',
-			category: '',
-		};
+					// Subir imágenes asociadas a la categoría
+					const categoryUploadedUrlImages = await handleImageUploadCategory(
+						createdCategory._id,
+						index + 1,
+					);
+					console.log(
+						`Imágenes subidas para la categoría ${createdCategory._id}:`,
+						categoryUploadedUrlImages,
+					);
 
-		setSubcategories([
-			...subcategories,
-			{
-				categoryIndex,
-				subcategory: newSubcategory,
-			},
-		]);
-	};
+					// Actualiza la categoría con las URLs de las imágenes
+					await axios.patch(
+						`${import.meta.env.VITE_API_URL}/categories/${createdCategory._id}`,
+						{ images: categoryUploadedUrlImages },
+					);
 
-	const handleCategoryNameChange = (categoryIndex: number, value: string) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].name = value;
-		setCategories(updatedCategories);
-	};
+					return createdCategory;
+				}),
+			);
 
-	const handleCategoryDescriptionChange = (
-		categoryIndex: number,
-		value: string,
-	) => {
-		const updatedCategories = [...categories];
-		updatedCategories[categoryIndex].description = value;
-		setCategories(updatedCategories);
-	};
+			console.log('Categorías creadas y actualizadas:', createdCategories);
 
-	const handleSubcategoryNameChange = (index: number, newName: string) => {
-		const updatedSubcategories = [...subcategories];
-		updatedSubcategories[index] = {
-			...updatedSubcategories[index],
-			subcategory: {
-				...updatedSubcategories[index].subcategory,
-				name: newName,
-			},
-		};
-		setSubcategories(updatedSubcategories);
-	};
+			// Crear subcategorías
+			const createdSubcategories = await Promise.all(
+				subcategories.map(async (subcategory, index) => {
+					// Encuentra la categoría correspondiente a la subcategoría
+					const category = createdCategories.find(
+						cat => subcategory.selected === cat.name,
+					);
 
-	const handleSubcategoryDescriptionChange = (
-		index: number,
-		newDescription: string,
-	) => {
-		const updatedSubcategories = [...subcategories];
-		updatedSubcategories[index] = {
-			...updatedSubcategories[index],
-			subcategory: {
-				...updatedSubcategories[index].subcategory,
-				description: newDescription,
-			},
-		};
-		setSubcategories(updatedSubcategories);
-	};
+					if (!category) {
+						throw new Error(
+							`Categoría no encontrada para la subcategoría ${subcategory.name}`,
+						);
+					}
 
-	const removeCategoryInput = (categoryIndex: number) => {
-		const updatedCategories = [...categories];
-		updatedCategories.splice(categoryIndex, 1);
-		setCategories(updatedCategories);
-	};
-	const removeSubcategoryInput = (index: number) => {
-		const updatedSubcategories = subcategories.filter((_, i) => i !== index);
-		setSubcategories(updatedSubcategories);
+					// Crea la subcategoría
+					const createdSubcategory = await createSubcategory({
+						name: subcategory.name,
+						description: subcategory.description,
+						family: category.family._id,
+						category: category._id,
+						createdBy,
+					});
+
+					// Subir imágenes asociadas a la subcategoría
+					const subcategoryUploadedUrlImages =
+						await handleImageUploadSubcategory(
+							createdSubcategory._id,
+							index + 1,
+						);
+					console.log(
+						`Imágenes subidas para la subcategoría ${createdSubcategory._id}:`,
+						subcategoryUploadedUrlImages,
+					);
+
+					// Actualiza la subcategoría con las URLs de las imágenes
+					await axios.patch(
+						`${import.meta.env.VITE_API_URL}/subcategories/${createdSubcategory._id}`,
+						{ images: subcategoryUploadedUrlImages },
+					);
+
+					return createdSubcategory;
+				}),
+			);
+			console.log('Subcategorías creadas:', createdSubcategories);
+			// Actualizar familia para imagen
+			const uploadedUrlImages = await handleImageUpload(familyId);
+			console.log(uploadedUrlImages);
+			await axios.patch(
+				import.meta.env.VITE_API_URL + '/families/' + familyId,
+				{ images: uploadedUrlImages },
+			);
+			setName('');
+			setDescription('');
+			setCategories([]);
+			setSubcategories([]);
+		} catch (error) {
+			console.error(
+				'Error al crear familias, categorías o subcategorías:',
+				error,
+			);
+		}
 	};
 
 	return (
-		<div className='createfamilyform'>
+		<form className='createfamilyform' onSubmit={handleSubmit}>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
-			<form onSubmit={handleSubmit}>
-				<h2>Nueva familia de herramientas</h2>
-				<label htmlFor='name'>Nombre de familia:</label>
-				<input
-					id='name'
-					type='text'
-					placeholder='Introduce el nombre de la familia'
-					value={name}
-					onChange={e => setName(e.target.value)}
-					required
-				/>
-
-				<label htmlFor='description'>Descripción:</label>
-				<textarea
-					id='description'
-					placeholder='Introduce la descripción de la familia'
-					value={description}
-					onChange={e => setDescription(e.target.value)}
-				/>
-				<label htmlFor='addCategory'>Categorías:</label>
-
-				{categories.map((category, categoryIndex) => (
-					<div key={categoryIndex} className='categories'>
-						<div className='info'>
-							<input
-								type='text'
-								placeholder={`Categoría ${categoryIndex + 1}`}
-								value={category.name}
-								onChange={e =>
-									handleCategoryNameChange(categoryIndex, e.target.value)
-								}
-								required
-							/>
-							<textarea
-								placeholder={`Categoría ${categoryIndex + 1} Descripción (opcional)`}
-								value={category.description}
-								onChange={e =>
-									handleCategoryDescriptionChange(categoryIndex, e.target.value)
-								}
-							/>
-
-							{subcategories
-								.filter(
-									subcategory => subcategory.categoryIndex === categoryIndex,
-								)
-								.map((subcategory, subcategoryIndex) => (
-									<div key={subcategoryIndex} className='categories'>
-										<div className='info'>
-											<input
-												type='text'
-												placeholder={`Subcategoría ${subcategoryIndex + 1} Nombre`}
-												value={subcategory.subcategory.name}
-												onChange={e =>
-													handleSubcategoryNameChange(
-														subcategories.indexOf(subcategory),
-														e.target.value,
-													)
-												}
-												required
-											/>
-											<textarea
-												placeholder={`Subcategoría ${subcategoryIndex + 1} Descripción (opcional)`}
-												value={subcategory.subcategory.description}
-												onChange={e =>
-													handleSubcategoryDescriptionChange(
-														subcategories.indexOf(subcategory),
-														e.target.value,
-													)
-												}
-											/>
-										</div>
-										<button
-											type='button'
-											className='delete'
-											onClick={() => removeSubcategoryInput(subcategoryIndex)}
-										>
-											<TrashIcon />
-										</button>
-									</div>
-								))}
-							<button
-								type='button'
-								className='add'
-								onClick={() => addSubcategoryInput(categoryIndex)}
-							>
-								<PlusIcon />
-								Añadir subcategoría
-							</button>
-						</div>
-
-						<button
-							type='button'
-							className='delete'
-							onClick={() => removeCategoryInput(categoryIndex)}
-						>
-							<TrashIcon />
-						</button>
-					</div>
-				))}
-				<button type='button' className='add' onClick={addCategoryInput}>
-					<PlusIcon />
-					Añadir categoría
+			<div
+				className='form-header'
+				style={{ justifyContent: 'flex-end', marginTop: '-50px' }}
+			>
+				<button
+					onClick={handleSubmit}
+					className='save'
+					style={{ width: '250px' }}
+				>
+					Crear Familia
 				</button>
+			</div>
+			<h2>Familia</h2>
+			<div className='form-content'>
+				<div className='left-column'>
+					<TextInput
+						id={'family'}
+						label={'Nombre de familia:'}
+						value={name}
+						placeholder={'Familia 1'}
+						onChange={e => setName(e.target.value)}
+						required={true}
+					/>
+					<br></br>
+					<TextAreaInput
+						id={'description'}
+						label={'Descripción de familia:'}
+						value={description}
+						placeholder={'Introduce la descripción de la familia...'}
+						onChange={e => setDescription(e.target.value)}
+						rows={6}
+					/>
+				</div>
+				<div className='right-column'>
+					<ImageUploaderSingle
+						title={`Imagen de Familia:`}
+						filePreviews={filePreviews}
+						onFileSelect={handleFileSelect}
+						onRemoveFile={handleRemoveFile}
+						type={'family'}
+					/>
+				</div>
+			</div>
+			<div>
+				<h2>Categorías</h2>
 
-				<button type='submit'>Crear familia</button>
-			</form>
-		</div>
+				<DynamicImageInputAreaList
+					name='categoría'
+					onChange={handleCategoriesChange}
+					filePreviews={filePreviews}
+					onFileSelect={handleFileSelect}
+					onRemoveFile={handleRemoveFile}
+					type='category'
+				/>
+			</div>
+			<div>
+				<h2>Subcategorías</h2>
+
+				<DynamicImageSelectInputAreaList
+					name='subcategoría'
+					selectOptions={
+						categories.map(cat => ({ value: cat.name, label: cat.name })) || []
+					}
+					optionsName={'categoría:'}
+					onChange={handleSubcategoriesChange}
+					filePreviews={filePreviews}
+					onFileSelect={handleFileSelect}
+					onRemoveFile={handleRemoveFile}
+					type='subcategory'
+				/>
+			</div>
+		</form>
 	);
 }
-
 function ContentMainPage() {
 	return (
 		<BasePage title='Crear familia'>

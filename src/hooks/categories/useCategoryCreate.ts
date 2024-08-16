@@ -1,8 +1,8 @@
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { createCategoryRequest } from '@services/categories/createCategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
-import useErrorHandling from '../common/useErrorHandling';
-import useSuccessHandling from '../common/useSuccessHandling';
 
 const useCategoryCreate = () => {
 	const {
@@ -16,8 +16,9 @@ const useCategoryCreate = () => {
 
 	const createCategory = async (categoryData: CategoryDataToSend) => {
 		try {
-			await createCategoryRequest(categoryData);
+			const result = await createCategoryRequest(categoryData);
 			showSuccessCategoryCreate('Categoría creada con éxito');
+			return result;
 		} catch (error) {
 			showErrorCategoryCreate('No se puedo crear la categoría');
 			errorHandler(error);
