@@ -84,7 +84,6 @@ function CreateRoleForm() {
 						onChange={e => console.log(e.target.value)}
 						readOnly={true}
 					/>
-
 					<button type='submit'>Crear Rol</button>
 				</form>
 			</div>

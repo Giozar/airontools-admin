@@ -67,7 +67,13 @@ function ReturnUsers() {
 			<button
 				key={user.id + 'delete'}
 				className='delete'
+				style={
+					user.name === 'root' && user.role?.name === 'Administrador'
+						? { opacity: '0.2' }
+						: {}
+				}
 				onClick={() => setShowDeletionModalFor(user.id || '')}
+				disabled={user.name === 'root' && user.role?.name === 'Administrador'}
 			>
 				<TrashIcon />
 			</button>,
