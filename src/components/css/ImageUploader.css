@@ -1,7 +1,6 @@
 /* Container for the uploader */
 .image-uploader-container {
 	margin: 0 auto;
-	padding: 1rem; /* equivalent to p-4 */
 	max-width: 28rem; /* equivalent to max-w-md */
 }
 

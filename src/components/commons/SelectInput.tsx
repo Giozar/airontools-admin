@@ -4,7 +4,7 @@ interface SelectInputProps {
 	id: string;
 	name: string;
 	options: { value: string; label: string }[];
-	value: string;
+	value: any;
 	onChange: (value: string) => void;
 }
 
@@ -21,7 +21,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 	return (
 		<div className='selectInput'>
 			<label htmlFor={id}>{name}</label>
-			<select id={id} value={value?.name} onChange={handleChange}>
+			<select id={id} value={value?.name || value} onChange={handleChange}>
 				<option value=''>Selecciona una opción</option>
 				{options.map(option => (
 					<option key={option.value} value={option.value}>
