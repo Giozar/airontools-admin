@@ -1,5 +1,5 @@
 import DynamicImageInputAreaList from '@components/commons/DynamicImageInputAreaList';
-import DynamicSelectInputAreaList from '@components/commons/DynamicSelectInputAreaList';
+import DynamicImageSelectInputAreaList from '@components/commons/DynamicImageSelectInputAreaList';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
 import SuccessMessage from '@components/commons/SuccessMessage';
@@ -245,13 +245,17 @@ function CreateFamilyForm() {
 			<div>
 				<h2>Subcategorías</h2>
 
-				<DynamicSelectInputAreaList
+				<DynamicImageSelectInputAreaList
 					name='subcategoría'
 					selectOptions={
 						categories.map(cat => ({ value: cat.name, label: cat.name })) || []
 					}
 					optionsName={'categoría:'}
 					onChange={handleSubcategoriesChange}
+					filePreviews={filePreviews}
+					onFileSelect={handleFileSelect}
+					onRemoveFile={handleRemoveFile}
+					type='subcategory'
 				/>
 			</div>
 		</form>
