@@ -20,7 +20,7 @@ function CreateSpecs({
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
 	const { showSuccess, successLog } = useSuccessHandling();
-
+	const [flag, setFlag] = useState(false);
 	// Aquí se inicializa el Array con un objeto vacío al primer render del dom
 	useEffect(() => {
 		console.log(subcategoryId);
@@ -36,7 +36,7 @@ function CreateSpecs({
 			},
 		]);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [flag]);
 
 	// Se añade una especificación y se suma uno al conteo
 	const addSpecifications = () => {
@@ -79,6 +79,7 @@ function CreateSpecs({
 					specification,
 				});
 				showSuccess('Especificación creado con éxito');
+				setFlag(!flag);
 			} catch (error) {
 				errorHandler(error, showError);
 			}
