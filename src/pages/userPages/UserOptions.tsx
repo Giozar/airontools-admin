@@ -53,14 +53,26 @@ function ReturnUsers() {
 			<button
 				key={user.id + 'role'}
 				className='editrol'
+				style={
+					user.name === 'root' && user.role?.name === 'Administrador'
+						? { opacity: '0.2' }
+						: {}
+				}
 				onClick={() => setShowModalFor(user.id || '')}
+				disabled={user.name === 'root' && user.role?.name === 'Administrador'}
 			>
 				<EditRoleIcon />
 			</button>,
 			<button
 				key={user.id + 'edit'}
 				className='edit'
+				style={
+					user.name === 'root' && user.role?.name === 'Administrador'
+						? { opacity: '0.2' }
+						: {}
+				}
 				onClick={() => handleEdit(user)}
+				disabled={user.name === 'root' && user.role?.name === 'Administrador'}
 			>
 				<EditUserIcon />
 			</button>,
