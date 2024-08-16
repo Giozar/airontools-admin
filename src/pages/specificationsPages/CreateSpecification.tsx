@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import AutoCompleteInput from '@components/commons/AutoCompleteInput';
+import SelectInput from '@components/commons/SelectInput';
 import CreateSpecs from '@components/CreateSpecs';
 
 import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesFromFamily';
@@ -54,45 +54,42 @@ function FamilySpecifications() {
 
 	return (
 		<>
-			<div>
-				<AutoCompleteInput
-					inputName='Familia'
+			<div style={{ width: '50%' }}>
+				<SelectInput
+					id='familiaselect'
+					name='Selecciona una familia'
 					options={families.map(family => ({
-						id: family.id || 'error',
-						name: family.name || 'error',
+						value: family.id,
+						label: family.name,
 					}))}
-					onSelect={handleSelectFamily}
+					value={selectedFamily || ''}
+					onChange={handleSelectFamily}
 				/>
-				{selectedFamily && (
-					<AutoCompleteInput
-						inputName='Categoria'
-						options={categories.map(category =>
-							category.family.id === selectedFamily
-								? {
-										id: category.id || 'error',
-										name: category.name || 'error',
-									}
-								: { id: '', name: '' },
-						)}
-						onSelect={handleSelectCategory}
-						clearInput={clearInputCategory}
+				{categories.length > 0 && (
+					<SelectInput
+						id='catselect'
+						name='Selecciona una categoría'
+						options={categories.map(category => ({
+							value: category.id,
+							label: category.name,
+						}))}
+						value={selectedCategory || ''}
+						onChange={handleSelectCategory}
 					/>
 				)}
-				{selectedCategory && (
-					<AutoCompleteInput
-						inputName='Subcategoria'
-						options={subcategories.map(subcategory =>
-							subcategory.category._id === selectedCategory
-								? {
-										id: subcategory.id || 'error',
-										name: subcategory.name || 'error',
-									}
-								: { id: '', name: '' },
-						)}
-						onSelect={handleSelectSubcategory}
-						clearInput={clearInputSubcategory}
+				{subcategories.length > 0 && (
+					<SelectInput
+						id='subcatselect'
+						name='Selecciona una subcategoría'
+						options={subcategories.map(subcategory => ({
+							value: subcategory.id,
+							label: subcategory.name,
+						}))}
+						value={selectedSubcategory || ''}
+						onChange={handleSelectSubcategory}
 					/>
 				)}
+				<hr></hr>
 			</div>
 			{/* Se tiene que repetir para evitar el bug de que no se guarden las subcategorias */}
 			{selectedFamily && selectedCategory && selectedSubcategory && (
