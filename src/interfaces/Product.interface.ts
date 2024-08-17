@@ -1,5 +1,6 @@
 import { CategoryDataToSend } from './Category.interface';
 import { FamilyDataToSend } from './Family.interface';
+import { SpecDataToSend } from './Specifications.interface';
 import { SubcategoryDataToSend } from './subcategory.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
 
@@ -14,6 +15,11 @@ export interface ProductDataToSend {
 	family: string;
 	category: string;
 	subcategory?: string;
+	includedItems?: string[];
+	opcionalAccessories?: string[];
+	operationRequirements?: string[];
+	applications?: string[];
+	recommendations?: string[];
 	images?: string[];
 	manuals?: string[];
 	videos?: string[];
@@ -26,10 +32,17 @@ export interface ProductDataBackend {
 	model?: string;
 	description?: string;
 	characteristics?: string[];
-	specifications: Array<{ [key: string]: string }>;
+	specifications: [
+		{ _id: string; specification: SpecDataToSend; value: string },
+	];
 	family: FamilyDataToSend;
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
+	includedItems?: string[];
+	opcionalAccessories?: string[];
+	operationRequirements?: string[];
+	applications?: string[];
+	recommendations?: string[];
 	images?: string[];
 	manuals?: string[];
 	videos?: string[];
@@ -42,10 +55,17 @@ export interface ProductDataFrontend {
 	model?: string;
 	description?: string;
 	characteristics?: string[];
-	specifications: Array<{ [key: string]: string }>;
+	specifications: [
+		{ _id: string; specification: SpecDataToSend; value: string },
+	];
 	family: FamilyDataToSend;
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
+	includedItems?: string[];
+	opcionalAccessories?: string[];
+	operationRequirements?: string[];
+	applications?: string[];
+	recommendations?: string[];
 	images?: string[];
 	manuals?: string[];
 	videos?: string[];

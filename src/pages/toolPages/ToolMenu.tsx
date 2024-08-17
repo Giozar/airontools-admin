@@ -110,7 +110,6 @@ function ListOfTools() {
 				product={selectedProduct}
 			/>
 			<TableComponent data={tableData} />
-
 			{showDeletionModalFor && (
 				<DeletionModal
 					id={showDeletionModalFor}

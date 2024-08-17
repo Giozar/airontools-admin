@@ -32,6 +32,7 @@ const Atornillador = () => {
 	const [requeriments, setRequeriments] = useState<string[]>([]);
 	const [includes, setIncludes] = useState<string[]>([]);
 	const [accessories, setAccessories] = useState<string[]>([]);
+	const [applications, setApplications] = useState<string[]>([]);
 	const [videos, setVideos] = useState<string[]>([]);
 	const {
 		families,
@@ -74,12 +75,13 @@ const Atornillador = () => {
 				family: selectedFamily?.id,
 				category: selectedCategory?.id,
 				subcategory: selectedSubcategory?.id,
-				characteristics,
-				recommendations,
-				requeriments,
-				includes,
-				accessories,
 				description: toolDescription,
+				characteristics,
+				includedItems: includes,
+				opcionalAccessories: accessories,
+				operationRequirements: requeriments,
+				applications,
+				recommendations,
 				specifications: specificationValues,
 				videos,
 				createdBy,
@@ -223,6 +225,12 @@ const Atornillador = () => {
 							label='Características'
 							onValuesChange={setChar}
 							placeholder='Carácteristica'
+						/>
+						<hr></hr>
+						<DynamicInputs
+							label='Aplicaciones'
+							onValuesChange={setApplications}
+							placeholder='Aplicación'
 						/>
 						<hr></hr>
 						<DynamicInputs

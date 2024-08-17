@@ -32,7 +32,7 @@ const ImageUploaderSingle = ({
 		if (previews && previews.length > 0) onRemoveFile(value, 0);
 		onFileSelect(event, value);
 	};
-
+	console.log(previews[0]);
 	return (
 		<>
 			<p>{title}</p>
