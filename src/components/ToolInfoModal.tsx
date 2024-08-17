@@ -1,6 +1,8 @@
 import CloseIcon from '@components/svg/CloseIcon';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
+import InfoSection from './commons/InfoSection';
 import Slideshow from './commons/Slideshow';
+import Info from './Info';
 
 const ToolInfoModal = ({
 	isOpen,
@@ -12,6 +14,11 @@ const ToolInfoModal = ({
 	product: ProductDataFrontend | null;
 }) => {
 	if (!isOpen) return null;
+	const handlePdfGen = (id: string) => {
+		const pdfUrl = 'http://localhost:4000/basic-reports/product/' + id;
+		window.open(pdfUrl, '_blank');
+	};
+
 	return (
 		<div className='modal-overlay'>
 			<div className='modal-content'>
@@ -20,63 +27,68 @@ const ToolInfoModal = ({
 				</button>
 				{product && (
 					<div>
-						<h1>{product.name}</h1>
-						<p>
-							<strong>Fotos:</strong>
-						</p>
-						<div className='grupo'>
-							{product.images && <Slideshow images={product.images} />}
-							<div>
-								<p>
-									<strong>Nombre:</strong> {product.name}
-								</p>
-								<p>
-									<strong>Modelo:</strong> {product.model}
-								</p>
-								<p>
-									<strong>Family:</strong> {product.family.name}
-								</p>
-								<p>
-									<strong>Category:</strong> {product.category.name}
-								</p>
-								<p>
-									<strong>Subcategory:</strong>{' '}
-									{product.subcategory.name || '---'}
-								</p>
+						<h2 style={{ top: 'sticky' }}>
+							{product.name}
+							<button className='add' onClick={() => handlePdfGen(product.id)}>
+								Ver Ficha Técnica (PDF)
+							</button>
+						</h2>
+						<div
+							style={{ maxHeight: '60vh', overflowY: 'auto', padding: '20px' }}
+						>
+							<Info title={'Fotos'} info={'-'} />
+							<div className='grupo'>
+								{product.images && <Slideshow images={product.images} />}
+								<div>
+									<Info title={'Nombre'} info={product.name} />
+									<Info title={'Modelo'} info={product.model} />
+									<Info title={'Familia'} info={product.family.name} />
+									<Info title={'Categoría'} info={product.category.name} />
+									<Info
+										title={'Subcategoría'}
+										info={product.subcategory.name}
+									/>
+								</div>
 							</div>
-						</div>
-						<p>
-							<strong>Descripción:</strong> <br /> {product.description}
-						</p>
+							<Info title={'Descripción'} info={product.description} />
+							<InfoSection
+								title='Especificaciones'
+								items={
+									product.specifications.map(
+										spec =>
+											`${spec.specification.name}: ${spec.value} (${spec.specification.unit})`,
+									) || []
+								}
+							/>
+							<InfoSection
+								title='Características'
+								items={product.characteristics || []}
+							/>
+							<InfoSection
+								title='Aplicaciones'
+								items={product.applications || []}
+							/>
+							<InfoSection
+								title='Recomendaciones'
+								items={product.recommendations || []}
+							/>
+							<InfoSection
+								title='Requisitos de operación'
+								items={product.operationRequirements || []}
+							/>
+							<InfoSection
+								title='Elementos incluidos'
+								items={product.includedItems || []}
+							/>
+							<InfoSection
+								title='Accesorios opcionales'
+								items={product.opcionalAccessories || []}
+							/>
+							<InfoSection title='Videos' items={product.videos || []} />
+							<InfoSection title='Manuales' items={product.manuals || []} />
 
-						<div style={{ margin: '20px 0' }}>
-							<strong>Características:</strong>
-							<ul>
-								{product.characteristics?.map((char, index) => (
-									<li key={index}>{char}</li>
-								))}
-							</ul>
+							<Info title={'Creado por'} info={product.createdBy.name} />
 						</div>
-
-						<div style={{ margin: '20px 0' }}>
-							<strong>Especificaciones:</strong>
-							<ul>
-								{product.specifications.length ? (
-									product.specifications.map(spec => (
-										<li key={spec.id}>
-											{spec.name}: {spec.value} {spec.unit}
-										</li>
-									))
-								) : (
-									<li>No hay especificaciones disponibles</li>
-								)}
-							</ul>
-						</div>
-
-						<p>
-							<strong>Creado por:</strong> {product.createdBy.name}
-						</p>
-						<button className='edit'>Editar</button>
 					</div>
 				)}
 			</div>

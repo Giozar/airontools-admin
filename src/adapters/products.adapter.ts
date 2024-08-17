@@ -15,6 +15,11 @@ export const transformProductDataToFrontend = (
 		description: Product.description,
 		characteristics: Product.characteristics,
 		specifications: Product.specifications,
+		includedItems: Product.includedItems,
+		opcionalAccessories: Product.opcionalAccessories,
+		operationRequirements: Product.operationRequirements,
+		applications: Product.applications,
+		recommendations: Product.recommendations,
 		images: Product.images,
 		manuals: Product.manuals,
 		videos: Product.videos,
@@ -28,14 +33,21 @@ export const transformProductDataToFrontend = (
 export const transformProductDataToBackend = (
 	Product: ProductDataFrontend,
 ): ProductDataToSend => {
+	const transformedSpecifications = Product.specifications.map(spec => ({
+		[spec.specification._id || '']: spec.value,
+	}));
 	return {
 		_id: Product.id,
 		name: Product.name,
 		model: Product.model,
 		description: Product.description,
 		characteristics: Product.characteristics,
-		specifications: Product.specifications,
-
+		specifications: transformedSpecifications,
+		includedItems: Product.includedItems,
+		opcionalAccessories: Product.opcionalAccessories,
+		operationRequirements: Product.operationRequirements,
+		applications: Product.applications,
+		recommendations: Product.recommendations,
 		family: Product.family._id || '',
 		category: Product.category._id || '',
 		subcategory: Product.subcategory._id || '',

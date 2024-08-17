@@ -9,17 +9,16 @@ import useFamilyManagement from '@hooks/families/useFamilyManagement';
 import useFamilyUpdate from '@hooks/families/useFamilyUpdate';
 import BasePage from '@layouts/BasePage';
 import '@pages/css/editFamily.css';
-import axios from 'axios';
 
-import { transformFamilyDataToBackend } from '@adapters/family.adapter';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useContext, useEffect, useState } from 'react';
 
+import { transformFamilyDataToBackend } from '@adapters/family.adapter';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
-import ImageUpdate from '@components/ImageUpdate';
-import useFileManagement from '@hooks/files/useFileManagement';
+import useFetchCounts from '@hooks/common/useFetchCounts';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
+import { deleteFileService } from '@services/files/deleteFile.service';
 import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
 	familyToEdit: FamilyDataFrontend;
@@ -33,7 +32,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
 	const [images, setImages] = useState(familyToEdit.images);
-	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
+	console.log(images);
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
 		showDeletionModalFor,
@@ -42,27 +41,15 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		handleCloseModal,
 		handleDelete,
 	} = useFamilyManagement();
-	const {
-		setShowDeletionModalForFile,
-		showDeletionModalForFile,
-		deletionMessageFile,
-		handleCloseModalFile,
-		handleDelete: handleDeleteFile,
-	} = useFileManagement();
 
 	const [update, setUpdate] = useState(false);
-	const [numberOfCategories, setNumberOfCategories] = useState<number | null>(
-		null,
-	);
-	const [numberOfSubcategories, setNumberOfSubcategories] = useState<
-		number | null
-	>(null);
-	const [numberOfSpecifications, setNumberOfSpecifications] = useState<
-		number | null
-	>(null);
-	const [numberOfProducts, setNumberOfProducts] = useState<number | null>(null);
-	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
-		useMultipleFileUpload();
+	const {
+		filePreviews,
+		handleFileSelect,
+		initFileSelect,
+		handleRemoveFile,
+		handleFileUpload,
+	} = useMultipleFileUpload();
 	const updateCategoryList = () => {
 		setUpdate(!update);
 	};
@@ -78,29 +65,28 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const handleCloseModalDeletion = () => {
 		navigate('/home/categorizacion');
 	};
-	const handleCloseModalDeletionImages = async (image: string) => {
-		setImages(images?.filter(img => img !== image));
-	};
-	const handleDeleteFileFor = (imageToDelete: string) => {
-		console.log(imageToDelete);
-		setImagesToDelete(prevImagesToDelete => {
-			const updatedImagesToDelete = new Set([
-				...prevImagesToDelete,
-				imageToDelete,
-			]);
-			return Array.from(updatedImagesToDelete);
-		});
-		handleCloseModalDeletionImages(imageToDelete);
-	};
 	const handleImageUpload = async (productId: string) => {
-		return await handleFileUpload('images', productId, 'images');
+		return await handleFileUpload('images.family', productId, 'images.family');
 	};
-	useEffect(() => {}, [images]); // para que se actualicen las imagenes
+	const handleDeleteFile = async (fileId: string) => {
+		try {
+			await deleteFileService(fileId);
+		} catch (error) {
+			console.error(`Error al eliminar archivo ${fileId}:`, error);
+		}
+	};
+	useEffect(() => {
+		console.log(images[0]);
+		if (images) {
+			initFileSelect(images[0], 'images.family');
+		}
+	}, []); // para que se actualicen las imagenes
 	const handleUpdateFamily = async () => {
 		try {
-			console.log(imagesToDelete);
+			console.log(images);
+			console.log(filePreviews['images.family'][0] === images[0]);
 			const uploadedUrlImages = await handleImageUpload(familyId);
-			const deletePromises = imagesToDelete.map(async image => {
+			const deletePromises = images?.map(async image => {
 				return await handleDeleteFile(image);
 			});
 			const deletedFiles = await Promise.all(deletePromises);
@@ -127,55 +113,18 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 			console.error('Error:', error);
 		}
 	};
-	const [loading, setLoading] = useState<boolean>(true);
-	useEffect(() => {
-		const fetchCounts = async () => {
-			if (!familyId) {
-				setNumberOfCategories(null);
-				setNumberOfSubcategories(null);
-				setNumberOfSpecifications(null);
-				setNumberOfProducts(null);
-				setLoading(false);
-				return;
-			}
-			setLoading(true);
-			try {
-				const [
-					categoriesResponse,
-					subcategoriesResponse,
-					specificationsResponse,
-					productsResponse,
-				] = await Promise.all([
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/categories/count/${familyId}`,
-					),
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/subcategories/count/${familyId}`,
-					),
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/specifications/count/${familyId}`,
-					),
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/products/count/${familyId}`,
-					),
-				]);
-
-				setNumberOfCategories(categoriesResponse.data);
-				setNumberOfSubcategories(subcategoriesResponse.data);
-				setNumberOfSpecifications(specificationsResponse.data);
-				setNumberOfProducts(productsResponse.data);
-			} catch (error) {
-				console.error(
-					'Error al contar categorias, subcategorias y especificaciones:',
-					error,
-				);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchCounts();
-	}, [familyId]);
+	const {
+		numberOfCategories,
+		numberOfSubcategories,
+		numberOfSpecifications,
+		numberOfProducts,
+		loading,
+	} = useFetchCounts(familyId, {
+		fetchCategories: true,
+		fetchSubcategories: true,
+		fetchSpecifications: true,
+		fetchProducts: true,
+	});
 
 	if (loading) {
 		return <div>Cargando...</div>;
@@ -235,19 +184,14 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 							type='textarea'
 							onUpdate={handleDescriptionUpdate}
 						/>
+						{/* <ImageUploaderSingle
+							title={`Imagen:`}
+							filePreviews={filePreviews}
+							onFileSelect={handleFileSelect}
+							onRemoveFile={handleRemoveFile}
+							type={'family'}
+						/> */}
 					</div>
-					<ImageUpdate
-						images={images}
-						filePreviews={filePreviews}
-						handleRemoveFile={handleRemoveFile}
-						handleFileSelect={handleFileSelect}
-						setShowDeletionModalForFile={setShowDeletionModalForFile}
-						showDeletionModalForFile={showDeletionModalForFile}
-						deletionMessageFile={deletionMessageFile}
-						handleCloseModalFile={handleCloseModalFile}
-						handleDeleteFileFor={handleDeleteFileFor}
-						handleCloseModalDeletionImages={handleCloseModalDeletionImages}
-					/>
 
 					<button
 						className='save'
