@@ -1,39 +1,9 @@
 import CloseIcon from '@components/svg/CloseIcon';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
+import InfoSection from './commons/InfoSection';
 import Slideshow from './commons/Slideshow';
-interface InfoSectionProps {
-	title: string;
-	items: string[];
-}
+import Info from './Info';
 
-const InfoSection = ({ title, items }: InfoSectionProps) => {
-	return (
-		<div>
-			<strong>{title}</strong>
-			<ul>
-				{items.length ? (
-					items.map((item, index) => <li key={index}>{item}</li>)
-				) : (
-					<li>No hay elementos disponibles</li>
-				)}
-			</ul>
-		</div>
-	);
-};
-
-const Info = ({ title, info }: { title: string; info?: string }) => {
-	return (
-		<>
-			{info ? (
-				<p>
-					<strong>{title}:</strong> {info}
-				</p>
-			) : (
-				<p>No hay {title} disponible</p>
-			)}
-		</>
-	);
-};
 const ToolInfoModal = ({
 	isOpen,
 	onClose,
@@ -81,7 +51,15 @@ const ToolInfoModal = ({
 								</div>
 							</div>
 							<Info title={'Descripción'} info={product.description} />
-
+							<InfoSection
+								title='Especificaciones'
+								items={
+									product.specifications.map(
+										spec =>
+											`${spec.specification.name}: ${spec.value} (${spec.specification.unit})`,
+									) || []
+								}
+							/>
 							<InfoSection
 								title='Características'
 								items={product.characteristics || []}
@@ -108,15 +86,7 @@ const ToolInfoModal = ({
 							/>
 							<InfoSection title='Videos' items={product.videos || []} />
 							<InfoSection title='Manuales' items={product.manuals || []} />
-							<InfoSection
-								title='Especificaciones'
-								items={
-									product.specifications.map(
-										spec =>
-											`${spec.specification.name}: ${spec.value} (${spec.specification.unit})`,
-									) || []
-								}
-							/>
+
 							<Info title={'Creado por'} info={product.createdBy.name} />
 						</div>
 					</div>
