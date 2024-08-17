@@ -120,7 +120,7 @@ const Atornillador = () => {
 				)}
 				{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 				<ToolForm
-					action='Guardar'
+					action='Crear herramienta'
 					handleSubmit={handleSubmit}
 					toolName={toolName}
 					setToolName={setToolName}

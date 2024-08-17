@@ -389,7 +389,11 @@ tfoot td {
 
 /* Form Header Styles */
 .form-header {
-	gap: 20px;
+	justify-content: space-between;
+	margin: 0;
+}
+.form-header > .save {
+	margin: 0;
 }
 
 .form-header .textInput,

@@ -8,6 +8,7 @@ interface FormHeaderProps {
 const FormHeader: React.FC<FormHeaderProps> = ({ action, onSubmit }) => {
 	return (
 		<div className='form-header'>
+			<h2>{action}</h2>
 			<button onClick={onSubmit} className='save'>
 				{action}
 			</button>
