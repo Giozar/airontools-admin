@@ -1,6 +1,10 @@
 import TrashIcon from '@components/svg/TrashIcon';
 import React, { useEffect, useState } from 'react';
 
+interface DynamicInput {
+	id: number;
+	value: string;
+}
 interface DynamicInputsProps {
 	label: string;
 	onValuesChange?: (values: string[]) => void;
@@ -12,7 +16,7 @@ const DynamicInputs: React.FC<DynamicInputsProps> = ({
 	onValuesChange,
 	placeholder,
 }) => {
-	const [inputs, setInputs] = useState([{ id: Date.now(), value: '' }]);
+	const [inputs, setInputs] = useState<DynamicInput[]>([]);
 
 	const handleAdd = () => {
 		setInputs([...inputs, { id: Date.now(), value: '' }]);

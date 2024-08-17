@@ -56,6 +56,7 @@ function FamilySpecifications() {
 		<>
 			<div style={{ width: '50%' }}>
 				<SelectInput
+					key={selectedFamily}
 					id='familiaselect'
 					name='Selecciona una familia'
 					options={families.map(family => ({

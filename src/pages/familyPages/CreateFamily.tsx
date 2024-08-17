@@ -1,6 +1,7 @@
 import DynamicImageInputAreaList from '@components/commons/DynamicImageInputAreaList';
 import DynamicImageSelectInputAreaList from '@components/commons/DynamicImageSelectInputAreaList';
 import ErrorMessage from '@components/commons/ErrorMessage';
+import FormHeader from '@components/commons/form/FormHeader';
 import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
@@ -125,18 +126,7 @@ function CreateFamilyForm() {
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
-			<div
-				className='form-header'
-				style={{ justifyContent: 'flex-end', marginTop: '-50px' }}
-			>
-				<button
-					onClick={handleSubmit}
-					className='save'
-					style={{ width: '250px' }}
-				>
-					Crear Familia
-				</button>
-			</div>
+			<FormHeader action='Crear Familia' onSubmit={handleSubmit} />
 			<h2>Familia</h2>
 			<div className='form-content'>
 				<div className='left-column'>
