@@ -15,15 +15,15 @@ const SelectInput: React.FC<SelectInputProps> = ({
 }) => {
 	const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		onChange(e.target.value);
-		console.log(e.target.value);
 	};
+
 	return (
 		<div className='selectInput'>
 			<label htmlFor={id}>{name}</label>
 			<select id={id} onChange={handleChange}>
 				<option value=''>Selecciona una opción</option>
-				{options.map((option, index) => (
-					<option key={option.value + index + 'select'} value={option.value}>
+				{options.map(option => (
+					<option key={option.value} value={option.value}>
 						{option.label}
 					</option>
 				))}
