@@ -15,6 +15,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { transformFamilyDataToBackend } from '@adapters/family.adapter';
 import ErrorMessage from '@components/commons/ErrorMessage';
+import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import useFetchCounts from '@hooks/common/useFetchCounts';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
@@ -32,6 +33,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
 	const [images, setImages] = useState(familyToEdit.images);
+	const [deleteImage, setDeleteImage] = useState(false);
 	console.log(images);
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
@@ -43,13 +45,9 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	} = useFamilyManagement();
 
 	const [update, setUpdate] = useState(false);
-	const {
-		filePreviews,
-		handleFileSelect,
-		initFileSelect,
-		handleRemoveFile,
-		handleFileUpload,
-	} = useMultipleFileUpload();
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
+
 	const updateCategoryList = () => {
 		setUpdate(!update);
 	};
@@ -65,8 +63,8 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const handleCloseModalDeletion = () => {
 		navigate('/home/categorizacion');
 	};
-	const handleImageUpload = async (productId: string) => {
-		return await handleFileUpload('images.family', productId, 'images.family');
+	const handleImageUpload = async (familyId: string) => {
+		return await handleFileUpload('images.family', familyId, 'images.family');
 	};
 	const handleDeleteFile = async (fileId: string) => {
 		try {
@@ -75,23 +73,18 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 			console.error(`Error al eliminar archivo ${fileId}:`, error);
 		}
 	};
-	useEffect(() => {
-		console.log(images[0]);
-		if (images) {
-			initFileSelect(images[0], 'images.family');
-		}
-	}, []); // para que se actualicen las imagenes
+	useEffect(() => {}, [images]); // para que se actualicen las imagenes
 	const handleUpdateFamily = async () => {
 		try {
-			console.log(images);
-			console.log(filePreviews['images.family'][0] === images[0]);
 			const uploadedUrlImages = await handleImageUpload(familyId);
-			const deletePromises = images?.map(async image => {
-				return await handleDeleteFile(image);
-			});
-			const deletedFiles = await Promise.all(deletePromises);
-
-			console.log(deletedFiles);
+			if (deleteImage) {
+				const deletePromises = images?.map(async image => {
+					return await handleDeleteFile(image);
+				});
+				const deletedFiles = await Promise.all(deletePromises);
+				console.log(deletedFiles);
+				setImages([]);
+			}
 			console.log(uploadedUrlImages);
 			console.log(images);
 			await updateFamily(
@@ -99,10 +92,10 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 					...familyToEdit,
 					name,
 					description,
-					images: [...images, ...uploadedUrlImages],
+					images: uploadedUrlImages || images,
 				}),
 			);
-			setImages(prevImages => [...prevImages, ...uploadedUrlImages]);
+			setImages(uploadedUrlImages);
 			localStorage.setItem(
 				'familyToEdit',
 				JSON.stringify({
@@ -184,13 +177,17 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 							type='textarea'
 							onUpdate={handleDescriptionUpdate}
 						/>
-						{/* <ImageUploaderSingle
+						<ImageUploaderSingle
 							title={`Imagen:`}
 							filePreviews={filePreviews}
 							onFileSelect={handleFileSelect}
-							onRemoveFile={handleRemoveFile}
+							onRemoveFile={(type, index) => {
+								handleRemoveFile(type, index);
+								setDeleteImage(true);
+							}}
 							type={'family'}
-						/> */}
+							placeholder={deleteImage ? '' : images[0]}
+						/>
 					</div>
 
 					<button

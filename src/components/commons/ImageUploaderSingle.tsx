@@ -14,6 +14,7 @@ interface ImageUploaderProps {
 	onRemoveFile: (type: string, index: number) => void;
 	type: string;
 	index?: number;
+	placeholder?: string;
 }
 
 const ImageUploaderSingle = ({
@@ -23,6 +24,7 @@ const ImageUploaderSingle = ({
 	onRemoveFile,
 	type,
 	index,
+	placeholder,
 }: ImageUploaderProps) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const value = `images.${type}${index ? `.${index}` : ''}`;
@@ -47,6 +49,8 @@ const ImageUploaderSingle = ({
 						alt='Uploaded Image'
 						className='image-uploader-image'
 					/>
+				) : placeholder ? (
+					<img src={placeholder} alt='Image' className='image-uploader-image' />
 				) : (
 					<EyeIcon />
 				)}
