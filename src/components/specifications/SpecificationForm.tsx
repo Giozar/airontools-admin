@@ -1,20 +1,20 @@
+import ErrorMessage from '@components/commons/ErrorMessage';
+import SuccessMessage from '@components/commons/SuccessMessage';
 import '@components/css/createSpecs.css';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
-import { CreateSpecsProps } from '@interfaces/CreateSpecsProps';
+import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useContext, useEffect, useState } from 'react';
-import ErrorMessage from './commons/ErrorMessage';
-import SuccessMessage from './commons/SuccessMessage';
 
-function CreateSpecs({
+function SpecificationForm({
 	familyId,
 	categoryId,
 	subcategoryId,
-}: CreateSpecsProps) {
+}: SpecificationFormProps) {
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const { showError, errorLog } = useErrorHandling();
 	const authContext = useContext(AuthContext);
@@ -141,4 +141,4 @@ function CreateSpecs({
 		</div>
 	);
 }
-export default CreateSpecs;
+export default SpecificationForm;
