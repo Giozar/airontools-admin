@@ -19,7 +19,6 @@ import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import useFetchCounts from '@hooks/common/useFetchCounts';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
-import { deleteFileService } from '@services/files/deleteFile.service';
 import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
 	familyToEdit: FamilyDataFrontend;
@@ -34,7 +33,6 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const createdBy = authContext?.user?.id || 'user';
 	const [images, setImages] = useState(familyToEdit.images);
 	const [deleteImage, setDeleteImage] = useState(false);
-	console.log(images);
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
 		showDeletionModalFor,
@@ -45,8 +43,13 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	} = useFamilyManagement();
 
 	const [update, setUpdate] = useState(false);
-	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
-		useMultipleFileUpload();
+	const {
+		filePreviews,
+		handleFileSelect,
+		handleRemoveFile,
+		handleFileUpload,
+		handleDeleteFile,
+	} = useMultipleFileUpload();
 
 	const updateCategoryList = () => {
 		setUpdate(!update);
@@ -66,13 +69,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const handleImageUpload = async (familyId: string) => {
 		return await handleFileUpload('images.family', familyId, 'images.family');
 	};
-	const handleDeleteFile = async (fileId: string) => {
-		try {
-			await deleteFileService(fileId);
-		} catch (error) {
-			console.error(`Error al eliminar archivo ${fileId}:`, error);
-		}
-	};
+
 	useEffect(() => {}, [images]); // para que se actualicen las imagenes
 	const handleUpdateFamily = async () => {
 		try {

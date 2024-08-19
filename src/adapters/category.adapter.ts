@@ -13,6 +13,7 @@ export const transformCategoryDataToFrontend = (
 		id: Category._id,
 		name: Category.name,
 		description: Category.description,
+		images: Category.images,
 		family: transformFamilyDataToFrontend(Category.family),
 		createdBy: transformUserDataFront(Category.createdBy),
 	};
@@ -25,6 +26,7 @@ export const transformCategoryDataToBackend = (
 		_id: Category.id,
 		name: Category.name,
 		description: Category.description,
+		images: Category.images,
 		family: Category.family.id,
 		createdBy: Category.createdBy.id,
 	};

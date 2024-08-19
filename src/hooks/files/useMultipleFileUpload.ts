@@ -1,3 +1,4 @@
+import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFile from '@services/files/fileUpload.service';
 import { ChangeEvent, useState } from 'react';
 
@@ -103,6 +104,13 @@ const useMultipleFileUpload = () => {
 		setFileNames({});
 		return urls;
 	};
+	const handleDeleteFile = async (fileId: string) => {
+		try {
+			await deleteFileService(fileId);
+		} catch (error) {
+			console.error(`Error al eliminar archivo ${fileId}:`, error);
+		}
+	};
 
 	return {
 		files,
@@ -112,6 +120,7 @@ const useMultipleFileUpload = () => {
 		initFileSelect,
 		handleFileSelect,
 		handleRemoveFile,
+		handleDeleteFile,
 		handleFileUpload,
 	};
 };
