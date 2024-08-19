@@ -6,7 +6,7 @@ import useSubcategoryManagement from '@hooks/subcategories/useSubcategoryManagem
 import useSubcategoryUpdate from '@hooks/subcategories/useSubcategoryUpdate';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { deleteFileService } from '@services/files/deleteFile.service';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DeletionModal from './commons/DeletionModal';
 import ErrorMessage from './commons/ErrorMessage';
 import ImageUploaderSingle from './commons/ImageUploaderSingle';
@@ -33,7 +33,6 @@ function EditSubcategory({
 		useSubcategoryUpdate();
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
-	const [refresh, setRefresh] = useState(false);
 	const handleImageUploadSubcategory = async (
 		subcategoryId: string,
 		index: number,
@@ -43,39 +42,39 @@ function EditSubcategory({
 			subcategoryId,
 			'images.subcategory' + '.' + index,
 		);
-		console.log(result);
 		return result;
 	};
-	console.log(filePreviews);
+	// console.log(filePreviews);
 	const handleUpdateSubcategory = async (
 		subcategory: SubcategoryDataFrontend,
 		index: number,
 		deleteImage: boolean,
 	) => {
 		try {
+			// console.log(subcategory.images);
 			if (deleteImage && subcategory.images)
 				if (subcategory.images?.length > 0) {
 					await Promise.all(
 						subcategory.images.map(img => deleteFileService(img)),
 					);
+					subcategory.images = [];
 				}
 			const uploadedUrlImages = await handleImageUploadSubcategory(
 				subcategory.id || '',
-				index,
+				index + 1,
 			);
-			console.log(uploadedUrlImages);
+			// console.log(uploadedUrlImages);
 			await updateSubcategory(
 				transformSubcategoryDataToBackend({
 					...subcategory,
 					images: uploadedUrlImages,
 				}),
 			);
-			setRefresh(!refresh);
+			update();
 		} catch (error) {
 			console.error('Error:', error);
 		}
 	};
-	useEffect(() => {}, [refresh]);
 	const handleSubcategoryNameChange = (
 		value: string,
 		categoryIndex: number,
@@ -198,7 +197,7 @@ function EditSubcategory({
 									}
 								/>
 							)}
-
+						<hr />
 						<button
 							className='save'
 							onClick={() =>
@@ -212,6 +211,7 @@ function EditSubcategory({
 						>
 							Guardar Cambios
 						</button>
+						<hr />
 					</div>
 				))}
 			</div>
