@@ -76,7 +76,7 @@ function EditCategory({
 
 			await updateCategory({
 				...category,
-				images: uploadedUrlImages,
+				images: removeImage ? uploadedUrlImages : category.images,
 			});
 			setRefresh(!refresh);
 		} catch (error) {

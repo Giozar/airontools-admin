@@ -89,14 +89,29 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 					...familyToEdit,
 					name,
 					description,
-					images: uploadedUrlImages || images,
+					images:
+						deleteImage || uploadedUrlImages.length > 0
+							? uploadedUrlImages
+							: images,
 				}),
 			);
-			setImages(uploadedUrlImages);
+			setImages(
+				deleteImage || uploadedUrlImages.length > 0
+					? uploadedUrlImages
+					: images,
+			);
 			localStorage.setItem(
 				'familyToEdit',
 				JSON.stringify({
-					family: { ...familyToEdit, name, description },
+					family: {
+						...familyToEdit,
+						name,
+						description,
+						images:
+							deleteImage || uploadedUrlImages.length > 0
+								? uploadedUrlImages
+								: images,
+					},
 				}),
 			);
 		} catch (error) {

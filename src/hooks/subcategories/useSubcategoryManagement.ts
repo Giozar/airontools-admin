@@ -1,5 +1,6 @@
 // src/hooks/useSubcategoryManagement.ts
 
+import { deleteFileService } from '@services/files/deleteFile.service';
 import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
 import { useState } from 'react';
 
@@ -23,8 +24,12 @@ const useSubcategoryManagement = () => {
 	const handleDelete = async (
 		subcategoryId: string,
 		subcategoryName: string,
+		subcategoryImage: string[],
 	) => {
 		try {
+			if (subcategoryImage.length > 0) {
+				await Promise.all(subcategoryImage.map(img => deleteFileService(img)));
+			}
 			await deleteSubcategoryService(subcategoryId);
 			setDeletionMessage(
 				`${subcategoryName} (${subcategoryId}) ha sido eliminado correctamente.`,

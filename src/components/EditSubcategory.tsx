@@ -1,12 +1,15 @@
 import { transformSubcategoryDataToBackend } from '@adapters/subcategory.adapter';
 import TrashIcon from '@components/svg/TrashIcon';
+import useFetchCounts from '@hooks/common/useFetchCounts';
+import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import useSubcategoryManagement from '@hooks/subcategories/useSubcategoryManagement';
 import useSubcategoryUpdate from '@hooks/subcategories/useSubcategoryUpdate';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
-import axios from 'axios';
+import { deleteFileService } from '@services/files/deleteFile.service';
 import { useEffect, useState } from 'react';
 import DeletionModal from './commons/DeletionModal';
 import ErrorMessage from './commons/ErrorMessage';
+import ImageUploaderSingle from './commons/ImageUploaderSingle';
 import SuccessMessage from './commons/SuccessMessage';
 import Editables from './Editables';
 
@@ -28,19 +31,51 @@ function EditSubcategory({
 	} = useSubcategoryManagement();
 	const { errorLogSubcategory, successLogSubcategory, updateSubcategory } =
 		useSubcategoryUpdate();
-
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
+	const [refresh, setRefresh] = useState(false);
+	const handleImageUploadSubcategory = async (
+		subcategoryId: string,
+		index: number,
+	) => {
+		const result = await handleFileUpload(
+			'images.subcategory',
+			subcategoryId,
+			'images.subcategory' + '.' + index,
+		);
+		console.log(result);
+		return result;
+	};
+	console.log(filePreviews);
 	const handleUpdateSubcategory = async (
 		subcategory: SubcategoryDataFrontend,
+		index: number,
+		deleteImage: boolean,
 	) => {
 		try {
-			await updateSubcategory(
-				transformSubcategoryDataToBackend({ ...subcategory }),
+			if (deleteImage && subcategory.images)
+				if (subcategory.images?.length > 0) {
+					await Promise.all(
+						subcategory.images.map(img => deleteFileService(img)),
+					);
+				}
+			const uploadedUrlImages = await handleImageUploadSubcategory(
+				subcategory.id || '',
+				index,
 			);
+			console.log(uploadedUrlImages);
+			await updateSubcategory(
+				transformSubcategoryDataToBackend({
+					...subcategory,
+					images: uploadedUrlImages,
+				}),
+			);
+			setRefresh(!refresh);
 		} catch (error) {
 			console.error('Error:', error);
 		}
 	};
-
+	useEffect(() => {}, [refresh]);
 	const handleSubcategoryNameChange = (
 		value: string,
 		categoryIndex: number,
@@ -58,41 +93,24 @@ function EditSubcategory({
 		updatedSubcategories[categoryIndex - 1].description = value;
 		setSubcategories(updatedSubcategories);
 	};
-	const [numberOfSpecifications, setNumberOfSpecifications] = useState<
-		number | null
-	>(null);
-	const [numberOfProducts, setNumberOfProducts] = useState<number | null>(null);
-	const [loading, setLoading] = useState<boolean>(true);
+	const { numberOfSpecifications, numberOfProducts, loading } = useFetchCounts(
+		showDeletionModalFor,
+		{
+			fetchSpecifications: true,
+			fetchProducts: true,
+		},
+		'BySubcategory',
+	);
+	const [deleteSubcategoryImageToDelete, setDeleteSubcategoryImageToDelete] =
+		useState<string[]>(new Array(subcategories.length).fill(''));
 
-	useEffect(() => {
-		if (!showDeletionModalFor) {
-			setNumberOfSpecifications(null);
-			setNumberOfProducts(null);
-			setLoading(false);
-			return;
-		}
-		setLoading(true);
-		const fetchCounts = async () => {
-			try {
-				const [specificationsResponse, productsResponse] = await Promise.all([
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/specifications/countBySubcategory/${showDeletionModalFor}`,
-					),
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/products/countBySubcategory/${showDeletionModalFor}`,
-					),
-				]);
-				setNumberOfSpecifications(specificationsResponse.data);
-				setNumberOfProducts(productsResponse.data);
-			} catch (error) {
-				console.error('Error al contar especificaciones:', error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchCounts();
-	}, [showDeletionModalFor]);
+	const handleUpdateArray = (index: number, value: string) => {
+		setDeleteSubcategoryImageToDelete(prevArray => {
+			const newArray = [...prevArray];
+			newArray[index] = value;
+			return newArray;
+		});
+	};
 	if (loading) {
 		return <div>Cargando...</div>;
 	}
@@ -122,7 +140,11 @@ function EditSubcategory({
 								onClose={() => handleCloseModal()}
 								onCloseDelete={update}
 								onDelete={() =>
-									handleDelete(subcategory.id || '', subcategory.name)
+									handleDelete(
+										subcategory.id || '',
+										subcategory.name,
+										subcategory.images || [''],
+									)
 								}
 								message={deletionMessage}
 								confirmationInfo={confirmationInfo()}
@@ -151,9 +173,42 @@ function EditSubcategory({
 							whichOne={subcategoryIndex + 1}
 							onUpdateOne={handleSubcategoryDescriptionChange}
 						/>
+						{subcategory.images &&
+							filePreviews &&
+							handleFileSelect &&
+							handleRemoveFile && (
+								<ImageUploaderSingle
+									title={`Imagen:`}
+									filePreviews={filePreviews}
+									onFileSelect={handleFileSelect}
+									onRemoveFile={(type, index) => {
+										handleRemoveFile(type, index);
+										handleUpdateArray(
+											subcategoryIndex,
+											subcategory.images ? subcategory.images[0] : '',
+										);
+									}}
+									type={'subcategory'}
+									index={subcategoryIndex + 1}
+									placeholder={
+										deleteSubcategoryImageToDelete[subcategoryIndex] ===
+										subcategory.images[0]
+											? ''
+											: subcategory.images[0]
+									}
+								/>
+							)}
+
 						<button
 							className='save'
-							onClick={() => handleUpdateSubcategory(subcategory)}
+							onClick={() =>
+								handleUpdateSubcategory(
+									subcategory,
+									subcategoryIndex,
+									deleteSubcategoryImageToDelete[subcategoryIndex] ===
+										(subcategory.images ? subcategory.images[0] : ''),
+								)
+							}
 						>
 							Guardar Cambios
 						</button>

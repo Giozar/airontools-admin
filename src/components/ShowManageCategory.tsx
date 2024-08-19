@@ -102,7 +102,13 @@ function ShowManageCategory({
 								name={category.name}
 								onClose={() => handleCloseModal()}
 								onCloseDelete={() => handleCloseModalDeletion(category)}
-								onDelete={() => handleDelete(category.id || '', category.name)}
+								onDelete={() =>
+									handleDelete(
+										category.id || '',
+										category.name,
+										category.images,
+									)
+								}
 								message={deletionMessage}
 								confirmationInfo={confirmationInfo()}
 							/>
