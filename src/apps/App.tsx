@@ -80,17 +80,18 @@ const App = () => {
 									path='/home/categorizacion/especificaciones/editar-especificacion'
 									element={<EditSpecification />}
 								/>
-								<Route path='/home/herramientas' element={<ToolMenu />} />
-								<Route
-									path='/home/herramientas/crear-herramienta'
-									element={<CreateTool />}
-								/>
-								<Route
-									path='/home/herramientas/editar-herramienta'
-									element={<EditTool />}
-								/>
+
 								<Route path='/home/monitor' element={<MonitoringMenu />} />
 							</Route>
+							<Route path='/home/herramientas' element={<ToolMenu />} />
+							<Route
+								path='/home/herramientas/crear-herramienta'
+								element={<CreateTool />}
+							/>
+							<Route
+								path='/home/herramientas/editar-herramienta'
+								element={<EditTool />}
+							/>
 						</Route>
 					</Route>
 				</Routes>
