@@ -36,7 +36,6 @@ function SubcategoryModal({
 	const updatedSubcategories = () => {
 		setUpdate(!update);
 	};
-	console.log(subcategories);
 	return (
 		<>
 			<div className='subcategories-container'>
