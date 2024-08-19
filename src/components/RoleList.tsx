@@ -2,7 +2,6 @@ import { transformRoleDataFront } from '@adapters/role.adapter';
 import { RoleDataBack, RoleDataFront } from '@interfaces/Role.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import ComboBox from './ComboBox';
 import DeletionModal from './commons/DeletionModal';
 
 interface RoleListState {
@@ -10,7 +9,41 @@ interface RoleListState {
 	loading: boolean;
 	error: string | null;
 }
-
+const RoleDetails = ({ role }: { role: RoleDataFront }) => {
+	return (
+		<details className='role-details'>
+			<summary className='role-details-summary'>{role.name}</summary>
+			<div className='role-details-content'>
+				<div className='role-details-item'>
+					<span className='role-details-item-label'>ID:</span>
+					<span className='role-details-item-value'>{role.id}</span>
+				</div>
+				<div className='role-details-item'>
+					<span className='role-details-item-label'>Descripción:</span>
+					<span className='role-details-item-value'>{role.description}</span>
+				</div>
+				<div className='role-details-item'>
+					<span className='role-details-item-label'>Creado por:</span>
+					<span className='role-details-item-value'>
+						{role.createdBy?.name}
+					</span>
+				</div>
+				<div className='role-details-item'>
+					<span className='role-details-item-label'>Fecha de creación:</span>
+					<span className='role-details-item-value'>
+						{new Date(role.createdAt as string).toLocaleDateString()}
+					</span>
+				</div>
+				<div className='role-details-item'>
+					<span className='role-details-item-label'>Última Actualización:</span>
+					<span className='role-details-item-value'>
+						{new Date(role.updatedAt as string).toLocaleDateString()}
+					</span>
+				</div>
+			</div>
+		</details>
+	);
+};
 function RoleList({ updateRole }: { updateRole?: boolean }) {
 	const [state, setState] = useState<RoleListState>({
 		roles: [],
@@ -78,16 +111,7 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 				{roles.map(role => (
 					<li key={role.id}>
 						<div>
-							<ComboBox
-								option={role.name}
-								options={[
-									`id: ${role.id}`,
-									`Descripción: ${role.description}`,
-									`Creado por: ${role.createdBy?.name}`,
-									`Fecha de creación: ${new Date(role.createdAt as string).toLocaleDateString()}`,
-									`Última Actualización: ${new Date(role.updatedAt as string).toLocaleDateString()}`,
-								]}
-							/>
+							<RoleDetails role={role} />
 						</div>
 						{role.name !== 'Administrador' && (
 							<button

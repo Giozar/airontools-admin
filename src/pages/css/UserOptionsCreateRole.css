@@ -59,21 +59,35 @@
 	background-color: var(--accent-secondary);
 	padding: 10px;
 }
-.role-list ul li .combobox {
-	margin: 10px 0;
-	color: var(--text-primary);
-	font-size: 1.1rem;
-}
-.role-list ul li .combobox:hover {
-	background-color: var(--bg-tertiary);
-	color: var(--text-primary);
+
+.role-details {
+	margin-bottom: 16px; /* mb-4 */
+	border-radius: 8px; /* rounded-md */
+	background-color: var(--bg-secondary);
+	padding: 16px; /* p-4 */
 }
 
-.role-list ul li .comboboxOptions {
-	margin-top: -10px;
-	margin-bottom: 10px;
-	border-bottom: 2px solid var(--bg-secondary);
-	border-radius: 10px;
-	background-color: var(--accent-secondary);
-	padding: 0 20px;
+.role-details-summary {
+	cursor: pointer; /* cursor-pointer */
+	font-weight: bold; /* font-bold */
+}
+
+.role-details-content {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 16px; /* gap-4 */
+	margin-top: 16px; /* mt-4 */
+}
+
+.role-details-item {
+	display: flex;
+	justify-content: space-between;
+}
+
+.role-details-item-label {
+	color: var(--neutral);
+}
+
+.role-details-item-value {
+	color: var(--text-secondary);
 }
