@@ -56,7 +56,7 @@ const ToolInfoModal = ({
 								items={
 									product.specifications.map(
 										spec =>
-											`${spec.specification.name}: ${spec.value} (${spec.specification.unit})`,
+											`${spec.specification.name}: ${spec.value} ${spec.specification.unit}`,
 									) || []
 								}
 							/>

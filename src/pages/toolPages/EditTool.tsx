@@ -220,7 +220,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 								value: family.id,
 								label: family.name,
 							}))}
-							value={selectedFamily?.name || ''}
 							onChange={handleFamilyChange}
 						/>
 						{filteredCategories.length > 0 && (
@@ -231,7 +230,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									value: category.id,
 									label: category.name,
 								}))}
-								value={selectedCategory?.name || ''}
 								onChange={handleCategoryChange}
 							/>
 						)}
@@ -243,7 +241,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									value: subcategory.id,
 									label: subcategory.name,
 								}))}
-								value={selectedSubcategory?.name || ''}
 								onChange={handleSubcategoryChange}
 							/>
 						)}

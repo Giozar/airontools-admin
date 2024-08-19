@@ -25,6 +25,7 @@ const Atornillador = () => {
 	const [requeriments, setRequeriments] = useState<string[]>([]);
 	const [includes, setIncludes] = useState<string[]>([]);
 	const [accessories, setAccessories] = useState<string[]>([]);
+
 	const [applications, setApplications] = useState<string[]>([]);
 	const [videos, setVideos] = useState<string[]>([]);
 	const {
@@ -59,6 +60,7 @@ const Atornillador = () => {
 	const { successLog, showSuccess } = useSuccessHandling();
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
+
 		try {
 			// console.log(subcategoryId);
 			console.log(specificationValues);
@@ -71,7 +73,7 @@ const Atornillador = () => {
 				description: toolDescription,
 				characteristics,
 				includedItems: includes,
-				opcionalAccessories: accessories,
+				optionalAccessories: accessories,
 				operationRequirements: requeriments,
 				applications,
 				recommendations,
@@ -79,7 +81,7 @@ const Atornillador = () => {
 				videos,
 				createdBy,
 			};
-
+			console.log(createToolData);
 			// Paso 1: Crear el producto
 			const response = await axios.post(
 				import.meta.env.VITE_API_URL + '/products',
