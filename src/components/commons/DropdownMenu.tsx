@@ -62,6 +62,14 @@ function DropdownMenu({
 									className='category-header'
 									onClick={() => handleCategoryClick(category.id || '')}
 								>
+									{category.images && category.images[0] && (
+										<img
+											src={category.images[0]}
+											width={60}
+											height={60}
+											style={{ margin: '5px' }}
+										></img>
+									)}
 									{category.name}
 									{activeCategory === category.id ? (
 										<RightArrow />
@@ -81,11 +89,21 @@ function DropdownMenu({
 														const subcategorySpecs = specifications.filter(
 															spec => spec.subcategory._id === subcategory.id,
 														);
+
 														return (
 															<li
 																key={subcategory.id}
 																className='subcategory-item'
 															>
+																{subcategory.images &&
+																	subcategory.images[0] && (
+																		<img
+																			src={subcategory.images[0]}
+																			width={40}
+																			height={40}
+																			style={{ margin: '5px' }}
+																		></img>
+																	)}
 																{subcategory.name}
 																{subcategorySpecs.length > 0 &&
 																	renderSpecifications(subcategorySpecs)}
