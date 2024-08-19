@@ -6,6 +6,7 @@ export interface CategoryDataToSend {
 	_id?: string;
 	name: string;
 	description?: string;
+	images?: string[];
 	family: string;
 	createdBy: string;
 }
@@ -14,6 +15,7 @@ export interface CategoryDataBackend {
 	_id: string;
 	name: string;
 	description?: string;
+	images?: string[];
 	family: FamilyDataBackend;
 	createdBy: UserDataBackend;
 }
@@ -22,6 +24,7 @@ export interface CategoryDataFrontend {
 	id: string;
 	name: string;
 	description?: string;
+	images?: string[];
 	family: FamilyDataFrontend;
 	createdBy: UserDataFrontend;
 }

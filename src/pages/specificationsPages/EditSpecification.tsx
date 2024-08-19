@@ -137,7 +137,6 @@ function EditSpecificationsForm({
 								value: family.id,
 								label: family.name,
 							}))}
-							value={selectedFamily?.name || ''}
 							onChange={handleFamilyChange}
 						/>
 						{filteredCategories.length > 0 && (
@@ -148,7 +147,6 @@ function EditSpecificationsForm({
 									value: category.id,
 									label: category.name,
 								}))}
-								value={selectedCategory?.name || ''}
 								onChange={handleCategoryChange}
 							/>
 						)}
@@ -160,7 +158,6 @@ function EditSpecificationsForm({
 									value: subcategory.id,
 									label: subcategory.name,
 								}))}
-								value={selectedSubcategory?.name || ''}
 								onChange={handleSubcategoryChange}
 							/>
 						)}

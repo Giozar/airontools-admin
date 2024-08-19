@@ -1,4 +1,5 @@
 import { deleteCategory } from '@services/categories/deleteCategory.service';
+import { deleteFileService } from '@services/files/deleteFile.service';
 import { useState } from 'react';
 
 const useCategoryManagement = () => {
@@ -16,8 +17,15 @@ const useCategoryManagement = () => {
 	const handleUpdateList = () => {
 		setUpdateListFlag(prevFlag => !prevFlag);
 	};
-	const handleDelete = async (categoryid: string, categoryname: string) => {
+	const handleDelete = async (
+		categoryid: string,
+		categoryname: string,
+		categoryImg: string[],
+	) => {
 		try {
+			if (categoryImg.length > 0) {
+				await Promise.all(categoryImg.map(img => deleteFileService(img)));
+			}
 			await deleteCategory(categoryid);
 			setDeletionMessage(
 				`${categoryname} (${categoryid}) ha sido eliminado correctamente.`,

@@ -68,7 +68,6 @@ const DynamicSelectInputAreaList = ({
 								id={`select-${index}`}
 								name={`Seleccionar ${optionsName}`}
 								options={selectOptions}
-								value={component.selected}
 								onChange={value => handleSelectChange(index, value)}
 							/>
 							<TextInput

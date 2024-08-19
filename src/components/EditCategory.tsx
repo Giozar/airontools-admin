@@ -1,7 +1,8 @@
 import useCategoryUpdate from '@hooks/categories/useCategoryUpdate';
 import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesFromFamily';
+import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ShowManageCategory from './ShowManageCategory';
 import ErrorMessage from './commons/ErrorMessage';
 import SuccessMessage from './commons/SuccessMessage';
@@ -19,14 +20,14 @@ function EditCategory({
 		useCategoryUpdate();
 	const { categories, setCategories, fetchCategories } =
 		useFetchCategoriesFromFamily();
-
+	const [refresh, setRefresh] = useState(false);
 	useEffect(() => {
 		console.log(familyId);
 		if (familyId) {
 			fetchCategories(familyId);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [familyId, update]);
+	}, [familyId, update, refresh]);
 
 	const handleCategoryNameChange = (value: string, categoryIndex: number) => {
 		const updatedCategories = [...categories];
@@ -42,11 +43,42 @@ function EditCategory({
 		updatedCategories[categoryIndex - 1].description = value;
 		setCategories(updatedCategories);
 	};
-	const handleUpdateCategory = async (category: CategoryDataToSend) => {
+	const {
+		filePreviews,
+		handleFileSelect,
+		handleRemoveFile,
+		handleDeleteFile,
+		handleFileUpload,
+	} = useMultipleFileUpload();
+
+	const handleImageUploadCategory = async (
+		categoryId: string,
+		index: number,
+	) => {
+		return await handleFileUpload(
+			'images.category',
+			categoryId,
+			'images.category' + '.' + index,
+		);
+	};
+	const handleUpdateCategory = async (
+		category: CategoryDataToSend,
+		index: number,
+		removeImage: boolean,
+	) => {
 		try {
+			if (removeImage && category.images)
+				await handleDeleteFile(category.images[0]);
+			const uploadedUrlImages = await handleImageUploadCategory(
+				category._id || '',
+				index,
+			);
+
 			await updateCategory({
 				...category,
+				images: removeImage ? uploadedUrlImages : category.images,
 			});
+			setRefresh(!refresh);
 		} catch (error) {
 			console.error('Error:', error);
 		}
@@ -70,6 +102,9 @@ function EditCategory({
 					handleCategoryDescriptionChange={handleCategoryDescriptionChange}
 					handleUpdateCategory={handleUpdateCategory}
 					handleCloseModalDeletion={handleCategoryDeleteFromList}
+					filePreviews={filePreviews}
+					onFileSelect={handleFileSelect}
+					onRemoveFile={handleRemoveFile}
 				/>
 			</div>
 		</>

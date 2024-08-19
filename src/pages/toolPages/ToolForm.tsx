@@ -71,13 +71,10 @@ interface ToolCategorizationProps {
 
 const ToolCategorization = ({
 	families,
-	selectedFamily,
 	handleFamilyChange,
 	filteredCategories,
-	selectedCategory,
 	handleCategoryChange,
 	filteredSubcategories,
-	selectedSubcategory,
 	handleSubcategoryChange,
 }: ToolCategorizationProps) => {
 	return (
@@ -90,7 +87,6 @@ const ToolCategorization = ({
 						value: family.id,
 						label: family.name,
 					}))}
-					value={selectedFamily?.name || ''}
 					onChange={handleFamilyChange}
 				/>
 				{filteredCategories.length > 0 && (
@@ -101,7 +97,6 @@ const ToolCategorization = ({
 							value: category.id,
 							label: category.name,
 						}))}
-						value={selectedCategory?.name || ''}
 						onChange={handleCategoryChange}
 					/>
 				)}
@@ -113,7 +108,6 @@ const ToolCategorization = ({
 							value: subcategory.id,
 							label: subcategory.name,
 						}))}
-						value={selectedSubcategory?.name || ''}
 						onChange={handleSubcategoryChange}
 					/>
 				)}

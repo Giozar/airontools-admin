@@ -2,7 +2,6 @@ import ActionCard from '@components/commons/ActionCard';
 import DeletionModal from '@components/commons/DeletionModal';
 import DropdownMenu from '@components/commons/DropdownMenu';
 import ErrorMessage from '@components/commons/ErrorMessage';
-import Slideshow from '@components/commons/Slideshow';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 
@@ -109,7 +108,11 @@ function ListOfFamilies() {
 							</div>
 							<div className='cardContent'>
 								<p>ID: {family.id}</p>
-								<Slideshow images={family.images} />
+								{family.images[0] ? (
+									<img src={family.images[0]} width={150} height={150} />
+								) : (
+									<p>No hay imagen disponible</p>
+								)}
 								<p>{family.description}</p>
 								<hr></hr>
 								<DropdownMenu

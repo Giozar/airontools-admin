@@ -1,13 +1,14 @@
 import { transformCategoryDataToBackend } from '@adapters/category.adapter';
 import TrashIcon from '@components/svg/TrashIcon';
 import useCategoryManagement from '@hooks/categories/useCategoryManegement';
+import useFetchCounts from '@hooks/common/useFetchCounts';
 import {
 	CategoryDataFrontend,
 	CategoryDataToSend,
 } from '@interfaces/Category.interface';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import DeletionModal from './commons/DeletionModal';
+import ImageUploaderSingle from './commons/ImageUploaderSingle';
 import Editables from './Editables';
 import SubcategoryModal from './SubcategoryModal';
 
@@ -19,10 +20,20 @@ interface ShowManageCategoryProps {
 		newDescription: string,
 		index: number,
 	) => void;
-	handleUpdateCategory: (updatedCategory: CategoryDataToSend) => void;
+	handleUpdateCategory: (
+		updatedCategory: CategoryDataToSend,
+		index?: number,
+
+		removeImage?: boolean,
+	) => void;
 	handleCloseModalDeletion:
 		| ((updatedCategory: CategoryDataFrontend) => void)
 		| ((updatedCategory: any) => void);
+	filePreviews?: {
+		[key: string]: string[];
+	};
+	onFileSelect?: (event: ChangeEvent<HTMLInputElement>, type: string) => void;
+	onRemoveFile?: (type: string, index: number) => void;
 }
 
 function ShowManageCategory({
@@ -31,6 +42,9 @@ function ShowManageCategory({
 	handleCategoryDescriptionChange,
 	handleUpdateCategory,
 	handleCloseModalDeletion,
+	filePreviews,
+	onFileSelect,
+	onRemoveFile,
 }: ShowManageCategoryProps) {
 	const {
 		showDeletionModalFor,
@@ -39,67 +53,42 @@ function ShowManageCategory({
 		handleCloseModal,
 		handleDelete,
 	} = useCategoryManagement();
-	const [numberOfSubcategories, setNumberOfSubcategories] = useState<
-		number | null
-	>(null);
-	const [numberOfSpecifications, setNumberOfSpecifications] = useState<
-		number | null
-	>(null);
-	const [numberOfProducts, setNumberOfProducts] = useState<number | null>(null);
-	const [loading, setLoading] = useState<boolean>(true);
+	const {
+		numberOfSubcategories,
+		numberOfSpecifications,
+		numberOfProducts,
+		loading,
+	} = useFetchCounts(
+		showDeletionModalFor,
+		{
+			fetchSubcategories: true,
+			fetchSpecifications: true,
+			fetchProducts: true,
+		},
+		'ByCategory',
+	);
+	const [deleteCategoryImageToDelete, setDeleteCategoryImageToDelete] =
+		useState<string[]>(new Array(categories.length).fill(''));
 
-	useEffect(() => {
-		if (!showDeletionModalFor) {
-			setNumberOfSubcategories(null);
-			setNumberOfSpecifications(null);
-			setNumberOfProducts(null);
-			setLoading(false);
-			return;
-		}
-		setLoading(true);
-		const fetchCounts = async () => {
-			try {
-				const [
-					subcategoriesResponse,
-					specificationsResponse,
-					productsResponse,
-				] = await Promise.all([
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/subcategories/countByCategory/${showDeletionModalFor}`,
-					),
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/specifications/countByCategory/${showDeletionModalFor}`,
-					),
-					axios.get(
-						`${import.meta.env.VITE_API_URL}/products/countByCategory/${showDeletionModalFor}`,
-					),
-				]);
-				setNumberOfSubcategories(subcategoriesResponse.data);
-				setNumberOfSpecifications(specificationsResponse.data);
-				setNumberOfProducts(productsResponse.data);
-			} catch (error) {
-				console.error(
-					'Error al contar subcategorias y especificaciones:',
-					error,
-				);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchCounts();
-	}, [showDeletionModalFor]);
+	const handleUpdateArray = (index: number, value: string) => {
+		setDeleteCategoryImageToDelete(prevArray => {
+			const newArray = [...prevArray];
+			newArray[index] = value;
+			return newArray;
+		});
+	};
 	if (loading) {
 		return <div>Cargando...</div>;
 	}
+
 	const confirmationInfo = () => {
 		let mensaje = '';
 		if (numberOfSubcategories && numberOfSubcategories > 0)
 			mensaje += `Al borrar esta categoria se eliminarán ${numberOfSubcategories} subcategorías`;
 		if (numberOfSpecifications && numberOfSpecifications > 0)
-			mensaje += ` y ${numberOfSpecifications} especificaciones`;
+			mensaje += ` ${numberOfSpecifications} especificaciones`;
 		if (numberOfProducts && numberOfProducts > 0)
-			mensaje += `. Además se afectarán ${numberOfProducts} productos`;
+			mensaje += `. Se afectarán ${numberOfProducts} productos`;
 		return mensaje;
 	};
 	return (
@@ -113,7 +102,13 @@ function ShowManageCategory({
 								name={category.name}
 								onClose={() => handleCloseModal()}
 								onCloseDelete={() => handleCloseModalDeletion(category)}
-								onDelete={() => handleDelete(category.id || '', category.name)}
+								onDelete={() =>
+									handleDelete(
+										category.id || '',
+										category.name,
+										category.images,
+									)
+								}
 								message={deletionMessage}
 								confirmationInfo={confirmationInfo()}
 							/>
@@ -146,6 +141,30 @@ function ShowManageCategory({
 							whichOne={categoryIndex + 1}
 							onUpdateOne={handleCategoryDescriptionChange}
 						/>
+						{category.images &&
+							filePreviews &&
+							onFileSelect &&
+							onRemoveFile && (
+								<ImageUploaderSingle
+									title={`Imagen:`}
+									filePreviews={filePreviews}
+									onFileSelect={onFileSelect}
+									onRemoveFile={(type, index) => {
+										onRemoveFile(type, index);
+										handleUpdateArray(categoryIndex, category.images[0]);
+									}}
+									type={'category'}
+									index={categoryIndex + 1}
+									placeholder={
+										deleteCategoryImageToDelete[categoryIndex] ===
+										category.images[0]
+											? ''
+											: category.images[0]
+									}
+								/>
+							)}
+
+						<br></br>
 						{category.id && (
 							<SubcategoryModal
 								categoryId={category.id}
@@ -154,10 +173,20 @@ function ShowManageCategory({
 								createdBy={category.createdBy.id}
 							/>
 						)}
+
 						<button
 							className='save'
 							onClick={() =>
-								handleUpdateCategory(transformCategoryDataToBackend(category))
+								category.images
+									? handleUpdateCategory(
+											transformCategoryDataToBackend(category),
+											categoryIndex + 1,
+											deleteCategoryImageToDelete[categoryIndex] ===
+												category.images[0],
+										)
+									: handleUpdateCategory(
+											transformCategoryDataToBackend(category),
+										)
 							}
 						>
 							{category.id ? 'Guardar Cambios' : 'Crear Categoría'}

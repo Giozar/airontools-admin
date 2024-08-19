@@ -7,6 +7,7 @@ export interface SubcategoryDataToSend {
 	_id?: string;
 	name: string;
 	description?: string;
+	images?: string[];
 	family: string;
 	category: string;
 	createdBy: string;
@@ -16,6 +17,7 @@ export interface SubcategoryDataBackend {
 	_id: string;
 	name: string;
 	description?: string;
+	images?: string[];
 	family: FamilyDataBackend;
 	category: CategoryDataToSend;
 	createdBy: UserDataBackend;
@@ -25,6 +27,7 @@ export interface SubcategoryDataFrontend {
 	id: string;
 	name: string;
 	description?: string;
+	images?: string[];
 	family: FamilyDataFrontend;
 	category: CategoryDataToSend;
 	createdBy: UserDataFrontend;

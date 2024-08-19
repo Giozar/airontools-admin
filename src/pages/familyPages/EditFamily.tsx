@@ -15,10 +15,10 @@ import { useContext, useEffect, useState } from 'react';
 
 import { transformFamilyDataToBackend } from '@adapters/family.adapter';
 import ErrorMessage from '@components/commons/ErrorMessage';
+import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import useFetchCounts from '@hooks/common/useFetchCounts';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
-import { deleteFileService } from '@services/files/deleteFile.service';
 import { useNavigate } from 'react-router-dom';
 interface EditFamilyFormProps {
 	familyToEdit: FamilyDataFrontend;
@@ -32,7 +32,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
 	const [images, setImages] = useState(familyToEdit.images);
-	console.log(images);
+	const [deleteImage, setDeleteImage] = useState(false);
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();
 	const {
 		showDeletionModalFor,
@@ -46,10 +46,11 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const {
 		filePreviews,
 		handleFileSelect,
-		initFileSelect,
 		handleRemoveFile,
 		handleFileUpload,
+		handleDeleteFile,
 	} = useMultipleFileUpload();
+
 	const updateCategoryList = () => {
 		setUpdate(!update);
 	};
@@ -65,33 +66,22 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const handleCloseModalDeletion = () => {
 		navigate('/home/categorizacion');
 	};
-	const handleImageUpload = async (productId: string) => {
-		return await handleFileUpload('images.family', productId, 'images.family');
+	const handleImageUpload = async (familyId: string) => {
+		return await handleFileUpload('images.family', familyId, 'images.family');
 	};
-	const handleDeleteFile = async (fileId: string) => {
-		try {
-			await deleteFileService(fileId);
-		} catch (error) {
-			console.error(`Error al eliminar archivo ${fileId}:`, error);
-		}
-	};
-	useEffect(() => {
-		console.log(images[0]);
-		if (images) {
-			initFileSelect(images[0], 'images.family');
-		}
-	}, []); // para que se actualicen las imagenes
+
+	useEffect(() => {}, [images]); // para que se actualicen las imagenes
 	const handleUpdateFamily = async () => {
 		try {
-			console.log(images);
-			console.log(filePreviews['images.family'][0] === images[0]);
 			const uploadedUrlImages = await handleImageUpload(familyId);
-			const deletePromises = images?.map(async image => {
-				return await handleDeleteFile(image);
-			});
-			const deletedFiles = await Promise.all(deletePromises);
-
-			console.log(deletedFiles);
+			if (deleteImage) {
+				const deletePromises = images?.map(async image => {
+					return await handleDeleteFile(image);
+				});
+				const deletedFiles = await Promise.all(deletePromises);
+				console.log(deletedFiles);
+				setImages([]);
+			}
 			console.log(uploadedUrlImages);
 			console.log(images);
 			await updateFamily(
@@ -99,14 +89,29 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 					...familyToEdit,
 					name,
 					description,
-					images: [...images, ...uploadedUrlImages],
+					images:
+						deleteImage || uploadedUrlImages.length > 0
+							? uploadedUrlImages
+							: images,
 				}),
 			);
-			setImages(prevImages => [...prevImages, ...uploadedUrlImages]);
+			setImages(
+				deleteImage || uploadedUrlImages.length > 0
+					? uploadedUrlImages
+					: images,
+			);
 			localStorage.setItem(
 				'familyToEdit',
 				JSON.stringify({
-					family: { ...familyToEdit, name, description },
+					family: {
+						...familyToEdit,
+						name,
+						description,
+						images:
+							deleteImage || uploadedUrlImages.length > 0
+								? uploadedUrlImages
+								: images,
+					},
 				}),
 			);
 		} catch (error) {
@@ -184,13 +189,17 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 							type='textarea'
 							onUpdate={handleDescriptionUpdate}
 						/>
-						{/* <ImageUploaderSingle
+						<ImageUploaderSingle
 							title={`Imagen:`}
 							filePreviews={filePreviews}
 							onFileSelect={handleFileSelect}
-							onRemoveFile={handleRemoveFile}
+							onRemoveFile={(type, index) => {
+								handleRemoveFile(type, index);
+								setDeleteImage(true);
+							}}
 							type={'family'}
-						/> */}
+							placeholder={deleteImage ? '' : images[0]}
+						/>
 					</div>
 
 					<button

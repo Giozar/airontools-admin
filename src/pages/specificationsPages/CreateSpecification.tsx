@@ -63,7 +63,6 @@ function FamilySpecifications() {
 						value: family.id,
 						label: family.name,
 					}))}
-					value={selectedFamily || ''}
 					onChange={handleSelectFamily}
 				/>
 				{categories.length > 0 && (
@@ -74,7 +73,6 @@ function FamilySpecifications() {
 							value: category.id,
 							label: category.name,
 						}))}
-						value={selectedCategory || ''}
 						onChange={handleSelectCategory}
 					/>
 				)}
@@ -86,7 +84,6 @@ function FamilySpecifications() {
 							value: subcategory.id,
 							label: subcategory.name,
 						}))}
-						value={selectedSubcategory || ''}
 						onChange={handleSelectSubcategory}
 					/>
 				)}

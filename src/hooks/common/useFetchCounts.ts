@@ -8,7 +8,11 @@ interface FetchCountsOptions {
 	fetchProducts?: boolean;
 }
 
-const useFetchCounts = (param: string | null, options: FetchCountsOptions) => {
+const useFetchCounts = (
+	param: string | null,
+	options: FetchCountsOptions,
+	type?: string,
+) => {
 	const [numberOfCategories, setNumberOfCategories] = useState<number | null>(
 		null,
 	);
@@ -39,28 +43,28 @@ const useFetchCounts = (param: string | null, options: FetchCountsOptions) => {
 				if (options.fetchCategories) {
 					requests.push(
 						axios.get(
-							`${import.meta.env.VITE_API_URL}/categories/count/${param}`,
+							`${import.meta.env.VITE_API_URL}/categories/count${type || ''}/${param}`,
 						),
 					);
 				}
 				if (options.fetchSubcategories) {
 					requests.push(
 						axios.get(
-							`${import.meta.env.VITE_API_URL}/subcategories/count/${param}`,
+							`${import.meta.env.VITE_API_URL}/subcategories/count${type || ''}/${param}`,
 						),
 					);
 				}
 				if (options.fetchSpecifications) {
 					requests.push(
 						axios.get(
-							`${import.meta.env.VITE_API_URL}/specifications/count/${param}`,
+							`${import.meta.env.VITE_API_URL}/specifications/count${type || ''}/${param}`,
 						),
 					);
 				}
 				if (options.fetchProducts) {
 					requests.push(
 						axios.get(
-							`${import.meta.env.VITE_API_URL}/products/count/${param}`,
+							`${import.meta.env.VITE_API_URL}/products/count${type || ''}/${param}`,
 						),
 					);
 				}
