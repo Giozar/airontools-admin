@@ -27,10 +27,16 @@ function ContentMainPage() {
 						<ActionCard title='Monitor' path={location.pathname + '/monitor'} />
 					</>
 				) : (
-					<ActionCard
-						title='El editor puede ver esto'
-						path={location.pathname}
-					/>
+					<>
+						<ActionCard
+							title='Herramientas'
+							path={location.pathname + '/herramientas'}
+						/>
+						<ActionCard
+							title='El editor puede ver esto'
+							path={location.pathname}
+						/>
+					</>
 				)}
 			</div>
 		</BasePage>
