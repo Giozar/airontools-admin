@@ -1,4 +1,3 @@
-import DeletionModal from '@components/commons/DeletionModal';
 import Editables from '@components/commons/Editables';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import Info from '@components/commons/Info';
@@ -6,8 +5,8 @@ import SelectInput from '@components/commons/SelectInput';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TableRow from '@components/commons/TableRow';
 import ImageUpdate from '@components/files/ImageUpdate';
+import ManualUpdate from '@components/files/ManualUpdate';
 
-import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useFileManagement from '@hooks/files/useFileManagement';
@@ -49,13 +48,15 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		handleCloseModalFile,
 		handleDelete: handleDeleteFile,
 	} = useFileManagement();
+
 	const id = toolToEdit.id;
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
-	const [images, setImages] = useState(toolToEdit.images);
+	const [images, setImages] = useState(toolToEdit.images || []);
 	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
-	const [manuals, setManuals] = useState(toolToEdit.manuals);
+	const [manuals, setManuals] = useState(toolToEdit.manuals || []);
+	const [manualsToDelete, setManualsToDelete] = useState<string[]>([]);
 	const [videos, setVideos] = useState(toolToEdit.videos);
 	const [char, setChar] = useState(toolToEdit.characteristics);
 	const [recommendations, setRecommendations] = useState<string[]>(
@@ -83,8 +84,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		setImages(images?.filter(img => img !== image));
 	};
 	useEffect(() => {}, [images, manuals]);
-	const handleDeleteFileFor = (imageToDelete: string) => {
-		console.log(imageToDelete);
+	const handleDeleteImageFor = (imageToDelete: string) => {
 		setImagesToDelete(prevImagesToDelete => {
 			const updatedImagesToDelete = new Set([
 				...prevImagesToDelete,
@@ -94,6 +94,13 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		});
 		handleCloseModalDeletionImages(imageToDelete);
 	};
+	const handleDeleteManualFor = (manualToDelete: string) => {
+		setManualsToDelete(prevToDelete => {
+			const updatedmanualToDelete = new Set([...prevToDelete, manualToDelete]);
+			return Array.from(updatedmanualToDelete);
+		});
+		handleCloseModalDeletionManuals(manualToDelete);
+	};
 	const handleManualUpload = async (productId: string) => {
 		return await handleFileUpload('manuals', productId, 'manuals');
 	};
@@ -102,6 +109,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	};
 	const handleSubmit = async () => {
 		try {
+			console.log(selectedFamily?.id);
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
 				_id: id,
 				name,
@@ -109,9 +117,9 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 				characteristics: char,
 				description,
 				videos,
-				family: selectedFamily || toolToEdit.family._id,
-				category: selectedCategory || toolToEdit.category._id,
-				subcategory: selectedSubcategory || toolToEdit.subcategory._id,
+				family: selectedFamily?.id || toolToEdit.family._id,
+				category: selectedCategory?.id || toolToEdit.category._id,
+				subcategory: selectedSubcategory?.id || toolToEdit.subcategory._id,
 				specifications: specificationValues,
 				includedItems: includes,
 				optionalAccessories: accessories,
@@ -123,25 +131,26 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 			const deletePromises = imagesToDelete.map(async image => {
 				return await handleDeleteFile(image);
 			});
-			const deletedFiles = await Promise.all(deletePromises);
+			await Promise.all(deletePromises);
 			// Paso 2: subir imagenes
 			// Paso 3: Actualizar producto con imagenes
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-				images: deletedFiles
-					? [...deletedFiles, ...uploadedUrlImages]
-					: [...(images || ['']), ...uploadedUrlImages],
+				images: [...images, ...uploadedUrlImages],
 			});
 
 			// Paso 4: Subir manuales
 			const uploadedUrlManuals = await handleManualUpload(id || '');
+			const deletePromises2 = manualsToDelete.map(async manual => {
+				return await handleDeleteFile(manual);
+			});
+			await Promise.all(deletePromises2);
 			// Paso 3: Actualizar producto con manuales
-			console.log(
-				await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-					manuals: manuals
-						? [...manuals, ...uploadedUrlManuals]
-						: uploadedUrlManuals,
-				}),
-			);
+
+			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+				manuals: [...manuals, ...uploadedUrlManuals],
+			}),
+				setImages([...images, ...uploadedUrlImages]);
+			setManuals([...manuals, ...uploadedUrlManuals]);
 			showSuccess('Herramienta actualizada con éxito');
 		} catch (error) {
 			showError('No se pudo actualizar la herramienta');
@@ -312,77 +321,21 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 						showDeletionModalForFile={showDeletionModalForFile}
 						deletionMessageFile={deletionMessageFile}
 						handleCloseModalFile={handleCloseModalFile}
-						handleDeleteFileFor={handleDeleteFileFor}
+						handleDeleteFileFor={handleDeleteImageFor}
 						handleCloseModalDeletionImages={handleCloseModalDeletionImages}
 					/>
-
-					<div className='column'>
-						<p>Manuales:</p>
-						<div className='image-upload'>
-							{manuals?.map(preview => (
-								<div key={preview} className='image-preview'>
-									{showDeletionModalForFile === preview && (
-										<DeletionModal
-											id={preview}
-											name={preview}
-											onClose={() => handleCloseModalFile()}
-											onCloseDelete={() =>
-												handleCloseModalDeletionManuals(preview)
-											}
-											onDelete={() => handleDeleteFile(preview)}
-											message={deletionMessageFile}
-										/>
-									)}
-									<embed
-										src={preview}
-										width='150'
-										height='100'
-										className='image-placeholder'
-									/>
-									<button
-										className='delete'
-										onClick={() => setShowDeletionModalForFile(preview)}
-									>
-										<TrashIcon />
-									</button>
-									<div className='buttons'>
-										<a href={preview} target='_blank' rel='noopener noreferrer'>
-											Ver documento completo
-										</a>
-									</div>
-								</div>
-							))}
-							<p>Manuales nuevos:</p>
-							{filePreviews.manuals?.map((preview, index) => (
-								<div key={index} className='image-preview'>
-									<embed
-										src={preview}
-										width='250'
-										height='200'
-										className='image-placeholder'
-									/>
-									<button
-										onClick={() => handleRemoveFile('manuals', index)}
-										className='delete'
-										type='button'
-									>
-										<TrashIcon />
-									</button>
-								</div>
-							))}
-							<div className='image-placeholder add-image'>
-								<label htmlFor='manual-input'>Subir Manual +</label>
-								<input
-									type='file'
-									id='manual-input'
-									multiple
-									accept='.pdf, .doc, .docx'
-									onChange={event => handleFileSelect(event, 'manuals')}
-									style={{ display: 'none' }}
-								/>
-							</div>
-						</div>
-					</div>
+					<ManualUpdate
+						manuals={manuals || []}
+						filePreviews={filePreviews}
+						handleRemoveFile={handleRemoveFile}
+						handleFileSelect={handleFileSelect}
+						setShowDeletionModalForFile={setShowDeletionModalForFile}
+						showDeletionModalForFile={showDeletionModalForFile}
+						deletionMessageFile={deletionMessageFile}
+						handleCloseModalFile={handleCloseModalFile}
+						handleDeleteFileFor={handleDeleteManualFor}
+						handleCloseModalDeletionManuals={handleCloseModalDeletionManuals}
+					/>
 
 					<div className='column'>
 						<Editables
