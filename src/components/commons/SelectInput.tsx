@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface SelectInputProps {
 	id: string;
@@ -16,6 +16,8 @@ const SelectInput: React.FC<SelectInputProps> = ({
 	const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		onChange(e.target.value);
 	};
+
+	useEffect(() => {}, [handleChange]);
 
 	return (
 		<div className='selectInput'>

@@ -17,30 +17,39 @@ export function useFamilySpecifications() {
 
 	useEffect(() => {
 		if (selectedFamily) {
+			// console.log(`Family selected: ${selectedFamily}`);
 			fetchCategories(selectedFamily);
 			setSelectedCategory(null);
+			setSelectedSubcategory(null); // Reset subcategory when family changes
 		}
 	}, [selectedFamily]);
 
 	useEffect(() => {
-		if (selectedFamily && selectedCategory) {
+		if (selectedCategory) {
+			// console.log(`Category selected: ${selectedCategory}`);
 			fetchSubcategories(selectedCategory);
+			setSelectedSubcategory(null); // Reset subcategory when category changes
 		}
 	}, [selectedCategory]);
 
 	useEffect(() => {
-		setSelectedSubcategory(null);
-	}, [selectedFamily, selectedCategory]);
+		if (selectedSubcategory) {
+			// console.log(`Subcategory selected: ${selectedSubcategory}`);
+		}
+	}, [selectedSubcategory]);
 
 	const handleSelectFamily = (value: string) => {
+		// console.log(`handleSelectFamily called with value: ${value}`);
 		setSelectedFamily(value);
 	};
 
 	const handleSelectCategory = (value: string) => {
+		// console.log(`handleSelectCategory called with value: ${value}`);
 		setSelectedCategory(value);
 	};
 
 	const handleSelectSubcategory = (value: string) => {
+		// console.log(`handleSelectSubcategory called with value: ${value}`);
 		setSelectedSubcategory(value);
 	};
 
