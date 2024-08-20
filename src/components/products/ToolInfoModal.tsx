@@ -81,7 +81,7 @@ const ToolInfoModal = ({
 							/>
 							<InfoSection
 								title='Accesorios opcionales'
-								items={product.opcionalAccessories || []}
+								items={product.optionalAccessories || []}
 							/>
 							<InfoSection title='Videos' items={product.videos || []} />
 							<InfoSection title='Manuales' items={product.manuals || []} />

@@ -16,7 +16,7 @@ export interface ProductDataToSend {
 	category: string;
 	subcategory?: string;
 	includedItems?: string[];
-	opcionalAccessories?: string[];
+	optionalAccessories?: string[];
 	operationRequirements?: string[];
 	applications?: string[];
 	recommendations?: string[];
@@ -39,7 +39,7 @@ export interface ProductDataBackend {
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
 	includedItems?: string[];
-	opcionalAccessories?: string[];
+	optionalAccessories?: string[];
 	operationRequirements?: string[];
 	applications?: string[];
 	recommendations?: string[];
@@ -62,7 +62,7 @@ export interface ProductDataFrontend {
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
 	includedItems?: string[];
-	opcionalAccessories?: string[];
+	optionalAccessories?: string[];
 	operationRequirements?: string[];
 	applications?: string[];
 	recommendations?: string[];

@@ -68,7 +68,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		toolToEdit.includedItems || [],
 	);
 	const [accessories, setAccessories] = useState<string[]>(
-		toolToEdit.opcionalAccessories || [],
+		toolToEdit.optionalAccessories || [],
 	);
 	const [applications, setApplications] = useState<string[]>(
 		toolToEdit.applications || [],
