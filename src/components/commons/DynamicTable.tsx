@@ -1,11 +1,11 @@
-interface TableData {
-	headers: string[];
-	rows: (string | JSX.Element)[][];
-}
+import { TableData } from '@interfaces/TableData.interface';
+import React from 'react';
+
 interface TableComponentProps {
 	data: TableData;
 }
-const TableComponent = ({ data }: TableComponentProps) => {
+
+const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
 	return (
 		<div>
 			<table>
@@ -17,10 +17,10 @@ const TableComponent = ({ data }: TableComponentProps) => {
 					</tr>
 				</thead>
 				<tbody>
-					{data.rows.map((row, index) => (
-						<tr key={index}>
-							{row.map((cell, index) => (
-								<td key={index}>{cell}</td>
+					{data.rows.map((row, rowIndex) => (
+						<tr key={rowIndex}>
+							{row.map((cell, cellIndex) => (
+								<td key={cellIndex}>{cell}</td>
 							))}
 						</tr>
 					))}

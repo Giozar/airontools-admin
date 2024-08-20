@@ -1,8 +1,8 @@
 import { transformRoleDataFront } from '@adapters/role.adapter';
+import DeletionModal from '@components/commons/DeletionModal';
 import { RoleDataBack, RoleDataFront } from '@interfaces/Role.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import DeletionModal from './commons/DeletionModal';
 
 interface RoleListState {
 	roles: RoleDataFront[];

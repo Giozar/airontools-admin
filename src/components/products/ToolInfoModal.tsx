@@ -1,9 +1,8 @@
+import Info from '@components/commons/Info';
+import InfoSection from '@components/commons/InfoSection';
+import Slideshow from '@components/commons/Slideshow';
 import CloseIcon from '@components/svg/CloseIcon';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
-import InfoSection from './commons/InfoSection';
-import Slideshow from './commons/Slideshow';
-import Info from './Info';
-
 const ToolInfoModal = ({
 	isOpen,
 	onClose,

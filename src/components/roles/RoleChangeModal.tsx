@@ -1,18 +1,18 @@
+import ErrorMessage from '@components/commons/ErrorMessage';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import { useRoles } from '@hooks/roles/useRoles';
 import { RoleDataFront } from '@interfaces/Role.interface';
 import { RegisterResponse, UserDataFrontend } from '@interfaces/User.interface';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import ErrorMessage from './commons/ErrorMessage';
-import './css/roleChangeModal.css';
+import '../css/roleChangeModal.css';
 
 interface ValidationError {
 	message: string[];
 }
 
 interface RoleChangeModalProps {
-	userToEdit: UserDataFrontend;
+	userToEdit: UserDataFrontend | null;
 	onCloseModal: () => void;
 	onUpdateList: () => void;
 }
@@ -22,7 +22,7 @@ function RoleChangeModal({
 	onCloseModal,
 	onUpdateList,
 }: RoleChangeModalProps) {
-	const [role, setRole] = useState(userToEdit.role?.id);
+	const [role, setRole] = useState(userToEdit?.role?.id);
 	const { errorLog, showError } = useErrorHandling();
 
 	// Se obtiene la lista de roles para el usuario
@@ -41,7 +41,7 @@ function RoleChangeModal({
 		e.preventDefault();
 		try {
 			await axios.patch<RegisterResponse>(
-				import.meta.env.VITE_API_URL + `/auth/${userToEdit.id}`,
+				import.meta.env.VITE_API_URL + `/auth/${userToEdit?.id}`,
 				{
 					...userToEdit,
 					role,
@@ -68,7 +68,7 @@ function RoleChangeModal({
 		<>
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 			<form onSubmit={handleSubmit} className='choserol'>
-				<p>Nuevo rol para: {userToEdit.name}</p>
+				<p>Nuevo rol para: {userToEdit?.name}</p>
 				<label htmlFor='options'>Nuevo rol:</label>
 				<select
 					id='options'

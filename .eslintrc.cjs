@@ -60,7 +60,7 @@ module.exports = {
 		'@typescript-eslint/triple-slash-reference': 'warn',
 		'no-relative-import-paths/no-relative-import-paths': [
 			'warn',
-			{ allowSameFolder: true, rootDir: 'src', prefix: '@' },
+			{ allowSameFolder: true, rootDir: 'src', prefix: '@', noSlashAfter: true },
 		],
 	},
 };

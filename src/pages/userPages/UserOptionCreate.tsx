@@ -1,4 +1,4 @@
-import UserForm from '@components/UserForm';
+import UserForm from '@components/users/UserForm';
 import BasePage from '@layouts/BasePage';
 import '@pages/css/UserOptionsCreate.css';
 

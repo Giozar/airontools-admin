@@ -2,10 +2,11 @@ import { transformProductDataToFrontend } from '@adapters/products.adapter';
 import ActionCard from '@components/commons/ActionCard';
 import DeletionModal from '@components/commons/DeletionModal';
 import TableComponent from '@components/commons/DynamicTable';
+import ToolInfoModal from '@components/products/ToolInfoModal';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import ToolInfoModal from '@components/ToolInfoModal';
+
 import { AuthContext } from '@contexts/AuthContext';
 import useProductManagement from '@hooks/products/useProductManagement';
 import {
