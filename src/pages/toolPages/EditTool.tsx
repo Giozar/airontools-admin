@@ -16,6 +16,7 @@ import useSpecs from '@hooks/specifications/useSpecs';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 
 import BasePage from '@layouts/BasePage';
+import { cleanArray } from '@utils/cleanArray.util';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -58,8 +59,8 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 	const [manuals, setManuals] = useState(toolToEdit.manuals || []);
 	const [manualsToDelete, setManualsToDelete] = useState<string[]>([]);
-	const [videos, setVideos] = useState(toolToEdit.videos);
-	const [char, setChar] = useState(toolToEdit.characteristics);
+	const [videos, setVideos] = useState(toolToEdit.videos || []);
+	const [char, setChar] = useState(toolToEdit.characteristics || []);
 	const [recommendations, setRecommendations] = useState<string[]>(
 		toolToEdit.recommendations || [],
 	);
@@ -108,6 +109,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const handleCloseModalDeletionManuals = (manual: string) => {
 		setManuals(manuals?.filter(man => man !== manual));
 	};
+
 	const handleSubmit = async () => {
 		try {
 			console.log(selectedFamily?.id);
@@ -115,18 +117,18 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 				_id: id,
 				name,
 				model,
-				characteristics: char,
+				characteristics: cleanArray(char),
 				description,
-				videos,
+				videos: cleanArray(videos),
 				family: selectedFamily?.id || toolToEdit.family._id,
 				category: selectedCategory?.id || toolToEdit.category._id,
 				subcategory: selectedSubcategory?.id || toolToEdit.subcategory._id,
 				specifications: specificationValues,
-				includedItems: includes,
-				optionalAccessories: accessories,
-				operationRequirements: requeriments,
-				applications,
-				recommendations,
+				includedItems: cleanArray(includes),
+				optionalAccessories: cleanArray(accessories),
+				operationRequirements: cleanArray(requeriments),
+				applications: cleanArray(applications),
+				recommendations: cleanArray(recommendations),
 			});
 			const uploadedUrlImages = await handleImageUpload(id);
 			const deletePromises = imagesToDelete.map(async image => {
