@@ -23,7 +23,6 @@ function SpecificationForm({
 	const [flag, setFlag] = useState(false);
 	// Aquí se inicializa el Array con un objeto vacío al primer render del dom
 	useEffect(() => {
-		console.log(subcategoryId);
 		setSpecifications([
 			{
 				name: '',
@@ -74,6 +73,7 @@ function SpecificationForm({
 
 	const saveSpecifications = async () => {
 		for (const specification of specifications) {
+			console.log(specification);
 			try {
 				await createSpecification({
 					specification,

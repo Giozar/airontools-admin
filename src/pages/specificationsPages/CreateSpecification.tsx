@@ -43,7 +43,7 @@ export default function FamilySpecifications() {
 				)}
 				<hr />
 			</div>
-			{selectedFamily && selectedCategory && (
+			{selectedFamily && selectedCategory && selectedSubcategory && (
 				<SpecificationForm
 					familyId={selectedFamily}
 					categoryId={selectedCategory}
