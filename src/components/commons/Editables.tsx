@@ -138,6 +138,11 @@ function Editables({
 							Editar
 						</button>
 					)}
+					{!editing && valueOf && (
+						<button className='edit' onClick={handleEditClick}>
+							Editar
+						</button>
+					)}
 				</div>
 			</div>
 		</div>

@@ -11,6 +11,7 @@ function useSpecs({ catId, initialSpecs }: Spec) {
 	const [specificationValues, setSpecificationValues] = useState<
 		Array<{ specification: string; value: string }>
 	>(initialSpecs || []);
+
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 
 	const fetchSpecifications = async () => {
@@ -19,13 +20,23 @@ function useSpecs({ catId, initialSpecs }: Spec) {
 		try {
 			const data = await fetchSpecificationsByCategoryId(catId);
 			setSpecifications(data);
-			if (!initialSpecs) {
-				const initialSpecsData = data.map(spec => ({
-					specification: spec.id,
-					value: '',
-				}));
-				setSpecificationValues(initialSpecsData);
-			}
+			// console.log(data);
+			const initialSpecsLookup = initialSpecs?.reduce(
+				(acc, ini) => {
+					acc[ini.specification] = ini.value;
+					return acc;
+				},
+				{} as Record<string, string>,
+			);
+			const initialSpecsData = data.map(spec => ({
+				specification: spec.id,
+				value: initialSpecsLookup
+					? initialSpecsLookup[spec.id]
+						? initialSpecsLookup[spec.id]
+						: ''
+					: '',
+			}));
+			setSpecificationValues(initialSpecsData);
 		} catch (error) {
 			console.error('Failed to fetch specifications:', error);
 		}

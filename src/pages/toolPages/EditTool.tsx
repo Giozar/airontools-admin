@@ -1,6 +1,7 @@
 import DeletionModal from '@components/commons/DeletionModal';
 import Editables from '@components/commons/Editables';
 import ErrorMessage from '@components/commons/ErrorMessage';
+import Info from '@components/commons/Info';
 import SelectInput from '@components/commons/SelectInput';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TableRow from '@components/commons/TableRow';
@@ -34,6 +35,10 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 
 	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
 		catId: selectedCategory?.id || toolToEdit.category._id || '',
+		initialSpecs: toolToEdit.specifications.map(edit => ({
+			specification: edit.specification._id || '',
+			value: edit.value,
+		})),
 	});
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
@@ -45,7 +50,6 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		handleDelete: handleDeleteFile,
 	} = useFileManagement();
 	const id = toolToEdit.id;
-	console.log(toolToEdit);
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
@@ -54,34 +58,31 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const [manuals, setManuals] = useState(toolToEdit.manuals);
 	const [videos, setVideos] = useState(toolToEdit.videos);
 	const [char, setChar] = useState(toolToEdit.characteristics);
-
+	const [recommendations, setRecommendations] = useState<string[]>(
+		toolToEdit.recommendations || [],
+	);
+	const [requeriments, setRequeriments] = useState<string[]>(
+		toolToEdit.operationRequirements || [],
+	);
+	const [includes, setIncludes] = useState<string[]>(
+		toolToEdit.includedItems || [],
+	);
+	const [accessories, setAccessories] = useState<string[]>(
+		toolToEdit.opcionalAccessories || [],
+	);
+	const [applications, setApplications] = useState<string[]>(
+		toolToEdit.applications || [],
+	);
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 
-	const handleNameUpdate = (newValue: string) => {
-		setName(newValue);
-	};
-
-	const handleDescriptionUpdate = (newValue: string) => {
-		setDescription(newValue);
-	};
-	const handleModelUpdate = (newValue: string) => {
-		setModel(newValue);
-	};
-
-	const handleUpdateChar = (newValues: string[]) => {
-		setChar(newValues);
-	};
-	const handleUpdateVideos = (newValues: string[]) => {
-		setVideos(newValues);
-	};
 	const handleImageUpload = async (productId: string) => {
 		return await handleFileUpload('images', productId, 'images');
 	};
 	const handleCloseModalDeletionImages = async (image: string) => {
 		setImages(images?.filter(img => img !== image));
 	};
-	useEffect(() => {}, [images]);
+	useEffect(() => {}, [images, manuals]);
 	const handleDeleteFileFor = (imageToDelete: string) => {
 		console.log(imageToDelete);
 		setImagesToDelete(prevImagesToDelete => {
@@ -97,9 +98,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		return await handleFileUpload('manuals', productId, 'manuals');
 	};
 	const handleCloseModalDeletionManuals = (manual: string) => {
-		if (manuals?.length === 1)
-			setManuals([]); // Por alguna razon hay un bug aqui que necesita esta condicion
-		else setManuals(manuals?.filter(man => man !== manual));
+		setManuals(manuals?.filter(man => man !== manual));
 	};
 	const handleSubmit = async () => {
 		try {
@@ -108,12 +107,17 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 				name,
 				model,
 				characteristics: char,
-				family: selectedFamily?.id,
-				category: selectedCategory?.id,
-				subcategory: selectedSubcategory?.id,
 				description,
 				videos,
+				family: selectedFamily || toolToEdit.family._id,
+				category: selectedCategory || toolToEdit.category._id,
+				subcategory: selectedSubcategory || toolToEdit.subcategory._id,
 				specifications: specificationValues,
+				includedItems: includes,
+				optionalAccessories: accessories,
+				operationRequirements: requeriments,
+				applications,
+				recommendations,
 			});
 			const uploadedUrlImages = await handleImageUpload(id);
 			const deletePromises = imagesToDelete.map(async image => {
@@ -144,7 +148,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 			console.error(error);
 		}
 	};
-	console.log(toolToEdit.specifications);
+
 	return (
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
@@ -167,50 +171,30 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 								what='Nombre'
 								valueOf={name}
 								type='input'
-								onUpdate={handleNameUpdate}
+								onUpdate={setName}
 							/>
-							{/* <TextInput
-								id='nombre'
-								label='Nombre de herramienta'
-								value={name}
-								placeholder='Herramienta 1'
-								onChange={e => setName(e.target.value)}
-							/> */}
 							<Editables
 								what='Modelo'
 								valueOf={model || ''}
 								type='input'
-								onUpdate={handleModelUpdate}
+								onUpdate={setModel}
 							/>
 							<Editables
 								what='Descripción'
 								valueOf={description || ''}
 								type='textarea'
-								onUpdate={handleDescriptionUpdate}
-							/>
-							<Editables
-								what='Características'
-								valueOf={char?.join('<br>') || ''}
-								type='list'
-								onUpdateMany={handleUpdateChar}
-								strlist={char}
+								onUpdate={setDescription}
 							/>
 						</div>
 					</div>
 
 					<div className='column'>
-						<p>
-							<strong>Familia actual: </strong>
-							{toolToEdit.family.name}
-						</p>
-						<p>
-							<strong>Categoria actual: </strong>
-							{toolToEdit.category.name}
-						</p>
-						<p>
-							<strong>Subcategoria actual: </strong>
-							{toolToEdit.subcategory.name}
-						</p>
+						<Info title={'Familia actual'} info={toolToEdit.family.name} />
+						<Info title={'Categoria actual'} info={toolToEdit.category.name} />
+						<Info
+							title={'Subcategoria actual'}
+							info={toolToEdit.subcategory.name}
+						/>
 						<br></br>
 						<h4>Cambiar categorización y especificaciones:</h4>
 						<br></br>
@@ -253,14 +237,10 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 							<tbody>
 								{specifications.map((spec, index) => (
 									<TableRow
-										key={spec.id} // Ensure unique key for each row
+										key={spec.id}
 										label={spec.name}
 										unit={spec.unit || ''}
-										value={
-											specificationValues[index]?.value ||
-											toolToEdit.specifications[index]?.value ||
-											''
-										} // Adjust this if specificationValues doesn't align with specifications
+										value={specificationValues[index]?.value || ''}
 										onValueChange={newValue =>
 											handleSpecUpdate(newValue, index)
 										}
@@ -269,7 +249,60 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 							</tbody>
 						</table>
 					</div>
-
+					<div className='column'>
+						<Editables
+							what='Características'
+							valueOf={char?.join('<br>') || ''}
+							type='list'
+							onUpdateMany={setChar}
+							strlist={char}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Aplicaciones'
+							valueOf={(applications || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setApplications}
+							strlist={applications}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Recomendaciones'
+							valueOf={(recommendations || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setRecommendations}
+							strlist={recommendations}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Requisitos de operación'
+							valueOf={(requeriments || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setRequeriments}
+							strlist={requeriments}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Incluye'
+							valueOf={(includes || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setIncludes}
+							strlist={includes}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Accesorios opcionales'
+							valueOf={(accessories || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setAccessories}
+							strlist={accessories}
+						/>
+					</div>
 					<ImageUpdate
 						images={images || []}
 						filePreviews={filePreviews}
@@ -352,12 +385,11 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 					</div>
 
 					<div className='column'>
-						<p>Videos:</p>
 						<Editables
 							what='Videos'
 							valueOf={(videos || ['']).join('<br>')}
 							type='list'
-							onUpdateMany={handleUpdateVideos}
+							onUpdateMany={setVideos}
 							strlist={videos}
 						/>
 					</div>
