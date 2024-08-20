@@ -8,6 +8,7 @@ import SuccessMessage from '@components/commons/SuccessMessage';
 import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
 import useSpecs from '@hooks/specifications/useSpecs';
 import BasePage from '@layouts/BasePage';
+import { cleanArray } from '@utils/cleanArray.util';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 import { FormEvent, useContext, useState } from 'react';
@@ -42,6 +43,7 @@ const Atornillador = () => {
 
 	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
 		catId: selectedCategory?.id || '',
+		subcatId: selectedSubcategory?.id || '',
 	});
 
 	// const { videos, addVideo, removeVideo, updateVideo } = useVideos();
@@ -71,14 +73,14 @@ const Atornillador = () => {
 				category: selectedCategory?.id,
 				subcategory: selectedSubcategory?.id,
 				description: toolDescription,
-				characteristics,
-				includedItems: includes,
-				optionalAccessories: accessories,
-				operationRequirements: requeriments,
-				applications,
-				recommendations,
+				characteristics: cleanArray(characteristics),
+				includedItems: cleanArray(includes),
+				optionalAccessories: cleanArray(accessories),
+				operationRequirements: cleanArray(requeriments),
+				applications: cleanArray(applications),
+				recommendations: cleanArray(recommendations),
 				specifications: specificationValues,
-				videos,
+				videos: cleanArray(videos),
 				createdBy,
 			};
 			console.log(createToolData);

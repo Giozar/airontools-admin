@@ -23,8 +23,10 @@ const useFileManagement = () => {
 	const handleDelete = async (fileId: string) => {
 		try {
 			const message = await deleteFileService(fileId);
-			setDeletionMessageFile(message);
-			console.log(message);
+			setDeletionMessageFile(
+				`El archivo ${fileId} ha sido eliminado correctamente.`,
+			);
+			return message;
 		} catch (error) {
 			setDeletionMessageFile(`Error al eliminar archivo ${fileId}`);
 			// console.error(`Error al eliminar archivo ${fileId}:`, error);

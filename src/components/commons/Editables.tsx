@@ -92,9 +92,11 @@ function Editables({
 						)}
 					</div>
 				) : (
-					<div>
+					<>
 						{type === 'input' && (
-							<div style={{ display: 'flex', alignItems: 'center' }}>
+							<div
+								style={{ display: 'flex', alignItems: 'center', width: '100%' }}
+							>
 								<input
 									type='text'
 									value={input}
@@ -120,7 +122,7 @@ function Editables({
 								onCancel={handleEditClick}
 							/>
 						)}
-					</div>
+					</>
 				)}
 				<div className='buttons'>
 					{editing && !onUpdateMany && (
@@ -135,6 +137,11 @@ function Editables({
 					)}
 					{editing && !onUpdateMany && (
 						<button className='save' onClick={handleSaveInput}>
+							Editar
+						</button>
+					)}
+					{!editing && valueOf && (
+						<button className='edit' onClick={handleEditClick}>
 							Editar
 						</button>
 					)}

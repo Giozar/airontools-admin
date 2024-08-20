@@ -38,8 +38,8 @@
 /* Image preview styling */
 .image-preview {
 	position: relative;
-	width: 10rem; /* equivalent to w-40 */
-	height: 10rem; /* equivalent to h-40 */
+	width: 12rem; /* equivalent to w-40 */
+	height: 12rem; /* equivalent to h-40 */
 }
 
 .image-preview > img {

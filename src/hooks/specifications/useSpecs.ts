@@ -4,28 +4,43 @@ import { useCallback, useEffect, useState } from 'react';
 
 interface Spec {
 	catId: string;
+	subcatId: string;
 	initialSpecs?: Array<{ specification: string; value: string }>;
 }
 
-function useSpecs({ catId, initialSpecs }: Spec) {
+function useSpecs({ catId, subcatId, initialSpecs }: Spec) {
 	const [specificationValues, setSpecificationValues] = useState<
 		Array<{ specification: string; value: string }>
 	>(initialSpecs || []);
+
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 
 	const fetchSpecifications = async () => {
-		if (!catId) return;
+		if (!catId && !subcatId) return;
 
 		try {
 			const data = await fetchSpecificationsByCategoryId(catId);
-			setSpecifications(data);
-			if (!initialSpecs) {
-				const initialSpecsData = data.map(spec => ({
-					specification: spec.id,
-					value: '',
-				}));
-				setSpecificationValues(initialSpecsData);
-			}
+			//TODO: orita esto no rompe nada pero es el backend que responde raro xd
+			//Deberia de regresar subcategory._id pero no lo hace...
+			const filteredSpecs = data.filter(item => item.subcategory === subcatId);
+			setSpecifications(filteredSpecs);
+			// console.log(data);
+			const initialSpecsLookup = initialSpecs?.reduce(
+				(acc, ini) => {
+					acc[ini.specification] = ini.value;
+					return acc;
+				},
+				{} as Record<string, string>,
+			);
+			const initialSpecsData = filteredSpecs.map(spec => ({
+				specification: spec.id,
+				value: initialSpecsLookup
+					? initialSpecsLookup[spec.id]
+						? initialSpecsLookup[spec.id]
+						: ''
+					: '',
+			}));
+			setSpecificationValues(initialSpecsData);
 		} catch (error) {
 			console.error('Failed to fetch specifications:', error);
 		}
@@ -34,7 +49,7 @@ function useSpecs({ catId, initialSpecs }: Spec) {
 	useEffect(() => {
 		fetchSpecifications();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [catId]);
+	}, [catId, subcatId]);
 
 	const editOrCreateKeyInSpecs = useCallback(
 		(keyToFind: string, newValue: string) => {

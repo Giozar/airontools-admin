@@ -1,12 +1,12 @@
-import DeletionModal from '@components/commons/DeletionModal';
 import Editables from '@components/commons/Editables';
 import ErrorMessage from '@components/commons/ErrorMessage';
+import Info from '@components/commons/Info';
 import SelectInput from '@components/commons/SelectInput';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TableRow from '@components/commons/TableRow';
 import ImageUpdate from '@components/files/ImageUpdate';
+import ManualUpdate from '@components/files/ManualUpdate';
 
-import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useFileManagement from '@hooks/files/useFileManagement';
@@ -16,6 +16,7 @@ import useSpecs from '@hooks/specifications/useSpecs';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 
 import BasePage from '@layouts/BasePage';
+import { cleanArray } from '@utils/cleanArray.util';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -34,6 +35,11 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 
 	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
 		catId: selectedCategory?.id || toolToEdit.category._id || '',
+		subcatId: selectedSubcategory?.id || toolToEdit.subcategory._id || '',
+		initialSpecs: toolToEdit.specifications.map(edit => ({
+			specification: edit.specification._id || '',
+			value: edit.value,
+		})),
 	});
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
@@ -44,46 +50,43 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		handleCloseModalFile,
 		handleDelete: handleDeleteFile,
 	} = useFileManagement();
+
 	const id = toolToEdit.id;
-	console.log(toolToEdit);
 	const [name, setName] = useState(toolToEdit.name);
 	const [description, setDescription] = useState(toolToEdit.description);
 	const [model, setModel] = useState(toolToEdit.model);
-	const [images, setImages] = useState(toolToEdit.images);
+	const [images, setImages] = useState(toolToEdit.images || []);
 	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
-	const [manuals, setManuals] = useState(toolToEdit.manuals);
-	const [videos, setVideos] = useState(toolToEdit.videos);
-	const [char, setChar] = useState(toolToEdit.characteristics);
-
+	const [manuals, setManuals] = useState(toolToEdit.manuals || []);
+	const [manualsToDelete, setManualsToDelete] = useState<string[]>([]);
+	const [videos, setVideos] = useState(toolToEdit.videos || []);
+	const [char, setChar] = useState(toolToEdit.characteristics || []);
+	const [recommendations, setRecommendations] = useState<string[]>(
+		toolToEdit.recommendations || [],
+	);
+	const [requeriments, setRequeriments] = useState<string[]>(
+		toolToEdit.operationRequirements || [],
+	);
+	const [includes, setIncludes] = useState<string[]>(
+		toolToEdit.includedItems || [],
+	);
+	const [accessories, setAccessories] = useState<string[]>(
+		toolToEdit.optionalAccessories || [],
+	);
+	const [applications, setApplications] = useState<string[]>(
+		toolToEdit.applications || [],
+	);
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 
-	const handleNameUpdate = (newValue: string) => {
-		setName(newValue);
-	};
-
-	const handleDescriptionUpdate = (newValue: string) => {
-		setDescription(newValue);
-	};
-	const handleModelUpdate = (newValue: string) => {
-		setModel(newValue);
-	};
-
-	const handleUpdateChar = (newValues: string[]) => {
-		setChar(newValues);
-	};
-	const handleUpdateVideos = (newValues: string[]) => {
-		setVideos(newValues);
-	};
 	const handleImageUpload = async (productId: string) => {
 		return await handleFileUpload('images', productId, 'images');
 	};
 	const handleCloseModalDeletionImages = async (image: string) => {
 		setImages(images?.filter(img => img !== image));
 	};
-	useEffect(() => {}, [images]);
-	const handleDeleteFileFor = (imageToDelete: string) => {
-		console.log(imageToDelete);
+	useEffect(() => {}, [images, manuals]);
+	const handleDeleteImageFor = (imageToDelete: string) => {
 		setImagesToDelete(prevImagesToDelete => {
 			const updatedImagesToDelete = new Set([
 				...prevImagesToDelete,
@@ -93,58 +96,71 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		});
 		handleCloseModalDeletionImages(imageToDelete);
 	};
+	const handleDeleteManualFor = (manualToDelete: string) => {
+		setManualsToDelete(prevToDelete => {
+			const updatedmanualToDelete = new Set([...prevToDelete, manualToDelete]);
+			return Array.from(updatedmanualToDelete);
+		});
+		handleCloseModalDeletionManuals(manualToDelete);
+	};
 	const handleManualUpload = async (productId: string) => {
 		return await handleFileUpload('manuals', productId, 'manuals');
 	};
 	const handleCloseModalDeletionManuals = (manual: string) => {
-		if (manuals?.length === 1)
-			setManuals([]); // Por alguna razon hay un bug aqui que necesita esta condicion
-		else setManuals(manuals?.filter(man => man !== manual));
+		setManuals(manuals?.filter(man => man !== manual));
 	};
+
 	const handleSubmit = async () => {
 		try {
+			console.log(selectedFamily?.id);
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
 				_id: id,
 				name,
 				model,
-				characteristics: char,
-				family: selectedFamily?.id,
-				category: selectedCategory?.id,
-				subcategory: selectedSubcategory?.id,
+				characteristics: cleanArray(char),
 				description,
-				videos,
+				videos: cleanArray(videos),
+				family: selectedFamily?.id || toolToEdit.family._id,
+				category: selectedCategory?.id || toolToEdit.category._id,
+				subcategory: selectedSubcategory?.id || toolToEdit.subcategory._id,
 				specifications: specificationValues,
+				includedItems: cleanArray(includes),
+				optionalAccessories: cleanArray(accessories),
+				operationRequirements: cleanArray(requeriments),
+				applications: cleanArray(applications),
+				recommendations: cleanArray(recommendations),
 			});
 			const uploadedUrlImages = await handleImageUpload(id);
 			const deletePromises = imagesToDelete.map(async image => {
 				return await handleDeleteFile(image);
 			});
-			const deletedFiles = await Promise.all(deletePromises);
+			await Promise.all(deletePromises);
 			// Paso 2: subir imagenes
 			// Paso 3: Actualizar producto con imagenes
 			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-				images: deletedFiles
-					? [...deletedFiles, ...uploadedUrlImages]
-					: [...(images || ['']), ...uploadedUrlImages],
+				images: [...images, ...uploadedUrlImages],
 			});
 
 			// Paso 4: Subir manuales
 			const uploadedUrlManuals = await handleManualUpload(id || '');
+			const deletePromises2 = manualsToDelete.map(async manual => {
+				return await handleDeleteFile(manual);
+			});
+			await Promise.all(deletePromises2);
 			// Paso 3: Actualizar producto con manuales
-			console.log(
-				await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
-					manuals: manuals
-						? [...manuals, ...uploadedUrlManuals]
-						: uploadedUrlManuals,
-				}),
-			);
+
+			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+				manuals: [...manuals, ...uploadedUrlManuals],
+			}),
+				setImages([...images, ...uploadedUrlImages]);
+			setManuals([...manuals, ...uploadedUrlManuals]);
 			showSuccess('Herramienta actualizada con éxito');
 		} catch (error) {
 			showError('No se pudo actualizar la herramienta');
 			console.error(error);
 		}
 	};
-	console.log(toolToEdit.specifications);
+
 	return (
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
@@ -167,50 +183,30 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 								what='Nombre'
 								valueOf={name}
 								type='input'
-								onUpdate={handleNameUpdate}
+								onUpdate={setName}
 							/>
-							{/* <TextInput
-								id='nombre'
-								label='Nombre de herramienta'
-								value={name}
-								placeholder='Herramienta 1'
-								onChange={e => setName(e.target.value)}
-							/> */}
 							<Editables
 								what='Modelo'
 								valueOf={model || ''}
 								type='input'
-								onUpdate={handleModelUpdate}
+								onUpdate={setModel}
 							/>
 							<Editables
 								what='Descripción'
 								valueOf={description || ''}
 								type='textarea'
-								onUpdate={handleDescriptionUpdate}
-							/>
-							<Editables
-								what='Características'
-								valueOf={char?.join('<br>') || ''}
-								type='list'
-								onUpdateMany={handleUpdateChar}
-								strlist={char}
+								onUpdate={setDescription}
 							/>
 						</div>
 					</div>
 
 					<div className='column'>
-						<p>
-							<strong>Familia actual: </strong>
-							{toolToEdit.family.name}
-						</p>
-						<p>
-							<strong>Categoria actual: </strong>
-							{toolToEdit.category.name}
-						</p>
-						<p>
-							<strong>Subcategoria actual: </strong>
-							{toolToEdit.subcategory.name}
-						</p>
+						<Info title={'Familia actual'} info={toolToEdit.family.name} />
+						<Info title={'Categoria actual'} info={toolToEdit.category.name} />
+						<Info
+							title={'Subcategoria actual'}
+							info={toolToEdit.subcategory.name}
+						/>
 						<br></br>
 						<h4>Cambiar categorización y especificaciones:</h4>
 						<br></br>
@@ -252,24 +248,76 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 						<table id='spec'>
 							<tbody>
 								{specifications.map((spec, index) => (
-									<TableRow
-										key={spec.id} // Ensure unique key for each row
-										label={spec.name}
-										unit={spec.unit || ''}
-										value={
-											specificationValues[index]?.value ||
-											toolToEdit.specifications[index]?.value ||
-											''
-										} // Adjust this if specificationValues doesn't align with specifications
-										onValueChange={newValue =>
-											handleSpecUpdate(newValue, index)
-										}
-									/>
+									<>
+										<p>{specificationValues[index].specification}</p>
+										<TableRow
+											key={spec.id}
+											label={spec.name}
+											unit={spec.unit || ''}
+											value={specificationValues[index]?.value || ''}
+											onValueChange={newValue =>
+												handleSpecUpdate(newValue, index)
+											}
+										/>
+									</>
 								))}
 							</tbody>
 						</table>
 					</div>
-
+					<div className='column'>
+						<Editables
+							what='Características'
+							valueOf={char?.join('<br>') || ''}
+							type='list'
+							onUpdateMany={setChar}
+							strlist={char}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Aplicaciones'
+							valueOf={(applications || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setApplications}
+							strlist={applications}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Recomendaciones'
+							valueOf={(recommendations || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setRecommendations}
+							strlist={recommendations}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Requisitos de operación'
+							valueOf={(requeriments || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setRequeriments}
+							strlist={requeriments}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Incluye'
+							valueOf={(includes || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setIncludes}
+							strlist={includes}
+						/>
+					</div>
+					<div className='column'>
+						<Editables
+							what='Accesorios opcionales'
+							valueOf={(accessories || ['']).join('<br>')}
+							type='list'
+							onUpdateMany={setAccessories}
+							strlist={accessories}
+						/>
+					</div>
 					<ImageUpdate
 						images={images || []}
 						filePreviews={filePreviews}
@@ -279,85 +327,28 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 						showDeletionModalForFile={showDeletionModalForFile}
 						deletionMessageFile={deletionMessageFile}
 						handleCloseModalFile={handleCloseModalFile}
-						handleDeleteFileFor={handleDeleteFileFor}
+						handleDeleteFileFor={handleDeleteImageFor}
 						handleCloseModalDeletionImages={handleCloseModalDeletionImages}
+					/>
+					<ManualUpdate
+						manuals={manuals || []}
+						filePreviews={filePreviews}
+						handleRemoveFile={handleRemoveFile}
+						handleFileSelect={handleFileSelect}
+						setShowDeletionModalForFile={setShowDeletionModalForFile}
+						showDeletionModalForFile={showDeletionModalForFile}
+						deletionMessageFile={deletionMessageFile}
+						handleCloseModalFile={handleCloseModalFile}
+						handleDeleteFileFor={handleDeleteManualFor}
+						handleCloseModalDeletionManuals={handleCloseModalDeletionManuals}
 					/>
 
 					<div className='column'>
-						<p>Manuales:</p>
-						<div className='image-upload'>
-							{manuals?.map(preview => (
-								<div key={preview} className='image-preview'>
-									{showDeletionModalForFile === preview && (
-										<DeletionModal
-											id={preview}
-											name={preview}
-											onClose={() => handleCloseModalFile()}
-											onCloseDelete={() =>
-												handleCloseModalDeletionManuals(preview)
-											}
-											onDelete={() => handleDeleteFile(preview)}
-											message={deletionMessageFile}
-										/>
-									)}
-									<embed
-										src={preview}
-										width='150'
-										height='100'
-										className='image-placeholder'
-									/>
-									<button
-										className='delete'
-										onClick={() => setShowDeletionModalForFile(preview)}
-									>
-										<TrashIcon />
-									</button>
-									<div className='buttons'>
-										<a href={preview} target='_blank' rel='noopener noreferrer'>
-											Ver documento completo
-										</a>
-									</div>
-								</div>
-							))}
-							<p>Manuales nuevos:</p>
-							{filePreviews.manuals?.map((preview, index) => (
-								<div key={index} className='image-preview'>
-									<embed
-										src={preview}
-										width='250'
-										height='200'
-										className='image-placeholder'
-									/>
-									<button
-										onClick={() => handleRemoveFile('manuals', index)}
-										className='delete'
-										type='button'
-									>
-										<TrashIcon />
-									</button>
-								</div>
-							))}
-							<div className='image-placeholder add-image'>
-								<label htmlFor='manual-input'>Subir Manual +</label>
-								<input
-									type='file'
-									id='manual-input'
-									multiple
-									accept='.pdf, .doc, .docx'
-									onChange={event => handleFileSelect(event, 'manuals')}
-									style={{ display: 'none' }}
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div className='column'>
-						<p>Videos:</p>
 						<Editables
 							what='Videos'
 							valueOf={(videos || ['']).join('<br>')}
 							type='list'
-							onUpdateMany={handleUpdateVideos}
+							onUpdateMany={setVideos}
 							strlist={videos}
 						/>
 					</div>

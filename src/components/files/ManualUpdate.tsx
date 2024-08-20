@@ -1,10 +1,10 @@
 import DeletionModal from '@components/commons/DeletionModal';
-import ImageUploader from '@components/commons/ImageUploader';
+import ManualUploader from '@components/commons/ManualUploader';
 import TrashIcon from '@components/svg/TrashIcon';
 import { ChangeEvent } from 'react';
 
-const ImageUpdate = ({
-	images,
+const ManualUpdate = ({
+	manuals,
 	filePreviews,
 	handleRemoveFile,
 	handleFileSelect,
@@ -13,9 +13,9 @@ const ImageUpdate = ({
 	deletionMessageFile,
 	handleCloseModalFile,
 	handleDeleteFileFor,
-	handleCloseModalDeletionImages,
+	handleCloseModalDeletionManuals,
 }: {
-	images: string[];
+	manuals: string[];
 	filePreviews: any;
 	handleRemoveFile: (type: string, index: number) => void;
 	handleFileSelect: (
@@ -29,14 +29,14 @@ const ImageUpdate = ({
 	deletionMessageFile: any;
 	handleCloseModalFile: any;
 	handleDeleteFileFor: any;
-	handleCloseModalDeletionImages: any;
+	handleCloseModalDeletionManuals: any;
 }) => {
 	return (
 		<div className='column'>
-			<p>Imágenes:</p>
+			<p>Manuales:</p>
 			<div className='image-upload'>
-				{images &&
-					images.map((preview, index) => (
+				{manuals &&
+					manuals.map((preview, index) => (
 						<div key={index} className='image-preview'>
 							{showDeletionModalForFile === preview && (
 								<DeletionModal
@@ -44,16 +44,22 @@ const ImageUpdate = ({
 									name={preview}
 									image={preview}
 									onClose={() => handleCloseModalFile()}
-									onCloseDelete={() => handleCloseModalDeletionImages(preview)}
+									onCloseDelete={() => handleCloseModalDeletionManuals(preview)}
 									onDelete={() => handleDeleteFileFor(preview)}
 									message={deletionMessageFile}
 								/>
 							)}
-							<img
+							<embed
 								src={preview}
-								alt={`preview-${index}`}
+								width='150'
+								height='100'
 								className='image-placeholder'
 							/>
+							<div className='buttons'>
+								<a href={preview} target='_blank' rel='noopener noreferrer'>
+									Ver documento completo
+								</a>
+							</div>
 							<button
 								onClick={() => setShowDeletionModalForFile(preview)}
 								className='delete'
@@ -63,8 +69,8 @@ const ImageUpdate = ({
 						</div>
 					))}
 			</div>
-			<ImageUploader
-				title={'Imágenes nuevas'}
+			<ManualUploader
+				title={'Manuales nuevos'}
 				filePreviews={filePreviews}
 				onFileSelect={handleFileSelect}
 				onRemoveFile={handleRemoveFile}
@@ -73,4 +79,4 @@ const ImageUpdate = ({
 	);
 };
 
-export default ImageUpdate;
+export default ManualUpdate;
