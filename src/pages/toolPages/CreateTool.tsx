@@ -42,6 +42,7 @@ const Atornillador = () => {
 
 	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
 		catId: selectedCategory?.id || '',
+		subcatId: selectedSubcategory?.id || '',
 	});
 
 	// const { videos, addVideo, removeVideo, updateVideo } = useVideos();

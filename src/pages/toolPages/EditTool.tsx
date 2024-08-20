@@ -34,6 +34,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 
 	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
 		catId: selectedCategory?.id || toolToEdit.category._id || '',
+		subcatId: selectedSubcategory?.id || toolToEdit.subcategory._id || '',
 		initialSpecs: toolToEdit.specifications.map(edit => ({
 			specification: edit.specification._id || '',
 			value: edit.value,
@@ -245,15 +246,18 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 						<table id='spec'>
 							<tbody>
 								{specifications.map((spec, index) => (
-									<TableRow
-										key={spec.id}
-										label={spec.name}
-										unit={spec.unit || ''}
-										value={specificationValues[index]?.value || ''}
-										onValueChange={newValue =>
-											handleSpecUpdate(newValue, index)
-										}
-									/>
+									<>
+										<p>{specificationValues[index].specification}</p>
+										<TableRow
+											key={spec.id}
+											label={spec.name}
+											unit={spec.unit || ''}
+											value={specificationValues[index]?.value || ''}
+											onValueChange={newValue =>
+												handleSpecUpdate(newValue, index)
+											}
+										/>
+									</>
 								))}
 							</tbody>
 						</table>
