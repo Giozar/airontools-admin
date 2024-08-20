@@ -302,6 +302,12 @@ button {
 .delete {
 	background-color: rgba(255, 0, 0, 0.521);
 }
+
+.delete.disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
 .edit {
 	background-color: rgba(255, 166, 0, 0.521);
 }
