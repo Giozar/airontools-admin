@@ -1,4 +1,4 @@
-import HeaderTitle from '@components/HeaderTitle';
+import HeaderTitle from '@components/commons/HeaderTitle';
 import { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import './BasePage.css';

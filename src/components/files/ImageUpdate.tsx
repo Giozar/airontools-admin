@@ -1,5 +1,5 @@
 import TrashIcon from '@components/svg/TrashIcon';
-import { ChangeEvent, SetStateAction } from 'react';
+import { ChangeEvent } from 'react';
 import DeletionModal from './commons/DeletionModal';
 
 const ImageUpdate = ({
@@ -21,7 +21,9 @@ const ImageUpdate = ({
 		event: ChangeEvent<HTMLInputElement>,
 		type: string,
 	) => void;
-	setShowDeletionModalForFile: SetStateAction<string | null>;
+	setShowDeletionModalForFile: React.Dispatch<
+		React.SetStateAction<string | null>
+	>;
 	showDeletionModalForFile: any;
 	deletionMessageFile: any;
 	handleCloseModalFile: any;
@@ -62,7 +64,7 @@ const ImageUpdate = ({
 			</div>
 			<p>Imagenes nuevas:</p>
 			<div className='image-upload'>
-				{filePreviews.images?.map((preview, index) => (
+				{filePreviews.images?.map((preview: string, index: number) => (
 					<div key={index} className='image-preview'>
 						<img
 							src={preview}

@@ -1,10 +1,11 @@
 import DeletionModal from '@components/commons/DeletionModal';
+import Editables from '@components/commons/Editables';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SelectInput from '@components/commons/SelectInput';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TableRow from '@components/commons/TableRow';
-import Editables from '@components/Editables';
-import ImageUpdate from '@components/ImageUpdate';
+import ImageUpdate from '@components/files/ImageUpdate';
+
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';

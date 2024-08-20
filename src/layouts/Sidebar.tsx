@@ -2,7 +2,7 @@
 TODO: que tenga un css consistente durante todas las paginas
 */
 
-import ComboBox from '@components/ComboBox';
+import ComboBox from '@components/commons/ComboBox';
 import BellIcon from '@components/svg/BellIcon';
 import { AuthContext } from '@contexts/AuthContext';
 import { useContext } from 'react';

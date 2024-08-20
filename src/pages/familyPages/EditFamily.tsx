@@ -1,7 +1,4 @@
 import DeletionModal from '@components/commons/DeletionModal';
-import CreateCategory from '@components/CreateCategory';
-import Editables from '@components/Editables';
-import EditCategory from '@components/EditCategory';
 import TrashIcon from '@components/svg/TrashIcon';
 import { AuthContext } from '@contexts/AuthContext';
 
@@ -14,6 +11,9 @@ import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useContext, useEffect, useState } from 'react';
 
 import { transformFamilyDataToBackend } from '@adapters/family.adapter';
+import CreateCategory from '@components/categories/CreateCategory';
+import EditCategory from '@components/categories/EditCategory';
+import Editables from '@components/commons/Editables';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
 import SuccessMessage from '@components/commons/SuccessMessage';

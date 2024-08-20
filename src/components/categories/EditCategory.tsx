@@ -1,11 +1,11 @@
+import ShowManageCategory from '@components/categories/ShowManageCategory';
+import ErrorMessage from '@components/commons/ErrorMessage';
+import SuccessMessage from '@components/commons/SuccessMessage';
 import useCategoryUpdate from '@hooks/categories/useCategoryUpdate';
 import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesFromFamily';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { useEffect, useState } from 'react';
-import ShowManageCategory from './ShowManageCategory';
-import ErrorMessage from './commons/ErrorMessage';
-import SuccessMessage from './commons/SuccessMessage';
 
 function EditCategory({
 	familyId,
@@ -63,15 +63,15 @@ function EditCategory({
 	};
 	const handleUpdateCategory = async (
 		category: CategoryDataToSend,
-		index: number,
-		removeImage: boolean,
+		index?: number,
+		removeImage?: boolean,
 	) => {
 		try {
 			if (removeImage && category.images)
 				await handleDeleteFile(category.images[0]);
 			const uploadedUrlImages = await handleImageUploadCategory(
 				category._id || '',
-				index,
+				index as number,
 			);
 
 			await updateCategory({

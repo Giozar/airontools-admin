@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import DeletionModal from '@components/commons/DeletionModal';
-import Editables from '@components/Editables';
 
 import SelectInput from '@components/commons/SelectInput';
 import TrashIcon from '@components/svg/TrashIcon';
@@ -13,6 +12,7 @@ import BasePage from '@layouts/BasePage';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
+import Editables from '@components/commons/Editables';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import { useEffect, useState } from 'react';

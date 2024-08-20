@@ -9,7 +9,7 @@ import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import RoleList from '@components/RoleList';
+import RoleList from '@components/roles/RoleList';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 

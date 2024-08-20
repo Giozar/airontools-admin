@@ -1,4 +1,8 @@
 import { transformCategoryDataToBackend } from '@adapters/category.adapter';
+import DeletionModal from '@components/commons/DeletionModal';
+import Editables from '@components/commons/Editables';
+import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
+import SubcategoryModal from '@components/subcategories/SubcategoryModal';
 import TrashIcon from '@components/svg/TrashIcon';
 import useCategoryManagement from '@hooks/categories/useCategoryManegement';
 import useFetchCounts from '@hooks/common/useFetchCounts';
@@ -7,10 +11,6 @@ import {
 	CategoryDataToSend,
 } from '@interfaces/Category.interface';
 import { ChangeEvent, useState } from 'react';
-import DeletionModal from './commons/DeletionModal';
-import ImageUploaderSingle from './commons/ImageUploaderSingle';
-import Editables from './Editables';
-import SubcategoryModal from './SubcategoryModal';
 
 interface ShowManageCategoryProps {
 	categories: CategoryDataFrontend[] | any[];

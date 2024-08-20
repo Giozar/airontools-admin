@@ -1,4 +1,9 @@
 import { transformSubcategoryDataToBackend } from '@adapters/subcategory.adapter';
+import DeletionModal from '@components/commons/DeletionModal';
+import Editables from '@components/commons/Editables';
+import ErrorMessage from '@components/commons/ErrorMessage';
+import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
+import SuccessMessage from '@components/commons/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useFetchCounts from '@hooks/common/useFetchCounts';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
@@ -7,11 +12,6 @@ import useSubcategoryUpdate from '@hooks/subcategories/useSubcategoryUpdate';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import { useState } from 'react';
-import DeletionModal from './commons/DeletionModal';
-import ErrorMessage from './commons/ErrorMessage';
-import ImageUploaderSingle from './commons/ImageUploaderSingle';
-import SuccessMessage from './commons/SuccessMessage';
-import Editables from './Editables';
 
 function EditSubcategory({
 	subcategories,
