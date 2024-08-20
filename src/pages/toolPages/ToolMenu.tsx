@@ -87,19 +87,8 @@ function ListOfTools() {
 				<EditIcon />
 			</button>,
 			<button
-				disabled={authContext?.role?.name !== 'Administrador'}
-				style={{
-					opacity: authContext?.role?.name !== 'Administrador' ? 0.5 : 1,
-					cursor:
-						authContext?.role?.name !== 'Administrador'
-							? 'not-allowed'
-							: 'pointer',
-					backgroundColor:
-						authContext?.role?.name !== 'Administrador' ? '#d3d3d3' : '#f5f5f5', // Cambia el color de fondo para el estado deshabilitado
-					border: '1px solid #ccc', // Ajusta el borde si es necesario
-					padding: '8px 16px', // Ajusta el padding según tus necesidades
-					borderRadius: '4px', // Ajusta el border-radius si es necesario
-				}}
+				disabled={authContext?.role?.name !== 'Administrador'} // Deshabilita el botón si el usuario no es Administrador
+				className={`delete ${authContext?.role?.name !== 'Administrador' ? 'disabled' : ''}`} // Aplica la clase 'disabled' si el usuario no es Administrador
 				onClick={() => {
 					if (authContext?.role?.name === 'Administrador') {
 						setShowDeletionModalFor(tool.id);
