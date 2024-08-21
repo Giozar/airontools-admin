@@ -1,15 +1,15 @@
 import {
-	Specification,
-	SpecificationSuccessResponse,
+	SpecDataBackend,
+	SpecDataToSend,
 } from '@interfaces/Specifications.interface';
 import axios from 'axios';
 
 export default async function createSpecification({
 	specification,
 }: {
-	specification: Specification;
+	specification: SpecDataToSend;
 }) {
-	const response = await axios.post<SpecificationSuccessResponse>(
+	const response = await axios.post<SpecDataBackend>(
 		import.meta.env.VITE_API_URL + '/specifications',
 		specification,
 	);

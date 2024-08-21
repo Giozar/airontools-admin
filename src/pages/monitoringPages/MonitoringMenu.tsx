@@ -102,7 +102,7 @@ const ShowMonitoringMenu = () => {
 				<select
 					id='sortOrder'
 					value={sortOrder}
-					onChange={e => setSortOrder(e.target.value)}
+					onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
 				>
 					<option value='asc'>Ascendente</option>
 					<option value='desc'>Descendente</option>
