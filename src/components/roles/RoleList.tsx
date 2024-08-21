@@ -1,5 +1,6 @@
 import { transformRoleDataFront } from '@adapters/role.adapter';
 import DeletionModal from '@components/commons/DeletionModal';
+import { airontoolsAPI } from '@configs/api.config';
 import { RoleDataBack, RoleDataFront } from '@interfaces/Role.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -60,7 +61,7 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 		const fetchRoles = async () => {
 			try {
 				const response = await axios.get<RoleDataBack[]>(
-					import.meta.env.VITE_API_URL + '/roles',
+					airontoolsAPI + '/roles',
 				);
 				setState({
 					roles: response.data.map(role => transformRoleDataFront(role)),
@@ -87,7 +88,7 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 	}) => {
 		try {
 			const response = await axios.delete(
-				import.meta.env.VITE_API_URL + `/roles/delete/${roleId}`,
+				airontoolsAPI + `/roles/delete/${roleId}`,
 			);
 			console.log(response.data);
 			setDeletionMessage(

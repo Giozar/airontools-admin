@@ -1,8 +1,9 @@
 import { transformRoleDataFront } from '@adapters/role.adapter';
+import { airontoolsAPI } from '@configs/api.config';
 import { RoleDataBack, RoleDataFront } from '@interfaces/Role.interface';
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_API_URL + '/roles';
+const apiUrl = airontoolsAPI + '/roles';
 
 export async function getRoles(): Promise<RoleDataFront[]> {
 	const response = await axios.get<RoleDataBack[]>(apiUrl);

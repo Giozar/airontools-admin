@@ -6,6 +6,7 @@ import SuccessMessage from '@components/commons/SuccessMessage';
 import TableRow from '@components/commons/TableRow';
 import ImageUpdate from '@components/files/ImageUpdate';
 import ManualUpdate from '@components/files/ManualUpdate';
+import { airontoolsAPI } from '@configs/api.config';
 
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
@@ -113,7 +114,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const handleSubmit = async () => {
 		try {
 			console.log(selectedFamily?.id);
-			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+			await axios.patch(airontoolsAPI + '/products/' + id, {
 				_id: id,
 				name,
 				model,
@@ -137,7 +138,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 			await Promise.all(deletePromises);
 			// Paso 2: subir imagenes
 			// Paso 3: Actualizar producto con imagenes
-			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+			await axios.patch(airontoolsAPI + '/products/' + id, {
 				images: [...images, ...uploadedUrlImages],
 			});
 
@@ -149,7 +150,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 			await Promise.all(deletePromises2);
 			// Paso 3: Actualizar producto con manuales
 
-			await axios.patch(import.meta.env.VITE_API_URL + '/products/' + id, {
+			await axios.patch(airontoolsAPI + '/products/' + id, {
 				manuals: [...manuals, ...uploadedUrlManuals],
 			}),
 				setImages([...images, ...uploadedUrlImages]);

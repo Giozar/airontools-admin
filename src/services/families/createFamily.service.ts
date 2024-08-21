@@ -1,5 +1,6 @@
 // src/services/familyService.ts
 
+import { airontoolsAPI } from '@configs/api.config';
 import { FamilyDataToSend } from '@interfaces/Family.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import { formatPathName } from '@utils/formatPathName.utils';
@@ -9,7 +10,7 @@ interface ValidationError {
 	message: string[];
 }
 
-const API_URL = import.meta.env.VITE_API_URL + '/families';
+const API_URL = airontoolsAPI + '/families';
 
 export const createFamilyService = async (familyData: FamilyDataToSend) => {
 	try {

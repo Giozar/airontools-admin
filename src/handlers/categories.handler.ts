@@ -1,5 +1,6 @@
 // hooks/Categories/useCreateCategories.ts
 
+import { airontoolsAPI } from '@configs/api.config';
 import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import axios from 'axios';
 
@@ -42,7 +43,7 @@ const useCreateCategories = (
 
 					// Actualiza la categoría con las URLs de las imágenes
 					await axios.patch(
-						`${import.meta.env.VITE_API_URL}/categories/${createdCategory._id}`,
+						`${airontoolsAPI}/categories/${createdCategory._id}`,
 						{ images: categoryUploadedUrlImages },
 					);
 

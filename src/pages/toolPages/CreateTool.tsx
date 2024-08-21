@@ -5,6 +5,7 @@ import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
+import { airontoolsAPI } from '@configs/api.config';
 import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
 import useSpecs from '@hooks/specifications/useSpecs';
 import BasePage from '@layouts/BasePage';
@@ -86,7 +87,7 @@ const Atornillador = () => {
 			console.log(createToolData);
 			// Paso 1: Crear el producto
 			const response = await axios.post(
-				import.meta.env.VITE_API_URL + '/products',
+				airontoolsAPI + '/products',
 				createToolData,
 			);
 			const productId = response.data._id;
@@ -96,16 +97,15 @@ const Atornillador = () => {
 			const uploadedUrlImages = await handleImageUpload(productId);
 			// Paso 3: Actualizar producto con imagenes
 			console.log(uploadedUrlImages);
-			await axios.patch(
-				import.meta.env.VITE_API_URL + '/products/' + productId,
-				{ images: uploadedUrlImages },
-			);
+			await axios.patch(airontoolsAPI + '/products/' + productId, {
+				images: uploadedUrlImages,
+			});
 
 			// Paso 4: Subir manuales
 			const uploadedUrlManuals = await handleManualUpload(productId);
 			// Paso 3: Actualizar producto con manuales
 			const productUpladedImages = await axios.patch(
-				import.meta.env.VITE_API_URL + '/products/' + productId,
+				airontoolsAPI + '/products/' + productId,
 				{ manuals: uploadedUrlManuals },
 			);
 

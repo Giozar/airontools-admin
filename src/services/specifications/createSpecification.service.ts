@@ -1,3 +1,4 @@
+import { airontoolsAPI } from '@configs/api.config';
 import {
 	SpecDataBackend,
 	SpecDataToSend,
@@ -10,7 +11,7 @@ export default async function createSpecification({
 	specification: SpecDataToSend;
 }) {
 	const response = await axios.post<SpecDataBackend>(
-		import.meta.env.VITE_API_URL + '/specifications',
+		airontoolsAPI + '/specifications',
 		specification,
 	);
 	const specificationCreated = response.data;

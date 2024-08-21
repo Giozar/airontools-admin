@@ -1,3 +1,4 @@
+import { airontoolsAPI } from '@configs/api.config';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -43,29 +44,27 @@ const useFetchCounts = (
 				if (options.fetchCategories) {
 					requests.push(
 						axios.get(
-							`${import.meta.env.VITE_API_URL}/categories/count${type || ''}/${param}`,
+							`${airontoolsAPI}/categories/count${type || ''}/${param}`,
 						),
 					);
 				}
 				if (options.fetchSubcategories) {
 					requests.push(
 						axios.get(
-							`${import.meta.env.VITE_API_URL}/subcategories/count${type || ''}/${param}`,
+							`${airontoolsAPI}/subcategories/count${type || ''}/${param}`,
 						),
 					);
 				}
 				if (options.fetchSpecifications) {
 					requests.push(
 						axios.get(
-							`${import.meta.env.VITE_API_URL}/specifications/count${type || ''}/${param}`,
+							`${airontoolsAPI}/specifications/count${type || ''}/${param}`,
 						),
 					);
 				}
 				if (options.fetchProducts) {
 					requests.push(
-						axios.get(
-							`${import.meta.env.VITE_API_URL}/products/count${type || ''}/${param}`,
-						),
+						axios.get(`${airontoolsAPI}/products/count${type || ''}/${param}`),
 					);
 				}
 

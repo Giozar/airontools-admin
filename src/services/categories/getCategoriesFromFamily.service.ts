@@ -1,9 +1,10 @@
 // src/services/categoryApiService.ts
 
+import { airontoolsAPI } from '@configs/api.config';
 import { CategoryDataBackend } from '@interfaces/Category.interface';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = airontoolsAPI;
 
 export const getCategoriesFromFamilyService = async (familyId: string) => {
 	try {

@@ -1,9 +1,10 @@
 // src/services/userApiService.ts
 
+import { airontoolsAPI } from '@configs/api.config';
 import { UserDataSend } from '@interfaces/User.interface';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = airontoolsAPI;
 
 export const updateUserService = async (
 	userId: string,

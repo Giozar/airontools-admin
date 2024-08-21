@@ -1,4 +1,5 @@
 // hooks/subcategories/useCreateSubcategories.ts
+import { airontoolsAPI } from '@configs/api.config';
 import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import { CategoryDataBackend } from '@interfaces/Category.interface';
 import axios from 'axios';
@@ -59,7 +60,7 @@ const useCreateSubcategories = (
 
 					// Actualiza la subcategoría con las URLs de las imágenes
 					await axios.patch(
-						`${import.meta.env.VITE_API_URL}/subcategories/${createdSubcategory._id}`,
+						`${airontoolsAPI}/subcategories/${createdSubcategory._id}`,
 						{ images: subcategoryUploadedUrlImages },
 					);
 

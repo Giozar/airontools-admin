@@ -1,4 +1,5 @@
 import { transformUserDataFront } from '@adapters/user.adapter';
+import { airontoolsAPI } from '@configs/api.config';
 import {
 	RegisterResponse,
 	UserDataFrontend,
@@ -12,7 +13,7 @@ export default async function createUser(
 ): Promise<UserDataFrontend> {
 	try {
 		const response = await axios.post<RegisterResponse>(
-			`${import.meta.env.VITE_API_URL}/auth`,
+			`${airontoolsAPI}/auth`,
 			userData,
 		);
 		const userCreated = transformUserDataFront(response.data.user);

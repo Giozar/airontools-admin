@@ -1,3 +1,4 @@
+import { airontoolsAPI } from '@configs/api.config';
 import axios from 'axios';
 
 const uploadFile = async (
@@ -10,11 +11,11 @@ const uploadFile = async (
 
 	try {
 		console.log(
-			import.meta.env.VITE_API_URL +
+			airontoolsAPI +
 				`/files/upload/${type ? type + '/' : ''}${feature ? feature + '/' : ''}`,
 		);
 		const response = await axios.post(
-			import.meta.env.VITE_API_URL +
+			airontoolsAPI +
 				`/files/upload/${type ? type + '/' : ''}${feature ? feature + '/' : ''}`,
 			formData,
 			{
