@@ -15,6 +15,7 @@ import axios from 'axios';
 import Editables from '@components/commons/Editables';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
+import { airontoolsAPI } from '@configs/api.config';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -56,17 +57,14 @@ function EditSpecificationsForm({
 	const handleSave = async () => {
 		console.log(id);
 		try {
-			await axios.patch(
-				`${import.meta.env.VITE_API_URL}/specifications/${id}`,
-				{
-					name,
-					description,
-					unit,
-					family: selectedFamily?.id,
-					category: selectedCategory?.id,
-					subcategory: selectedSubcategory?.id,
-				},
-			);
+			await axios.patch(`${airontoolsAPI}/specifications/${id}`, {
+				name,
+				description,
+				unit,
+				family: selectedFamily?.id,
+				category: selectedCategory?.id,
+				subcategory: selectedSubcategory?.id,
+			});
 			showSuccess('Especificación editada con éxito');
 		} catch (error) {
 			errorHandler(error, showError);

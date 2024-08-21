@@ -6,6 +6,7 @@ import ImageUploaderSingle from '@components/commons/ImageUploaderSingle';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import { airontoolsAPI } from '@configs/api.config';
 import { AuthContext } from '@contexts/AuthContext';
 import useCreateCategories from '@handlers/categories.handler';
 import useCreateSubcategories from '@handlers/subcategories.handler';
@@ -90,10 +91,9 @@ function CreateFamilyForm() {
 			// Actualizar familia para imagen
 			const uploadedUrlImages = await handleImageUpload(familyId);
 			console.log(uploadedUrlImages);
-			await axios.patch(
-				import.meta.env.VITE_API_URL + '/families/' + familyId,
-				{ images: uploadedUrlImages },
-			);
+			await axios.patch(airontoolsAPI + '/families/' + familyId, {
+				images: uploadedUrlImages,
+			});
 
 			console.log('ID de la familia:', familyId);
 			const createdCategories = await createCategories(

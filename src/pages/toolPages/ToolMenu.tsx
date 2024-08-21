@@ -6,6 +6,7 @@ import ToolInfoModal from '@components/products/ToolInfoModal';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
+import { airontoolsAPI } from '@configs/api.config';
 
 import { AuthContext } from '@contexts/AuthContext';
 import useProductManagement from '@hooks/products/useProductManagement';
@@ -38,7 +39,7 @@ function ListOfTools() {
 		const fetchProducts = async () => {
 			try {
 				const response = await axios.get<ProductDataBackend[]>(
-					`${import.meta.env.VITE_API_URL}/products`,
+					`${airontoolsAPI}/products`,
 				);
 				setProducts(response.data.map(transformProductDataToFrontend));
 				console.log(response.data);

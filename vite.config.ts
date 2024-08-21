@@ -24,6 +24,7 @@ export default defineConfig({
 			'@classes': path.resolve(__dirname, 'src/classes'),
 			'@utils': path.resolve(__dirname, 'src/utils'),
 			'@contexts': path.resolve(__dirname, 'src/contexts'),
+			'@configs': path.resolve(__dirname, 'src/configs'),
 		},
 	},
 });

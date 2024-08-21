@@ -10,6 +10,7 @@ import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import RoleList from '@components/roles/RoleList';
+import { airontoolsAPI } from '@configs/api.config';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 
@@ -25,14 +26,11 @@ function CreateRoleForm() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			const response = await axios.post(
-				import.meta.env.VITE_API_URL + '/roles/create',
-				{
-					name,
-					description,
-					createdBy: createdBy?.id,
-				},
-			);
+			const response = await axios.post(airontoolsAPI + '/roles/create', {
+				name,
+				description,
+				createdBy: createdBy?.id,
+			});
 			console.log('Role created successfully:', response.data);
 			showSuccess('Rol creado con éxito');
 			setUpdateRole(!updateRole);

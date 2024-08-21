@@ -1,8 +1,9 @@
 import { transformSpecDataToFrontend } from '@adapters/specifications.adapter';
+import { airontoolsAPI } from '@configs/api.config';
 import { SpecDataBackend } from '@interfaces/Specifications.interface';
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_API_URL + '/specifications';
+const apiUrl = airontoolsAPI + '/specifications';
 
 export async function getSpecifications() {
 	const response = await axios.get<SpecDataBackend[]>(apiUrl);

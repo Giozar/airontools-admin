@@ -5,6 +5,8 @@ import { RoleDataFront } from '@interfaces/Role.interface';
 import { RegisterResponse, UserDataFrontend } from '@interfaces/User.interface';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+
+import { airontoolsAPI } from '@configs/api.config';
 import '../css/roleChangeModal.css';
 
 interface ValidationError {
@@ -41,7 +43,7 @@ function RoleChangeModal({
 		e.preventDefault();
 		try {
 			await axios.patch<RegisterResponse>(
-				import.meta.env.VITE_API_URL + `/auth/${userToEdit?.id}`,
+				airontoolsAPI + `/auth/${userToEdit?.id}`,
 				{
 					...userToEdit,
 					role,

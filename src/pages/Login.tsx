@@ -10,6 +10,7 @@ import './css/Login.css';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import EyeIcon from '@components/svg/EyeIcon';
 import EyeOffIcon from '@components/svg/EyeOffIcon';
+import { airontoolsAPI } from '@configs/api.config';
 import { UserDataBackend } from '@interfaces/User.interface';
 import aironLogo from './Logo-Blanco.png';
 
@@ -61,10 +62,10 @@ function Login() {
 	const handleLogin = async (e: FormEvent) => {
 		e.preventDefault();
 		console.log(email, password);
-		console.log(import.meta.env.VITE_API_URL + '/auth/');
+		console.log(airontoolsAPI + '/auth/');
 		try {
 			const response = await axios.post<LoginResponse>(
-				import.meta.env.VITE_API_URL + '/auth/login',
+				airontoolsAPI + '/auth/login',
 				{
 					email,
 					password,

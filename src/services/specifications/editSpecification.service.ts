@@ -1,3 +1,4 @@
+import { airontoolsAPI } from '@configs/api.config';
 import {
 	SpecDataBackend,
 	SpecDataToSend,
@@ -12,7 +13,7 @@ export default async function editSpecification({
 	id: string;
 }) {
 	const response = await axios.patch<SpecDataBackend>(
-		import.meta.env.VITE_API_URL + `/specifications/${id}`,
+		airontoolsAPI + `/specifications/${id}`,
 		specification,
 	);
 	const specificationCreated = response.data;

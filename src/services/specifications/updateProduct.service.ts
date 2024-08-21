@@ -1,9 +1,10 @@
+import { airontoolsAPI } from '@configs/api.config';
 import axios from 'axios';
 
 export const updateProduct = async (productId: string) => {
 	try {
 		const response = await axios.patch(
-			import.meta.env.VITE_API_URL + `/products/${productId}`,
+			airontoolsAPI + `/products/${productId}`,
 		);
 		return response.data;
 	} catch (error) {

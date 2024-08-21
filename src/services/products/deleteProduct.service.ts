@@ -1,7 +1,8 @@
+import { airontoolsAPI } from '@configs/api.config';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = airontoolsAPI;
 
 export const deleteProduct = async (product: ProductDataFrontend) => {
 	try {

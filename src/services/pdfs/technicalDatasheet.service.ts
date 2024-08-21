@@ -1,7 +1,8 @@
+import { airontoolsAPI } from '@configs/api.config';
 import axios, { AxiosResponse } from 'axios';
 
 // Usa la variable de entorno para la URL base
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API_BASE_URL = airontoolsAPI || 'http://localhost:4000';
 
 // Define la función para obtener el PDF del producto
 export const getTechnicalDatasheet = async (

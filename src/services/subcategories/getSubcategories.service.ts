@@ -1,13 +1,14 @@
 // src/services/subcategoryApiService.ts
 
 import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
+import { airontoolsAPI } from '@configs/api.config';
 import {
 	SubcategoryDataBackend,
 	SubcategoryDataFrontend,
 } from '@interfaces/subcategory.interface';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = airontoolsAPI;
 
 export const getSubcategoriesService = async (): Promise<
 	SubcategoryDataFrontend[]

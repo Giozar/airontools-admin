@@ -1,5 +1,6 @@
 // services/familyService.ts
 import { transformFamilyDataToFrontend } from '@adapters/family.adapter';
+import { airontoolsAPI } from '@configs/api.config';
 import {
 	FamilyDataBackend,
 	FamilyDataFrontend,
@@ -7,7 +8,7 @@ import {
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL + '/families';
+const API_URL = airontoolsAPI + '/families';
 
 export async function getFamiliesService(): Promise<FamilyDataFrontend[]> {
 	try {

@@ -1,10 +1,11 @@
 // services/subcategoryService.ts
+import { airontoolsAPI } from '@configs/api.config';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import { formatPathName } from '@utils/formatPathName.utils';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL + '/subcategories';
+const API_URL = airontoolsAPI + '/subcategories';
 
 export async function updateSubcategory(
 	subcategoryData: SubcategoryDataToSend,

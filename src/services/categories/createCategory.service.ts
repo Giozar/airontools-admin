@@ -1,3 +1,4 @@
+import { airontoolsAPI } from '@configs/api.config';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { ValidationError } from '@interfaces/User.interface';
 import { formatPathName } from '@utils/formatPathName.utils';
@@ -5,13 +6,10 @@ import axios from 'axios';
 
 export async function createCategoryRequest(categoryData: CategoryDataToSend) {
 	try {
-		const response = await axios.post(
-			import.meta.env.VITE_API_URL + '/categories',
-			{
-				...categoryData,
-				path: formatPathName(categoryData.name),
-			},
-		);
+		const response = await axios.post(airontoolsAPI + '/categories', {
+			...categoryData,
+			path: formatPathName(categoryData.name),
+		});
 		return response.data;
 	} catch (error) {
 		if (!axios.isAxiosError<ValidationError>(error)) {
