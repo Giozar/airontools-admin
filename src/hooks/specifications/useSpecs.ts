@@ -22,7 +22,9 @@ function useSpecs({ catId, subcatId, initialSpecs }: Spec) {
 			const data = await fetchSpecificationsByCategoryId(catId);
 			//TODO: orita esto no rompe nada pero es el backend que responde raro xd
 			//Deberia de regresar subcategory._id pero no lo hace...
-			const filteredSpecs = data.filter(item => item.subcategory === subcatId);
+			const filteredSpecs = data.filter(
+				item => item.subcategory._id === subcatId,
+			);
 			setSpecifications(filteredSpecs);
 			// console.log(data);
 			const initialSpecsLookup = initialSpecs?.reduce(
