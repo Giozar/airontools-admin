@@ -8,6 +8,7 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { ChangeEvent, FormEvent } from 'react';
+import Corrector from './corrector';
 interface ToolInfoProps {
 	toolName: string;
 	toolModel: string;
@@ -53,6 +54,7 @@ const ToolInfo = ({
 					onChange={e => setToolDescription(e.target.value)}
 					rows={5}
 				/>
+				<Corrector textoinicial={toolDescription} />
 			</div>
 		</>
 	);
