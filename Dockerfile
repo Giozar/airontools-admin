@@ -53,10 +53,10 @@ RUN chown -R viteuser:vitegroup /app
 USER viteuser
 
 # Install serve to serve the static files
-RUN npm i -g serve
+RUN npm install serve
 
 # Expose the application's port
 EXPOSE 3000
 
 # Command to run the application
-CMD ["serve", "-s", "dist"]
+CMD ["npx", "serve", "-s", "dist"]

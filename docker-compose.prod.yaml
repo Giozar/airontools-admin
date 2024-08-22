@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   airontools-admin:
     image: airontools-admin # Nombre de la imagen
