@@ -24,7 +24,7 @@ Mantén inalterados los términos técnicos, jergas regionales o específicos de
 Ejemplo de entrada: ellafue al merkado con unas pijas nuevas.
 Ejemplo de salida: Ella fue al mercado con unas pijas nuevas.
 `;
-			const response = await fetch(`${import.meta.env.VITE_AI_URL}api/chat`, {
+			const response = await fetch(`${import.meta.env.VITE_AI_URL}/api/chat`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
