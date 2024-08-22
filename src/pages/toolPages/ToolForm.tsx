@@ -6,7 +6,7 @@ import SelectInput from '@components/commons/SelectInput';
 import TableRow from '@components/commons/TableRow';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import { SpecDataFrontend } from '@interfaces/Specifications.interface';
+import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import { ChangeEvent, FormEvent } from 'react';
 import Corrector from './corrector';
 interface ToolInfoProps {
@@ -118,7 +118,7 @@ const ToolCategorization = ({
 	);
 };
 interface SpecificationsSectionProps {
-	specifications: SpecDataFrontend[];
+	specifications: SpecDataToSend[];
 	specificationValues: { specification: string; value: string }[];
 	handleSpecUpdate: (newValue: string, index: number) => void;
 }
@@ -135,7 +135,7 @@ const SpecificationsSection = ({
 				<tbody>
 					{specifications.map((spec, index) => (
 						<TableRow
-							key={spec.id}
+							key={spec._id}
 							label={spec.name}
 							unit={spec.unit || ''}
 							value={specificationValues[index]?.value || ''}
@@ -187,7 +187,7 @@ interface ToolFormProps {
 	filteredSubcategories: { id: string; name: string }[];
 	selectedSubcategory: { id: string; name: string } | null;
 	handleSubcategoryChange: (value: string) => void;
-	specifications: SpecDataFrontend[];
+	specifications: SpecDataToSend[];
 	specificationValues: { specification: string; value: string }[];
 	handleSpecUpdate: (newValue: string, index: number) => void;
 	setChar: (chars: string[]) => void;

@@ -252,7 +252,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 									<>
 										<p>{specificationValues[index].specification}</p>
 										<TableRow
-											key={spec.id}
+											key={spec._id}
 											label={spec.name}
 											unit={spec.unit || ''}
 											value={specificationValues[index]?.value || ''}

@@ -1,4 +1,4 @@
-import { SpecDataFrontend } from '@interfaces/Specifications.interface';
+import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import { fetchSpecificationsByCategoryId } from '@services/specifications/fetchSpecificationsByCategoryId.service';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -13,18 +13,19 @@ function useSpecs({ catId, subcatId, initialSpecs }: Spec) {
 		Array<{ specification: string; value: string }>
 	>(initialSpecs || []);
 
-	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
+	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 
 	const fetchSpecifications = async () => {
 		if (!catId && !subcatId) return;
 
 		try {
 			const data = await fetchSpecificationsByCategoryId(catId);
+			console.log(data);
+			console.log(subcatId);
 			//TODO: orita esto no rompe nada pero es el backend que responde raro xd
 			//Deberia de regresar subcategory._id pero no lo hace...
-			const filteredSpecs = data.filter(
-				item => item.subcategory._id === subcatId,
-			);
+			const filteredSpecs = data.filter(item => item.subcategory === subcatId);
+			console.log(filteredSpecs);
 			setSpecifications(filteredSpecs);
 			// console.log(data);
 			const initialSpecsLookup = initialSpecs?.reduce(
@@ -35,12 +36,13 @@ function useSpecs({ catId, subcatId, initialSpecs }: Spec) {
 				{} as Record<string, string>,
 			);
 			const initialSpecsData = filteredSpecs.map(spec => ({
-				specification: spec.id,
-				value: initialSpecsLookup
-					? initialSpecsLookup[spec.id]
-						? initialSpecsLookup[spec.id]
-						: ''
-					: '',
+				specification: spec._id || '',
+				value:
+					initialSpecsLookup && spec._id
+						? initialSpecsLookup[spec._id]
+							? initialSpecsLookup[spec._id]
+							: ''
+						: '',
 			}));
 			setSpecificationValues(initialSpecsData);
 		} catch (error) {
@@ -74,7 +76,7 @@ function useSpecs({ catId, subcatId, initialSpecs }: Spec) {
 
 	const handleSpecUpdate = useCallback(
 		(newValue: string, index: number) => {
-			const specId = specifications[index]?.id;
+			const specId = specifications[index]?._id;
 			if (specId) {
 				editOrCreateKeyInSpecs(specId, newValue);
 			}
