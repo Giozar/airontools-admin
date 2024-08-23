@@ -1,3 +1,4 @@
+import { aiAPI } from '@configs/ai.config';
 import { useState } from 'react';
 
 interface CorrectorProps {
@@ -24,7 +25,7 @@ Mantén inalterados los términos técnicos, jergas regionales o específicos de
 Ejemplo de entrada: ellafue al merkado con unas pijas nuevas.
 Ejemplo de salida: Ella fue al mercado con unas pijas nuevas.
 `;
-			const response = await fetch(`${import.meta.env.VITE_AI_URL}api/chat`, {
+			const response = await fetch(`${aiAPI}/api/chat`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -125,7 +126,7 @@ Ejemplo de entrada: ellafue al merkado con unas pijas nuevas.
 Ejemplo de salida: Ella fue al mercado con unas pijas nuevas.
 `;
 			const response = await axios.post(
-				`${import.meta.env.VITE_AI_URL}api/chat`,
+				`${aiAPI}/api/chat`,
 				{
 					model: 'llama3.1:latest',
 					messages: [
@@ -219,7 +220,7 @@ const Corrector: React.FC<CorrectorProps> = textoinicial => {
             [INST] Texto=\`\`\`${texto}\`\`\` [/INST]
             [INST] Salida:`;
 			const response = await axios.post(
-				`${import.meta.env.VITE_AI_URL}api/generate`,
+				`${aiAPI}/api/generate`,
 				{
 					model: 'llama3.1:latest',
 					prompt,
@@ -241,7 +242,7 @@ const Corrector: React.FC<CorrectorProps> = textoinicial => {
 			console.log(prompt);
 			console.log(texto);
 			const response = await axios.post(
-				`${import.meta.env.VITE_AI_URL}api/generate`,
+				`${aiAPI}/api/generate`,
 				{
 					model: 'llama3.1:latest',
 					prompt,
