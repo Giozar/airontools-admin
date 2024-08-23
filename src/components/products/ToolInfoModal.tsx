@@ -2,6 +2,7 @@ import Info from '@components/commons/Info';
 import InfoSection from '@components/commons/InfoSection';
 import Slideshow from '@components/commons/Slideshow';
 import CloseIcon from '@components/svg/CloseIcon';
+import { airontoolsAPI } from '@configs/api.config';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 const ToolInfoModal = ({
 	isOpen,
@@ -14,7 +15,7 @@ const ToolInfoModal = ({
 }) => {
 	if (!isOpen) return null;
 	const handlePdfGen = (id: string) => {
-		const pdfUrl = 'http://localhost:4000/basic-reports/product/' + id;
+		const pdfUrl = `${airontoolsAPI}/basic-reports/product/${id}`;
 		window.open(pdfUrl, '_blank');
 	};
 
