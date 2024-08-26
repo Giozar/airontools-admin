@@ -1,9 +1,12 @@
+import NumberSelect from '@components/commons/form/NumberSelect';
 import Info from '@components/commons/Info';
 import InfoSection from '@components/commons/InfoSection';
 import Slideshow from '@components/commons/Slideshow';
 import CloseIcon from '@components/svg/CloseIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
+import { useState } from 'react';
+
 const ToolInfoModal = ({
 	isOpen,
 	onClose,
@@ -14,9 +17,16 @@ const ToolInfoModal = ({
 	product: ProductDataFrontend | null;
 }) => {
 	if (!isOpen) return null;
+	const [selectedNumber, setSelectedNumber] = useState<number>(1);
+
 	const handlePdfGen = (id: string) => {
-		const pdfUrl = `${airontoolsAPI}/basic-reports/product/${id}`;
+		const pdfUrl = `${airontoolsAPI}/basic-reports/product/${id}?opt=${selectedNumber - 1}`;
 		window.open(pdfUrl, '_blank');
+	};
+
+	// Función para manejar la selección del número
+	const handleNumberSelect = (value: number) => {
+		setSelectedNumber(value);
 	};
 
 	return (
@@ -29,16 +39,35 @@ const ToolInfoModal = ({
 					<div>
 						<h2 style={{ top: 'sticky' }}>
 							{product.name}
-							<button className='add' onClick={() => handlePdfGen(product.id)}>
-								Ver Ficha Técnica (PDF)
-							</button>
+							<div
+								style={{
+									display: 'flex',
+									marginTop: '20px',
+									justifyContent: 'space-around',
+								}}
+							>
+								<NumberSelect
+									size={product.images?.length || 0}
+									title={'Imagen para ficha técnica:'}
+									onSelect={handleNumberSelect}
+								/>
+
+								<button
+									className='add'
+									onClick={() => handlePdfGen(product.id)}
+								>
+									Ver Ficha Técnica (PDF)
+								</button>
+							</div>
 						</h2>
 						<div
 							style={{ maxHeight: '60vh', overflowY: 'auto', padding: '20px' }}
 						>
 							<Info title={'Fotos'} info={'-'} />
 							<div className='grupo'>
-								{product.images && <Slideshow images={product.images} />}
+								{product.images && (
+									<Slideshow showNumbers={true} images={product.images} />
+								)}
 								<div>
 									<Info title={'Nombre'} info={product.name} />
 									<Info title={'Modelo'} info={product.model} />
