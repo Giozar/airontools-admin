@@ -8,6 +8,7 @@ import { AuthContext } from '@contexts/AuthContext';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-absolute-path
+import BotIcon from '@components/svg/BotIcon';
 import aironLogo from '/Logo-Blanco.png';
 
 const routeMap: {
@@ -59,6 +60,10 @@ const Sidebar = () => {
 				<Link to='/notificaciones'>
 					<BellIcon />
 					Notificaciones
+				</Link>
+				<Link to='/chat-con-asistente'>
+					<BotIcon />
+					Asistente AironTools
 				</Link>
 				<ComboBox
 					option='Herramientas'
