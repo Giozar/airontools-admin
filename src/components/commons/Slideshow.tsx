@@ -2,9 +2,10 @@ import { useState } from 'react';
 
 interface SlideshowProps {
 	images: string[];
+	showNumbers?: boolean;
 }
 
-function Slideshow({ images }: SlideshowProps) {
+function Slideshow({ showNumbers, images }: SlideshowProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
 	const goToPrevious = () => {
@@ -23,6 +24,11 @@ function Slideshow({ images }: SlideshowProps) {
 
 	return (
 		<div className='slideshow-container'>
+			{showNumbers && (
+				<p className='number-counter' onClick={goToPrevious}>
+					{currentIndex + 1}
+				</p>
+			)}
 			<button className='nav-button prev' onClick={goToPrevious}>
 				&lt;
 			</button>
