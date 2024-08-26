@@ -36,18 +36,8 @@ export interface SpecDataFrontend {
 	subcategory: SubcategoryDataToSend;
 	createdBy: UserDataFrontend;
 }
-// DELETE se hace directo con ids
 
-/* export interface Specification {
-	id_: string;
-	name: string;
-	description?: string;
-	units?: string;
-	familyId: string;
-	SpecId: string;
-	subSpecId?: string;
-	createdBy?: string;
-	updatedBy?: string;
+export interface ProductSpecification {
+	specification: string;
+	value: string;
 }
-export interface SpecificationSuccessResponse {}
-*/
