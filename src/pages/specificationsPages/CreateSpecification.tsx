@@ -17,7 +17,7 @@ export default function FamilySpecifications() {
 	} = useFamilySpecifications();
 
 	return (
-		<BasePage title=''>
+		<BasePage title='Crear Especificaciones'>
 			<div style={{ width: '50%' }}>
 				<SelectInput
 					id='familiaselect'
