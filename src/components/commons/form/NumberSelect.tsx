@@ -15,8 +15,10 @@ const NumberSelect: React.FC<SelectProps> = ({ title, size, onSelect }) => {
 		onSelect(selectedValue);
 	};
 	return (
-		<>
-			<label htmlFor='numbers'>{title}</label>
+		<div style={{ display: 'flex', flexDirection: 'column' }}>
+			<label htmlFor='numbers' style={{ fontSize: 'small' }}>
+				{title}
+			</label>
 			<select id='numbers' name='numbers' onChange={handleChange}>
 				<option key='default' value=''>
 					Por defecto
@@ -27,7 +29,7 @@ const NumberSelect: React.FC<SelectProps> = ({ title, size, onSelect }) => {
 					</option>
 				))}
 			</select>
-		</>
+		</div>
 	);
 };
 

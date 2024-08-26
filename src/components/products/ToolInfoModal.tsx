@@ -28,6 +28,7 @@ const ToolInfoModal = ({
 	const handleNumberSelect = (value: number) => {
 		setSelectedNumber(value);
 	};
+
 	return (
 		<div className='modal-overlay'>
 			<div className='modal-content'>
@@ -38,14 +39,19 @@ const ToolInfoModal = ({
 					<div>
 						<h2 style={{ top: 'sticky' }}>
 							{product.name}
-							<div>
-								<div>
-									<NumberSelect
-										size={product.images?.length || 0}
-										title={'Imagen para ficha técnica'}
-										onSelect={handleNumberSelect}
-									/>
-								</div>
+							<div
+								style={{
+									display: 'flex',
+									marginTop: '20px',
+									justifyContent: 'space-around',
+								}}
+							>
+								<NumberSelect
+									size={product.images?.length || 0}
+									title={'Imagen para ficha técnica:'}
+									onSelect={handleNumberSelect}
+								/>
+
 								<button
 									className='add'
 									onClick={() => handlePdfGen(product.id)}
