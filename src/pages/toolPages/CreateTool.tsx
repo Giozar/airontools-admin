@@ -11,6 +11,7 @@ import useSpecs from '@hooks/specifications/useSpecs';
 import BasePage from '@layouts/BasePage';
 import { cleanArray } from '@utils/cleanArray.util';
 import { errorHandler } from '@utils/errorHandler.util';
+import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util';
 import axios from 'axios';
 import { FormEvent, useContext, useState } from 'react';
 import './createtool.css';
@@ -80,11 +81,13 @@ const Atornillador = () => {
 				operationRequirements: cleanArray(requeriments),
 				applications: cleanArray(applications),
 				recommendations: cleanArray(recommendations),
-				specifications: specificationValues,
+				specifications: filterEmptySpecifications(specificationValues),
 				videos: cleanArray(videos),
 				createdBy,
 			};
-			console.log(createToolData);
+			//console.log(createToolData);
+			//console.log(createToolData.specifications);
+
 			// Paso 1: Crear el producto
 			const response = await axios.post(
 				airontoolsAPI + '/products',
@@ -104,12 +107,12 @@ const Atornillador = () => {
 			// Paso 4: Subir manuales
 			const uploadedUrlManuals = await handleManualUpload(productId);
 			// Paso 3: Actualizar producto con manuales
-			const productUpladedImages = await axios.patch(
+			const productUploadedImages = await axios.patch(
 				airontoolsAPI + '/products/' + productId,
 				{ manuals: uploadedUrlManuals },
 			);
 
-			console.log(productUpladedImages.data);
+			console.log(productUploadedImages.data);
 			/* falta decir si fallo alguna subida de imagenes o manuales... */
 			showSuccess('Herramienta creada con éxito');
 		} catch (error) {

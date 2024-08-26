@@ -18,6 +18,7 @@ import { ProductDataFrontend } from '@interfaces/Product.interface';
 
 import BasePage from '@layouts/BasePage';
 import { cleanArray } from '@utils/cleanArray.util';
+import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -124,7 +125,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 				family: selectedFamily?.id || toolToEdit.family._id,
 				category: selectedCategory?.id || toolToEdit.category._id,
 				subcategory: selectedSubcategory?.id || toolToEdit.subcategory._id,
-				specifications: specificationValues,
+				specifications: filterEmptySpecifications(specificationValues),
 				includedItems: cleanArray(includes),
 				optionalAccessories: cleanArray(accessories),
 				operationRequirements: cleanArray(requeriments),
