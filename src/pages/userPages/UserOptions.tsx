@@ -5,16 +5,18 @@ import RoleChangeModal from '@components/roles/RoleChangeModal';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
 import EditUserIcon from '@components/svg/EditUserIcon';
 import TrashIcon from '@components/svg/TrashIcon';
+import { AuthContext } from '@contexts/AuthContext';
 import useUserManagement from '@hooks/users/useUserManagement';
 import useUsers from '@hooks/users/useUsers';
 import BasePage from '@layouts/BasePage';
 import '@pages/css/UserOptions.css';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /* No se que hice con los custom hooks pero parece funcionar si puedes hacerlo mejor estaría chido */
 function ReturnUsers() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
+	const authContext = useContext(AuthContext);
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
@@ -41,55 +43,57 @@ function ReturnUsers() {
 	};
 	const tableData = {
 		headers: ['ID', 'Nombre', 'Foto', 'Rol', 'Cambiar Rol', 'Editar', 'Borrar'],
-		rows: filteredUsers.map(user => [
-			user.id,
-			user.name,
-			<div
-				key={user.id}
-				className='userpicture'
-				style={{ backgroundImage: `url(${user.imageUrl})` }}
-			></div>,
-			user.role?.name,
-			<button
-				key={user.id + 'role'}
-				className='editrol'
-				style={
-					user.name === 'root' && user.role?.name === 'Administrador'
-						? { opacity: '0.2' }
-						: {}
-				}
-				onClick={() => setShowModalFor(user.id || '')}
-				disabled={user.name === 'root' && user.role?.name === 'Administrador'}
-			>
-				<EditRoleIcon />
-			</button>,
-			<button
-				key={user.id + 'edit'}
-				className='edit'
-				style={
-					user.name === 'root' && user.role?.name === 'Administrador'
-						? { opacity: '0.2' }
-						: {}
-				}
-				onClick={() => handleEdit(user)}
-				disabled={user.name === 'root' && user.role?.name === 'Administrador'}
-			>
-				<EditUserIcon />
-			</button>,
-			<button
-				key={user.id + 'delete'}
-				className='delete'
-				style={
-					user.name === 'root' && user.role?.name === 'Administrador'
-						? { opacity: '0.2' }
-						: {}
-				}
-				onClick={() => setShowDeletionModalFor(user.id || '')}
-				disabled={user.name === 'root' && user.role?.name === 'Administrador'}
-			>
-				<TrashIcon />
-			</button>,
-		]),
+		rows: filteredUsers
+			.filter(
+				user => !(user.name === 'root' && user.role?.name === 'Administrador'),
+			)
+			.map(user => [
+				user.id,
+				user.name,
+				<div
+					key={user.id}
+					className='userpicture'
+					style={{ backgroundImage: `url(${user.imageUrl})` }}
+				></div>,
+				user.role?.name,
+				<button
+					key={user.id + 'role'}
+					className='editrol'
+					onClick={() => setShowModalFor(user.id || '')}
+				>
+					<EditRoleIcon />
+				</button>,
+				<button
+					key={user.id + 'edit'}
+					className='edit'
+					onClick={() => handleEdit(user)}
+				>
+					<EditUserIcon />
+				</button>,
+				<button
+					key={user.id + 'delete'}
+					className='delete'
+					style={
+						user.role?.name === 'Administrador' &&
+						!(
+							authContext?.user?.name === 'root' &&
+							authContext?.user?.role?.name === 'Administrador'
+						)
+							? { opacity: '0.2' }
+							: {}
+					}
+					onClick={() => setShowDeletionModalFor(user.id || '')}
+					disabled={
+						user.role?.name === 'Administrador' &&
+						!(
+							authContext?.user?.name === 'root' &&
+							authContext?.user?.role?.name === 'Administrador'
+						)
+					}
+				>
+					<TrashIcon />
+				</button>,
+			]),
 	};
 
 	return (
