@@ -2,6 +2,7 @@ import DynamicInputs from '@components/commons/DynamicInputs';
 import FormHeader from '@components/commons/form/FormHeader';
 import ImageUploader from '@components/commons/ImageUploader';
 import ManualUploader from '@components/commons/ManualUploader';
+import QuickCreateSpecification from '@components/commons/QuickCreateSpecification';
 import SelectInput from '@components/commons/SelectInput';
 import TableRow from '@components/commons/TableRow';
 import TextAreaInput from '@components/commons/TextAreaInput';
@@ -129,22 +130,33 @@ const SpecificationsSection = ({
 	handleSpecUpdate,
 }: SpecificationsSectionProps) => {
 	return (
-		<div>
-			<label htmlFor='spec'>Especificaciones</label>
-			<table id='spec'>
-				<tbody>
-					{specifications.map((spec, index) => (
-						<TableRow
-							key={spec._id}
-							label={spec.name}
-							unit={spec.unit || ''}
-							value={specificationValues[index]?.value || ''}
-							onValueChange={newValue => handleSpecUpdate(newValue, index)}
-						/>
-					))}
-				</tbody>
-			</table>
-		</div>
+		<>
+			{specifications.length > 0 && (
+				<div style={{ marginBottom: '100px' }}>
+					<label htmlFor='spec'>Especificaciones</label>
+					<table id='spec'>
+						<tbody>
+							{specifications.map((spec, index) => (
+								<TableRow
+									key={spec._id}
+									label={spec.name}
+									unit={spec.unit || ''}
+									value={specificationValues[index]?.value || ''}
+									onValueChange={newValue => handleSpecUpdate(newValue, index)}
+								/>
+							))}
+						</tbody>
+					</table>
+					<p style={{ marginTop: '20px' }}>Nuevas especificaciones:</p>
+					<QuickCreateSpecification
+						name={'Especificación'}
+						familyId={specifications[0].family}
+						categoryId={specifications[0].category}
+						subcategoryId={specifications[0].subcategory}
+					/>
+				</div>
+			)}
+		</>
 	);
 };
 interface DynamicInputSectionProps {
