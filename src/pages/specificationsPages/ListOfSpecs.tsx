@@ -4,6 +4,7 @@ import ErrorMessage from '@components/commons/ErrorMessage';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
+import useFetchCounts from '@hooks/common/useFetchCounts';
 import useSpecificationsManagement from '@hooks/specifications/useSpecificationsManagement';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import BasePage from '@layouts/BasePage';
@@ -25,6 +26,18 @@ function SpecificationsGrid() {
 		handleCloseModal,
 		handleDelete,
 	} = useSpecificationsManagement();
+	const { numberOfProducts } = useFetchCounts(
+		showDeletionModalFor,
+		{
+			fetchProducts: true,
+		},
+		'BySpecification',
+	);
+	console.log(numberOfProducts);
+	const confirmationInfo = () => {
+		if (numberOfProducts && numberOfProducts > 0)
+			return `Se afectarán gravemente ${numberOfProducts} productos`;
+	};
 	useEffect(() => {
 		const fetchSpecifications = async () => {
 			try {
@@ -99,6 +112,7 @@ function SpecificationsGrid() {
 								onCloseDelete={() => handleCloseModalDeletion(spec.id || '')}
 								onDelete={() => handleDelete(spec.id || '', spec.name)}
 								message={deletionMessage}
+								confirmationInfo={confirmationInfo()}
 							/>
 						)}
 					</div>

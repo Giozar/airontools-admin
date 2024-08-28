@@ -16,6 +16,7 @@ import Security from '@pages/css/miscPages.tsx/security';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
 import CreateFamily from '@pages/familyPages/CreateFamily';
 import EditFamily from '@pages/familyPages/EditFamily';
+import LandingPage from '@pages/generalPages/landingPage';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
 import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
@@ -35,7 +36,8 @@ const App = () => {
 		<AuthProvider>
 			<BrowserRouter>
 				<Routes>
-					<Route path='/' element={<Login />} />
+					<Route path='/' element={<LandingPage />} />
+					<Route path='/login-airontools' element={<Login />} />
 					<Route element={<PrivateRoute />}>
 						<Route element={<PrivateRouteOptionUser />}>
 							<Route path='/home' element={<Home />} />
@@ -43,13 +45,13 @@ const App = () => {
 							<Route path='/seguridad' element={<Security />} />
 							<Route path='/informacion-personal' element={<Personal />} />
 							<Route path='/home/solo-editor' element={<Home />} />
-							<Route path='/chat-con-asistente' element={<ChatAssistant />} />
 							<Route element={<PrivateRouteOptionUserAdmin />}>
 								<Route path='/home/usuarios' element={<UserOptions />} />
 								<Route
 									path='/home/usuarios/crear-usuario'
 									element={<UserOptionCreate />}
 								/>
+								<Route path='/chat-con-asistente' element={<ChatAssistant />} />
 								<Route
 									path='/home/usuarios/editar-usuario'
 									element={<UserOptionEdit />}

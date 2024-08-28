@@ -472,14 +472,17 @@ tfoot td {
 
 .tableRow .cell {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	border-bottom: 1px solid var(--divider);
 }
 
 /* Label Styles */
 .tableRow .label {
-	border-bottom: 1px solid var(--divider);
+	margin-right: 4px;
 	padding: 8px;
+	width: 100px;
 	font-weight: bold;
+	word-break: normal;
 }
 
 .tableRow input {
@@ -490,4 +493,5 @@ tfoot td {
 }
 .tableRow .unit {
 	margin-top: 4px;
+	padding: 8px;
 }

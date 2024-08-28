@@ -2,6 +2,7 @@ import DynamicInputs from '@components/commons/DynamicInputs';
 import FormHeader from '@components/commons/form/FormHeader';
 import ImageUploader from '@components/commons/ImageUploader';
 import ManualUploader from '@components/commons/ManualUploader';
+import QuickCreateSpecification from '@components/commons/QuickCreateSpecification';
 import SelectInput from '@components/commons/SelectInput';
 import TableRow from '@components/commons/TableRow';
 import TextAreaInput from '@components/commons/TextAreaInput';
@@ -121,30 +122,44 @@ interface SpecificationsSectionProps {
 	specifications: SpecDataToSend[];
 	specificationValues: { specification: string; value: string }[];
 	handleSpecUpdate: (newValue: string, index: number) => void;
+	handleFlagChange: (flag: boolean) => void;
 }
 
 const SpecificationsSection = ({
 	specifications,
 	specificationValues,
 	handleSpecUpdate,
+	handleFlagChange,
 }: SpecificationsSectionProps) => {
 	return (
-		<div>
-			<label htmlFor='spec'>Especificaciones</label>
-			<table id='spec'>
-				<tbody>
-					{specifications.map((spec, index) => (
-						<TableRow
-							key={spec._id}
-							label={spec.name}
-							unit={spec.unit || ''}
-							value={specificationValues[index]?.value || ''}
-							onValueChange={newValue => handleSpecUpdate(newValue, index)}
-						/>
-					))}
-				</tbody>
-			</table>
-		</div>
+		<>
+			{specifications.length > 0 && (
+				<div style={{ marginBottom: '100px' }}>
+					<label htmlFor='spec'>Especificaciones</label>
+					<table id='spec'>
+						<tbody>
+							{specifications.map((spec, index) => (
+								<TableRow
+									key={spec._id}
+									label={spec.name}
+									unit={spec.unit || ''}
+									value={specificationValues[index]?.value || ''}
+									onValueChange={newValue => handleSpecUpdate(newValue, index)}
+								/>
+							))}
+						</tbody>
+					</table>
+					<p style={{ marginTop: '20px' }}>Nuevas especificaciones:</p>
+					<QuickCreateSpecification
+						name={'Especificación'}
+						familyId={specifications[0].family}
+						categoryId={specifications[0].category}
+						subcategoryId={specifications[0].subcategory}
+						onFlagChange={handleFlagChange}
+					/>
+				</div>
+			)}
+		</>
 	);
 };
 interface DynamicInputSectionProps {
@@ -188,6 +203,7 @@ interface ToolFormProps {
 	selectedSubcategory: { id: string; name: string } | null;
 	handleSubcategoryChange: (value: string) => void;
 	specifications: SpecDataToSend[];
+	handleFlagChange: (flag: boolean) => void;
 	specificationValues: { specification: string; value: string }[];
 	handleSpecUpdate: (newValue: string, index: number) => void;
 	setChar: (chars: string[]) => void;
@@ -238,6 +254,7 @@ const ToolForm = ({
 	filePreviews,
 	handleFileSelect,
 	handleRemoveFile,
+	handleFlagChange,
 }: ToolFormProps) => {
 	return (
 		<>
@@ -268,6 +285,7 @@ const ToolForm = ({
 						specifications={specifications}
 						specificationValues={specificationValues}
 						handleSpecUpdate={handleSpecUpdate}
+						handleFlagChange={handleFlagChange}
 					/>
 					<DynamicInputSection
 						label='Características'

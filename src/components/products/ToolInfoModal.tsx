@@ -35,7 +35,7 @@ const ToolInfoModal = ({
 				<button className='modal-close' onClick={onClose}>
 					<CloseIcon />
 				</button>
-				{product && (
+				{product && product.name && (
 					<div>
 						<h2 style={{ top: 'sticky' }}>
 							{product.name}
@@ -71,11 +71,17 @@ const ToolInfoModal = ({
 								<div>
 									<Info title={'Nombre'} info={product.name} />
 									<Info title={'Modelo'} info={product.model} />
-									<Info title={'Familia'} info={product.family.name} />
-									<Info title={'Categoría'} info={product.category.name} />
+									<Info
+										title={'Familia'}
+										info={product.family ? product.family.name : ''}
+									/>
+									<Info
+										title={'Categoría'}
+										info={product.category ? product.category.name : ''}
+									/>
 									<Info
 										title={'Subcategoría'}
-										info={product.subcategory.name}
+										info={product.subcategory ? product.subcategory.name : ''}
 									/>
 								</div>
 							</div>
@@ -85,7 +91,7 @@ const ToolInfoModal = ({
 								items={
 									product.specifications.map(
 										spec =>
-											`${spec.specification.name}: ${spec.value} ${spec.specification.unit}`,
+											`${spec.specification ? spec.specification.name : '**BORRADA**'}: ${spec.value} ${spec.specification ? spec.specification.unit : '**BORRADA**'}`,
 									) || []
 								}
 							/>
