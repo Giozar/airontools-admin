@@ -25,7 +25,7 @@ function HeaderLogin() {
 	return (
 		<header>
 			<img src={aironLogo} alt='logo de airon tools' className='logoimg' />
-			<h1>Administrador de Herramientas AironTools</h1>
+			<h1>¡Bienvenido a tu sistema de gestión de trabajo AironTools!</h1>
 		</header>
 	);
 }
