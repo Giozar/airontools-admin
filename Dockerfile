@@ -35,8 +35,9 @@ WORKDIR /app
 
 # Environment configuration
 ENV NODE_ENV=production
-ENV VITE_API_URL=http://localhost:4000
-ENV PORT=3000
+# ENV VITE_API_URL=http://localhost:4000
+# ENV PORT=3000
+# ENV VITE_PORT=3000
 
 # Create non-root group and user
 # RUN addgroup --system --gid 1001 nodejs
