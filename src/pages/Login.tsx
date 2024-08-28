@@ -38,6 +38,13 @@ function Login() {
 	const [showPassword, setShowPassword] = useState(false);
 
 	useEffect(() => {
+		document.body.className = 'login-bg';
+		return () => {
+			document.body.className = '';
+		};
+	}, []);
+
+	useEffect(() => {
 		const token = localStorage.getItem('token');
 
 		if (token) {
