@@ -61,27 +61,36 @@ const Sidebar = () => {
 					<BellIcon />
 					Notificaciones
 				</Link>
-				<Link to='/chat-con-asistente'>
-					<BotIcon />
-					Asistente AironTools
-				</Link>
+				{authContext?.user &&
+					authContext?.user.role?.name === 'Administrador' && (
+						<Link to='/chat-con-asistente'>
+							<BotIcon />
+							Asistente AironTools
+						</Link>
+					)}
 				<ComboBox
 					option='Herramientas'
 					options={['Ver', 'Crear'].map(val => val + ' herramientas')}
 					onOptionSelected={handleOptionSelected}
 				/>
-				<ComboBox
-					option='Usuarios'
-					options={['Ver', 'Crear', 'Crear rol de'].map(
-						val => val + ' usuarios',
+				{authContext?.user &&
+					authContext?.user.role?.name === 'Administrador' && (
+						<ComboBox
+							option='Usuarios'
+							options={['Ver', 'Crear', 'Crear rol de'].map(
+								val => val + ' usuarios',
+							)}
+							onOptionSelected={handleOptionSelected}
+						/>
 					)}
-					onOptionSelected={handleOptionSelected}
-				/>
-				<ComboBox
-					option='Especificaciones'
-					options={['Ver', 'Crear'].map(val => val + ' especificaciones')}
-					onOptionSelected={handleOptionSelected}
-				/>
+				{authContext?.user &&
+					authContext?.user.role?.name === 'Administrador' && (
+						<ComboBox
+							option='Especificaciones'
+							options={['Ver', 'Crear'].map(val => val + ' especificaciones')}
+							onOptionSelected={handleOptionSelected}
+						/>
+					)}
 				{/* <ComboBox
 					option='Roles'
 					options={['Ver', 'Crear', 'Actualizar', 'Eliminar'].map(

@@ -43,13 +43,13 @@ const App = () => {
 							<Route path='/seguridad' element={<Security />} />
 							<Route path='/informacion-personal' element={<Personal />} />
 							<Route path='/home/solo-editor' element={<Home />} />
-							<Route path='/chat-con-asistente' element={<ChatAssistant />} />
 							<Route element={<PrivateRouteOptionUserAdmin />}>
 								<Route path='/home/usuarios' element={<UserOptions />} />
 								<Route
 									path='/home/usuarios/crear-usuario'
 									element={<UserOptionCreate />}
 								/>
+								<Route path='/chat-con-asistente' element={<ChatAssistant />} />
 								<Route
 									path='/home/usuarios/editar-usuario'
 									element={<UserOptionEdit />}
