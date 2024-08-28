@@ -28,14 +28,14 @@ const ToolInfoModal = ({
 	const handleNumberSelect = (value: number) => {
 		setSelectedNumber(value);
 	};
-
+	console.log(product);
 	return (
 		<div className='modal-overlay'>
 			<div className='modal-content'>
 				<button className='modal-close' onClick={onClose}>
 					<CloseIcon />
 				</button>
-				{product && (
+				{product && product.name && (
 					<div>
 						<h2 style={{ top: 'sticky' }}>
 							{product.name}

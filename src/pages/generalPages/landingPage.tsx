@@ -1,5 +1,8 @@
 import '@pages/generalPages/landingPage.css';
 import logoAirontools from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
+import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
+import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
+
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 const CompanyBox: React.FC<{
@@ -27,13 +30,13 @@ function LandingPage() {
 		{
 			name: 'Desumex',
 			color: '#006599',
-			logo: '',
+			logo: logoDesumex,
 			loginUrl: '/login-desumex',
 		},
 		{
 			name: 'Coirmex',
 			color: '#771d1d',
-			logo: '',
+			logo: logoCoirmex,
 			loginUrl: '/login-coirmex',
 		},
 	];
