@@ -13,7 +13,7 @@ import { cleanArray } from '@utils/cleanArray.util';
 import { errorHandler } from '@utils/errorHandler.util';
 import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util';
 import axios from 'axios';
-import { FormEvent, useContext, useState } from 'react';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 import './createtool.css';
 import ToolForm from './ToolForm';
 
@@ -42,10 +42,18 @@ const Atornillador = () => {
 		handleCategoryChange,
 		handleSubcategoryChange,
 	} = useToolCategorizationEdit();
+	const [flag, setFlag] = useState(false);
+	const handleFlagChange = (newFlag: boolean) => {
+		setFlag(newFlag);
+	};
+	useEffect(() => {
+		//console.log('Sirvo para actualizar las especificaciones');
+	}, [flag]);
 
 	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
 		catId: selectedCategory?.id || '',
 		subcatId: selectedSubcategory?.id || '',
+		flag,
 	});
 
 	// const { videos, addVideo, removeVideo, updateVideo } = useVideos();
@@ -158,6 +166,7 @@ const Atornillador = () => {
 					filePreviews={filePreviews}
 					handleFileSelect={handleFileSelect}
 					handleRemoveFile={handleRemoveFile}
+					handleFlagChange={handleFlagChange}
 				/>
 			</form>
 		</div>

@@ -6,9 +6,10 @@ interface Spec {
 	catId: string;
 	subcatId: string;
 	initialSpecs?: Array<{ specification: string; value: string }>;
+	flag?: boolean;
 }
 
-function useSpecs({ catId, subcatId, initialSpecs }: Spec) {
+function useSpecs({ catId, subcatId, initialSpecs, flag }: Spec) {
 	const [specificationValues, setSpecificationValues] = useState<
 		Array<{ specification: string; value: string }>
 	>(initialSpecs || []);
@@ -20,12 +21,12 @@ function useSpecs({ catId, subcatId, initialSpecs }: Spec) {
 
 		try {
 			const data = await fetchSpecificationsByCategoryId(catId);
-			console.log(data);
-			console.log(subcatId);
+			//console.log(data);
+			//console.log(subcatId);
 			//TODO: orita esto no rompe nada pero es el backend que responde raro xd
 			//Deberia de regresar subcategory._id pero no lo hace...
 			const filteredSpecs = data.filter(item => item.subcategory === subcatId);
-			console.log(filteredSpecs);
+			//console.log(filteredSpecs);
 			setSpecifications(filteredSpecs);
 			// console.log(data);
 			const initialSpecsLookup = initialSpecs?.reduce(
@@ -53,7 +54,7 @@ function useSpecs({ catId, subcatId, initialSpecs }: Spec) {
 	useEffect(() => {
 		fetchSpecifications();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [catId, subcatId]);
+	}, [catId, subcatId, flag]);
 
 	const editOrCreateKeyInSpecs = useCallback(
 		(keyToFind: string, newValue: string) => {

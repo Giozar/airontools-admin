@@ -122,12 +122,14 @@ interface SpecificationsSectionProps {
 	specifications: SpecDataToSend[];
 	specificationValues: { specification: string; value: string }[];
 	handleSpecUpdate: (newValue: string, index: number) => void;
+	handleFlagChange: (flag: boolean) => void;
 }
 
 const SpecificationsSection = ({
 	specifications,
 	specificationValues,
 	handleSpecUpdate,
+	handleFlagChange,
 }: SpecificationsSectionProps) => {
 	return (
 		<>
@@ -153,6 +155,7 @@ const SpecificationsSection = ({
 						familyId={specifications[0].family}
 						categoryId={specifications[0].category}
 						subcategoryId={specifications[0].subcategory}
+						onFlagChange={handleFlagChange}
 					/>
 				</div>
 			)}
@@ -200,6 +203,7 @@ interface ToolFormProps {
 	selectedSubcategory: { id: string; name: string } | null;
 	handleSubcategoryChange: (value: string) => void;
 	specifications: SpecDataToSend[];
+	handleFlagChange: (flag: boolean) => void;
 	specificationValues: { specification: string; value: string }[];
 	handleSpecUpdate: (newValue: string, index: number) => void;
 	setChar: (chars: string[]) => void;
@@ -250,6 +254,7 @@ const ToolForm = ({
 	filePreviews,
 	handleFileSelect,
 	handleRemoveFile,
+	handleFlagChange,
 }: ToolFormProps) => {
 	return (
 		<>
@@ -280,6 +285,7 @@ const ToolForm = ({
 						specifications={specifications}
 						specificationValues={specificationValues}
 						handleSpecUpdate={handleSpecUpdate}
+						handleFlagChange={handleFlagChange}
 					/>
 					<DynamicInputSection
 						label='Características'

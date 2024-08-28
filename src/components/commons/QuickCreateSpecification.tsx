@@ -14,6 +14,7 @@ import TextInput from './TextInput';
 interface DynamicInputAreaInputProps {
 	name: string;
 	onChange?: (components: SpecDataToSend[]) => void;
+	onFlagChange?: (flag: boolean) => void;
 	familyId: string;
 	categoryId: string;
 	subcategoryId: string;
@@ -22,6 +23,7 @@ interface DynamicInputAreaInputProps {
 const QuickCreateSpecification = ({
 	name,
 	onChange,
+	onFlagChange,
 	familyId,
 	categoryId,
 	subcategoryId,
@@ -31,21 +33,22 @@ const QuickCreateSpecification = ({
 	const [showCreateButton, setShowCreateButton] = useState<boolean>(false);
 	const authContext = useContext(AuthContext);
 	const createdBy = authContext?.user?.id || 'user';
-
+	const [flag, setFlag] = useState(false);
 	const { showError, errorLog } = useErrorHandling();
 	const { showSuccess, successLog } = useSuccessHandling();
 
-	const [flag, setFlag] = useState(false);
 	useEffect(() => {
 		handleRemoveComponent(0);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [flag]);
+
 	const saveSpecifications = async () => {
 		try {
 			await createSpecification({
 				specification: components[0],
 			});
 			showSuccess('Especificación creada con éxito');
+			//setFlag(prevFlag => !prevFlag);
+			if (onFlagChange) onFlagChange(!flag);
 			setFlag(!flag);
 		} catch (error) {
 			errorHandler(error, showError);
