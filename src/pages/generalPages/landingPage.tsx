@@ -1,10 +1,11 @@
+import { AuthContext } from '@contexts/AuthContext';
 import '@pages/generalPages/landingPage.css';
 import logoAirontools from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
 import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
 import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
 
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 const CompanyBox: React.FC<{
 	name: string;
 	color: string;
@@ -40,12 +41,17 @@ function LandingPage() {
 			loginUrl: '/login-coirmex',
 		},
 	];
+	const authContext = useContext(AuthContext);
+
 	useEffect(() => {
 		document.body.className = 'landing-bg';
 		return () => {
 			document.body.className = '';
 		};
 	}, []);
+	if (authContext?.isAuthenticated) {
+		return <Navigate to={localStorage.getItem('location') || '/home'} />;
+	}
 	return (
 		<div className={'landing-container'}>
 			<h1 className={'mainTitle'}>
