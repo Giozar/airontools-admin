@@ -1,6 +1,7 @@
 services:
   airontools-admin:
     image: airontools-admin # Nombre de la imagen
+    container_name: airontools-admin # Nombre del contenedor
     build:
       context: .
       dockerfile: Dockerfile
