@@ -71,11 +71,17 @@ const ToolInfoModal = ({
 								<div>
 									<Info title={'Nombre'} info={product.name} />
 									<Info title={'Modelo'} info={product.model} />
-									<Info title={'Familia'} info={product.family.name} />
-									<Info title={'Categoría'} info={product.category.name} />
+									<Info
+										title={'Familia'}
+										info={product.family ? product.family.name : ''}
+									/>
+									<Info
+										title={'Categoría'}
+										info={product.category ? product.category.name : ''}
+									/>
 									<Info
 										title={'Subcategoría'}
-										info={product.subcategory.name}
+										info={product.subcategory ? product.subcategory.name : ''}
 									/>
 								</div>
 							</div>
