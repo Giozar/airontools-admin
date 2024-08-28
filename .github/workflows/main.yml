@@ -28,3 +28,14 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/airontools-admin:latest
+
+      - name: Run Docker Container
+        run: |
+          docker run -d \
+            --name airontools-admin \
+            --env NODE_ENV=production \
+            --env VITE_API_URL=${{ secrets.VITE_API_URL }} \
+            --env PORT=${{ secrets.VITE_PORT }} \
+            --env VITE_AI_URL=${{ secrets.VITE_AI_URL }} \
+            -p ${{ secrets.VITE_PORT }}:${{ secrets.VITE_PORT }} \
+            ${{ secrets.DOCKERHUB_USERNAME }}/airontools-admin:latest
