@@ -480,7 +480,9 @@ tfoot td {
 .tableRow .label {
 	margin-right: 4px;
 	padding: 8px;
+	width: 100px;
 	font-weight: bold;
+	word-break: normal;
 }
 
 .tableRow input {
