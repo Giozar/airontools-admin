@@ -39,7 +39,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 		catId: selectedCategory?.id || toolToEdit.category._id || '',
 		subcatId: selectedSubcategory?.id || toolToEdit.subcategory._id || '',
 		initialSpecs: toolToEdit.specifications.map(edit => ({
-			specification: edit.specification._id || '',
+			specification: (edit.specification ? edit.specification._id : '') || '',
 			value: edit.value,
 		})),
 	});

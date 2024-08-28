@@ -28,7 +28,7 @@ const ToolInfoModal = ({
 	const handleNumberSelect = (value: number) => {
 		setSelectedNumber(value);
 	};
-	console.log(product);
+
 	return (
 		<div className='modal-overlay'>
 			<div className='modal-content'>
@@ -85,7 +85,7 @@ const ToolInfoModal = ({
 								items={
 									product.specifications.map(
 										spec =>
-											`${spec.specification.name}: ${spec.value} ${spec.specification.unit}`,
+											`${spec.specification ? spec.specification.name : '**BORRADA**'}: ${spec.value} ${spec.specification ? spec.specification.unit : '**BORRADA**'}`,
 									) || []
 								}
 							/>
