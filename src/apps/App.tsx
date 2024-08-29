@@ -37,7 +37,7 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route path='/' element={<LandingPage />} />
-					<Route path='/login-airontools' element={<Login />} />
+					<Route path='/login/:company' element={<Login />} />
 					<Route element={<PrivateRoute />}>
 						<Route element={<PrivateRouteOptionUser />}>
 							<Route path='/home' element={<Home />} />
@@ -106,8 +106,16 @@ const App = () => {
 
 const PrivateRoute = () => {
 	const authContext = React.useContext(AuthContext);
+	const selectedCompany = localStorage.getItem('selectedCompany');
+
 	if (!authContext) return null;
-	return authContext.isAuthenticated ? <Outlet /> : <Navigate to='/' />;
+	return authContext.isAuthenticated ? (
+		<Outlet />
+	) : selectedCompany ? (
+		<Navigate to={`/login/${selectedCompany}`} />
+	) : (
+		<Navigate to='/' />
+	);
 };
 
 const PrivateRouteOptionUser = () => {

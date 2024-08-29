@@ -1,26 +1,35 @@
 import ThemeToggleButton from '@components/ThemeToggle';
-import { AuthContext } from '@contexts/AuthContext';
 import '@pages/generalPages/LandingPage.css';
 import logoAirontools from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
 import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
 import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
 import '../../index.css';
 
-import React, { useContext, useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 const CompanyBox: React.FC<{
 	name: string;
 	color: string;
 	logo: string;
 	loginUrl: string;
-}> = ({ name, color, logo, loginUrl }) => (
-	<Link to={loginUrl}>
-		<div className='companyBox' style={{ backgroundColor: color }}>
+}> = ({ name, color, logo, loginUrl }) => {
+	const navigate = useNavigate();
+
+	const handleLoginRedirect = (company: string) => {
+		localStorage.setItem('selectedCompany', company);
+		navigate(`/login/${company}`);
+	};
+	return (
+		<button
+			onClick={() => handleLoginRedirect(loginUrl)}
+			className='companyBox'
+			style={{ backgroundColor: color }}
+		>
 			<img className='logo' src={logo} />
 			<h3>{name}</h3>
-		</div>
-	</Link>
-);
+		</button>
+	);
+};
 
 function LandingPage() {
 	const companies = [
@@ -28,32 +37,28 @@ function LandingPage() {
 			name: 'AironTools',
 			color: '#131954',
 			logo: logoAirontools,
-			loginUrl: '/login-airontools',
+			loginUrl: 'airontools',
 		},
 		{
 			name: 'Desumex',
 			color: '#006599',
 			logo: logoDesumex,
-			loginUrl: '/login-desumex',
+			loginUrl: 'desumex',
 		},
 		{
 			name: 'Coirmex',
 			color: '#771d1d',
 			logo: logoCoirmex,
-			loginUrl: '/login-coirmex',
+			loginUrl: 'coirmex',
 		},
 	];
-	const authContext = useContext(AuthContext);
-
 	useEffect(() => {
 		document.body.className = 'landing-bg';
 		return () => {
 			document.body.className = '';
 		};
 	}, []);
-	if (authContext?.isAuthenticated) {
-		return <Navigate to={localStorage.getItem('location') || '/home'} />;
-	}
+
 	return (
 		<div className={'landing-container'}>
 			<ThemeToggleButton />
