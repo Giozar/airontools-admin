@@ -56,7 +56,7 @@ function Login() {
 		}
 	}, []);
 	useEffect(() => {
-		document.body.className = 'login-bg';
+		document.body.className = `login-bg-${company}`;
 		return () => {
 			document.body.className = '';
 		};

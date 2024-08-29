@@ -1,7 +1,12 @@
-.login-bg {
+.login-bg-airontools {
 	background-color: var(--bg-primary);
 }
-
+.login-bg-desumex {
+	background-color: #0b2e5c;
+}
+.login-bg-coirmex {
+	background-color: #362b2b;
+}
 header {
 	display: flex;
 	top: 0;
