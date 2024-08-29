@@ -21,6 +21,9 @@ header h1 {
 	width: 400px;
 	font-size: 1.5em;
 }
+header h1 span {
+	text-transform: capitalize;
+}
 
 .login {
 	display: flex;

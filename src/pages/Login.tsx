@@ -13,7 +13,9 @@ import EyeOffIcon from '@components/svg/EyeOffIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { UserDataBackend } from '@interfaces/User.interface';
 import logoAiron from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
-import aironLogo from './Logo-Blanco.png';
+import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
+import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
+import aironLogo from './Logo-Blanco.png'; //cambiar por otro el general
 interface LoginResponse {
 	token: string;
 	user: UserDataBackend;
@@ -21,11 +23,13 @@ interface LoginResponse {
 	iat: number;
 }
 
-function HeaderLogin() {
+function HeaderLogin({ title }: { title: string }) {
 	return (
 		<header>
-			<img src={aironLogo} alt='logo de airon tools' className='logoimg' />
-			<h1>¡Bienvenido a tu sistema de gestión de trabajo AironTools!</h1>
+			<img src={aironLogo} alt={`logo de ${title}`} className='logoimg' />
+			<h1>
+				¡Bienvenido a tu sistema de gestión de trabajo <span>{title}</span>!
+			</h1>
 		</header>
 	);
 }
@@ -37,7 +41,20 @@ function Login() {
 	const authContext = useContext(AuthContext);
 	const [showPassword, setShowPassword] = useState(false);
 	const { company } = useParams();
-
+	const [logo, setLogo] = useState('');
+	useEffect(() => {
+		if (company) {
+			setLogo(
+				company === 'airontools'
+					? logoAiron
+					: company === 'desumex'
+						? logoDesumex
+						: company === 'coirmex'
+							? logoCoirmex
+							: '',
+			);
+		}
+	}, []);
 	useEffect(() => {
 		document.body.className = 'login-bg';
 		return () => {
@@ -112,14 +129,14 @@ function Login() {
 
 	return (
 		<>
-			<HeaderLogin />
+			<HeaderLogin title={company || ''} />
 
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
 			<div className='login'>
 				<form onSubmit={handleLogin}>
-					<img src={logoAiron} alt='logo de airon tools' />
-					<h2>Inicio de Sesión {company}</h2>
+					<img src={logo} alt={`logo de ${company}`} />
+					<h2>Inicio de Sesión </h2>
 
 					<label htmlFor='email'>Correo electrónico</label>
 					<input
