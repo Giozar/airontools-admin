@@ -42,11 +42,15 @@ const Sidebar = () => {
 		}
 	};
 
-	const handleClose = () => {
+	const handleClose = async () => {
 		authContext?.setAuth({ isAuthenticated: false, user: null });
 		localStorage.setItem('token', '');
-		// localStorage.setItem('location', '');
-		navigate('/');
+		const selectedCompany = localStorage.getItem('selectedCompany');
+		console.log(selectedCompany);
+		if (selectedCompany) {
+			await new Promise(resolve => setTimeout(resolve, 10));
+			navigate(`/login/${selectedCompany}`);
+		} else navigate('/');
 	};
 	return (
 		<div className='sidebar'>

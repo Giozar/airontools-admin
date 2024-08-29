@@ -4,7 +4,7 @@ import useErrorHandling from '@hooks/common/useErrorHandling';
 import axios, { AxiosError } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { FormEvent, useContext, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import './css/Login.css';
 // eslint-disable-next-line import/no-absolute-path
 import ErrorMessage from '@components/commons/ErrorMessage';
@@ -36,6 +36,7 @@ function Login() {
 	const { errorLog, showError } = useErrorHandling();
 	const authContext = useContext(AuthContext);
 	const [showPassword, setShowPassword] = useState(false);
+	const { company } = useParams();
 
 	useEffect(() => {
 		document.body.className = 'login-bg';
@@ -118,7 +119,7 @@ function Login() {
 			<div className='login'>
 				<form onSubmit={handleLogin}>
 					<img src={logoAiron} alt='logo de airon tools' />
-					<h2>Inicio de Sesión</h2>
+					<h2>Inicio de Sesión {company}</h2>
 
 					<label htmlFor='email'>Correo electrónico</label>
 					<input

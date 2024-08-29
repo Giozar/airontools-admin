@@ -37,7 +37,7 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route path='/' element={<LandingPage />} />
-					<Route path='/login/airontools' element={<Login />} />
+					<Route path='/login/:company' element={<Login />} />
 					<Route element={<PrivateRoute />}>
 						<Route element={<PrivateRouteOptionUser />}>
 							<Route path='/home' element={<Home />} />
