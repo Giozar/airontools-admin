@@ -12,8 +12,8 @@ import EyeIcon from '@components/svg/EyeIcon';
 import EyeOffIcon from '@components/svg/EyeOffIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { UserDataBackend } from '@interfaces/User.interface';
+import logoAiron from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
 import aironLogo from './Logo-Blanco.png';
-
 interface LoginResponse {
 	token: string;
 	user: UserDataBackend;
@@ -117,7 +117,7 @@ function Login() {
 
 			<div className='login'>
 				<form onSubmit={handleLogin}>
-					<img src={aironLogo} alt='logo de airon tools' />
+					<img src={logoAiron} alt='logo de airon tools' />
 					<h2>Inicio de Sesión</h2>
 
 					<label htmlFor='email'>Correo electrónico</label>
