@@ -1,5 +1,5 @@
 import HeaderTitle from '@components/commons/HeaderTitle';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './BasePage.css';
 import HeaderApp from './HeaderApp';
@@ -12,7 +12,10 @@ type BasePageProps = {
 
 function BasePage({ title, children }: BasePageProps) {
 	const location = useLocation();
-	localStorage.setItem('location', location.pathname);
+	useEffect(() => {
+		localStorage.setItem('location', location.pathname);
+	}, [location.pathname]);
+
 	return (
 		<div className='mainPage'>
 			<Sidebar />

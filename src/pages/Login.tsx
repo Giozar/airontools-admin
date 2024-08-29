@@ -4,7 +4,7 @@ import useErrorHandling from '@hooks/common/useErrorHandling';
 import axios, { AxiosError } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { FormEvent, useContext, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import './css/Login.css';
 // eslint-disable-next-line import/no-absolute-path
 import ErrorMessage from '@components/commons/ErrorMessage';
@@ -12,8 +12,10 @@ import EyeIcon from '@components/svg/EyeIcon';
 import EyeOffIcon from '@components/svg/EyeOffIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { UserDataBackend } from '@interfaces/User.interface';
-import aironLogo from './Logo-Blanco.png';
-
+import logoAiron from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
+import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
+import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
+import aironLogo from './Logo-Blanco.png'; //cambiar por otro el general
 interface LoginResponse {
 	token: string;
 	user: UserDataBackend;
@@ -21,11 +23,13 @@ interface LoginResponse {
 	iat: number;
 }
 
-function HeaderLogin() {
+function HeaderLogin({ title }: { title: string }) {
 	return (
 		<header>
-			<img src={aironLogo} alt='logo de airon tools' className='logoimg' />
-			<h1>¡Bienvenido a tu sistema de gestión de trabajo AironTools!</h1>
+			<img src={aironLogo} alt={`logo de ${title}`} className='logoimg' />
+			<h1>
+				¡Bienvenido a tu sistema de gestión de trabajo <span>{title}</span>!
+			</h1>
 		</header>
 	);
 }
@@ -36,9 +40,23 @@ function Login() {
 	const { errorLog, showError } = useErrorHandling();
 	const authContext = useContext(AuthContext);
 	const [showPassword, setShowPassword] = useState(false);
-
+	const { company } = useParams();
+	const [logo, setLogo] = useState('');
 	useEffect(() => {
-		document.body.className = 'login-bg';
+		if (company) {
+			setLogo(
+				company === 'airontools'
+					? logoAiron
+					: company === 'desumex'
+						? logoDesumex
+						: company === 'coirmex'
+							? logoCoirmex
+							: '',
+			);
+		}
+	}, []);
+	useEffect(() => {
+		document.body.className = `login-bg-${company}`;
 		return () => {
 			document.body.className = '';
 		};
@@ -111,14 +129,14 @@ function Login() {
 
 	return (
 		<>
-			<HeaderLogin />
+			<HeaderLogin title={company || ''} />
 
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
 			<div className='login'>
 				<form onSubmit={handleLogin}>
-					<img src={aironLogo} alt='logo de airon tools' />
-					<h2>Inicio de Sesión</h2>
+					<img src={logo} alt={`logo de ${company}`} />
+					<h2>Inicio de Sesión </h2>
 
 					<label htmlFor='email'>Correo electrónico</label>
 					<input
