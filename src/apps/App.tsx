@@ -16,7 +16,7 @@ import Security from '@pages/css/miscPages.tsx/security';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
 import CreateFamily from '@pages/familyPages/CreateFamily';
 import EditFamily from '@pages/familyPages/EditFamily';
-import LandingPage from '@pages/generalPages/landingPage';
+import LandingPage from '@pages/generalPages/LandingPage';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
 import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';

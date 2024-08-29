@@ -82,7 +82,7 @@
 }
 /* Light Theme */
 .light-theme {
-	--bg-primary: #fafafa; /* Very light grey */
+	--bg-primary: #dadada; /* Very light grey */
 	--bg-secondary: #ffff; /* White */
 	--bg-tertiary: #f0f0f0; /* Light grey */
 
