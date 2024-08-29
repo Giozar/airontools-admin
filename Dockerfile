@@ -35,13 +35,11 @@ WORKDIR /app
 
 # Environment configuration
 ENV NODE_ENV=production
-# ENV VITE_API_URL=http://localhost:4000
-# ENV PORT=3000
-# ENV VITE_PORT=3000
+ENV VITE_API_URL=${VITE_API_URL}
+ENV VITE_PORT=${VITE_PORT}
+ENV VITE_AI_URL=${VITE_AI_URL}
 
 # Create non-root group and user
-# RUN addgroup --system --gid 1001 nodejs
-# RUN adduser --system --uid 1001 viteuser
 RUN addgroup -S vitegroup && adduser -S viteuser -G vitegroup
 
 # Copy necessary files from the builder stage
