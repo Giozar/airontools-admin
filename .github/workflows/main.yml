@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # Configura la rama que activará el workflow
+      - main
 
 jobs:
   build:
@@ -28,6 +28,10 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/airontools-admin:latest
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_PORT=${{ secrets.VITE_PORT }}
+            VITE_AI_URL=${{ secrets.VITE_AI_URL }}
 
       - name: Run Docker Container
         run: |
