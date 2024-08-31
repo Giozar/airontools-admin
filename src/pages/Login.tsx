@@ -7,6 +7,7 @@ import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import './css/Login.css';
 // eslint-disable-next-line import/no-absolute-path
+import ThemeToggleButton from '@components/ThemeToggle';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import EyeIcon from '@components/svg/EyeIcon';
 import EyeOffIcon from '@components/svg/EyeOffIcon';
@@ -30,6 +31,7 @@ function HeaderLogin({ title }: { title: string }) {
 			<h1>
 				¡Bienvenido a tu sistema de gestión de trabajo <span>{title}</span>!
 			</h1>
+			<ThemeToggleButton />
 		</header>
 	);
 }
