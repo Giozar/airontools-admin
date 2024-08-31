@@ -1,14 +1,18 @@
 .login-bg-airontools {
 	background-color: var(--bg-primary);
 }
+
 .login-bg-desumex {
 	background-color: #0b2e5c;
 }
+
 .login-bg-coirmex {
 	background-color: #362b2b;
 }
+
 header {
 	display: flex;
+	justify-content: space-around;
 	top: 0;
 	background-color: var(--menu-bg);
 	padding: 20px 0;
@@ -26,6 +30,7 @@ header h1 {
 	width: 400px;
 	font-size: 1.5em;
 }
+
 header h1 span {
 	text-transform: capitalize;
 }
@@ -77,11 +82,13 @@ header h1 span {
 	font-weight: bold;
 	font-size: medium;
 }
+
 .passwordInput {
 	display: grid;
 	grid-template-columns: 1fr auto;
 }
-.login form .passwordInput > button {
+
+.login form .passwordInput>button {
 	border-radius: 10px;
 	background-color: transparent;
 	padding: 5px;

@@ -5,6 +5,11 @@
 	font-family: Arial, sans-serif;
 }
 
+.landing-bg {
+	background-image:
+		linear-gradient(to right, #23292b 0% 100%)
+}
+
 .mainTitle {
 	margin-bottom: 2rem;
 	font-size: 2.5rem;

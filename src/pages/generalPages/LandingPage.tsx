@@ -1,10 +1,7 @@
-import ThemeToggleButton from '@components/ThemeToggle';
 import '@pages/generalPages/LandingPage.css';
 import logoAirontools from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
 import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
 import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
-import '../../index.css';
-
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 const CompanyBox: React.FC<{
@@ -61,7 +58,6 @@ function LandingPage() {
 
 	return (
 		<div className={'landing-container'}>
-			<ThemeToggleButton />
 			<h1 className={'mainTitle'}>
 				Sistema Integral de gestión para grupo industrial de herramientas
 			</h1>
