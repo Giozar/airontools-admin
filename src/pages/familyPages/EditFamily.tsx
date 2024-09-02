@@ -143,7 +143,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		if (numberOfSpecifications && numberOfSpecifications > 0)
 			mensaje += ` y ${numberOfSpecifications} especificaciones`;
 		if (numberOfProducts && numberOfProducts > 0)
-			mensaje += `. Además se afectarán ${numberOfProducts} productos`;
+			mensaje += `. Además se eliminarán ${numberOfProducts} productos, desligar y reclasificar estos productos antes de proceder con la eliminación`;
 		return mensaje;
 	};
 	return (

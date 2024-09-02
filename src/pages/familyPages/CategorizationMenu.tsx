@@ -8,6 +8,7 @@ import TrashIcon from '@components/svg/TrashIcon';
 import useFetchCategories from '@hooks/categories/useFetchCategories';
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
 import useFetchFamilies from '@hooks/families/useFetchFamilies';
+import useFetchProducts from '@hooks/products/useFetchProducts';
 import useFetchSpecifications from '@hooks/specifications/useFetchSpecifications';
 import useFetchSubcategories from '@hooks/subcategories/useFetchSubcategories';
 import BasePage from '@layouts/BasePage';
@@ -39,6 +40,7 @@ function ListOfFamilies() {
 	const { filteredCategories } = useFetchCategories();
 	const { filteredSubcategories } = useFetchSubcategories();
 	const { specifications } = useFetchSpecifications();
+	const { filteredProducts } = useFetchProducts();
 
 	const handleCloseModalDeletion = (familyId: string) => {
 		setFamilies(prevFamilies =>
@@ -61,10 +63,15 @@ function ListOfFamilies() {
 				specs => specs.family._id === familyId,
 			);
 
+			const products = filteredProducts.filter(
+				product => product.family._id == familyId,
+			);
+
 			return {
 				categoriesLength: categories.length,
 				subcategoriesLength: subcategories.length,
 				specificationLength: familySpecifications.length,
+				productsLength: products.length,
 			};
 		};
 	}, [filteredCategories, filteredSubcategories, specifications]);
@@ -88,8 +95,12 @@ function ListOfFamilies() {
 
 			<div className='grid'>
 				{filteredFamilies.map(family => {
-					const { categoriesLength, subcategoriesLength, specificationLength } =
-						calcFamilyStats(family.id || '');
+					const {
+						categoriesLength,
+						subcategoriesLength,
+						specificationLength,
+						productsLength,
+					} = calcFamilyStats(family.id || '');
 					return (
 						<div key={family.id} className='card'>
 							<div className='cardHeader'>
@@ -132,11 +143,15 @@ function ListOfFamilies() {
 										onDelete={() => handleDelete(family.id || '', family.name)}
 										message={deletionMessage}
 										confirmationInfo={
-											categoriesLength > 0 && specificationLength > 0
-												? `Al borrar esta familia se eliminarán ${categoriesLength} categorías, ${subcategoriesLength} subcategorías y ${specificationLength} especificaciones`
-												: categoriesLength > 0
-													? `Al borrar esta familia se eliminarán ${categoriesLength} categorías y ${subcategoriesLength} subcategorías`
-													: null
+											categoriesLength > 0 &&
+											specificationLength > 0 &&
+											productsLength > 0
+												? `Al borrar esta familia se eliminarán ${categoriesLength} categorías, ${subcategoriesLength} subcategorías, ${specificationLength} especificaciones y ${productsLength} productos, desligar y reclasificar estos productos antes de proceder con la eliminación`
+												: categoriesLength > 0 && specificationLength > 0
+													? `Al borrar esta familia se eliminarán ${categoriesLength} categorías, ${subcategoriesLength} subcategorías y ${specificationLength} especificaciones`
+													: categoriesLength > 0
+														? `Al borrar esta familia se eliminarán ${categoriesLength} categorías y ${subcategoriesLength} subcategorías`
+														: null
 										}
 									/>
 								)}

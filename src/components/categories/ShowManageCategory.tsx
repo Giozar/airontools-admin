@@ -88,7 +88,7 @@ function ShowManageCategory({
 		if (numberOfSpecifications && numberOfSpecifications > 0)
 			mensaje += ` ${numberOfSpecifications} especificaciones`;
 		if (numberOfProducts && numberOfProducts > 0)
-			mensaje += `. Se afectarán ${numberOfProducts} productos`;
+			mensaje += `. Se eliminarán ${numberOfProducts} productos, desligar y reclasificar estos productos antes de proceder con la eliminación`;
 		return mensaje;
 	};
 	return (
