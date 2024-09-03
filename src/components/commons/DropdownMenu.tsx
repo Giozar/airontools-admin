@@ -48,14 +48,10 @@ function DropdownMenu({
 				{filteredCategories
 					.filter(category => category.family.id === family.id)
 					.map(category => {
-						const categorySpecs = specifications.filter(
-							spec =>
-								spec.categories.map(cat => {
-									cat._id === category.id;
-								}) &&
-								spec.subcategories.map(subcategory => {
-									!subcategory._id;
-								}),
+						const categorySpecs = specifications.filter(spec =>
+							spec.categories.some(cat => {
+								cat._id === category.id;
+							}),
 						);
 						const categorySubcategories = filteredSubcategories.filter(
 							subcategory => subcategory.category._id === category.id,
@@ -93,9 +89,9 @@ function DropdownMenu({
 													{categorySubcategories.map(subcategory => {
 														const subcategorySpecs = specifications.filter(
 															spec =>
-																spec.subcategories.map(sub => {
-																	sub._id === subcategory.id;
-																}),
+																spec.subcategories.some(
+																	sub => sub._id === subcategory.id,
+																),
 														);
 
 														return (
