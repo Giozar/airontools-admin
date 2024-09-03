@@ -11,9 +11,9 @@ import { errorHandler } from '@utils/errorHandler.util';
 import { useContext, useEffect, useState } from 'react';
 
 function SpecificationForm({
-	familyId,
-	categoryId,
-	subcategoryId,
+	familiesId,
+	categoriesId,
+	subcategoriesId,
 }: SpecificationFormProps) {
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const { showError, errorLog } = useErrorHandling();
@@ -29,9 +29,9 @@ function SpecificationForm({
 				description: '',
 				unit: '',
 				createdBy,
-				family: familyId,
-				category: categoryId,
-				subcategory: subcategoryId || '',
+				families: familiesId,
+				categories: categoriesId,
+				subcategories: subcategoriesId || '',
 			},
 		]);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,9 +46,9 @@ function SpecificationForm({
 				description: '',
 				unit: '',
 				createdBy,
-				family: familyId,
-				category: categoryId,
-				subcategory: subcategoryId || '',
+				families: familiesId,
+				categories: categoriesId,
+				subcategories: subcategoriesId || '',
 			},
 		]);
 	};

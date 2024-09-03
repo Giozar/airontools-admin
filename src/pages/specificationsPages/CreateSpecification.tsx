@@ -45,9 +45,9 @@ export default function FamilySpecifications() {
 			</div>
 			{selectedFamily && selectedCategory && selectedSubcategory && (
 				<SpecificationForm
-					familyId={selectedFamily}
-					categoryId={selectedCategory}
-					subcategoryId={selectedSubcategory}
+					familiesId={[selectedFamily]}
+					categoriesId={[selectedCategory]}
+					subcategoriesId={[selectedSubcategory]}
 				/>
 			)}
 		</BasePage>
