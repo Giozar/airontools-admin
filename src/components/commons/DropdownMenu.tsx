@@ -50,7 +50,12 @@ function DropdownMenu({
 					.map(category => {
 						const categorySpecs = specifications.filter(
 							spec =>
-								spec.category._id === category.id && !spec.subcategory._id,
+								spec.categories.map(cat => {
+									cat._id === category.id;
+								}) &&
+								spec.subcategories.map(subcategory => {
+									!subcategory._id;
+								}),
 						);
 						const categorySubcategories = filteredSubcategories.filter(
 							subcategory => subcategory.category._id === category.id,
@@ -87,7 +92,10 @@ function DropdownMenu({
 												<ul className='subcategory-list'>
 													{categorySubcategories.map(subcategory => {
 														const subcategorySpecs = specifications.filter(
-															spec => spec.subcategory._id === subcategory.id,
+															spec =>
+																spec.subcategories.map(sub => {
+																	sub._id === subcategory.id;
+																}),
 														);
 
 														return (

@@ -59,8 +59,10 @@ function ListOfFamilies() {
 			const subcategories = filteredSubcategories.filter(subcategory =>
 				categories.some(category => category.id === subcategory.category._id),
 			);
-			const familySpecifications = specifications.filter(
-				specs => specs.family._id === familyId,
+			const familySpecifications = specifications.filter(specs =>
+				specs.families.map(family => {
+					family._id === familyId;
+				}),
 			);
 
 			const products = filteredProducts.filter(
