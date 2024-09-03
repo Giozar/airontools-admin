@@ -39,7 +39,7 @@ function ListOfFamilies() {
 
 	const { filteredCategories } = useFetchCategories();
 	const { filteredSubcategories } = useFetchSubcategories();
-	const { specifications } = useFetchSpecifications();
+	const { filteredSpecifications } = useFetchSpecifications();
 	const { filteredProducts } = useFetchProducts();
 
 	const handleCloseModalDeletion = (familyId: string) => {
@@ -59,11 +59,12 @@ function ListOfFamilies() {
 			const subcategories = filteredSubcategories.filter(subcategory =>
 				categories.some(category => category.id === subcategory.category._id),
 			);
-			const familySpecifications = specifications.filter(specs =>
-				specs.families.map(family => {
-					family._id === familyId;
-				}),
+			const specifications = filteredSpecifications.filter(spec =>
+				spec.families.some(fam => fam._id === familyId),
 			);
+
+			console.log(filteredSpecifications);
+			console.log(specifications);
 
 			const products = filteredProducts.filter(
 				product => product.family._id == familyId,
@@ -72,11 +73,11 @@ function ListOfFamilies() {
 			return {
 				categoriesLength: categories.length,
 				subcategoriesLength: subcategories.length,
-				specificationLength: familySpecifications.length,
+				specificationLength: specifications.length,
 				productsLength: products.length,
 			};
 		};
-	}, [filteredCategories, filteredSubcategories, specifications]);
+	}, [filteredCategories, filteredSubcategories, filteredSpecifications]);
 
 	if (loading) return <p>Cargando...</p>;
 	if (errorLog.isError) return <ErrorMessage message={errorLog.message} />;
@@ -131,7 +132,7 @@ function ListOfFamilies() {
 								<DropdownMenu
 									filteredCategories={filteredCategories}
 									filteredSubcategories={filteredSubcategories}
-									specifications={specifications}
+									filteredSpecifications={filteredSpecifications}
 									family={family}
 								/>
 								{showDeletionModalFor === family.id && (
@@ -145,15 +146,21 @@ function ListOfFamilies() {
 										onDelete={() => handleDelete(family.id || '', family.name)}
 										message={deletionMessage}
 										confirmationInfo={
-											categoriesLength > 0 &&
-											specificationLength > 0 &&
+											categoriesLength > 0 ||
+											subcategoriesLength > 0 ||
+											specificationLength > 0 ||
 											productsLength > 0
-												? `Al borrar esta familia se eliminarán ${categoriesLength} categorías, ${subcategoriesLength} subcategorías, ${specificationLength} especificaciones y ${productsLength} productos, desligar y reclasificar estos productos antes de proceder con la eliminación`
-												: categoriesLength > 0 && specificationLength > 0
-													? `Al borrar esta familia se eliminarán ${categoriesLength} categorías, ${subcategoriesLength} subcategorías y ${specificationLength} especificaciones`
-													: categoriesLength > 0
-														? `Al borrar esta familia se eliminarán ${categoriesLength} categorías y ${subcategoriesLength} subcategorías`
-														: null
+												? `Al borrar esta familia se eliminarán ${categoriesLength > 0 ? categoriesLength + ' categorías, ' : ''}
+												${subcategoriesLength > 0 ? subcategoriesLength + ' subcategorías, ' : ''} 
+												${specificationLength > 0 ? specificationLength + ' especificaciones, ' : ''} 
+												${
+													productsLength > 0
+														? productsLength +
+															` productos, desligar y 
+												reclasificar estos productos antes de proceder con la eliminación`
+														: ''
+												} `
+												: null
 										}
 									/>
 								)}
