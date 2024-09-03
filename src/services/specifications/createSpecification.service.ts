@@ -8,12 +8,19 @@ export default async function createSpecification({
 }: {
 	specification: SpecDataToSend;
 }) {
-	const response = await axios.post(airontoolsAPI + '/specifications', {
+	const filteredSpecification = {
 		...specification,
 		families: filterEmptyCategorizations(specification.families),
 		categories: filterEmptyCategorizations(specification.categories),
-		subcategory: filterEmptyCategorizations(specification.subcategories),
-	});
-	const specificationCreated = response.data;
-	return specificationCreated;
+		subcategories: filterEmptyCategorizations(specification.subcategories),
+	};
+
+	console.log(filteredSpecification);
+
+	const response = await axios.post(
+		`${airontoolsAPI}/specifications`,
+		filteredSpecification,
+	);
+
+	return response.data;
 }
