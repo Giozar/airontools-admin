@@ -92,16 +92,26 @@ function SpecificationsGrid() {
 						<p className='spec-description'>{spec.description}</p>
 						<p className='spec-unit'>Unidad: {spec.unit}</p>
 						<div className='spec-metadata'>
-							<span className='meta-tag metafamily'>
-								Familia: {spec.family.name}
-							</span>
-							<span className='meta-tag metacategory'>
-								Categoría: {spec.category.name}
-							</span>
-							{spec.subcategory._id && (
-								<span className='meta-tag metasubcategory'>
-									Subcategoría: {spec.subcategory.name}
+							{spec.families.map(family => (
+								<span key={family._id} className='meta-tag metafamily'>
+									Familia: {family.name}
 								</span>
+							))}
+							{spec.categories.map(category => (
+								<span key={category._id} className='meta-tag metacategory'>
+									Categoría: {category.name}
+								</span>
+							))}
+							{spec.subcategories.map(
+								subcategory =>
+									subcategory._id && (
+										<span
+											key={subcategory._id}
+											className='meta-tag metasubcategory'
+										>
+											Subcategoría: {subcategory.name}
+										</span>
+									),
 							)}
 						</div>
 						{showDeletionModalFor === spec.id && (

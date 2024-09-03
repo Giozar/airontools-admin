@@ -13,9 +13,9 @@ export const transformSpecDataToFrontend = (
 		name: Spec.name,
 		description: Spec.description,
 		unit: Spec.unit,
-		family: Spec.family,
-		category: Spec.category,
-		subcategory: Spec.subcategory,
+		families: Spec.families,
+		categories: Spec.categories,
+		subcategories: Spec.subcategories,
 		createdBy: transformUserDataFront(Spec.createdBy),
 	};
 };
@@ -28,9 +28,9 @@ export const transformSpecDataToBackend = (
 		name: Spec.name,
 		description: Spec.description,
 		unit: Spec.unit,
-		family: Spec.family._id || '',
-		category: Spec.category._id || '',
-		subcategory: Spec.subcategory._id || '',
+		families: Spec.families.map(family => family._id || ''),
+		categories: Spec.categories.map(category => category._id || ''),
+		subcategories: Spec.subcategories.map(subcategory => subcategory._id || ''),
 		createdBy: Spec.createdBy.id,
 	};
 };
