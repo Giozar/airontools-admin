@@ -63,8 +63,8 @@ function ListOfFamilies() {
 				spec.families.some(fam => fam._id === familyId),
 			);
 
-			console.log(filteredSpecifications);
-			console.log(specifications);
+			// console.log(filteredSpecifications);
+			// console.log(specifications);
 
 			const products = filteredProducts.filter(
 				product => product.family._id == familyId,

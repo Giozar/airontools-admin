@@ -1,6 +1,6 @@
 import SpecificationForm from '@components/specifications/SpecificationForm';
 import BasePage from '@layouts/BasePage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CategorizationSection from './CategorizationSection';
 import { Categorization } from './types';
 
@@ -33,7 +33,10 @@ export default function CreateSpecifications() {
 
 		setCategorizations(updatedCategorizations);
 	};
-	console.log(categorizations);
+
+	useEffect(() => {
+		console.log('Hola');
+	}, []);
 	return (
 		<BasePage title='Crear Especificaciones'>
 			{categorizations.map((_, index) => (

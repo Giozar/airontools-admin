@@ -33,7 +33,7 @@ function SpecificationsGrid() {
 		},
 		'BySpecification',
 	);
-	console.log(numberOfProducts);
+	// console.log(numberOfProducts);
 	const confirmationInfo = () => {
 		if (numberOfProducts && numberOfProducts > 0)
 			return `Se afectarán gravemente ${numberOfProducts} productos`;
@@ -43,7 +43,7 @@ function SpecificationsGrid() {
 			try {
 				const specs = await getSpecifications();
 				setSpecifications(specs);
-				console.log(specs);
+				// console.log(specs);
 			} catch (error) {
 				errorHandler(error, showError);
 			}
