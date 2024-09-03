@@ -34,9 +34,7 @@ export default function CreateSpecifications() {
 		setCategorizations(updatedCategorizations);
 	};
 
-	useEffect(() => {
-		console.log('Hola');
-	}, []);
+	useEffect(() => {}, [categorizations]);
 	return (
 		<BasePage title='Crear Especificaciones'>
 			{categorizations.map((_, index) => (

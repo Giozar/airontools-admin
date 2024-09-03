@@ -1,6 +1,6 @@
 import SelectInput from '@components/commons/SelectInput';
 import { useFamilySpecifications } from '@hooks/families/useFamilySpecifications';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface CategorizationSectionProps {
 	index: number;
@@ -28,20 +28,33 @@ const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 		handleSelectSubcategory,
 	} = useFamilySpecifications();
 
+	// Usar useEffect para manejar los cambios de selección en tiempo real
+	useEffect(() => {
+		// console.log(`Familia seleccionada en sección ${index}:`, selectedFamily);
+		// console.log(
+		// 	`Categoría seleccionada en sección ${index}:`,
+		// 	selectedCategory,
+		// );
+		// console.log(
+		// 	`Subcategoría seleccionada en sección ${index}:`,
+		// 	selectedSubcategory,
+		// );
+		onChange(index, selectedFamily, selectedCategory, selectedSubcategory);
+	}, [selectedFamily, selectedCategory, selectedSubcategory, index]);
+
 	const handleFamilyChange = (value: string) => {
 		handleSelectFamily(value);
-		console.log(selectedFamily);
-		onChange(index, selectedFamily, '', '');
+		// console.log(`Cambio de familia a: ${value}`);
 	};
 
 	const handleCategoryChange = (value: string) => {
 		handleSelectCategory(value);
-		onChange(index, '', selectedCategory, '');
+		// console.log(`Cambio de categoría a: ${value}`);
 	};
 
 	const handleSubcategoryChange = (value: string) => {
 		handleSelectSubcategory(value);
-		onChange(index, '', '', selectedSubcategory);
+		// console.log(`Cambio de subcategoría a: ${value}`);
 	};
 
 	return (
