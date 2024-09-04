@@ -1,12 +1,12 @@
-// src/hooks/useFetchSubcategoriesFromFamily.ts
+// src/hooks/useFetchSubcategoriesByFamily.ts
 
 import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
-import { getSubcategoriesFromFamilyService } from '@services/subcategories/getSubcategoriesFromFamily.service';
+import { getSubcategoriesByFamilyService } from '@services/subcategories/getSubcategoriesByFamily.service';
 import { useState } from 'react';
 import useErrorHandling from '../common/useErrorHandling';
 
-const useFetchSubcategoriesFromFamily = () => {
+const useFetchSubcategoriesByFamily = () => {
 	const { errorLog, showError } = useErrorHandling();
 	const [subcategories, setSubcategories] = useState<SubcategoryDataFrontend[]>(
 		[],
@@ -21,7 +21,7 @@ const useFetchSubcategoriesFromFamily = () => {
 		setLoading(true);
 		try {
 			const backendSubcategories =
-				await getSubcategoriesFromFamilyService(categoryId);
+				await getSubcategoriesByFamilyService(categoryId);
 			const frontendSubcategories = backendSubcategories.map(
 				transformSubcategoryDataToFrontend,
 			);
@@ -56,4 +56,4 @@ const useFetchSubcategoriesFromFamily = () => {
 	};
 };
 
-export default useFetchSubcategoriesFromFamily;
+export default useFetchSubcategoriesByFamily;

@@ -1,13 +1,12 @@
 import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesFromFamily';
 import useFetchFamilies from '@hooks/families/useFetchFamilies';
-import useFetchSubcategoriesFromFamily from '@hooks/subcategories/useFetchSubcategoriesFromFamily';
+import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcategoriesByFamily';
 import { useEffect, useState } from 'react';
 
 export function useFamilySpecifications() {
 	const { families } = useFetchFamilies();
 	const { categories, fetchCategories } = useFetchCategoriesFromFamily();
-	const { subcategories, fetchSubcategories } =
-		useFetchSubcategoriesFromFamily();
+	const { subcategories, fetchSubcategories } = useFetchSubcategoriesByFamily();
 
 	const [selectedFamily, setSelectedFamily] = useState<string>('');
 	const [selectedCategory, setSelectedCategory] = useState<string>('');

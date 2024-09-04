@@ -7,32 +7,39 @@ import SuccessMessage from '@components/commons/SuccessMessage';
 import TrashIcon from '@components/svg/TrashIcon';
 import useFetchCounts from '@hooks/common/useFetchCounts';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
-import useSubcategoryManagement from '@hooks/subcategories/useSubcategoryManagement';
+import useSubcategoryDelete from '@hooks/subcategories/useSubcategoryDelete';
 import useSubcategoryUpdate from '@hooks/subcategories/useSubcategoryUpdate';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import { useState } from 'react';
 
+interface EditSubcategoryProps {
+	subcategories: SubcategoryDataFrontend[];
+	setSubcategories: (subcategories: SubcategoryDataFrontend[]) => void;
+	update: () => void;
+}
 function EditSubcategory({
 	subcategories,
 	setSubcategories,
 	update,
-}: {
-	subcategories: SubcategoryDataFrontend[];
-	setSubcategories: (subcategories: SubcategoryDataFrontend[]) => void;
-	update: () => void;
-}) {
+}: EditSubcategoryProps) {
+	// Actualizar subcategoría
+	const { errorLogSubcategory, successLogSubcategory, updateSubcategory } =
+		useSubcategoryUpdate();
+	// Actualizar archivos de subcategoría
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
+
+	// Eliminar subcategoría
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
 		deletionMessage,
 		handleCloseModal,
 		handleDelete,
-	} = useSubcategoryManagement();
-	const { errorLogSubcategory, successLogSubcategory, updateSubcategory } =
-		useSubcategoryUpdate();
-	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
-		useMultipleFileUpload();
+	} = useSubcategoryDelete();
+
+	// Manejador de cargar imagen de subcategoría
 	const handleImageUploadSubcategory = async (
 		subcategoryId: string,
 		index: number,
@@ -44,7 +51,8 @@ function EditSubcategory({
 		);
 		return result;
 	};
-	// console.log(filePreviews);
+
+	// Manejador de petición de actualizar subcategoría
 	const handleUpdateSubcategory = async (
 		subcategory: SubcategoryDataFrontend,
 		index: number,
@@ -59,6 +67,7 @@ function EditSubcategory({
 					);
 					subcategory.images = [];
 				}
+
 			const uploadedUrlImages = await handleImageUploadSubcategory(
 				subcategory.id || '',
 				index + 1,
@@ -75,6 +84,8 @@ function EditSubcategory({
 			console.error('Error:', error);
 		}
 	};
+
+	// Atualiza los datos de la subcategoría de manera local en el estado
 	const handleSubcategoryNameChange = (
 		value: string,
 		categoryIndex: number,
@@ -92,6 +103,8 @@ function EditSubcategory({
 		updatedSubcategories[categoryIndex - 1].description = value;
 		setSubcategories(updatedSubcategories);
 	};
+
+	// Se usa el fetch de conteo
 	const { numberOfSpecifications, numberOfProducts, loading } = useFetchCounts(
 		showDeletionModalFor,
 		{
@@ -100,6 +113,7 @@ function EditSubcategory({
 		},
 		'BySubcategory',
 	);
+
 	const [deleteSubcategoryImageToDelete, setDeleteSubcategoryImageToDelete] =
 		useState<string[]>(new Array(subcategories.length).fill(''));
 
@@ -110,10 +124,14 @@ function EditSubcategory({
 			return newArray;
 		});
 	};
+
 	if (loading) {
 		return <div>Cargando...</div>;
 	}
+
 	const confirmationInfo = () => {
+		console.log(numberOfProducts);
+		console.log(subcategories.length);
 		let mensaje = '';
 		if (numberOfSpecifications && numberOfSpecifications > 0)
 			mensaje += `Al borrar esta subcategoria se eliminarán ${numberOfSpecifications} especificaciones`;

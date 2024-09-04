@@ -1,10 +1,10 @@
-// src/hooks/useSubcategoryManagement.ts
+// src/hooks/useSubcategoryDelete.ts
 
 import { deleteFileService } from '@services/files/deleteFile.service';
 import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
 import { useState } from 'react';
 
-const useSubcategoryManagement = () => {
+const useSubcategoryDelete = () => {
 	const [deletionMessage, setDeletionMessage] = useState<string | null>(null);
 	const [showDeletionModalFor, setShowDeletionModalFor] = useState<
 		string | null
@@ -59,4 +59,4 @@ const useSubcategoryManagement = () => {
 	};
 };
 
-export default useSubcategoryManagement;
+export default useSubcategoryDelete;
