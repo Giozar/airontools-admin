@@ -39,72 +39,38 @@ const useFetchCounts = (
 
 			setLoading(true);
 			try {
-				const requests = [];
+				const urls: { [key: string]: string } = {
+					categories: `${airontoolsAPI}/categories/count${type || ''}/${param}`,
+					subcategories: `${airontoolsAPI}/subcategories/count${type || ''}/${param}`,
+					specifications: `${airontoolsAPI}/specifications/count${type || ''}/${param}`,
+					products: `${airontoolsAPI}/products/count${type || ''}/${param}`,
+				};
 
-				if (options.fetchCategories) {
-					requests.push(
-						axios.get(
-							`${airontoolsAPI}/categories/count${type || ''}/${param}`,
-						),
-					);
-				}
-				if (options.fetchSubcategories) {
-					requests.push(
-						axios.get(
-							`${airontoolsAPI}/subcategories/count${type || ''}/${param}`,
-						),
-					);
-				}
-				if (options.fetchSpecifications) {
-					requests.push(
-						axios.get(
-							`${airontoolsAPI}/specifications/count${type || ''}/${param}`,
-						),
-					);
-				}
-				if (options.fetchProducts) {
-					requests.push(
-						axios.get(`${airontoolsAPI}/products/count${type || ''}/${param}`),
-					);
-				}
+				const requests = Object.entries(options).reduce(
+					(acc, [key, shouldFetch]) => {
+						if (shouldFetch && urls[key]) {
+							acc.push(axios.get(urls[key]));
+						}
+						return acc;
+					},
+					[] as Promise<any>[],
+				);
 
 				const responses = await Promise.all(requests);
 
-				responses.forEach((response, index) => {
-					if (options.fetchCategories && index === 0) {
-						setNumberOfCategories(response.data);
-					}
-					if (
-						options.fetchSubcategories &&
-						index === (options.fetchCategories ? 1 : 0)
-					) {
-						setNumberOfSubcategories(response.data);
-					}
-					if (
-						options.fetchSpecifications &&
-						index ===
-							(options.fetchCategories
-								? options.fetchSubcategories
-									? 2
-									: 1
-								: 0)
-					) {
-						setNumberOfSpecifications(response.data);
-					}
-					if (
-						options.fetchProducts &&
-						index ===
-							(options.fetchCategories
-								? options.fetchSubcategories
-									? options.fetchSpecifications
-										? 3
-										: 2
-									: 1
-								: 0)
-					) {
-						setNumberOfProducts(response.data);
-					}
-				});
+				const results = {
+					categories: responses[0]?.data ?? null,
+					subcategories: responses[1]?.data ?? null,
+					specifications: responses[2]?.data ?? null,
+					products: responses[3]?.data ?? null,
+				};
+
+				if (options.fetchCategories) setNumberOfCategories(results.categories);
+				if (options.fetchSubcategories)
+					setNumberOfSubcategories(results.subcategories);
+				if (options.fetchSpecifications)
+					setNumberOfSpecifications(results.specifications);
+				if (options.fetchProducts) setNumberOfProducts(results.products);
 			} catch (error) {
 				console.error('Error al contar datos:', error);
 			} finally {
@@ -114,7 +80,7 @@ const useFetchCounts = (
 
 		fetchCounts();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [param]);
+	}, [param, options, type]);
 
 	return {
 		numberOfCategories,
