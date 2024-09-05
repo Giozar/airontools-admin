@@ -1,7 +1,6 @@
 import SelectInput from '@components/commons/SelectInput';
 import SpecificationForm from '@components/specifications/SpecificationForm';
 import { useFamilySpecifications } from '@hooks/families/useFamilySpecifications';
-import BasePage from '@layouts/BasePage';
 
 export default function FamilySpecifications() {
 	const {
@@ -17,7 +16,7 @@ export default function FamilySpecifications() {
 	} = useFamilySpecifications();
 
 	return (
-		<BasePage title='Crear Especificaciones'>
+		<>
 			<div style={{ width: '50%' }}>
 				<SelectInput
 					id='familiaselect'
@@ -50,6 +49,6 @@ export default function FamilySpecifications() {
 					subcategoryId={selectedSubcategory}
 				/>
 			)}
-		</BasePage>
+		</>
 	);
 }

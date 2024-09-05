@@ -11,7 +11,6 @@ import useFetchFamilies from '@hooks/families/useFetchFamilies';
 import useFetchProducts from '@hooks/products/useFetchProducts';
 import useFetchSpecifications from '@hooks/specifications/useFetchSpecifications';
 import useFetchSubcategories from '@hooks/subcategories/useFetchSubcategories';
-import BasePage from '@layouts/BasePage';
 import '@pages/css/familyList.css';
 import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -167,7 +166,7 @@ function ListOfFamilies() {
 function ContentMainPage() {
 	const location = useLocation();
 	return (
-		<BasePage title='Categorización'>
+		<>
 			<div className='options users'>
 				<ActionCard
 					title='Crear Familia'
@@ -179,7 +178,7 @@ function ContentMainPage() {
 				/>
 			</div>
 			<ListOfFamilies />
-		</BasePage>
+		</>
 	);
 }
 

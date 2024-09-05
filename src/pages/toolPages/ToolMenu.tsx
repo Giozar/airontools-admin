@@ -14,7 +14,6 @@ import {
 	ProductDataBackend,
 	ProductDataFrontend,
 } from '@interfaces/Product.interface';
-import BasePage from '@layouts/BasePage';
 import '@pages/toolPages/ToolMenu.css';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -139,7 +138,7 @@ function ListOfTools() {
 }
 function ContentMainPage() {
 	return (
-		<BasePage title='Herramientas'>
+		<>
 			<div className='options users'>
 				<ActionCard
 					title='Crear Herramienta'
@@ -147,7 +146,7 @@ function ContentMainPage() {
 				/>
 			</div>
 			<ListOfTools />
-		</BasePage>
+		</>
 	);
 }
 

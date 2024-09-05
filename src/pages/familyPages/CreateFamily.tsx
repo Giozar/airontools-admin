@@ -12,7 +12,6 @@ import useCreateCategories from '@handlers/categories.handler';
 import useCreateSubcategories from '@handlers/subcategories.handler';
 import useFamilyCreate from '@hooks/families/useFamilyCreate';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
-import BasePage from '@layouts/BasePage';
 import '@pages/css/createFamily.css';
 import axios from 'axios';
 import { useContext, useState } from 'react';
@@ -190,11 +189,7 @@ function CreateFamilyForm() {
 	);
 }
 function ContentMainPage() {
-	return (
-		<BasePage title='Crear familia'>
-			<CreateFamilyForm />
-		</BasePage>
-	);
+	return <CreateFamilyForm />;
 }
 
 function CreateFamily() {
