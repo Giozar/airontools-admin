@@ -54,6 +54,7 @@ export default function UserForm() {
 			setEmail('');
 			setName('');
 			setRole('');
+			window.location.reload();
 		} catch (error) {
 			console.error('Error al subir datos del usuario:', error);
 			if (error instanceof Error) {

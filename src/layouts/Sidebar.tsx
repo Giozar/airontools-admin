@@ -42,16 +42,12 @@ const Sidebar = () => {
 		}
 	};
 
-	const handleClose = async () => {
+	const handleClose = () => {
 		authContext?.setAuth({ isAuthenticated: false, user: null });
-		localStorage.setItem('token', '');
-		const selectedCompany = localStorage.getItem('selectedCompany');
-		console.log(selectedCompany);
-		if (selectedCompany) {
-			await new Promise(resolve => setTimeout(resolve, 10));
-			navigate(`/login/${selectedCompany}`);
-		} else navigate('/');
+		localStorage.removeItem('token');
+		navigate('login/airontools');
 	};
+
 	return (
 		<div className='sidebar'>
 			<div className='top'>

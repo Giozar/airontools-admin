@@ -2,7 +2,6 @@ import { transformUserDataFront } from '@adapters/user.adapter';
 import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import axios, { AxiosError } from 'axios';
-import { jwtDecode } from 'jwt-decode';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import './css/Login.css';
@@ -12,17 +11,11 @@ import ErrorMessage from '@components/commons/ErrorMessage';
 import EyeIcon from '@components/svg/EyeIcon';
 import EyeOffIcon from '@components/svg/EyeOffIcon';
 import { airontoolsAPI } from '@configs/api.config';
-import { UserDataBackend } from '@interfaces/User.interface';
+import { LoginResponse } from '@interfaces/LoginResponse.interface';
 import logoAiron from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
 import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
 import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
 import aironLogo from './Logo-Blanco.png'; //cambiar por otro el general
-interface LoginResponse {
-	token: string;
-	user: UserDataBackend;
-	exp: number;
-	iat: number;
-}
 
 function HeaderLogin({ title }: { title: string }) {
 	return (
@@ -62,29 +55,7 @@ function Login() {
 		return () => {
 			document.body.className = '';
 		};
-	}, []);
-
-	useEffect(() => {
-		const token = localStorage.getItem('token');
-
-		if (token) {
-			try {
-				const decodedToken = jwtDecode<LoginResponse>(token);
-				const now = Math.floor(Date.now() / 1000);
-				if (decodedToken.exp > now) {
-					authContext?.setAuth({
-						isAuthenticated: true,
-						user: transformUserDataFront(decodedToken.user),
-					});
-				} else {
-					localStorage.removeItem('token');
-				}
-			} catch (error) {
-				console.error('Token decoding failed', error);
-				localStorage.removeItem('token');
-			}
-		}
-	}, [authContext]);
+	}, [company]);
 
 	const handleLogin = async (e: FormEvent) => {
 		e.preventDefault();
@@ -126,9 +97,8 @@ function Login() {
 	};
 
 	if (authContext?.isAuthenticated) {
-		return <Navigate to={localStorage.getItem('location') || '/home'} />;
+		return <Navigate to='/home' replace />;
 	}
-
 	return (
 		<>
 			<HeaderLogin title={company || ''} />
