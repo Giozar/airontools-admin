@@ -1,20 +1,22 @@
 import CloseIcon from '@components/svg/CloseIcon';
-import useFetchSubcategoriesFromFamily from '@hooks/subcategories/useFetchSubcategoriesFromFamily';
+import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcategoriesByFamily';
 import { useEffect, useState } from 'react';
 import CreateSubcategory from './CreateSubcategory';
 import EditSubcategory from './EditSubcategory';
+
+interface SubcategoryModalProps {
+	familyId: string;
+	createdBy: string;
+	categoryId: string;
+	categoryName: string;
+}
 
 function SubcategoryModal({
 	familyId,
 	createdBy,
 	categoryId,
 	categoryName,
-}: {
-	familyId: string;
-	createdBy: string;
-	categoryId: string;
-	categoryName: string;
-}) {
+}: SubcategoryModalProps) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [update, setUpdate] = useState(false);
 	const openModal = () => {
@@ -26,7 +28,7 @@ function SubcategoryModal({
 	};
 
 	const { subcategories, setSubcategories, fetchSubcategories } =
-		useFetchSubcategoriesFromFamily();
+		useFetchSubcategoriesByFamily();
 
 	useEffect(() => {
 		fetchSubcategories(categoryId || '');

@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const API_URL = airontoolsAPI;
 
-export const getSubcategoriesFromFamilyService = async (categoryId: string) => {
+export const getSubcategoriesByFamilyService = async (categoryId: string) => {
 	try {
 		const response = await axios.get<SubcategoryDataBackend[]>(
 			`${API_URL}/subcategories?category=${categoryId}`,

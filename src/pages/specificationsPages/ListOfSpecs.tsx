@@ -32,17 +32,17 @@ function SpecificationsGrid() {
 		},
 		'BySpecification',
 	);
-	console.log(numberOfProducts);
+
 	const confirmationInfo = () => {
 		if (numberOfProducts && numberOfProducts > 0)
 			return `Se afectarán gravemente ${numberOfProducts} productos`;
 	};
+
 	useEffect(() => {
 		const fetchSpecifications = async () => {
 			try {
 				const specs = await getSpecifications();
 				setSpecifications(specs);
-				console.log(specs);
 			} catch (error) {
 				errorHandler(error, showError);
 			}
@@ -54,12 +54,14 @@ function SpecificationsGrid() {
 	const filteredSpecifications = specifications.filter(spec =>
 		spec.name.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
+
 	const handleCloseModalDeletion = (specId: string) => {
 		setSpecifications(specifications.filter(spec => spec.id !== specId));
 	};
+
 	return (
 		<div className='container'>
-			{<ErrorMessage message={errorLog.message} />}
+			<ErrorMessage message={errorLog.message} />
 			<div className='search-bar'>
 				<input
 					type='text'
@@ -70,8 +72,8 @@ function SpecificationsGrid() {
 			</div>
 
 			<div className='specifications-grid'>
-				{filteredSpecifications.map((spec, index) => (
-					<div key={index} className='specification-card'>
+				{filteredSpecifications.map(spec => (
+					<div key={spec.id} className='specification-card'>
 						<div className='buttons specs'>
 							<button className='edit' onClick={() => handleEdit(spec)}>
 								<EditIcon />
@@ -84,25 +86,39 @@ function SpecificationsGrid() {
 							</button>
 						</div>
 						<p className='spec-name'>{spec.name}</p>
-						<p className='spec-created-by'>
-							{' '}
-							Creado por: {spec.createdBy.name}
-						</p>
+						<p className='spec-created-by'>Creado por: {spec.createdBy.name}</p>
 						<p className='spec-description'>{spec.description}</p>
 						<p className='spec-unit'>Unidad: {spec.unit}</p>
 						<div className='spec-metadata'>
-							<span className='meta-tag metafamily'>
-								Familia: {spec.family.name}
-							</span>
-							<span className='meta-tag metacategory'>
-								Categoría: {spec.category.name}
-							</span>
-							{spec.subcategory._id && (
-								<span className='meta-tag metasubcategory'>
-									Subcategoría: {spec.subcategory.name}
+							{spec.families.map((family, familyIndex) => (
+								<span
+									key={`family-${spec.id}-${family._id}-${familyIndex}`}
+									className='meta-tag metafamily'
+								>
+									Familia: {family.name}
 								</span>
+							))}
+							{spec.categories.map((category, categoryIndex) => (
+								<span
+									key={`category-${spec.id}-${category._id}-${categoryIndex}`}
+									className='meta-tag metacategory'
+								>
+									Categoría: {category.name}
+								</span>
+							))}
+							{spec.subcategories.map(
+								(subcategory, subcategoryIndex) =>
+									subcategory._id && (
+										<span
+											key={`subcategory-${spec.id}-${subcategory._id}-${subcategoryIndex}`}
+											className='meta-tag metasubcategory'
+										>
+											Subcategoría: {subcategory.name}
+										</span>
+									),
 							)}
 						</div>
+
 						{showDeletionModalFor === spec.id && (
 							<DeletionModal
 								id={spec.id}
@@ -120,6 +136,7 @@ function SpecificationsGrid() {
 		</div>
 	);
 }
+
 function ContentMainPage() {
 	const location = useLocation();
 	return (

@@ -8,13 +8,17 @@ function useFetchSpecifications() {
 	const { errorLog, showError } = useErrorHandling();
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
-
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [filteredSpecifications, setFilteredSpecifications] = useState<
+		SpecDataFrontend[]
+	>([]);
 	useEffect(() => {
 		const fetchSpecifications = async () => {
 			try {
-				const specs = await getSpecifications();
-				setSpecifications(specs);
-				console.log(specs);
+				const specsResponse = await getSpecifications();
+				specsResponse && setSpecifications(specsResponse);
+				specsResponse && setFilteredSpecifications(specsResponse);
+				setLoading(false);
 			} catch (error) {
 				showError('Error al cargar las familias');
 			} finally {
@@ -25,11 +29,23 @@ function useFetchSpecifications() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const handleSearch = (searchTerm: string) => {
+		const term = searchTerm.toLowerCase();
+		setSearchTerm(term);
+		const filtered = specifications.filter(specification =>
+			specification.name.toLowerCase().includes(term),
+		);
+		setFilteredSpecifications(filtered);
+	};
+
 	return {
 		specifications,
 		loading,
 		errorLog,
 		setSpecifications,
+		filteredSpecifications,
+		setFilteredSpecifications,
+		handleSearch,
 	};
 }
 

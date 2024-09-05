@@ -9,9 +9,9 @@ export interface SpecDataToSend {
 	name: string;
 	description?: string;
 	unit?: string;
-	family: string;
-	category: string;
-	subcategory: string;
+	families: string[];
+	categories: string[];
+	subcategories: string[];
 	createdBy: string;
 }
 // Datos que vienen del backend - GET
@@ -20,9 +20,9 @@ export interface SpecDataBackend {
 	name: string;
 	description?: string;
 	unit?: string;
-	family: FamilyDataToSend;
-	category: CategoryDataToSend;
-	subcategory: SubcategoryDataToSend;
+	families: FamilyDataToSend[];
+	categories: CategoryDataToSend[];
+	subcategories: SubcategoryDataToSend[];
 	createdBy: UserDataBackend;
 }
 // Datos que se usan en el frontend - Visualización (solo frontend)
@@ -31,9 +31,9 @@ export interface SpecDataFrontend {
 	name: string;
 	description?: string;
 	unit?: string;
-	family: FamilyDataToSend;
-	category: CategoryDataToSend;
-	subcategory: SubcategoryDataToSend;
+	families: FamilyDataToSend[];
+	categories: CategoryDataToSend[];
+	subcategories: SubcategoryDataToSend[];
 	createdBy: UserDataFrontend;
 }
 

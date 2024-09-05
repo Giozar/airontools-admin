@@ -11,13 +11,13 @@ interface DropdownMenuProps {
 	family: FamilyDataFrontend;
 	filteredCategories: CategoryDataFrontend[];
 	filteredSubcategories: SubcategoryDataFrontend[];
-	specifications: SpecDataFrontend[];
+	filteredSpecifications: SpecDataFrontend[];
 }
 
 function DropdownMenu({
 	filteredCategories,
 	filteredSubcategories,
-	specifications,
+	filteredSpecifications,
 	family,
 }: DropdownMenuProps) {
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -48,9 +48,10 @@ function DropdownMenu({
 				{filteredCategories
 					.filter(category => category.family.id === family.id)
 					.map(category => {
-						const categorySpecs = specifications.filter(
-							spec =>
-								spec.category._id === category.id && !spec.subcategory._id,
+						const categorySpecs = filteredSpecifications.filter(spec =>
+							spec.categories.some(cat => {
+								cat._id === category.id;
+							}),
 						);
 						const categorySubcategories = filteredSubcategories.filter(
 							subcategory => subcategory.category._id === category.id,
@@ -86,9 +87,12 @@ function DropdownMenu({
 												<span className='subtitle'>Subcategorías:</span>
 												<ul className='subcategory-list'>
 													{categorySubcategories.map(subcategory => {
-														const subcategorySpecs = specifications.filter(
-															spec => spec.subcategory._id === subcategory.id,
-														);
+														const subcategorySpecs =
+															filteredSpecifications.filter(spec =>
+																spec.subcategories.some(
+																	sub => sub._id === subcategory.id,
+																),
+															);
 
 														return (
 															<li
