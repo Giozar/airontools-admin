@@ -3,7 +3,7 @@ import { AuthContext } from '@contexts/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import axios, { AxiosError } from 'axios';
 import { FormEvent, useContext, useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './css/Login.css';
 // eslint-disable-next-line import/no-absolute-path
 import ThemeToggleButton from '@components/ThemeToggle';
@@ -37,6 +37,7 @@ function Login() {
 	const [showPassword, setShowPassword] = useState(false);
 	const { company } = useParams();
 	const [logo, setLogo] = useState('');
+	const navigate = useNavigate();
 	useEffect(() => {
 		if (company) {
 			setLogo(
@@ -78,6 +79,7 @@ function Login() {
 				isAuthenticated: true,
 				user: transformUserDataFront(response.data.user),
 			});
+			navigate('/home');
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				const errorMessage = error.response?.data?.message;
@@ -95,10 +97,10 @@ function Login() {
 			}
 		}
 	};
-
+	/*
 	if (authContext?.isAuthenticated) {
 		return <Navigate to='/home' replace />;
-	}
+	}*/
 	return (
 		<>
 			<HeaderLogin title={company || ''} />

@@ -7,7 +7,6 @@ import useErrorHandling from '@hooks/common/useErrorHandling';
 import useFetchCounts from '@hooks/common/useFetchCounts';
 import useSpecificationsManagement from '@hooks/specifications/useSpecificationsManagement';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
-import BasePage from '@layouts/BasePage';
 import '@pages/css/listofspecs.css';
 import { getSpecifications } from '@services/specifications/getSpecifications.service';
 import { errorHandler } from '@utils/errorHandler.util';
@@ -124,7 +123,7 @@ function SpecificationsGrid() {
 function ContentMainPage() {
 	const location = useLocation();
 	return (
-		<BasePage title='Especificaciones'>
+		<>
 			<div className='options users'>
 				<ActionCard
 					title='Crear Especificaciones'
@@ -133,7 +132,7 @@ function ContentMainPage() {
 			</div>
 			<h2 className='listtitle'>Lista de especificaciones</h2>
 			<SpecificationsGrid />
-		</BasePage>
+		</>
 	);
 }
 

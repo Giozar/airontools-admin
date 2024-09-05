@@ -16,7 +16,6 @@ import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit
 import useSpecs from '@hooks/specifications/useSpecs';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 
-import BasePage from '@layouts/BasePage';
 import { cleanArray } from '@utils/cleanArray.util';
 import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util';
 import axios from 'axios';
@@ -379,11 +378,7 @@ function ContentMainPage() {
 	useEffect(() => {
 		localStorage.setItem('ProductToEdit', JSON.stringify(state));
 	}, [state]);
-	return (
-		<BasePage title='Editar Herramienta'>
-			<EditToolForm toolToEdit={state} />
-		</BasePage>
-	);
+	return <EditToolForm toolToEdit={state} />;
 }
 
 function EditTool() {

@@ -13,6 +13,7 @@ interface AuthContextType {
 		isAuthenticated: boolean;
 		user: UserDataFrontend | null;
 	}) => void;
+	loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -31,6 +32,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 		isAuthenticated: false,
 		user: null,
 	});
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
@@ -45,21 +47,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 					});
 				} else {
 					localStorage.removeItem('token');
+					setAuth({ isAuthenticated: false, user: null });
 				}
 			} catch (error) {
 				console.error('Token decoding failed', error);
 				localStorage.removeItem('token');
+				setAuth({ isAuthenticated: false, user: null });
 			}
+		} else {
+			setAuth({ isAuthenticated: false, user: null });
 		}
+		setLoading(false);
 	}, []);
 
 	useEffect(() => {
 		setUser(auth.user);
 		setRole(auth.user?.role as RoleDataFront);
-	}, [auth.isAuthenticated]);
+	}, [auth.user]);
 
 	return (
-		<AuthContext.Provider value={{ ...auth, setAuth, user, role }}>
+		<AuthContext.Provider value={{ ...auth, setAuth, user, role, loading }}>
 			{children}
 		</AuthContext.Provider>
 	);

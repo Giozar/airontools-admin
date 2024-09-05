@@ -1,5 +1,4 @@
 import { Activity, ComputerActivity } from '@interfaces/Monitoring.interface';
-import BasePage from '@layouts/BasePage';
 import fetchComputerActivities from '@services/monitoring/getMonitoring.service';
 import { useEffect, useState } from 'react';
 import './MonitoringMenu.css'; // Importa el CSS
@@ -154,10 +153,6 @@ const ShowMonitoringMenu = () => {
 };
 
 function MonitoringMenu() {
-	return (
-		<BasePage title='Monitor'>
-			<ShowMonitoringMenu />
-		</BasePage>
-	);
+	return <ShowMonitoringMenu />;
 }
 export default MonitoringMenu;

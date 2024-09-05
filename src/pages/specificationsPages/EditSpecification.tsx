@@ -8,7 +8,6 @@ import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
 import useSpecificationsManagement from '@hooks/specifications/useSpecificationsManagement';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
-import BasePage from '@layouts/BasePage';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
@@ -185,11 +184,7 @@ function ContentMainPage() {
 		localStorage.setItem('specToEdit', JSON.stringify(state));
 	}, [state]);
 
-	return (
-		<BasePage title='Editar Especificación'>
-			<EditSpecificationsForm specToEdit={state} />
-		</BasePage>
-	);
+	return <EditSpecificationsForm specToEdit={state} />;
 }
 
 function EditSpecification() {

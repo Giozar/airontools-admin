@@ -4,7 +4,6 @@ import { AuthContext } from '@contexts/AuthContext';
 
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
 import useFamilyUpdate from '@hooks/families/useFamilyUpdate';
-import BasePage from '@layouts/BasePage';
 import '@pages/css/editFamily.css';
 
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
@@ -240,11 +239,7 @@ function ContentMainPage() {
 	}, [state]);
 
 	const { family } = state;
-	return (
-		<BasePage title='Editar Familia'>
-			<EditFamilyForm familyToEdit={family} />
-		</BasePage>
-	);
+	return <EditFamilyForm familyToEdit={family} />;
 }
 function EditFamily() {
 	return <ContentMainPage />;

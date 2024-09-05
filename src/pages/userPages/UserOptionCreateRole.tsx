@@ -1,6 +1,5 @@
 // import {useLocation} from 'react-router-dom';
 import { AuthContext } from '@contexts/AuthContext';
-import BasePage from '@layouts/BasePage';
 import '@pages/css/UserOptionsCreateRole.css';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
@@ -92,11 +91,7 @@ function CreateRoleForm() {
 
 function ContentMainPage() {
 	// const location = useLocation();
-	return (
-		<BasePage title='Crear rol de Usuario'>
-			<CreateRoleForm />
-		</BasePage>
-	);
+	return <CreateRoleForm />;
 }
 
 function UserOptionCreateRole() {
