@@ -1,7 +1,7 @@
 import { AuthContext } from '@contexts/AuthContext';
 import { useContext } from 'react';
 
-function ContentMainPage() {
+export default function Personal() {
 	const authContext = useContext(AuthContext);
 	const name = authContext?.user?.name || 'user';
 	const image = authContext?.user?.imageUrl || 'user';
@@ -31,8 +31,3 @@ function ContentMainPage() {
 		</>
 	);
 }
-
-function Personal() {
-	return <ContentMainPage />;
-}
-export default Personal;

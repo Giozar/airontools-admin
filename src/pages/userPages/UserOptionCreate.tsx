@@ -1,12 +1,6 @@
 import UserForm from '@components/users/UserForm';
 import '@pages/css/UserOptionsCreate.css';
 
-function ContentMainPage() {
+export default function UserOptionCreate() {
 	return <UserForm />;
 }
-
-function UserOptionCreate() {
-	return <ContentMainPage />;
-}
-
-export default UserOptionCreate;

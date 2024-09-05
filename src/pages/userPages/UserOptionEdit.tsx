@@ -121,7 +121,7 @@ function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
 	);
 }
 
-function ContentMainPage() {
+export default function UserOptionEdit() {
 	const initialState = {
 		user: { id: 'N/A', name: 'Desconocido' },
 	};
@@ -137,8 +137,3 @@ function ContentMainPage() {
 
 	return <EditUserForm userToEdit={state} />;
 }
-
-function UserOptionEdit() {
-	return <ContentMainPage />;
-}
-export default UserOptionEdit;

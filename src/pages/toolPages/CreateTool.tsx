@@ -171,12 +171,7 @@ const Atornillador = () => {
 		</div>
 	);
 };
-function ContentMainPage() {
+
+export default function CreateTool() {
 	return <Atornillador />;
 }
-
-function CreateTool() {
-	return <ContentMainPage />;
-}
-
-export default CreateTool;

@@ -172,7 +172,7 @@ function ListOfFamilies() {
 	);
 }
 
-function ContentMainPage() {
+export default function CategorizationMenu() {
 	const location = useLocation();
 	return (
 		<>
@@ -190,9 +190,3 @@ function ContentMainPage() {
 		</>
 	);
 }
-
-function CategorizationMenu() {
-	return <ContentMainPage />;
-}
-
-export default CategorizationMenu;
