@@ -1,5 +1,4 @@
 import SpecificationForm from '@components/specifications/SpecificationForm';
-import BasePage from '@layouts/BasePage';
 import { useEffect, useState } from 'react';
 import CategorizationSection from './CategorizationSection';
 import { Categorization } from './types';
@@ -36,7 +35,7 @@ export default function CreateSpecifications() {
 
 	useEffect(() => {}, [categorizations]);
 	return (
-		<BasePage title='Crear Especificaciones'>
+		<div>
 			{categorizations.map((_, index) => (
 				<CategorizationSection
 					key={index}
@@ -54,6 +53,6 @@ export default function CreateSpecifications() {
 					subcategoriesId={categorizations.map(cat => cat.selectedSubcategory)}
 				/>
 			)}
-		</BasePage>
+		</div>
 	);
 }
