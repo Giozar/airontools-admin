@@ -13,6 +13,7 @@ import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
 import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
 import Security from '@pages/css/miscPages.tsx/security';
+import ErrorPage from '@pages/ErrorPages/ErrorPage';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
 import CreateFamily from '@pages/familyPages/CreateFamily';
 import EditFamily from '@pages/familyPages/EditFamily';
@@ -76,16 +77,12 @@ const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <LandingPage />,
+		errorElement: <ErrorPage />,
 	},
 	{
 		path: '/login/:company',
 		element: <Login />,
 	},
-	{
-		path: '/login/:company/2',
-		element: <h1>ola</h1>,
-	},
-
 	{
 		element: <PrivateRoute />,
 		children: [
