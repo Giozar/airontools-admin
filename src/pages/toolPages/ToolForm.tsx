@@ -2,11 +2,10 @@ import DynamicInputs from '@components/commons/DynamicInputs';
 import FormHeader from '@components/commons/form/FormHeader';
 import ImageUploader from '@components/commons/ImageUploader';
 import ManualUploader from '@components/commons/ManualUploader';
-import QuickCreateSpecification from '@components/commons/QuickCreateSpecification';
-import SelectInput from '@components/commons/SelectInput';
 import TableRow from '@components/commons/TableRow';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import { ProductCategorization } from '@components/products/ProductCategorization';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import { ChangeEvent, FormEvent } from 'react';
 import Corrector from './corrector';
@@ -60,64 +59,7 @@ const ToolInfo = ({
 		</>
 	);
 };
-interface ToolCategorizationProps {
-	families: { id: string; name: string }[];
-	selectedFamily: { id: string; name: string } | null;
-	handleFamilyChange: (value: string) => void;
-	filteredCategories: { id: string; name: string }[];
-	selectedCategory: { id: string; name: string } | null;
-	handleCategoryChange: (value: string) => void;
-	filteredSubcategories: { id: string; name: string }[];
-	selectedSubcategory: { id: string; name: string } | null;
-	handleSubcategoryChange: (value: string) => void;
-}
 
-const ToolCategorization = ({
-	families,
-	handleFamilyChange,
-	filteredCategories,
-	handleCategoryChange,
-	filteredSubcategories,
-	handleSubcategoryChange,
-}: ToolCategorizationProps) => {
-	return (
-		<>
-			<div>
-				<SelectInput
-					id='familiaselect'
-					name='Selecciona una familia'
-					options={families.map(family => ({
-						value: family.id,
-						label: family.name,
-					}))}
-					onChange={handleFamilyChange}
-				/>
-				{filteredCategories.length > 0 && (
-					<SelectInput
-						id='catselect'
-						name='Selecciona una categoría'
-						options={filteredCategories.map(category => ({
-							value: category.id,
-							label: category.name,
-						}))}
-						onChange={handleCategoryChange}
-					/>
-				)}
-				{filteredSubcategories.length > 0 && (
-					<SelectInput
-						id='subcatselect'
-						name='Selecciona una subcategoría'
-						options={filteredSubcategories.map(subcategory => ({
-							value: subcategory.id,
-							label: subcategory.name,
-						}))}
-						onChange={handleSubcategoryChange}
-					/>
-				)}
-			</div>
-		</>
-	);
-};
 interface SpecificationsSectionProps {
 	specifications: SpecDataToSend[];
 	specificationValues: { specification: string; value: string }[];
@@ -129,7 +71,6 @@ const SpecificationsSection = ({
 	specifications,
 	specificationValues,
 	handleSpecUpdate,
-	handleFlagChange,
 }: SpecificationsSectionProps) => {
 	return (
 		<>
@@ -150,13 +91,6 @@ const SpecificationsSection = ({
 						</tbody>
 					</table>
 					<p style={{ marginTop: '20px' }}>Nuevas especificaciones:</p>
-					<QuickCreateSpecification
-						name={'Especificación'}
-						familyId={specifications[0].family}
-						categoryId={specifications[0].category}
-						subcategoryId={specifications[0].subcategory}
-						onFlagChange={handleFlagChange}
-					/>
 				</div>
 			)}
 		</>
@@ -270,7 +204,7 @@ const ToolForm = ({
 
 			<div className='form-content'>
 				<div className='left-column'>
-					<ToolCategorization
+					<ProductCategorization
 						families={families}
 						selectedFamily={selectedFamily}
 						handleFamilyChange={handleFamilyChange}
@@ -281,12 +215,12 @@ const ToolForm = ({
 						selectedSubcategory={selectedSubcategory}
 						handleSubcategoryChange={handleSubcategoryChange}
 					/>
-					<SpecificationsSection
+					{/* <SpecificationsSection
 						specifications={specifications}
 						specificationValues={specificationValues}
 						handleSpecUpdate={handleSpecUpdate}
 						handleFlagChange={handleFlagChange}
-					/>
+					/> */}
 					<DynamicInputSection
 						label='Características'
 						onValuesChange={setChar}
