@@ -1,11 +1,6 @@
-import BasePage from '@layouts/BasePage';
 import ChatBubble from './chatBubble';
 
 function ChatAssistant() {
-	return (
-		<BasePage title='Asistente AironTools'>
-			<ChatBubble />
-		</BasePage>
-	);
+	return <ChatBubble />;
 }
 export default ChatAssistant;

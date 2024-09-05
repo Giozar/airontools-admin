@@ -1,5 +1,4 @@
 import { AuthContext } from '@contexts/AuthContext';
-import BasePage from '@layouts/BasePage';
 import { useContext } from 'react';
 
 function ContentMainPage() {
@@ -12,7 +11,7 @@ function ContentMainPage() {
 
 	const date = authContext?.user?.role?.createdAt || 'user';
 	return (
-		<BasePage title='Información personal'>
+		<>
 			<img src={image} style={{ width: '200px' }}></img>
 			<p>
 				<strong>Fecha de registro:</strong> {new Date(date).toLocaleString()}
@@ -29,7 +28,7 @@ function ContentMainPage() {
 			<p>
 				<strong>Descripción de Rol:</strong> {roled}
 			</p>
-		</BasePage>
+		</>
 	);
 }
 

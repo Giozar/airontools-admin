@@ -3,7 +3,7 @@ import logoAirontools from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.pn
 import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
 import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 const CompanyBox: React.FC<{
 	name: string;
 	color: string;
@@ -13,18 +13,23 @@ const CompanyBox: React.FC<{
 	const navigate = useNavigate();
 
 	const handleLoginRedirect = (company: string) => {
+		console.log(`Redireccionando a /login/${company}`);
 		localStorage.setItem('selectedCompany', company);
 		navigate(`/login/${company}`);
 	};
+
 	return (
-		<button
-			onClick={() => handleLoginRedirect(loginUrl)}
-			className='companyBox'
-			style={{ backgroundColor: color }}
-		>
-			<img className='logo' src={logo} />
-			<h3>{name}</h3>
-		</button>
+		<>
+			<button
+				onClick={() => handleLoginRedirect(loginUrl)}
+				className='companyBox'
+				style={{ backgroundColor: color }}
+			>
+				<img className='logo' src={logo} />
+				<h3>{name}</h3>
+			</button>
+			<Outlet />
+		</>
 	);
 };
 
@@ -55,7 +60,6 @@ function LandingPage() {
 			document.body.className = '';
 		};
 	}, []);
-
 	return (
 		<div className={'landing-container'}>
 			<h1 className={'mainTitle'}>

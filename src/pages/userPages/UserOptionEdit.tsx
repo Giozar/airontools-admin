@@ -6,7 +6,6 @@ import { useRoles } from '@hooks/roles/useRoles';
 import useUserUpdate from '@hooks/users/useUserUpdate';
 import { RoleDataFront } from '@interfaces/Role.interface';
 import { UserDataFrontend } from '@interfaces/User.interface';
-import BasePage from '@layouts/BasePage';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 function EditUserForm({ userToEdit }: { userToEdit: UserDataFrontend }) {
@@ -136,11 +135,7 @@ function ContentMainPage() {
 		localStorage.setItem('userToEdit', JSON.stringify(state));
 	}, [state]);
 
-	return (
-		<BasePage title='Editar Usuario'>
-			<EditUserForm userToEdit={state} />
-		</BasePage>
-	);
+	return <EditUserForm userToEdit={state} />;
 }
 
 function UserOptionEdit() {

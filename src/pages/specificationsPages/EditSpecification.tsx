@@ -1,8 +1,7 @@
 import EditSpecifications from '@components/specifications/EditSpecifications';
-import BasePage from '@layouts/BasePage';
 import { useEffect, useState } from 'react';
 
-function ContentMainPage() {
+export default function EditSpecification() {
 	const initialState = {
 		spec: { id: 'N/A', name: 'Desconocido' },
 	};
@@ -17,14 +16,6 @@ function ContentMainPage() {
 	}, [state]);
 
 	return (
-		<BasePage title='Editar Especificación'>
 			<EditSpecifications specToEdit={state} />
-		</BasePage>
 	);
 }
-
-function EditSpecification() {
-	return <ContentMainPage />;
-}
-
-export default EditSpecification;

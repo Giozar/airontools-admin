@@ -1,18 +1,19 @@
 import { AuthContext, AuthProvider } from '@contexts/AuthContext';
-import React from 'react';
 import {
-	BrowserRouter,
 	Navigate,
 	Outlet,
-	Route,
-	Routes,
+	RouterProvider,
+	createBrowserRouter,
+	useLocation,
 } from 'react-router-dom';
 
 import { Role } from '@interfaces/Role.interface';
+import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
 import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
 import Security from '@pages/css/miscPages.tsx/security';
+import ErrorPage from '@pages/ErrorPages/ErrorPage';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
 import CreateFamily from '@pages/familyPages/CreateFamily';
 import EditFamily from '@pages/familyPages/EditFamily';
@@ -30,108 +31,204 @@ import UserOptionCreate from '@pages/userPages/UserOptionCreate';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 import UserOptionEdit from '@pages/userPages/UserOptionEdit';
 import UserOptions from '@pages/userPages/UserOptions';
-
-const App = () => {
-	return (
-		<AuthProvider>
-			<BrowserRouter>
-				<Routes>
-					<Route path='/' element={<LandingPage />} />
-					<Route path='/login/:company' element={<Login />} />
-					<Route element={<PrivateRoute />}>
-						<Route element={<PrivateRouteOptionUser />}>
-							<Route path='/home' element={<Home />} />
-							<Route path='/notificaciones' element={<Notifications />} />
-							<Route path='/seguridad' element={<Security />} />
-							<Route path='/informacion-personal' element={<Personal />} />
-							<Route path='/home/solo-editor' element={<Home />} />
-							<Route element={<PrivateRouteOptionUserAdmin />}>
-								<Route path='/home/usuarios' element={<UserOptions />} />
-								<Route
-									path='/home/usuarios/crear-usuario'
-									element={<UserOptionCreate />}
-								/>
-								<Route path='/chat-con-asistente' element={<ChatAssistant />} />
-								<Route
-									path='/home/usuarios/editar-usuario'
-									element={<UserOptionEdit />}
-								/>
-								<Route
-									path='/home/usuarios/crear-rol'
-									element={<UserOptionCreateRole />}
-								/>
-								<Route
-									path='/home/categorizacion'
-									element={<CategorizationMenu />}
-								/>
-								<Route
-									path='/home/categorizacion/crear-familia'
-									element={<CreateFamily />}
-								/>
-								<Route
-									path='/home/categorizacion/editar-familia'
-									element={<EditFamily />}
-								/>
-								<Route
-									path='/home/categorizacion/especificaciones/crear-especificaciones'
-									element={<CreateSpecification />}
-								/>
-								<Route
-									path='/home/categorizacion/especificaciones'
-									element={<ListOfSpecs />}
-								/>
-								<Route
-									path='/home/categorizacion/especificaciones/editar-especificacion'
-									element={<EditSpecification />}
-								/>
-
-								<Route path='/home/monitor' element={<MonitoringMenu />} />
-							</Route>
-							<Route path='/home/herramientas' element={<ToolMenu />} />
-							<Route
-								path='/home/herramientas/crear-herramienta'
-								element={<CreateTool />}
-							/>
-							<Route
-								path='/home/herramientas/editar-herramienta'
-								element={<EditTool />}
-							/>
-						</Route>
-					</Route>
-				</Routes>
-			</BrowserRouter>
-		</AuthProvider>
-	);
-};
+import React, { useEffect } from 'react';
 
 const PrivateRoute = () => {
 	const authContext = React.useContext(AuthContext);
+	const location = useLocation();
 	const selectedCompany = localStorage.getItem('selectedCompany');
-
 	if (!authContext) return null;
+
+	if (authContext.loading) {
+		return <div>cargando...</div>;
+	}
+	console.log(authContext.isAuthenticated);
+	console.log(selectedCompany);
 	return authContext.isAuthenticated ? (
 		<Outlet />
 	) : selectedCompany ? (
-		<Navigate to={`/login/${selectedCompany}`} />
+		<Navigate
+			to={`/login/${selectedCompany}`}
+			state={{ from: location }}
+			replace
+		/>
 	) : (
-		<Navigate to='/' />
+		<Navigate to='/' replace />
 	);
 };
 
-const PrivateRouteOptionUser = () => {
-	const authContext = React.useContext(AuthContext);
-	if (!authContext) return null;
-	return authContext.isAuthenticated ? <Outlet /> : <Navigate to='/home' />;
-};
-
-const PrivateRouteOptionUserAdmin = () => {
+const PrivateRouteAdmin = () => {
 	const authContext = React.useContext(AuthContext);
 	const role = authContext?.user?.role as Role;
 	if (!authContext) return null;
+	if (!authContext.user) return null;
+	if (authContext.loading && !authContext.user.role) {
+		return <div>cargando...</div>;
+	}
+	console.log(authContext);
 	return authContext.isAuthenticated && role?.name === 'Administrador' ? (
 		<Outlet />
 	) : (
-		<Navigate to='/home' />
+		<Navigate to='/home' replace />
+	);
+};
+
+const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <LandingPage />,
+		errorElement: <ErrorPage />,
+	},
+	{
+		path: '/login/:company',
+		element: <Login />,
+	},
+	{
+		element: <PrivateRoute />,
+		children: [
+			{
+				element: <BasePage />,
+				children: [
+					{
+						path: 'home',
+						element: <Home />,
+					},
+					{
+						path: '',
+						element: <PrivateRouteAdmin />,
+						children: [
+							{
+								path: 'chat-con-asistente',
+								element: <ChatAssistant />,
+							},
+						],
+					},
+					{
+						path: 'home',
+						element: <PrivateRouteAdmin />,
+						children: [
+							{
+								path: 'usuarios',
+								element: <UserOptions />,
+							},
+							{
+								path: 'usuarios',
+								children: [
+									{
+										path: 'crear-usuario',
+										element: <UserOptionCreate />,
+									},
+									{
+										path: 'editar-usuario',
+										element: <UserOptionEdit />,
+									},
+									{
+										path: 'crear-rol',
+										element: <UserOptionCreateRole />,
+									},
+								],
+							},
+							{
+								path: 'categorizacion',
+								element: <CategorizationMenu />,
+							},
+							{
+								path: 'categorizacion',
+								children: [
+									{
+										path: 'crear-familia',
+										element: <CreateFamily />,
+									},
+									{
+										path: 'editar-familia',
+										element: <EditFamily />,
+									},
+									{
+										path: 'especificaciones',
+										element: <ListOfSpecs />,
+									},
+									{
+										path: 'especificaciones',
+										children: [
+											{
+												path: 'crear-especificaciones',
+												element: <CreateSpecification />,
+											},
+											{
+												path: 'editar-especificacion',
+												element: <EditSpecification />,
+											},
+										],
+									},
+								],
+							},
+							{
+								path: 'monitor',
+								element: <MonitoringMenu />,
+							},
+						],
+					},
+					{
+						path: 'home',
+						children: [
+							{
+								path: 'herramientas',
+								element: <ToolMenu />,
+							},
+
+							{
+								path: 'herramientas',
+
+								children: [
+									{
+										path: 'crear-herramienta',
+										element: <CreateTool />,
+									},
+									{
+										path: 'editar-herramienta',
+										element: <EditTool />,
+									},
+								],
+							},
+						],
+					},
+					{
+						path: 'notificaciones',
+						element: <Notifications />,
+					},
+					{
+						path: 'seguridad',
+						element: <Security />,
+					},
+					{
+						path: 'informacion-personal',
+						element: <Personal />,
+					},
+				],
+			},
+		],
+	},
+]);
+
+const App = () => {
+	//Para que se actualicen todas las paginas y se salga sesión
+	useEffect(() => {
+		const handleStorageChange = (event: StorageEvent) => {
+			if (event.key === 'token' && !localStorage.getItem('token')) {
+				const corp = localStorage.getItem('selectedCompany');
+				window.location.href = `/login/${corp}`;
+			}
+		};
+		window.addEventListener('storage', handleStorageChange);
+		return () => {
+			window.removeEventListener('storage', handleStorageChange);
+		};
+	}, []);
+
+	return (
+		<AuthProvider>
+			<RouterProvider router={router} />
+		</AuthProvider>
 	);
 };
 

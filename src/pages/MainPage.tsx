@@ -1,6 +1,5 @@
 import ActionCard from '@components/commons/ActionCard';
 import { AuthContext } from '@contexts/AuthContext';
-import BasePage from '@layouts/BasePage';
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -8,7 +7,7 @@ function ContentMainPage() {
 	const authContext = useContext(AuthContext);
 	const location = useLocation();
 	return (
-		<BasePage title='Acciones'>
+		<>
 			<div className='options'>
 				{authContext?.role?.name === 'Administrador' ? (
 					<>
@@ -39,7 +38,7 @@ function ContentMainPage() {
 					</>
 				)}
 			</div>
-		</BasePage>
+		</>
 	);
 }
 

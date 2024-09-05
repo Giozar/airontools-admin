@@ -8,7 +8,6 @@ import TrashIcon from '@components/svg/TrashIcon';
 import { AuthContext } from '@contexts/AuthContext';
 import useUserManagement from '@hooks/users/useUserManagement';
 import useUsers from '@hooks/users/useUsers';
-import BasePage from '@layouts/BasePage';
 import '@pages/css/UserOptions.css';
 import { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -145,7 +144,7 @@ function ReturnUsers() {
 function ContentMainPage() {
 	const location = useLocation();
 	return (
-		<BasePage title='Usuarios'>
+		<>
 			<div className='options users'>
 				<ActionCard
 					title='Crear Usuario'
@@ -154,7 +153,7 @@ function ContentMainPage() {
 				<ActionCard title='Crear Rol' path={location.pathname + '/crear-rol'} />
 			</div>
 			<ReturnUsers />
-		</BasePage>
+		</>
 	);
 }
 

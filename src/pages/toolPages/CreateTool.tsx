@@ -8,7 +8,6 @@ import SuccessMessage from '@components/commons/SuccessMessage';
 import { airontoolsAPI } from '@configs/api.config';
 import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
 import useSpecs from '@hooks/specifications/useSpecs';
-import BasePage from '@layouts/BasePage';
 import { cleanArray } from '@utils/cleanArray.util';
 import { errorHandler } from '@utils/errorHandler.util';
 import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util';
@@ -173,11 +172,7 @@ const Atornillador = () => {
 	);
 };
 function ContentMainPage() {
-	return (
-		<BasePage title='Crear herramienta'>
-			<Atornillador />
-		</BasePage>
-	);
+	return <Atornillador />;
 }
 
 function CreateTool() {
