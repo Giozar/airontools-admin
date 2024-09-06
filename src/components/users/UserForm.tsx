@@ -56,60 +56,70 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 	const handleImageUpload = async () => {
 		return await handleFileUpload();
 	};
-	const handleSubmit = async (e: FormEvent) => {
+	const handleSubmitCreate = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			if (!user) {
-				const userCreated = await createUser({
+			const userCreated = await createUser({
+				password,
+				imageUrl,
+				email,
+				name,
+				role,
+				createdBy,
+			});
+			showSuccess(`Usuario ${userCreated.name} creado con éxito`);
+			const uploadedUrlImage = await handleImageUpload();
+			if (uploadedUrlImage) {
+				const updatedUser = await updateUser(userCreated.id || '', {
+					imageUrl: uploadedUrlImage,
+					name: userCreated.name,
+					email: userCreated.email,
+				});
+				console.log(updatedUser);
+				showSuccess(`Imagen y usuario ${userCreated.name} creados con éxito`);
+			}
+			setImageUrl('');
+			setEmail('');
+			setName('');
+			setRole('');
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
+		} catch (error) {
+			console.error('Error al subir datos del usuario:', error);
+			if (error instanceof Error) {
+				showError(error.message);
+			} else {
+				showError('Error desconocido');
+			}
+		}
+	};
+
+	const handleSubmitUpdate = async (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			if (!user) return;
+			const uploadedUrlImage = await handleImageUpload();
+
+			if (password) {
+				await updateUser(user.id || '', {
 					password,
-					imageUrl,
+					imageUrl: uploadedUrlImage ? uploadedUrlImage : imageUrl,
 					email,
 					name,
 					role,
 					createdBy,
 				});
-				showSuccess(`Usuario ${userCreated.name} creado con éxito`);
-				const uploadedUrlImage = await handleImageUpload();
-				if (uploadedUrlImage) {
-					const updatedUser = await updateUser(userCreated.id || '', {
-						imageUrl: uploadedUrlImage,
-						name: userCreated.name,
-						email: userCreated.email,
-					});
-					console.log(updatedUser);
-					showSuccess(`Imagen y usuario ${userCreated.name} creados con éxito`);
-				}
-				setImageUrl('');
-				setEmail('');
-				setName('');
-				setRole('');
-				setTimeout(() => {
-					window.location.reload();
-				}, 300);
 			} else {
-				console.log(user.imageUrl, imageUrl);
-				const uploadedUrlImage = await handleImageUpload();
-
-				if (password) {
-					await updateUser(user.id || '', {
-						password,
-						imageUrl: uploadedUrlImage ? uploadedUrlImage : imageUrl,
-						email,
-						name,
-						role,
-						createdBy,
-					});
-				} else {
-					await updateUser(user.id || '', {
-						imageUrl: uploadedUrlImage ? uploadedUrlImage : user.imageUrl,
-						email,
-						name,
-						role,
-						createdBy,
-					});
-				}
-				showSuccess(`Imagen y usuario ${user.name} actualizado con éxito`);
+				await updateUser(user.id || '', {
+					imageUrl: uploadedUrlImage ? uploadedUrlImage : user.imageUrl,
+					email,
+					name,
+					role,
+					createdBy,
+				});
 			}
+			showSuccess(`Imagen y usuario ${user.name} actualizado con éxito`);
 		} catch (error) {
 			console.error('Error al subir datos del usuario:', error);
 			if (error instanceof Error) {
@@ -126,7 +136,7 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
 			<div className='register'>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={user ? handleSubmitUpdate : handleSubmitCreate}>
 					<FileUpload
 						setImageUrl={setImageUrl}
 						fileType='images'
