@@ -6,7 +6,7 @@ import {
 } from '@interfaces/Specifications.interface';
 import axios from 'axios';
 
-export const fetchSpecificationsByFamilyId = async (
+export const getSpecificationsByFamilyId = async (
 	familyId: string,
 ): Promise<SpecDataFrontend[]> => {
 	try {
@@ -23,7 +23,7 @@ export const fetchSpecificationsByFamilyId = async (
 	}
 };
 
-export const fetchSpecificationsByCategoryId = async (
+export const getSpecificationsByCategoryId = async (
 	categoryId: string,
 ): Promise<SpecDataFrontend[]> => {
 	try {
@@ -40,7 +40,7 @@ export const fetchSpecificationsByCategoryId = async (
 	}
 };
 
-export const fetchSpecificationsBySubcategoryId = async (
+export const getSpecificationsBySubcategoryId = async (
 	subcategoryId: string,
 ): Promise<SpecDataFrontend[]> => {
 	try {

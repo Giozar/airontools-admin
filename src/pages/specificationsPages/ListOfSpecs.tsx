@@ -5,7 +5,7 @@ import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useFetchCounts from '@hooks/common/useFetchCounts';
-import useSpecificationsManagement from '@hooks/specifications/useSpecificationsManagement';
+import useSpecificationsManagement from '@hooks/specifications/useSpecificationsDelete';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import '@pages/css/listofspecs.css';
 import { getSpecifications } from '@services/specifications/getSpecifications.service';
