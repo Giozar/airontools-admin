@@ -365,7 +365,7 @@ function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	);
 }
 
-function ContentMainPage() {
+export default function EditTool() {
 	const initialState = {
 		spec: { _id: 'N/A', name: 'Desconocido' },
 	};
@@ -380,9 +380,3 @@ function ContentMainPage() {
 	}, [state]);
 	return <EditToolForm toolToEdit={state} />;
 }
-
-function EditTool() {
-	return <ContentMainPage />;
-}
-
-export default EditTool;

@@ -261,10 +261,14 @@ button:active {
 }
 
 /* Estilos para tarjetas o modales */
+a:hover {
+	text-decoration: none;
+}
 .card {
 	border: 1px solid var(--border);
 	border-radius: 8px;
 	background-color: var(--card-bg);
+	padding: 10px;
 }
 
 /* Estilos para el menú */

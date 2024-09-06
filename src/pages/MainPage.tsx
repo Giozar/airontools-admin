@@ -3,7 +3,7 @@ import { AuthContext } from '@contexts/AuthContext';
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
-function ContentMainPage() {
+export default function Home() {
 	const authContext = useContext(AuthContext);
 	const location = useLocation();
 	return (
@@ -41,8 +41,3 @@ function ContentMainPage() {
 		</>
 	);
 }
-
-function Home() {
-	return <ContentMainPage />;
-}
-export default Home;

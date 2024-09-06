@@ -224,7 +224,8 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 		</div>
 	);
 }
-function ContentMainPage() {
+
+export default function EditFamily() {
 	const initialState = {
 		family: { id: 'N/A', name: 'Desconocido' },
 	};
@@ -241,8 +242,3 @@ function ContentMainPage() {
 	const { family } = state;
 	return <EditFamilyForm familyToEdit={family} />;
 }
-function EditFamily() {
-	return <ContentMainPage />;
-}
-
-export default EditFamily;

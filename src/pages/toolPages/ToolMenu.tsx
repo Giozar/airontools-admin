@@ -136,7 +136,8 @@ function ListOfTools() {
 		</div>
 	);
 }
-function ContentMainPage() {
+
+export default function ToolMenu() {
 	return (
 		<>
 			<div className='options users'>
@@ -149,9 +150,3 @@ function ContentMainPage() {
 		</>
 	);
 }
-
-function ToolMenu() {
-	return <ContentMainPage />;
-}
-
-export default ToolMenu;

@@ -141,7 +141,7 @@ function ReturnUsers() {
 	);
 }
 
-function ContentMainPage() {
+export default function UserOptions() {
 	const location = useLocation();
 	return (
 		<>
@@ -156,9 +156,3 @@ function ContentMainPage() {
 		</>
 	);
 }
-
-function UserOptions() {
-	return <ContentMainPage />;
-}
-
-export default UserOptions;

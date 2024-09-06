@@ -7,11 +7,16 @@ import { RoleDataFront } from '@interfaces/Role.interface';
 import createUser from '@services/users/createUser.service';
 import { ChangeEvent, FormEvent, useEffect } from 'react';
 
+import TextInput from '@components/commons/TextInput';
+import useFileUpload from '@hooks/files/useFileUpload';
+import useUserUpdate from '@hooks/users/useUserUpdate';
+import { UserDataFrontend } from '@interfaces/User.interface';
+import { copyPassword } from '@utils/copyPassword.util';
 import ErrorMessage from '../commons/ErrorMessage';
 import SuccessMessage from '../commons/SuccessMessage';
 import FileUpload from '../files/FileUpload';
 
-export default function UserForm() {
+export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 	const {
 		name,
 		setName,
@@ -22,13 +27,23 @@ export default function UserForm() {
 		role,
 		setRole,
 		createdBy,
-	} = useUserForm();
+	} = useUserForm(user);
 
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
-
+	const { updateUser } = useUserUpdate();
 	// Se obtiene la lista de roles para el usuario
 	const { roles: roleOptions } = useRoles();
+	const { password, generatePassword } = usePasswordGenerator({});
+	const {
+		fileUrl,
+		fileName,
+		previewUrl,
+		handleFileSelect,
+		handleFileUpload,
+		setFileType,
+		setfileFeature,
+	} = useFileUpload();
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setRole(e.target.value);
@@ -38,7 +53,10 @@ export default function UserForm() {
 		console.log(role);
 	}, [handleOptionChange]);
 
-	const handleSubmit = async (e: FormEvent) => {
+	const handleImageUpload = async () => {
+		return await handleFileUpload();
+	};
+	const handleSubmitCreate = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
 			const userCreated = await createUser({
@@ -50,11 +68,23 @@ export default function UserForm() {
 				createdBy,
 			});
 			showSuccess(`Usuario ${userCreated.name} creado con éxito`);
+			const uploadedUrlImage = await handleImageUpload();
+			if (uploadedUrlImage) {
+				const updatedUser = await updateUser(userCreated.id || '', {
+					imageUrl: uploadedUrlImage,
+					name: userCreated.name,
+					email: userCreated.email,
+				});
+				console.log(updatedUser);
+				showSuccess(`Imagen y usuario ${userCreated.name} creados con éxito`);
+			}
 			setImageUrl('');
 			setEmail('');
 			setName('');
 			setRole('');
-			window.location.reload();
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
 		} catch (error) {
 			console.error('Error al subir datos del usuario:', error);
 			if (error instanceof Error) {
@@ -65,53 +95,74 @@ export default function UserForm() {
 		}
 	};
 
-	// Hook para generar la contraseña
-	const { password, generatePassword } = usePasswordGenerator({});
-	// Para copiar la contraseña
-	const copyPassword = () => {
-		navigator.clipboard
-			.writeText(password)
-			.then(() => {
-				alert('¡Se copió la contraseña!');
-			})
-			.catch(err => {
-				console.error('Error al copiar la contraseña: ', err);
-			});
+	const handleSubmitUpdate = async (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			if (!user) return;
+			const uploadedUrlImage = await handleImageUpload();
+
+			if (password) {
+				await updateUser(user.id || '', {
+					password,
+					imageUrl: uploadedUrlImage ? uploadedUrlImage : imageUrl,
+					email,
+					name,
+					role,
+					createdBy,
+				});
+			} else {
+				await updateUser(user.id || '', {
+					imageUrl: uploadedUrlImage ? uploadedUrlImage : user.imageUrl,
+					email,
+					name,
+					role,
+					createdBy,
+				});
+			}
+			showSuccess(`Imagen y usuario ${user.name} actualizado con éxito`);
+		} catch (error) {
+			console.error('Error al subir datos del usuario:', error);
+			if (error instanceof Error) {
+				showError(error.message);
+			} else {
+				showError('Error desconocido');
+			}
+		}
 	};
+
 	return (
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 
 			<div className='register'>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={user ? handleSubmitUpdate : handleSubmitCreate}>
 					<FileUpload
 						setImageUrl={setImageUrl}
 						fileType='images'
 						fileFeature='employees'
+						setfileFeature={setfileFeature}
+						setFileType={setFileType}
+						fileUrl={fileUrl}
+						previewUrl={previewUrl}
+						fileName={fileName}
+						handleFileSelect={handleFileSelect}
 					/>
-					<p style={{ color: 'red' }}>
-						{imageUrl === ''
-							? 'No ha subido una imagen, ¿Quiere continuar?'
-							: ''}
-					</p>
-					<label htmlFor='name'>Nombre:</label>
-					<input
-						id='name'
-						type='text'
-						placeholder='Introduce tu nombre completo'
+					<TextInput
+						id={'name'}
+						label={'Nombre:'}
 						value={name}
+						placeholder={'Introduce tu nombre completo'}
 						onChange={e => setName(e.target.value)}
-						required
+						required={true}
 					/>
-					<label htmlFor='email'>Correo electrónico:</label>
-					<input
-						id='email'
-						type='email'
-						placeholder='Introduce tu correo electrónico'
+					<TextInput
+						id={'email'}
+						label={'Correo electrónico:'}
 						value={email}
+						placeholder={'Introduce tu correo electrónico'}
 						onChange={e => setEmail(e.target.value)}
-						required
+						required={true}
 					/>
 					<label htmlFor='password'>Contraseña:</label>
 					<div className='passwordgenerator'>
@@ -122,7 +173,7 @@ export default function UserForm() {
 							value='Generar contraseña'
 						/>
 						<p>{password}</p>
-						<button type='button' onClick={copyPassword}>
+						<button type='button' onClick={() => copyPassword(password)}>
 							Copiar contraseña
 						</button>
 					</div>
@@ -137,7 +188,11 @@ export default function UserForm() {
 						))}
 					</select>
 
-					<button type='submit'>Crear usuario</button>
+					{user ? (
+						<button type='submit'>Actualizar usuario</button>
+					) : (
+						<button type='submit'>Crear usuario</button>
+					)}
 				</form>
 			</div>
 		</>

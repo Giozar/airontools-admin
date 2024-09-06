@@ -89,12 +89,6 @@ function CreateRoleForm() {
 	);
 }
 
-function ContentMainPage() {
-	// const location = useLocation();
+export default function UserOptionCreateRole() {
 	return <CreateRoleForm />;
 }
-
-function UserOptionCreateRole() {
-	return <ContentMainPage />;
-}
-export default UserOptionCreateRole;

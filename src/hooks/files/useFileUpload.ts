@@ -25,13 +25,14 @@ const useFileUpload = () => {
 	};
 
 	const handleFileUpload = async () => {
-		await getFileUrl();
+		return await getFileUrl();
 	};
 
 	const getFileUrl = async () => {
 		if (selectedFile) {
 			const url = await uploadFile(selectedFile, fileType, fileFeature);
 			setFileUrl(url);
+			return url;
 		}
 	};
 

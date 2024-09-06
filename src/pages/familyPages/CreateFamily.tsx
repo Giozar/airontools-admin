@@ -188,12 +188,7 @@ function CreateFamilyForm() {
 		</form>
 	);
 }
-function ContentMainPage() {
+
+export default function CreateFamily() {
 	return <CreateFamilyForm />;
 }
-
-function CreateFamily() {
-	return <ContentMainPage />;
-}
-
-export default CreateFamily;
