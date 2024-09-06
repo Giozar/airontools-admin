@@ -2,13 +2,13 @@ import DynamicInputs from '@components/commons/DynamicInputs';
 import FormHeader from '@components/commons/form/FormHeader';
 import ImageUploader from '@components/commons/ImageUploader';
 import ManualUploader from '@components/commons/ManualUploader';
-import TableRow from '@components/commons/TableRow';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
+import SpecificationsSection from '@components/specifications/SpecificationsSection';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import { ChangeEvent, FormEvent } from 'react';
-import Corrector from './corrector';
+import Corrector from '../commons/Corrector';
 interface ToolInfoProps {
 	toolName: string;
 	toolModel: string;
@@ -60,42 +60,6 @@ const ToolInfo = ({
 	);
 };
 
-interface SpecificationsSectionProps {
-	specifications: SpecDataToSend[];
-	specificationValues: { specification: string; value: string }[];
-	handleSpecUpdate: (newValue: string, index: number) => void;
-	handleFlagChange: (flag: boolean) => void;
-}
-
-const SpecificationsSection = ({
-	specifications,
-	specificationValues,
-	handleSpecUpdate,
-}: SpecificationsSectionProps) => {
-	return (
-		<>
-			{specifications.length > 0 && (
-				<div style={{ marginBottom: '100px' }}>
-					<label htmlFor='spec'>Especificaciones</label>
-					<table id='spec'>
-						<tbody>
-							{specifications.map((spec, index) => (
-								<TableRow
-									key={spec._id}
-									label={spec.name}
-									unit={spec.unit || ''}
-									value={specificationValues[index]?.value || ''}
-									onValueChange={newValue => handleSpecUpdate(newValue, index)}
-								/>
-							))}
-						</tbody>
-					</table>
-					<p style={{ marginTop: '20px' }}>Nuevas especificaciones:</p>
-				</div>
-			)}
-		</>
-	);
-};
 interface DynamicInputSectionProps {
 	label: string;
 	onValuesChange: (values: string[]) => void;
@@ -215,12 +179,12 @@ const ToolForm = ({
 						selectedSubcategory={selectedSubcategory}
 						handleSubcategoryChange={handleSubcategoryChange}
 					/>
-					{/* <SpecificationsSection
+					<SpecificationsSection
 						specifications={specifications}
 						specificationValues={specificationValues}
 						handleSpecUpdate={handleSpecUpdate}
 						handleFlagChange={handleFlagChange}
-					/> */}
+					/>
 					<DynamicInputSection
 						label='Características'
 						onValuesChange={setChar}

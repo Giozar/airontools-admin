@@ -7,14 +7,13 @@ import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import { airontoolsAPI } from '@configs/api.config';
 import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
-import useSpecs from '@hooks/specifications/useSpecs';
 import { cleanArray } from '@utils/cleanArray.util';
 import { errorHandler } from '@utils/errorHandler.util';
 import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util';
 import axios from 'axios';
-import { FormEvent, useContext, useEffect, useState } from 'react';
-import './createtool.css';
-import ToolForm from './ToolForm';
+import { FormEvent, useContext, useState } from 'react';
+import ToolForm from '../../components/products/ProductForm';
+import './CreateProductPage.css';
 
 const Atornillador = () => {
 	const [toolName, setToolName] = useState<string>('');
@@ -41,21 +40,7 @@ const Atornillador = () => {
 		handleCategoryChange,
 		handleSubcategoryChange,
 	} = useToolCategorizationEdit();
-	const [flag, setFlag] = useState(false);
-	const handleFlagChange = (newFlag: boolean) => {
-		setFlag(newFlag);
-	};
-	useEffect(() => {
-		//console.log('Sirvo para actualizar las especificaciones');
-	}, [flag]);
 
-	const { specificationValues, specifications, handleSpecUpdate } = useSpecs({
-		catId: selectedCategory?.id || '',
-		subcatId: selectedSubcategory?.id || '',
-		flag,
-	});
-
-	// const { videos, addVideo, removeVideo, updateVideo } = useVideos();
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 
@@ -73,8 +58,6 @@ const Atornillador = () => {
 		e.preventDefault();
 
 		try {
-			// console.log(subcategoryId);
-			console.log(specificationValues);
 			const createToolData = {
 				name: toolName,
 				model: toolModel,
@@ -152,9 +135,6 @@ const Atornillador = () => {
 					filteredSubcategories={filteredSubcategories}
 					selectedSubcategory={selectedSubcategory || null}
 					handleSubcategoryChange={handleSubcategoryChange}
-					specifications={specifications}
-					specificationValues={specificationValues}
-					handleSpecUpdate={handleSpecUpdate}
 					setChar={setChar}
 					setApplications={setApplications}
 					setRecommendations={setRecommendations}

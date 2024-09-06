@@ -7,6 +7,7 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
+import EditTool from '@components/products/EditProduct';
 import { Role } from '@interfaces/Role.interface';
 import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
@@ -24,8 +25,7 @@ import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
-import CreateTool from '@pages/toolPages/CreateTool';
-import EditTool from '@pages/toolPages/EditTool';
+import CreateTool from '@pages/toolPages/CreateProductPage';
 import ToolMenu from '@pages/toolPages/ToolMenu';
 import UserOptionCreate from '@pages/userPages/UserOptionCreate';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
