@@ -6,13 +6,13 @@ import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import { airontoolsAPI } from '@configs/api.config';
-import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
+import useToolCategorizationEdit from '@hooks/products/useProductCategorization';
 import { cleanArray } from '@utils/cleanArray.util';
 import { errorHandler } from '@utils/errorHandler.util';
 import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util';
 import axios from 'axios';
 import { FormEvent, useContext, useState } from 'react';
-import ToolForm from '../../components/products/ProductForm';
+import ProductForm from '../../components/products/ProductForm';
 import './CreateProductPage.css';
 
 const Atornillador = () => {
@@ -117,7 +117,7 @@ const Atornillador = () => {
 				)}
 
 				{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-				<ToolForm
+				<ProductForm
 					action='Crear herramienta'
 					handleSubmit={handleSubmit}
 					toolName={toolName}
@@ -155,8 +155,8 @@ function ContentMainPage() {
 	return <Atornillador />;
 }
 
-function CreateTool() {
+function CreateProductPage() {
 	return <ContentMainPage />;
 }
 
-export default CreateTool;
+export default CreateProductPage;

@@ -14,7 +14,7 @@ import {
 	ProductDataBackend,
 	ProductDataFrontend,
 } from '@interfaces/Product.interface';
-import '@pages/toolPages/ToolMenu.css';
+import '@pages/productPages/ProductMenu.css';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 

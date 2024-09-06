@@ -12,8 +12,7 @@ import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import useFileManagement from '@hooks/files/useFileManagement';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
-import useToolCategorizationEdit from '@hooks/products/useToolCategorizationEdit';
-import useSpecs from '@hooks/specifications/useSpecs';
+import useToolCategorizationEdit from '@hooks/products/useProductCategorization';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 
 import { cleanArray } from '@utils/cleanArray.util';
@@ -21,7 +20,7 @@ import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-function EditToolForm({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
+function EditTool({ toolToEdit }: { toolToEdit: ProductDataFrontend }) {
 	const {
 		families,
 		selectedFamily,
@@ -378,11 +377,11 @@ function ContentMainPage() {
 	useEffect(() => {
 		localStorage.setItem('ProductToEdit', JSON.stringify(state));
 	}, [state]);
-	return <EditToolForm toolToEdit={state} />;
+	return <EditTool toolToEdit={state} />;
 }
 
-function EditTool() {
+function EditProduct() {
 	return <ContentMainPage />;
 }
 
-export default EditTool;
+export default EditProduct;
