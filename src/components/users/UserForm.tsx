@@ -7,6 +7,8 @@ import { RoleDataFront } from '@interfaces/Role.interface';
 import createUser from '@services/users/createUser.service';
 import { ChangeEvent, FormEvent, useEffect } from 'react';
 
+import useFileUpload from '@hooks/files/useFileUpload';
+import useUserUpdate from '@hooks/users/useUserUpdate';
 import ErrorMessage from '../commons/ErrorMessage';
 import SuccessMessage from '../commons/SuccessMessage';
 import FileUpload from '../files/FileUpload';
@@ -26,9 +28,18 @@ export default function UserForm() {
 
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
-
+	const { updateUser } = useUserUpdate();
 	// Se obtiene la lista de roles para el usuario
 	const { roles: roleOptions } = useRoles();
+	const {
+		fileUrl,
+		fileName,
+		previewUrl,
+		handleFileSelect,
+		handleFileUpload,
+		setFileType,
+		setfileFeature,
+	} = useFileUpload();
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setRole(e.target.value);
@@ -38,6 +49,9 @@ export default function UserForm() {
 		console.log(role);
 	}, [handleOptionChange]);
 
+	const handleImageUpload = async () => {
+		return await handleFileUpload();
+	};
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
@@ -50,11 +64,24 @@ export default function UserForm() {
 				createdBy,
 			});
 			showSuccess(`Usuario ${userCreated.name} creado con éxito`);
+			const uploadedUrlImage = await handleImageUpload();
+			// Actualiza el usuario con la URL de la imagen subida
+			if (uploadedUrlImage) {
+				const updatedUser = await updateUser(userCreated.id || '', {
+					imageUrl: uploadedUrlImage,
+					name: userCreated.name,
+					email: userCreated.email,
+				});
+				console.log(updatedUser);
+				showSuccess(`Imagen y usuario ${userCreated.name} creados con éxito`);
+			}
 			setImageUrl('');
 			setEmail('');
 			setName('');
 			setRole('');
-			window.location.reload();
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
 		} catch (error) {
 			console.error('Error al subir datos del usuario:', error);
 			if (error instanceof Error) {
@@ -89,12 +116,13 @@ export default function UserForm() {
 						setImageUrl={setImageUrl}
 						fileType='images'
 						fileFeature='employees'
+						setfileFeature={setfileFeature}
+						setFileType={setFileType}
+						fileUrl={fileUrl}
+						previewUrl={previewUrl}
+						fileName={fileName}
+						handleFileSelect={handleFileSelect}
 					/>
-					<p style={{ color: 'red' }}>
-						{imageUrl === ''
-							? 'No ha subido una imagen, ¿Quiere continuar?'
-							: ''}
-					</p>
 					<label htmlFor='name'>Nombre:</label>
 					<input
 						id='name'
