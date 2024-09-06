@@ -12,8 +12,8 @@ import { errorHandler } from '@utils/errorHandler.util';
 import { filterEmptySpecifications } from '@utils/filterEmptySpecifications.util';
 import axios from 'axios';
 import { FormEvent, useContext, useState } from 'react';
-import './createtool.css';
-import ToolForm from './ToolForm';
+import ToolForm from '../../components/products/ProductForm';
+import './CreateProductPage.css';
 
 const Atornillador = () => {
 	const [toolName, setToolName] = useState<string>('');

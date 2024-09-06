@@ -8,7 +8,7 @@ import { ProductCategorization } from '@components/products/ProductCategorizatio
 import SpecificationsSection from '@components/specifications/SpecificationsSection';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import { ChangeEvent, FormEvent } from 'react';
-import Corrector from './corrector';
+import Corrector from '../commons/Corrector';
 interface ToolInfoProps {
 	toolName: string;
 	toolModel: string;
