@@ -32,6 +32,17 @@ export interface UserDataFrontend {
 	updatedBy?: UserDataFrontend;
 }
 
+export interface UserAuthContext {
+	isAuthenticated: boolean;
+	user: UserDataFrontend | null;
+	role: RoleDataFront | null;
+	setAuth: (auth: {
+		isAuthenticated: boolean;
+		user: UserDataFrontend | null;
+	}) => void;
+	loading: boolean;
+}
+
 export interface RegisterResponse {
 	token: string;
 	user: UserDataBackend;

@@ -1,7 +1,13 @@
 import { transformUserDataFront } from '@adapters/user.adapter';
 import { RoleDataFront } from '@interfaces/Role.interface';
-import { UserDataFrontend } from '@interfaces/User.interface';
-import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import { UserAuthContext, UserDataFrontend } from '@interfaces/User.interface';
+import {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import {
 	clearAuthData,
 	decodeToken,
@@ -9,24 +15,11 @@ import {
 	isTokenValid,
 } from './authService';
 
-interface AuthContextType {
-	isAuthenticated: boolean;
-	user: UserDataFrontend | null;
-	role: RoleDataFront | null;
-	setAuth: (auth: {
-		isAuthenticated: boolean;
-		user: UserDataFrontend | null;
-	}) => void;
-	loading: boolean;
-}
-
-export const AuthContext = createContext<AuthContextType | undefined>(
+export const AuthContext = createContext<UserAuthContext | undefined>(
 	undefined,
 );
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-	children,
-}) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [auth, setAuth] = useState<{
 		isAuthenticated: boolean;
 		user: UserDataFrontend | null;
@@ -62,4 +55,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 			{children}
 		</AuthContext.Provider>
 	);
+};
+
+export const useAuthContext = () => {
+	const context = useContext(AuthContext);
+	if (!context) {
+		throw new Error('useAuthContext debe ser usado dentro de un AuthContext');
+	}
+	return context;
 };

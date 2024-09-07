@@ -1,15 +1,19 @@
-import ErrorMessage from '@components/commons/ErrorMessage';
-import SuccessMessage from '@components/commons/SuccessMessage';
+import ImageUploader from '@components/commons/ImageUploader';
+import ManualUploader from '@components/commons/ManualUploader';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import { DynamicInputSection } from '../commons/DynamicInputSection';
 import SpecificationsSection from './SpecificationsSection';
 
-const ProductForm = () => {
+interface ProductFormProps {
+	actionName: string;
+	callback: (e: any) => void;
+}
+
+const ProductForm = ({ actionName, callback }: ProductFormProps) => {
 	const {
 		name,
 		setName,
@@ -17,6 +21,7 @@ const ProductForm = () => {
 		setModel,
 		description,
 		setDescription,
+		images,
 		setImages,
 		setCharacteristics,
 		setApplications,
@@ -29,16 +34,11 @@ const ProductForm = () => {
 		category,
 		subcategory,
 	} = useProductCreateContext();
-	const { errorLog, showError } = useErrorHandling();
-	const { successLog, showSuccess } = useSuccessHandling();
+	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
+		useMultipleFileUpload();
 	return (
 		<div className='createproductform'>
 			<form className='productform'>
-				{successLog.isSuccess && (
-					<SuccessMessage message={successLog.message} />
-				)}
-				{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-
 				<div className='form-header'>
 					<TextInput
 						id='productName'
@@ -98,7 +98,7 @@ const ProductForm = () => {
 					</div>
 
 					<div className='right-column'>
-						{/* <ImageUploader
+						<ImageUploader
 							title='Fotos de herramienta'
 							filePreviews={filePreviews}
 							onFileSelect={handleFileSelect}
@@ -109,7 +109,7 @@ const ProductForm = () => {
 							filePreviews={filePreviews}
 							onFileSelect={handleFileSelect}
 							onRemoveFile={handleRemoveFile}
-						/> */}
+						/>
 						<DynamicInputSection
 							label='Videos'
 							onValuesChange={setVideos}
@@ -127,6 +127,7 @@ const ProductForm = () => {
 						/>
 					</div>
 				</div>
+				<button onClick={callback}>{actionName}</button>
 			</form>
 		</div>
 	);
