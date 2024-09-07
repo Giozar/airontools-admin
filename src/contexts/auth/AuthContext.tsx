@@ -1,9 +1,13 @@
 import { transformUserDataFront } from '@adapters/user.adapter';
-import { LoginResponse } from '@interfaces/LoginResponse.interface';
 import { RoleDataFront } from '@interfaces/Role.interface';
 import { UserDataFrontend } from '@interfaces/User.interface';
-import { jwtDecode } from 'jwt-decode';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
+import {
+	clearAuthData,
+	decodeToken,
+	getToken,
+	isTokenValid,
+} from './authService';
 
 interface AuthContextType {
 	isAuthenticated: boolean;
@@ -23,8 +27,6 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 	children,
 }) => {
-	const [user, setUser] = useState<UserDataFrontend | null>(null);
-	const [role, setRole] = useState<RoleDataFront | null>(null);
 	const [auth, setAuth] = useState<{
 		isAuthenticated: boolean;
 		user: UserDataFrontend | null;
@@ -35,23 +37,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const token = localStorage.getItem('token');
+		const token = getToken();
 		if (token) {
-			try {
-				const decodedToken = jwtDecode<LoginResponse>(token);
-				const now = Math.floor(Date.now() / 1000);
-				if (decodedToken.exp > now) {
-					setAuth({
-						isAuthenticated: true,
-						user: transformUserDataFront(decodedToken.user),
-					});
-				} else {
-					localStorage.removeItem('token');
-					setAuth({ isAuthenticated: false, user: null });
-				}
-			} catch (error) {
-				console.error('Token decoding failed', error);
-				localStorage.removeItem('token');
+			const decodedToken = decodeToken(token);
+			if (decodedToken && isTokenValid(decodedToken)) {
+				setAuth({
+					isAuthenticated: true,
+					user: transformUserDataFront(decodedToken.user),
+				});
+			} else {
+				clearAuthData();
 				setAuth({ isAuthenticated: false, user: null });
 			}
 		} else {
@@ -60,13 +55,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 		setLoading(false);
 	}, []);
 
-	useEffect(() => {
-		setUser(auth.user);
-		setRole(auth.user?.role as RoleDataFront);
-	}, [auth.user]);
+	const role = auth.user?.role as RoleDataFront;
 
 	return (
-		<AuthContext.Provider value={{ ...auth, setAuth, user, role, loading }}>
+		<AuthContext.Provider value={{ ...auth, setAuth, role, loading }}>
 			{children}
 		</AuthContext.Provider>
 	);

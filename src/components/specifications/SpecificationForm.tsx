@@ -1,7 +1,7 @@
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import '@components/css/createSpecs.css';
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';

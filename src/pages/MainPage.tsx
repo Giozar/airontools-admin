@@ -1,5 +1,5 @@
 import ActionCard from '@components/commons/ActionCard';
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 

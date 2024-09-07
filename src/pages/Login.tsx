@@ -1,5 +1,5 @@
 import { transformUserDataFront } from '@adapters/user.adapter';
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import axios, { AxiosError } from 'axios';
 import { FormEvent, useContext, useEffect, useState } from 'react';

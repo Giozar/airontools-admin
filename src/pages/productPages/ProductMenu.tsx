@@ -8,7 +8,7 @@ import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { airontoolsAPI } from '@configs/api.config';
 
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 import useProductManagement from '@hooks/products/useProductManagement';
 import {
 	ProductDataBackend,

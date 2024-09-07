@@ -1,4 +1,4 @@
-import { AuthContext, AuthProvider } from '@contexts/AuthContext';
+import { AuthContext, AuthProvider } from '@contexts/auth/AuthContext';
 import {
 	Navigate,
 	Outlet,
@@ -7,6 +7,7 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
+import { ProductCreateProvider } from '@contexts/product/ProductContext';
 import { Role } from '@interfaces/Role.interface';
 import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
@@ -177,6 +178,12 @@ const router = createBrowserRouter([
 							},
 
 							{
+								element: (
+									<ProductCreateProvider>
+										<CreateProductPage />
+										<EditProductPage />
+									</ProductCreateProvider>
+								),
 								path: 'herramientas',
 
 								children: [

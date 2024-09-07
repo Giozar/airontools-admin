@@ -4,7 +4,7 @@ TODO: hacer que el css sea generico para todas las paginas
 TODO: que el darkmode se guarde en un contexto */
 import Breadcrumb from '@components/commons/Breadcrumb';
 import ThemeToggleButton from '@components/ThemeToggle';
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 import { useContext } from 'react';
 
 function HeaderApp() {

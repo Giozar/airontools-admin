@@ -1,6 +1,6 @@
 import DeletionModal from '@components/commons/DeletionModal';
 import TrashIcon from '@components/svg/TrashIcon';
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
 import useFamilyUpdate from '@hooks/families/useFamilyUpdate';

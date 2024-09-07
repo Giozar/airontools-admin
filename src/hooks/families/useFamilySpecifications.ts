@@ -1,4 +1,4 @@
-import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesFromFamily';
+import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesByFamily';
 import useFetchFamilies from '@hooks/families/useFetchFamilies';
 import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcategoriesByFamily';
 import { useEffect, useState } from 'react';

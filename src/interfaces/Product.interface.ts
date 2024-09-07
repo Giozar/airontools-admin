@@ -28,6 +28,45 @@ export interface ProductDataToSend {
 	videos?: string[];
 	createdBy: string;
 }
+
+export interface ProductCreateContextProps {
+	id?: string;
+	setId: (value: string) => void;
+	name: string;
+	setName: (value: string) => void;
+	model: string;
+	setModel: (value: string) => void;
+	description: string;
+	setDescription: (value: string) => void;
+	characteristics: string[];
+	setCharacteristics: (value: string[]) => void;
+	specifications: ProductSpecification[];
+	setSpecifications: (value: ProductSpecification[]) => void;
+	family: string;
+	setFamily: (value: string) => void;
+	category: string;
+	setCategory: (value: string) => void;
+	subcategory: string;
+	setSubcategory: (value: string) => void;
+	includedItems: string[];
+	setIncludedItems: (value: string[]) => void;
+	optionalAccessories: string[];
+	setOptionalAccessories: (value: string[]) => void;
+	operationRequirements: string[];
+	setOperationRequirements: (value: string[]) => void;
+	applications: string[];
+	setApplications: (value: string[]) => void;
+	recommendations: string[];
+	setRecommendations: (value: string[]) => void;
+	images: string[];
+	setImages: (value: string[]) => void;
+	manuals: string[];
+	setManuals: (value: string[]) => void;
+	videos: string[];
+	setVideos: (value: string[]) => void;
+	createdBy: string;
+	setCreatedBy: (value: string) => void;
+}
 // Datos que vienen del backend - GET
 export interface ProductDataBackend {
 	_id: string;

@@ -1,25 +1,23 @@
 import SelectInput from '@components/commons/SelectInput';
+import { useProductCreateContext } from '@contexts/product/ProductContext';
+import useFetchCategoriesByFamily from '@hooks/categories/useFetchCategoriesByFamily';
+import useFetchFamilies from '@hooks/families/useFetchFamilies';
+import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcategoriesByFamily';
+import { useEffect } from 'react';
 
-interface ProductCategorizationProps {
-	families: { id: string; name: string }[];
-	selectedFamily: { id: string; name: string } | null;
-	handleFamilyChange: (value: string) => void;
-	filteredCategories: { id: string; name: string }[];
-	selectedCategory: { id: string; name: string } | null;
-	handleCategoryChange: (value: string) => void;
-	filteredSubcategories: { id: string; name: string }[];
-	selectedSubcategory: { id: string; name: string } | null;
-	handleSubcategoryChange: (value: string) => void;
-}
-
-export function ProductCategorization({
-	families,
-	handleFamilyChange,
-	filteredCategories,
-	handleCategoryChange,
-	filteredSubcategories,
-	handleSubcategoryChange,
-}: ProductCategorizationProps) {
+export function ProductCategorization() {
+	const { families } = useFetchFamilies();
+	const {
+		family,
+		setFamily,
+		category,
+		setCategory,
+		subcategory,
+		setSubcategory,
+	} = useProductCreateContext();
+	const { categories } = useFetchCategoriesByFamily(family);
+	const { subcategories } = useFetchSubcategoriesByFamily(category);
+	useEffect(() => {}, [family, category, subcategory]);
 	return (
 		<>
 			<div>
@@ -30,28 +28,28 @@ export function ProductCategorization({
 						value: family.id,
 						label: family.name,
 					}))}
-					onChange={handleFamilyChange}
+					onChange={setFamily}
 				/>
-				{filteredCategories.length > 0 && (
+				{family.length > 0 && (
 					<SelectInput
 						id='catselect'
 						name='Selecciona una categoría'
-						options={filteredCategories.map(category => ({
+						options={categories.map(category => ({
 							value: category.id,
 							label: category.name,
 						}))}
-						onChange={handleCategoryChange}
+						onChange={setCategory}
 					/>
 				)}
-				{filteredSubcategories.length > 0 && (
+				{category.length > 0 && (
 					<SelectInput
 						id='subcatselect'
 						name='Selecciona una subcategoría'
-						options={filteredSubcategories.map(subcategory => ({
+						options={subcategories.map(subcategory => ({
 							value: subcategory.id,
 							label: subcategory.name,
 						}))}
-						onChange={handleSubcategoryChange}
+						onChange={setSubcategory}
 					/>
 				)}
 			</div>

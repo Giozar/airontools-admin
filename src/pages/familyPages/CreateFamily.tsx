@@ -7,7 +7,7 @@ import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { airontoolsAPI } from '@configs/api.config';
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 import useCreateCategories from '@handlers/categories.handler';
 import useCreateSubcategories from '@handlers/subcategories.handler';
 import useFamilyCreate from '@hooks/families/useFamilyCreate';

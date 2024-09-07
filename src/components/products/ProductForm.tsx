@@ -1,15 +1,38 @@
 import ErrorMessage from '@components/commons/ErrorMessage';
-import ImageUploader from '@components/commons/ImageUploader';
-import ManualUploader from '@components/commons/ManualUploader';
 import SuccessMessage from '@components/commons/SuccessMessage';
+import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
-import SpecificationsSection from '@components/products/SpecificationsSection';
+import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
-import { DynamicInputSection } from './DynamicInputSection';
+import { DynamicInputSection } from '../commons/DynamicInputSection';
 
 const ProductForm = () => {
+	const {
+		name,
+		setName,
+		model,
+		setModel,
+		description,
+		setDescription,
+		images,
+		setImages,
+		characteristics,
+		setCharacteristics,
+		applications,
+		setApplications,
+		recommendations,
+		setRecommendations,
+		operationRequirements,
+		setOperationRequirements,
+		videos,
+		setVideos,
+		includedItems,
+		setIncludedItems,
+		optionalAccessories,
+		setOptionalAccessories,
+	} = useProductCreateContext();
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 	return (
@@ -24,17 +47,17 @@ const ProductForm = () => {
 					<TextInput
 						id='productName'
 						label='Nombre de herramienta'
-						value={productName}
+						value={name}
 						placeholder='Herramienta 1'
-						onChange={e => setProductName(e.target.value)}
+						onChange={e => setName(e.target.value)}
 					/>
 
 					<TextInput
 						id='productModel'
 						label='Modelo de herramienta'
-						value={productModel}
+						value={model}
 						placeholder='---'
-						onChange={e => setProductModel(e.target.value)}
+						onChange={e => setModel(e.target.value)}
 					/>
 				</div>
 				<div>
@@ -42,34 +65,24 @@ const ProductForm = () => {
 						id='productDescription'
 						label='Descripción de herramienta'
 						placeholder='Descripción general de la herramienta'
-						value={productDescription}
-						onChange={e => setProductDescription(e.target.value)}
+						value={description}
+						onChange={e => setDescription(e.target.value)}
 						rows={5}
 					/>
 				</div>
 
 				<div className='form-content'>
 					<div className='left-column'>
-						<ProductCategorization
-							families={families}
-							selectedFamily={selectedFamily}
-							handleFamilyChange={handleFamilyChange}
-							filteredCategories={filteredCategories}
-							selectedCategory={selectedCategory}
-							handleCategoryChange={handleCategoryChange}
-							filteredSubcategories={filteredSubcategories}
-							selectedSubcategory={selectedSubcategory}
-							handleSubcategoryChange={handleSubcategoryChange}
-						/>
-						<SpecificationsSection
+						<ProductCategorization />
+						{/* <SpecificationsSection
 							specifications={specifications}
 							specificationValues={specificationValues}
 							handleSpecUpdate={handleSpecUpdate}
 							handleFlagChange={handleFlagChange}
-						/>
+						/> */}
 						<DynamicInputSection
 							label='Características'
-							onValuesChange={setChar}
+							onValuesChange={setCharacteristics}
 							placeholder='Carácteristica'
 						/>
 						<DynamicInputSection
@@ -84,13 +97,13 @@ const ProductForm = () => {
 						/>
 						<DynamicInputSection
 							label='Requisitos de operación'
-							onValuesChange={setRequeriments}
+							onValuesChange={setOperationRequirements}
 							placeholder='Requisito'
 						/>
 					</div>
 
 					<div className='right-column'>
-						<ImageUploader
+						{/* <ImageUploader
 							title='Fotos de herramienta'
 							filePreviews={filePreviews}
 							onFileSelect={handleFileSelect}
@@ -101,7 +114,7 @@ const ProductForm = () => {
 							filePreviews={filePreviews}
 							onFileSelect={handleFileSelect}
 							onRemoveFile={handleRemoveFile}
-						/>
+						/> */}
 						<DynamicInputSection
 							label='Videos'
 							onValuesChange={setVideos}
@@ -109,12 +122,12 @@ const ProductForm = () => {
 						/>
 						<DynamicInputSection
 							label='Extras'
-							onValuesChange={setIncludes}
+							onValuesChange={setIncludedItems}
 							placeholder='Incuye...'
 						/>
 						<DynamicInputSection
 							label='Accesorios opcionales'
-							onValuesChange={setAccessories}
+							onValuesChange={setOptionalAccessories}
 							placeholder='Accesorio opcional'
 						/>
 					</div>

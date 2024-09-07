@@ -5,7 +5,7 @@ import RoleChangeModal from '@components/roles/RoleChangeModal';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
 import EditUserIcon from '@components/svg/EditUserIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 import useUserManagement from '@hooks/users/useUserManagement';
 import useUsers from '@hooks/users/useUsers';
 import '@pages/css/UserOptions.css';

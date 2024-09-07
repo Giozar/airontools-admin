@@ -1,4 +1,4 @@
-import { AuthContext } from '@contexts/AuthContext';
+import { AuthContext } from '@contexts/auth/AuthContext';
 import { useContext, useEffect, useState } from 'react';
 
 export function useUserForm() {
