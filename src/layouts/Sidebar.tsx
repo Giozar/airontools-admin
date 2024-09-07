@@ -17,6 +17,8 @@ const routeMap: {
 	'Ver usuarios': string;
 	'Crear usuarios': string;
 	'Crear rol de usuarios': string;
+	'Ver categorizaciones': string;
+	'Crear categorizaciones': string;
 	'Ver especificaciones': string;
 	'Crear especificaciones': string;
 } = {
@@ -25,6 +27,8 @@ const routeMap: {
 	'Ver usuarios': '/home/usuarios',
 	'Crear usuarios': '/home/usuarios/crear-usuario',
 	'Crear rol de usuarios': '/home/usuarios/crear-rol',
+	'Ver categorizaciones': '/home/categorizacion',
+	'Crear categorizaciones': '/home/categorizacion/crear-familia',
 	'Ver especificaciones': '/home/categorizacion/especificaciones',
 	'Crear especificaciones':
 		'/home/categorizacion/especificaciones/crear-especificaciones',
@@ -80,6 +84,14 @@ const Sidebar = () => {
 							options={['Ver', 'Crear', 'Crear rol de'].map(
 								val => val + ' usuarios',
 							)}
+							onOptionSelected={handleOptionSelected}
+						/>
+					)}
+				{authContext?.user &&
+					authContext?.user.role?.name === 'Administrador' && (
+						<ComboBox
+							option='Categorizaciones'
+							options={['Ver', 'Crear'].map(val => val + ' categorizaciones')}
 							onOptionSelected={handleOptionSelected}
 						/>
 					)}

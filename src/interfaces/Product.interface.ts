@@ -1,6 +1,9 @@
 import { CategoryDataToSend } from './Category.interface';
 import { FamilyDataToSend } from './Family.interface';
-import { SpecDataToSend } from './Specifications.interface';
+import {
+	ProductSpecification,
+	SpecDataToSend,
+} from './Specifications.interface';
 import { SubcategoryDataToSend } from './subcategory.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
 
@@ -11,7 +14,7 @@ export interface ProductDataToSend {
 	model?: string;
 	description?: string;
 	characteristics?: string[];
-	specifications: Array<{ [key: string]: string }>;
+	specifications: ProductSpecification[];
 	family: string;
 	category: string;
 	subcategory?: string;
