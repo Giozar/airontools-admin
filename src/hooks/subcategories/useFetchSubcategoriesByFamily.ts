@@ -36,7 +36,7 @@ const useFetchSubcategoriesByFamily = (id: string) => {
 	};
 
 	useEffect(() => {
-		fetchSubcategories(id);
+		id && fetchSubcategories(id);
 	}, [id]);
 
 	const handleSearch = (searchTerm: string) => {

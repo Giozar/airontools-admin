@@ -7,6 +7,7 @@ import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { DynamicInputSection } from '../commons/DynamicInputSection';
+import SpecificationsSection from './SpecificationsSection';
 
 const ProductForm = () => {
 	const {
@@ -16,22 +17,17 @@ const ProductForm = () => {
 		setModel,
 		description,
 		setDescription,
-		images,
 		setImages,
-		characteristics,
 		setCharacteristics,
-		applications,
 		setApplications,
-		recommendations,
 		setRecommendations,
-		operationRequirements,
 		setOperationRequirements,
-		videos,
 		setVideos,
-		includedItems,
 		setIncludedItems,
-		optionalAccessories,
 		setOptionalAccessories,
+		family,
+		category,
+		subcategory,
 	} = useProductCreateContext();
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
@@ -74,12 +70,11 @@ const ProductForm = () => {
 				<div className='form-content'>
 					<div className='left-column'>
 						<ProductCategorization />
-						{/* <SpecificationsSection
-							specifications={specifications}
-							specificationValues={specificationValues}
-							handleSpecUpdate={handleSpecUpdate}
-							handleFlagChange={handleFlagChange}
-						/> */}
+						<SpecificationsSection
+							familyId={family}
+							categoryId={category}
+							subcategoryId={subcategory}
+						/>
 						<DynamicInputSection
 							label='Características'
 							onValuesChange={setCharacteristics}

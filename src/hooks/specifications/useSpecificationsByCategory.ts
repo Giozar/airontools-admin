@@ -10,22 +10,23 @@ export function useSpecificationsByCategory(id: string) {
 	>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	useEffect(() => {
-		const fetchSpecificationsByCategoryId = async () => {
-			try {
-				setLoading(true);
-				const specsCategoryIdResponse = await getSpecificationsByCategoryId(id);
-				if (specsCategoryIdResponse) {
-					setSpecificationsByCategoryId(specsCategoryIdResponse);
-				}
-			} catch (error) {
-				showError('Error al cargar las especificaciones por Id de Categoría');
-			} finally {
-				setLoading(false);
+	const fetchSpecificationsByCategoryId = async (id: string) => {
+		try {
+			setLoading(true);
+			const specsCategoryIdResponse = await getSpecificationsByCategoryId(id);
+			if (specsCategoryIdResponse) {
+				setSpecificationsByCategoryId(specsCategoryIdResponse);
 			}
-		};
-		fetchSpecificationsByCategoryId();
-	}, []);
+		} catch (error) {
+			showError('Error al cargar las especificaciones por Id de Categoría');
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		id && fetchSpecificationsByCategoryId(id);
+	}, [id]);
 
 	return {
 		specificationsByCategoryId,

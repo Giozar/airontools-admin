@@ -42,7 +42,7 @@ const useFetchCategoriesFromFamily = (id: string) => {
 	};
 
 	useEffect(() => {
-		fetchCategories(id);
+		id && fetchCategories(id);
 	}, [id]);
 
 	return {

@@ -10,23 +10,23 @@ export function useSpecificationsByFamily(id: string) {
 	>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	useEffect(() => {
-		const fetchSpecificationsByFamilyId = async () => {
-			try {
-				setLoading(true);
-				const specsFamilyIdResponse = await getSpecificationsByFamilyId(id);
-				if (specsFamilyIdResponse) {
-					setSpecificationsByFamilyId(specsFamilyIdResponse);
-				}
-			} catch (error) {
-				showError('Error al cargar las especificaciones por Id de Familia');
-			} finally {
-				setLoading(false);
+	const fetchSpecificationsByFamilyId = async (id: string) => {
+		try {
+			setLoading(true);
+			const specsFamilyIdResponse = await getSpecificationsByFamilyId(id);
+			if (specsFamilyIdResponse) {
+				setSpecificationsByFamilyId(specsFamilyIdResponse);
 			}
-		};
+		} catch (error) {
+			showError('Error al cargar las especificaciones por Id de Familia');
+		} finally {
+			setLoading(false);
+		}
+	};
 
-		fetchSpecificationsByFamilyId();
-	}, []);
+	useEffect(() => {
+		id && fetchSpecificationsByFamilyId(id);
+	}, [id]);
 
 	return {
 		specificationsByFamilyId,

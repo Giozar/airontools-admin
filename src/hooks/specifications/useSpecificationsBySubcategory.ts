@@ -9,26 +9,24 @@ export function useSpecificationsBySubcategory(id: string) {
 		useState<SpecDataFrontend[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	useEffect(() => {
-		const fetchSpecificationsBySubcategoryId = async () => {
-			try {
-				setLoading(true);
-				const specsSubcategoryIdResponse =
-					await getSpecificationsBySubcategoryId(id);
-				if (specsSubcategoryIdResponse) {
-					setSpecificationsBySubcategoryId(specsSubcategoryIdResponse);
-				}
-			} catch (error) {
-				showError(
-					'Error al cargar las especificaciones por Id de Subcategoría',
-				);
-			} finally {
-				setLoading(false);
+	const fetchSpecificationsBySubcategoryId = async (id: string) => {
+		try {
+			setLoading(true);
+			const specsSubcategoryIdResponse =
+				await getSpecificationsBySubcategoryId(id);
+			if (specsSubcategoryIdResponse) {
+				setSpecificationsBySubcategoryId(specsSubcategoryIdResponse);
 			}
-		};
+		} catch (error) {
+			showError('Error al cargar las especificaciones por Id de Subcategoría');
+		} finally {
+			setLoading(false);
+		}
+	};
 
-		fetchSpecificationsBySubcategoryId();
-	}, []);
+	useEffect(() => {
+		id && fetchSpecificationsBySubcategoryId(id);
+	}, [id]);
 
 	return {
 		specificationsBySubcategoryId,
