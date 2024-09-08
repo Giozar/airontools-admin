@@ -1,13 +1,13 @@
 import DeletionModal from '@components/commons/DeletionModal';
 import TrashIcon from '@components/svg/TrashIcon';
-import { AuthContext } from '@contexts/auth/AuthContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
 import useFamilyUpdate from '@hooks/families/useFamilyUpdate';
 import '@pages/css/editFamily.css';
 
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { transformFamilyDataToBackend } from '@adapters/family.adapter';
 import CreateCategory from '@components/categories/CreateCategory';
@@ -28,8 +28,8 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	const [name, setName] = useState(familyToEdit.name);
 	const [description, setDescription] = useState(familyToEdit.description);
 	const familyId = familyToEdit.id || '';
-	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.id || 'user';
+	const { user } = useAuthContext();
+	const createdBy = user?.id || 'user';
 	const [images, setImages] = useState(familyToEdit.images);
 	const [deleteImage, setDeleteImage] = useState(false);
 	const { errorLogFamily, successLogFamily, updateFamily } = useFamilyUpdate();

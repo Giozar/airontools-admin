@@ -1,11 +1,11 @@
-import { LoginResponse } from '@interfaces/LoginResponse.interface';
+import { UserLoginResponse } from '@interfaces/User.interface';
 import { jwtDecode } from 'jwt-decode';
 
 export const getToken = (): string | null => localStorage.getItem('token');
 
-export const decodeToken = (token: string): LoginResponse | null => {
+export const decodeToken = (token: string): UserLoginResponse | null => {
 	try {
-		return jwtDecode<LoginResponse>(token);
+		return jwtDecode<UserLoginResponse>(token);
 	} catch (error) {
 		console.error('Token decoding failed', error);
 		localStorage.removeItem('token');
@@ -13,7 +13,7 @@ export const decodeToken = (token: string): LoginResponse | null => {
 	}
 };
 
-export const isTokenValid = (decodedToken: LoginResponse): boolean => {
+export const isTokenValid = (decodedToken: UserLoginResponse): boolean => {
 	const now = Math.floor(Date.now() / 1000);
 	return decodedToken.exp > now;
 };

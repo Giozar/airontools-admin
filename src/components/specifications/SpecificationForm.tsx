@@ -1,24 +1,24 @@
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import '@components/css/createSpecs.css';
-import { AuthContext } from '@contexts/auth/AuthContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { errorHandler } from '@utils/errorHandler.util';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function SpecificationForm({
 	familiesId,
 	categoriesId,
 	subcategoriesId,
 }: SpecificationFormProps) {
+	const { user } = useAuthContext();
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const { showError, errorLog } = useErrorHandling();
-	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.id || 'user';
+	const createdBy = user?.id || 'user';
 	const { showSuccess, successLog } = useSuccessHandling();
 
 	// Inicializa el estado de especificaciones cada vez que cambian las IDs

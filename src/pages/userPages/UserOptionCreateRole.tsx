@@ -1,8 +1,8 @@
 // import {useLocation} from 'react-router-dom';
-import { AuthContext } from '@contexts/auth/AuthContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import '@pages/css/UserOptionsCreateRole.css';
 import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
@@ -16,8 +16,8 @@ import useSuccessHandling from '@hooks/common/useSuccessHandling';
 function CreateRoleForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
-	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user;
+	const { user } = useAuthContext();
+	const createdBy = user?.id;
 	const { errorLog, showError } = useErrorHandling();
 	const { successLog, showSuccess } = useSuccessHandling();
 	const [updateRole, setUpdateRole] = useState(false);
@@ -28,7 +28,7 @@ function CreateRoleForm() {
 			const response = await axios.post(airontoolsAPI + '/roles/create', {
 				name,
 				description,
-				createdBy: createdBy?.id,
+				createdBy: createdBy,
 			});
 			console.log('Role created successfully:', response.data);
 			showSuccess('Rol creado con éxito');
@@ -76,7 +76,7 @@ function CreateRoleForm() {
 						className='createdby'
 						id='createdby'
 						label='Creado por:'
-						value={createdBy?.name || ''}
+						value={user?.name || ''}
 						placeholder='Introduce el nombre del creador'
 						onChange={e => console.log(e.target.value)}
 						readOnly={true}

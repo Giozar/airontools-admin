@@ -1,15 +1,14 @@
 import ActionCard from '@components/commons/ActionCard';
-import { AuthContext } from '@contexts/auth/AuthContext';
-import { useContext } from 'react';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useLocation } from 'react-router-dom';
 
 function ContentMainPage() {
-	const authContext = useContext(AuthContext);
+	const { user } = useAuthContext();
 	const location = useLocation();
 	return (
 		<>
 			<div className='options'>
-				{authContext?.role?.name === 'Administrador' ? (
+				{user?.role?.name === 'Administrador' ? (
 					<>
 						<ActionCard
 							title='Usuarios'

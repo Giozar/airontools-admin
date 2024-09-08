@@ -8,7 +8,7 @@ import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { airontoolsAPI } from '@configs/api.config';
 
-import { AuthContext } from '@contexts/auth/AuthContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import useProductManagement from '@hooks/products/useProductManagement';
 import {
 	ProductDataBackend,
@@ -16,7 +16,7 @@ import {
 } from '@interfaces/Product.interface';
 import '@pages/productPages/ProductMenu.css';
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function ListOfTools() {
 	const [modalOpen, setModalOpen] = useState(false);
@@ -32,7 +32,7 @@ function ListOfTools() {
 		handleDelete,
 	} = useProductManagement();
 
-	const authContext = useContext(AuthContext);
+	const { user } = useAuthContext();
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -86,18 +86,21 @@ function ListOfTools() {
 			<button className='edit' onClick={() => handleEdit(tool)} key='edit'>
 				<EditIcon />
 			</button>,
-			<button
-				disabled={authContext?.role?.name !== 'Administrador'} // Deshabilita el botón si el usuario no es Administrador
-				className={`delete ${authContext?.role?.name !== 'Administrador' ? 'disabled' : ''}`} // Aplica la clase 'disabled' si el usuario no es Administrador
-				onClick={() => {
-					if (authContext?.role?.name === 'Administrador') {
-						setShowDeletionModalFor(tool.id);
-					}
-				}}
-				key='delete'
-			>
-				<TrashIcon />
-			</button>,
+
+			user && (
+				<button
+					disabled={user.role?.name !== 'Administrador'} // Deshabilita el botón si el usuario no es Administrador
+					className={`delete ${user?.role?.name !== 'Administrador' ? 'disabled' : ''}`} // Aplica la clase 'disabled' si el usuario no es Administrador
+					onClick={() => {
+						if (user?.role?.name === 'Administrador') {
+							setShowDeletionModalFor(tool.id);
+						}
+					}}
+					key='delete'
+				>
+					<TrashIcon />
+				</button>
+			),
 		]),
 	};
 	return (

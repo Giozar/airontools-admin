@@ -1,5 +1,5 @@
-import { AuthContext } from '@contexts/auth/AuthContext';
-import { useContext, useEffect, useState } from 'react';
+import { useAuthContext } from '@contexts/auth/AuthContext';
+import { useEffect, useState } from 'react';
 
 export function useUserForm() {
 	const [email, setEmail] = useState('');
@@ -7,13 +7,13 @@ export function useUserForm() {
 	const [name, setName] = useState('');
 	const [role, setRole] = useState(''); // Cambiado a un valor vacío inicial
 	const [createdBy, setCreatedBy] = useState('');
-	const authContext = useContext(AuthContext);
+	const { user } = useAuthContext();
 
 	useEffect(() => {
-		if (authContext?.user) {
-			setCreatedBy(authContext.user.id);
+		if (user) {
+			setCreatedBy(user.id);
 		}
-	}, [authContext]);
+	}, [user]);
 
 	return {
 		email,

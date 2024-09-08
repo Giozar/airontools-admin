@@ -1,14 +1,14 @@
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import '@components/css/createSpecs.css';
-import { AuthContext } from '@contexts/auth/AuthContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import useErrorHandling from '@hooks/common/useErrorHandling';
 import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { SpecificationFormEditProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import editSpecification from '@services/specifications/editSpecification.service';
 import { errorHandler } from '@utils/errorHandler.util';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function SpecificationFormEdit({
 	specToEdit,
@@ -27,10 +27,11 @@ function SpecificationFormEdit({
 		subcategories: subcategoriesId || '',
 	});
 
+	const { user } = useAuthContext();
+
 	const { showError, errorLog } = useErrorHandling();
 	const { showSuccess, successLog } = useSuccessHandling();
-	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.id || 'user';
+	const createdBy = user?.id || 'user';
 
 	useEffect(() => {
 		// Actualiza el estado de la especificación cuando cambian las IDs o el usuario autenticado

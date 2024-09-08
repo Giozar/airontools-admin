@@ -1,5 +1,4 @@
 import { transformUserDataFront } from '@adapters/user.adapter';
-import { RoleDataFront } from '@interfaces/Role.interface';
 import { UserAuthContext, UserDataFrontend } from '@interfaces/User.interface';
 import {
 	createContext,
@@ -15,43 +14,37 @@ import {
 	isTokenValid,
 } from './authService';
 
-export const AuthContext = createContext<UserAuthContext | undefined>(
-	undefined,
-);
+const AuthContext = createContext<UserAuthContext | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-	const [auth, setAuth] = useState<{
-		isAuthenticated: boolean;
-		user: UserDataFrontend | null;
-	}>({
-		isAuthenticated: false,
-		user: null,
-	});
-	const [loading, setLoading] = useState(true);
+	const [user, setUser] = useState<UserDataFrontend | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [auth, setAuth] = useState(false);
 
 	useEffect(() => {
+		setLoading(true);
 		const token = getToken();
 		if (token) {
 			const decodedToken = decodeToken(token);
 			if (decodedToken && isTokenValid(decodedToken)) {
-				setAuth({
-					isAuthenticated: true,
-					user: transformUserDataFront(decodedToken.user),
-				});
+				setAuth(true);
+				setUser(transformUserDataFront(decodedToken.user));
 			} else {
 				clearAuthData();
-				setAuth({ isAuthenticated: false, user: null });
+				setAuth(false);
+				setUser(null);
 			}
 		} else {
-			setAuth({ isAuthenticated: false, user: null });
+			setAuth(false);
+			setUser(null);
 		}
 		setLoading(false);
 	}, []);
 
-	const role = auth.user?.role as RoleDataFront;
-
 	return (
-		<AuthContext.Provider value={{ ...auth, setAuth, role, loading }}>
+		<AuthContext.Provider
+			value={{ user, setUser, auth, setAuth, loading, setLoading }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

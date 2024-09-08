@@ -4,11 +4,10 @@ TODO: que tenga un css consistente durante todas las paginas
 
 import ComboBox from '@components/commons/ComboBox';
 import BellIcon from '@components/svg/BellIcon';
-import { AuthContext } from '@contexts/auth/AuthContext';
-import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line import/no-absolute-path
 import BotIcon from '@components/svg/BotIcon';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import aironLogo from '/Logo-Blanco.png';
 
 const routeMap: {
@@ -34,9 +33,8 @@ const routeMap: {
 		'/home/categorizacion/especificaciones/crear-especificaciones',
 };
 const Sidebar = () => {
+	const { user, setUser, auth, setAuth } = useAuthContext();
 	const navigate = useNavigate();
-	const authContext = useContext(AuthContext);
-
 	const handleOptionSelected = (selectedOption: string) => {
 		console.log('Opción seleccionada:', selectedOption);
 		const route = routeMap[selectedOption as keyof typeof routeMap];
@@ -47,7 +45,8 @@ const Sidebar = () => {
 	};
 
 	const handleClose = () => {
-		authContext?.setAuth({ isAuthenticated: false, user: null });
+		setAuth(false);
+		setUser(null);
 		localStorage.removeItem('token');
 		navigate('login/airontools');
 	};
@@ -65,44 +64,40 @@ const Sidebar = () => {
 					<BellIcon />
 					Notificaciones
 				</Link>
-				{authContext?.user &&
-					authContext?.user.role?.name === 'Administrador' && (
-						<Link to='/chat-con-asistente'>
-							<BotIcon />
-							Asistente AironTools
-						</Link>
-					)}
+				{user && user.role?.name === 'Administrador' && (
+					<Link to='/chat-con-asistente'>
+						<BotIcon />
+						Asistente AironTools
+					</Link>
+				)}
 				<ComboBox
 					option='Herramientas'
 					options={['Ver', 'Crear'].map(val => val + ' herramientas')}
 					onOptionSelected={handleOptionSelected}
 				/>
-				{authContext?.user &&
-					authContext?.user.role?.name === 'Administrador' && (
-						<ComboBox
-							option='Usuarios'
-							options={['Ver', 'Crear', 'Crear rol de'].map(
-								val => val + ' usuarios',
-							)}
-							onOptionSelected={handleOptionSelected}
-						/>
-					)}
-				{authContext?.user &&
-					authContext?.user.role?.name === 'Administrador' && (
-						<ComboBox
-							option='Categorizaciones'
-							options={['Ver', 'Crear'].map(val => val + ' categorizaciones')}
-							onOptionSelected={handleOptionSelected}
-						/>
-					)}
-				{authContext?.user &&
-					authContext?.user.role?.name === 'Administrador' && (
-						<ComboBox
-							option='Especificaciones'
-							options={['Ver', 'Crear'].map(val => val + ' especificaciones')}
-							onOptionSelected={handleOptionSelected}
-						/>
-					)}
+				{user && user.role?.name === 'Administrador' && (
+					<ComboBox
+						option='Usuarios'
+						options={['Ver', 'Crear', 'Crear rol de'].map(
+							val => val + ' usuarios',
+						)}
+						onOptionSelected={handleOptionSelected}
+					/>
+				)}
+				{user && user.role?.name === 'Administrador' && (
+					<ComboBox
+						option='Categorizaciones'
+						options={['Ver', 'Crear'].map(val => val + ' categorizaciones')}
+						onOptionSelected={handleOptionSelected}
+					/>
+				)}
+				{user && user.role?.name === 'Administrador' && (
+					<ComboBox
+						option='Especificaciones'
+						options={['Ver', 'Crear'].map(val => val + ' especificaciones')}
+						onOptionSelected={handleOptionSelected}
+					/>
+				)}
 				{/* <ComboBox
 					option='Roles'
 					options={['Ver', 'Crear', 'Actualizar', 'Eliminar'].map(
