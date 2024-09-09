@@ -12,8 +12,8 @@ import axios from 'axios';
 
 export default async function createProductService(product: ProductDataToSend) {
 	try {
-		//console.log(createToolData);
-		//console.log(createToolData.specifications);
+		// console.log(createToolData);
+		// console.log(createToolData.specifications);
 
 		// Paso 1: Crear el producto
 		const response = await axios.post<ProductDataBackend>(

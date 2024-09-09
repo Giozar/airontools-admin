@@ -6,14 +6,18 @@ interface SelectProps {
 	onSelect: (value: number) => void;
 }
 
-const NumberSelect: React.FC<SelectProps> = ({ title, size, onSelect }) => {
+function NumberSelect({ title, size, onSelect }: SelectProps) {
 	// Generar un array de números del 1 al tamaño dado
 	const options = Array.from({ length: size }, (_, index) => index + 1);
+
+	// Función para manejar el cambio de valor del select
 	const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
 		if (event.target.value === '') return;
+
 		const selectedValue = parseInt(event.target.value, 10);
 		onSelect(selectedValue);
 	};
+
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column' }}>
 			<label htmlFor='numbers' style={{ fontSize: 'small' }}>
@@ -31,6 +35,6 @@ const NumberSelect: React.FC<SelectProps> = ({ title, size, onSelect }) => {
 			</select>
 		</div>
 	);
-};
+}
 
 export default NumberSelect;

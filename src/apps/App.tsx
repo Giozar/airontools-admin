@@ -218,7 +218,7 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-	//Para que se actualicen todas las paginas y se salga sesión
+	// Para que se actualicen todas las paginas y se salga sesión
 	useEffect(() => {
 		const handleStorageChange = (event: StorageEvent) => {
 			if (event.key === 'token' && !localStorage.getItem('token')) {

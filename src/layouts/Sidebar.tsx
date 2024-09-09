@@ -5,10 +5,10 @@ TODO: que tenga un css consistente durante todas las paginas
 import ComboBox from '@components/commons/ComboBox';
 import BellIcon from '@components/svg/BellIcon';
 import { Link, useNavigate } from 'react-router-dom';
-// eslint-disable-next-line import/no-absolute-path
+
 import BotIcon from '@components/svg/BotIcon';
 import { useAuthContext } from '@contexts/auth/AuthContext';
-import aironLogo from '/Logo-Blanco.png';
+import aironLogo from '../../../Logo-Blanco.png';
 
 const routeMap: {
 	'Ver herramientas': string;
@@ -33,7 +33,7 @@ const routeMap: {
 		'/home/categorizacion/especificaciones/crear-especificaciones',
 };
 const Sidebar = () => {
-	const { user, setUser, auth, setAuth } = useAuthContext();
+	const { user, setUser, setAuth } = useAuthContext();
 	const navigate = useNavigate();
 	const handleOptionSelected = (selectedOption: string) => {
 		console.log('Opción seleccionada:', selectedOption);

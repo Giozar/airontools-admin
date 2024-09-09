@@ -1,3 +1,4 @@
+import { DynamicInputSection } from '@components/commons/DynamicInputSection';
 import ImageUploader from '@components/commons/ImageUploader';
 import ManualUploader from '@components/commons/ManualUploader';
 import TextAreaInput from '@components/commons/TextAreaInput';
@@ -8,7 +9,6 @@ import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 import axios from 'axios';
-import { DynamicInputSection } from '../commons/DynamicInputSection';
 import SpecificationsSection from './SpecificationsSection';
 
 interface ProductFormProps {

@@ -28,7 +28,7 @@ function CreateRoleForm() {
 			const response = await axios.post(airontoolsAPI + '/roles/create', {
 				name,
 				description,
-				createdBy: createdBy,
+				createdBy,
 			});
 			console.log('Role created successfully:', response.data);
 			showSuccess('Rol creado con éxito');

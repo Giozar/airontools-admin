@@ -1,10 +1,10 @@
 // src/hooks/useFetchSubcategoriesByFamily.ts
 
 import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
+import useErrorHandling from '@hooks/common/useErrorHandling';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { getSubcategoriesByFamilyService } from '@services/subcategories/getSubcategoriesByFamily.service';
 import { useEffect, useState } from 'react';
-import useErrorHandling from '../common/useErrorHandling';
 
 const useFetchSubcategoriesByFamily = (id: string) => {
 	const { errorLog, showError } = useErrorHandling();

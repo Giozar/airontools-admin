@@ -2,7 +2,7 @@ import useErrorHandling from '@hooks/common/useErrorHandling';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './css/Login.css';
-// eslint-disable-next-line import/no-absolute-path
+
 import ThemeToggleButton from '@components/ThemeToggle';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import EyeIcon from '@components/svg/EyeIcon';
@@ -13,7 +13,7 @@ import logoAiron from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
 import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
 import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
 import { loginUserService } from '@services/users/loginUser.service';
-import aironLogo from './Logo-Blanco.png'; //cambiar por otro el general
+import aironLogo from './Logo-Blanco.png'; // cambiar por otro el general
 
 function HeaderLogin({ title }: { title: string }) {
 	return (
@@ -73,7 +73,7 @@ function Login() {
 	/*
 	if (authContext?.isAuthenticated) {
 		return <Navigate to='/home' replace />;
-	}*/
+	} */
 	return (
 		<>
 			<HeaderLogin title={company || ''} />

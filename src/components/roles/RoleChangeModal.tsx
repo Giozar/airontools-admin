@@ -6,8 +6,8 @@ import { RegisterResponse, UserDataFrontend } from '@interfaces/User.interface';
 import axios from 'axios';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
+import '@components/css/roleChangeModal.css';
 import { airontoolsAPI } from '@configs/api.config';
-import '../css/roleChangeModal.css';
 
 interface ValidationError {
 	message: string[];

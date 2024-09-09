@@ -42,6 +42,8 @@ function useFetchSpecifications() {
 		specifications,
 		loading,
 		errorLog,
+		searchTerm,
+		setSearchTerm,
 		setSpecifications,
 		filteredSpecifications,
 		setFilteredSpecifications,

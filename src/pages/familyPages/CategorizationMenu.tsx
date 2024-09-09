@@ -66,7 +66,7 @@ function ListOfFamilies() {
 			// console.log(specifications);
 
 			const products = filteredProducts.filter(
-				product => product.family._id == familyId,
+				product => product.family._id === familyId,
 			);
 
 			return {

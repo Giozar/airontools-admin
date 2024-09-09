@@ -1,9 +1,25 @@
 import DeletionModal from '@components/commons/DeletionModal';
 import ImageUploader from '@components/commons/ImageUploader';
 import TrashIcon from '@components/svg/TrashIcon';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
-const ImageUpdate = ({
+interface ImageUpdateProps {
+	images: string[];
+	filePreviews: any;
+	handleRemoveFile: (type: string, index: number) => void;
+	handleFileSelect: (
+		event: ChangeEvent<HTMLInputElement>,
+		type: string,
+	) => void;
+	setShowDeletionModalForFile: Dispatch<SetStateAction<string | null>>;
+	showDeletionModalForFile: any;
+	deletionMessageFile: any;
+	handleCloseModalFile: any;
+	handleDeleteFileFor: any;
+	handleCloseModalDeletionImages: any;
+}
+
+function ImageUpdate({
 	images,
 	filePreviews,
 	handleRemoveFile,
@@ -14,23 +30,7 @@ const ImageUpdate = ({
 	handleCloseModalFile,
 	handleDeleteFileFor,
 	handleCloseModalDeletionImages,
-}: {
-	images: string[];
-	filePreviews: any;
-	handleRemoveFile: (type: string, index: number) => void;
-	handleFileSelect: (
-		event: ChangeEvent<HTMLInputElement>,
-		type: string,
-	) => void;
-	setShowDeletionModalForFile: React.Dispatch<
-		React.SetStateAction<string | null>
-	>;
-	showDeletionModalForFile: any;
-	deletionMessageFile: any;
-	handleCloseModalFile: any;
-	handleDeleteFileFor: any;
-	handleCloseModalDeletionImages: any;
-}) => {
+}: ImageUpdateProps) {
 	return (
 		<div className='column'>
 			<p>Imágenes:</p>
@@ -71,6 +71,6 @@ const ImageUpdate = ({
 			/>
 		</div>
 	);
-};
+}
 
 export default ImageUpdate;

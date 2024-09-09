@@ -79,7 +79,6 @@ const useFetchCounts = (
 		};
 
 		fetchCounts();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [param, options, type]);
 
 	return {
