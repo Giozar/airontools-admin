@@ -16,12 +16,13 @@ export default function CreateProduct() {
 	const createProduct = async (e: Event) => {
 		e.preventDefault();
 		try {
-			console.log(newProduct);
+			// console.log(newProduct);
 			const requestCreateProduct = await createProductService({
 				...newProduct,
 				createdBy: user?.id as string,
 			});
 			showSuccess(`Herramineta ${requestCreateProduct?.name} creado con éxito`);
+			return requestCreateProduct;
 		} catch (err) {
 			const error = err as ErrorResponse;
 			showError(error.message);
