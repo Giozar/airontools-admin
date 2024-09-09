@@ -16,6 +16,13 @@ interface ProductFormProps {
 	callback: (e: any) => Promise<ProductDataFrontend | undefined>;
 }
 
+/**
+ * Ejecuta una acción al enviar el formulario de producto.
+ *
+ * @param {string} actionName - Nombre de la acción a ejecutar, por ejemplo, "crear" o "editar".
+ * @param {(e: any) => Promise<ProductDataFrontend | undefined>} callback - Función asíncrona que se ejecutará al enviar el formulario. Recibe un evento como argumento y devuelve un `ProductDataFrontend` o `undefined`.
+ * @returns {void} No devuelve ningún valor.
+ */
 const ProductForm = ({ actionName, callback }: ProductFormProps) => {
 	const {
 		name,
