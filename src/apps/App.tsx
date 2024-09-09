@@ -176,22 +176,24 @@ const router = createBrowserRouter([
 							},
 
 							{
-								element: (
-									<ProductCreateProvider>
-										<CreateProductPage />
-										<EditProductPage />
-									</ProductCreateProvider>
-								),
 								path: 'herramientas',
 
 								children: [
 									{
 										path: 'crear-herramienta',
-										element: <CreateProductPage />,
+										element: (
+											<ProductCreateProvider>
+												<CreateProductPage />
+											</ProductCreateProvider>
+										),
 									},
 									{
 										path: 'editar-herramienta',
-										element: <EditProductPage />,
+										element: (
+											<ProductCreateProvider>
+												<EditProductPage />
+											</ProductCreateProvider>
+										),
 									},
 								],
 							},
