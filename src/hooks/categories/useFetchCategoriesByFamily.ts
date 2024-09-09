@@ -1,4 +1,4 @@
-// src/hooks/useFetchCategoriesFromFamily.ts
+// src/hooks/useFetchCategoriesByFamily.ts
 
 import { transformCategoryDataToFrontend } from '@adapters/category.adapter';
 import useErrorHandling from '@hooks/common/useErrorHandling';
@@ -6,7 +6,7 @@ import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { getCategoriesFromFamilyService } from '@services/categories/getCategoriesByFamily.service';
 import { useEffect, useState } from 'react';
 
-const useFetchCategoriesFromFamily = (id: string) => {
+const useFetchCategoriesByFamily = (id: string) => {
 	const { errorLog, showError } = useErrorHandling();
 	const [categories, setCategories] = useState<CategoryDataFrontend[]>([]);
 	const [filteredCategories, setFilteredCategories] = useState<
@@ -57,4 +57,4 @@ const useFetchCategoriesFromFamily = (id: string) => {
 	};
 };
 
-export default useFetchCategoriesFromFamily;
+export default useFetchCategoriesByFamily;

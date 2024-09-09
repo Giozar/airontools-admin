@@ -2,7 +2,7 @@ import ShowManageCategory from '@components/categories/ShowManageCategory';
 import ErrorMessage from '@components/commons/ErrorMessage';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import useCategoryUpdate from '@hooks/categories/useCategoryUpdate';
-import useFetchCategoriesFromFamily from '@hooks/categories/useFetchCategoriesByFamily';
+import useFetchCategoriesByFamily from '@hooks/categories/useFetchCategoriesByFamily';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ function EditCategory({
 	const { errorLogCategory, successLogCategory, updateCategory } =
 		useCategoryUpdate();
 	const { categories, setCategories, fetchCategories } =
-		useFetchCategoriesFromFamily();
+		useFetchCategoriesByFamily(familyId);
 	const [refresh, setRefresh] = useState(false);
 	useEffect(() => {
 		console.log(familyId);
