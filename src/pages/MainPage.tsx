@@ -40,8 +40,3 @@ function ContentMainPage() {
 		</>
 	);
 }
-
-function Home() {
-	return <ContentMainPage />;
-}
-export default Home;

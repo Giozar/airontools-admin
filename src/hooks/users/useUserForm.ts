@@ -1,12 +1,17 @@
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { UserDataFrontend } from '@interfaces/User.interface';
 import { useEffect, useState } from 'react';
 
-export function useUserForm() {
-	const [email, setEmail] = useState('');
-	const [imageUrl, setImageUrl] = useState('');
-	const [name, setName] = useState('');
-	const [role, setRole] = useState(''); // Cambiado a un valor vacío inicial
-	const [createdBy, setCreatedBy] = useState('');
+export function useUserForm(userToEdit: UserDataFrontend | null) {
+	const [email, setEmail] = useState(userToEdit ? userToEdit.email || '' : '');
+	const [imageUrl, setImageUrl] = useState(
+		userToEdit ? userToEdit.imageUrl || '' : '',
+	);
+	const [name, setName] = useState(userToEdit ? userToEdit.name || '' : '');
+	const [role, setRole] = useState(userToEdit ? userToEdit.role?.id || '' : ''); // Cambiado a un valor vacío inicial
+	const [createdBy, setCreatedBy] = useState(
+		userToEdit ? userToEdit.createdBy?.id || '' : '',
+	);
 	const { user } = useAuthContext();
 
 	useEffect(() => {

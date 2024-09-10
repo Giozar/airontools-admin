@@ -80,3 +80,13 @@
 .images {
 	display: flex;
 }
+
+.circular-image {
+	border-radius: 50%;
+	background-color: black;
+	object-fit: contain;
+}
+
+.new-image-container {
+	padding: 0 20px;
+}

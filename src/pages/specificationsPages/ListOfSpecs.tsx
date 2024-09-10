@@ -137,7 +137,7 @@ function SpecificationsGrid() {
 	);
 }
 
-function ContentMainPage() {
+export default function ListOfSpecs() {
 	const location = useLocation();
 	return (
 		<>
@@ -152,9 +152,3 @@ function ContentMainPage() {
 		</>
 	);
 }
-
-function ListOfSpecs() {
-	return <ContentMainPage />;
-}
-
-export default ListOfSpecs;

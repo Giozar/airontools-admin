@@ -7,6 +7,7 @@ import axios from 'axios';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import '@components/css/roleChangeModal.css';
+import CloseIcon from '@components/svg/CloseIcon';
 import { airontoolsAPI } from '@configs/api.config';
 
 interface ValidationError {
@@ -67,25 +68,22 @@ function RoleChangeModal({
 	};
 
 	return (
-		<>
+		<form onSubmit={handleSubmit} className='choserol'>
 			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-			<form onSubmit={handleSubmit} className='choserol'>
-				<p>Nuevo rol para: {userToEdit?.name}</p>
-				<label htmlFor='options'>Nuevo rol:</label>
-				<select
-					id='options'
-					value={role as string}
-					onChange={handleOptionChange}
-				>
-					{roleOptions.map((roleOption: RoleDataFront, index) => (
-						<option key={index} value={roleOption.id}>
-							{roleOption.name}
-						</option>
-					))}
-				</select>
-				<button type='submit'>Cambiar</button>
-			</form>
-		</>
+			<button type='button' className='close' onClick={onCloseModal}>
+				<CloseIcon />
+			</button>
+			<p>Nuevo rol para: {userToEdit?.name}</p>
+			<label htmlFor='options'>Nuevo rol:</label>
+			<select id='options' value={role as string} onChange={handleOptionChange}>
+				{roleOptions.map((roleOption: RoleDataFront, index) => (
+					<option key={index} value={roleOption.id}>
+						{roleOption.name}
+					</option>
+				))}
+			</select>
+			<button type='submit'>Cambiar</button>
+		</form>
 	);
 }
 export default RoleChangeModal;

@@ -21,6 +21,7 @@ const useUserUpdate = () => {
 			showSuccess('Usuario Editado Con Éxito');
 		} catch (error) {
 			showError('No se ha podido editar el usuario');
+			console.error(error);
 		} finally {
 			setIsUpdating(false);
 		}
