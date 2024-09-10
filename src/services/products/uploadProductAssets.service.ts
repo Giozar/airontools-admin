@@ -1,20 +1,26 @@
 import { airontoolsAPI } from '@configs/api.config';
 import axios from 'axios';
 
-export async function uploadProductUrlImages(
-	productId: string,
-	uploadedUrlImages: string[],
-) {
+export async function uploadProductUrlImages({
+	productId,
+	images,
+}: {
+	productId: string;
+	images: string[];
+}) {
 	await axios.patch(airontoolsAPI + '/products/' + productId, {
-		images: uploadedUrlImages,
+		images: images,
 	});
 }
 
-export async function uploadProductUrlManual(
-	productId: string,
-	uploadedUrlManuals: string[],
-) {
+export async function uploadProductUrlManual({
+	productId,
+	manuals,
+}: {
+	productId: string;
+	manuals: string[];
+}) {
 	await axios.patch(airontoolsAPI + '/products/' + productId, {
-		manuals: uploadedUrlManuals,
+		manuals: manuals,
 	});
 }

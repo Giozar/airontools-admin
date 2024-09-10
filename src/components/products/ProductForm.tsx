@@ -4,11 +4,13 @@ import ManualUploader from '@components/commons/ManualUploader';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
-import { airontoolsAPI } from '@configs/api.config';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
-import axios from 'axios';
+import {
+	uploadProductUrlImages,
+	uploadProductUrlManual,
+} from '@services/products/uploadProductAssets.service';
 import SpecificationsSection from './SpecificationsSection';
 
 interface ProductFormProps {
@@ -49,12 +51,14 @@ const ProductForm = ({ actionName, callback }: ProductFormProps) => {
 	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
 		useMultipleFileUpload();
 
-	const handleImageUpload = async (productId: string) => {
-		return await handleFileUpload('images', productId, 'images');
+	const handlerImageUpload = async (productId: string) => {
+		const imageUrls = await handleFileUpload('images', productId, 'images');
+		await uploadProductUrlImages({ productId, images: imageUrls });
 	};
 
-	const handleManualUpload = async (productId: string) => {
-		return await handleFileUpload('manuals', productId, 'manuals');
+	const handlerManualUpload = async (productId: string) => {
+		const manualUrls = await handleFileUpload('manuals', productId, 'manuals');
+		await uploadProductUrlManual({ productId, manuals: manualUrls });
 	};
 	return (
 		<div className='createproductform'>
@@ -153,19 +157,10 @@ const ProductForm = ({ actionName, callback }: ProductFormProps) => {
 							const product = await callback(e);
 							// Si se creo el producto
 							if (product) {
-								// Se suben las imágenes
-								const uploadedUrlImages = await handleImageUpload(product.id);
-								// Se guardan las imágenes dentro del producto
-								await axios.patch(airontoolsAPI + '/products/' + product.id, {
-									images: uploadedUrlImages,
-								});
-
-								// Sesuben los manuales
-								const uploadedUrlManuals = await handleManualUpload(product.id);
-								// Se guardan los manuales dentro del producto
-								await axios.patch(airontoolsAPI + '/products/' + product.id, {
-									manuals: uploadedUrlManuals,
-								});
+								// Se suben las imágenes y se guardan en el producto
+								handlerImageUpload(product.id);
+								// Se suben los manuales y se guardan en la imagen
+								handlerManualUpload(product.id);
 							}
 						} catch (error) {
 							console.error(error);
