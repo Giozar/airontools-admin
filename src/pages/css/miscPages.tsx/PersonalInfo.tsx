@@ -1,6 +1,6 @@
 import { useAuthContext } from '@contexts/auth/AuthContext';
 
-function ContentMainPage() {
+export default function ContentMainPage() {
 	const { user } = useAuthContext();
 	return (
 		user && (
