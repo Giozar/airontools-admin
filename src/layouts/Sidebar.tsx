@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import BotIcon from '@components/svg/BotIcon';
 import { useAuthContext } from '@contexts/auth/AuthContext';
-import aironLogo from '../../../Logo-Blanco.png';
+import aironLogo from '/Logo-Blanco.png';
 
 const routeMap: {
 	'Ver herramientas': string;

@@ -2,7 +2,7 @@ import ActionCard from '@components/commons/ActionCard';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useLocation } from 'react-router-dom';
 
-function ContentMainPage() {
+export default function ContentMainPage() {
 	const { user } = useAuthContext();
 	const location = useLocation();
 	return (
