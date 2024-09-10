@@ -1,12 +1,12 @@
 // src/hooks/useFetchSubcategoriesByFamily.ts
 
 import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
+import useErrorHandling from '@hooks/common/useErrorHandling';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { getSubcategoriesByFamilyService } from '@services/subcategories/getSubcategoriesByFamily.service';
-import { useState } from 'react';
-import useErrorHandling from '../common/useErrorHandling';
+import { useEffect, useState } from 'react';
 
-const useFetchSubcategoriesByFamily = () => {
+const useFetchSubcategoriesByFamily = (id: string) => {
 	const { errorLog, showError } = useErrorHandling();
 	const [subcategories, setSubcategories] = useState<SubcategoryDataFrontend[]>(
 		[],
@@ -34,6 +34,10 @@ const useFetchSubcategoriesByFamily = () => {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		id && fetchSubcategories(id);
+	}, [id]);
 
 	const handleSearch = (searchTerm: string) => {
 		const term = searchTerm.toLowerCase();

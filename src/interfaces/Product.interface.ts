@@ -1,6 +1,9 @@
 import { CategoryDataToSend } from './Category.interface';
 import { FamilyDataToSend } from './Family.interface';
-import { SpecDataToSend } from './Specifications.interface';
+import {
+	ProductSpecification,
+	SpecDataToSend,
+} from './Specifications.interface';
 import { SubcategoryDataToSend } from './subcategory.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
 
@@ -11,7 +14,7 @@ export interface ProductDataToSend {
 	model?: string;
 	description?: string;
 	characteristics?: string[];
-	specifications: Array<{ [key: string]: string }>;
+	specifications: ProductSpecification[];
 	family: string;
 	category: string;
 	subcategory?: string;
@@ -24,6 +27,45 @@ export interface ProductDataToSend {
 	manuals?: string[];
 	videos?: string[];
 	createdBy: string;
+}
+
+export interface ProductCreateContextProps {
+	id?: string;
+	setId: (value: string) => void;
+	name: string;
+	setName: (value: string) => void;
+	model: string;
+	setModel: (value: string) => void;
+	description: string;
+	setDescription: (value: string) => void;
+	characteristics: string[];
+	setCharacteristics: (value: string[]) => void;
+	specifications: ProductSpecification[];
+	setSpecifications: (value: ProductSpecification[]) => void;
+	family: string;
+	setFamily: (value: string) => void;
+	category: string;
+	setCategory: (value: string) => void;
+	subcategory: string;
+	setSubcategory: (value: string) => void;
+	includedItems: string[];
+	setIncludedItems: (value: string[]) => void;
+	optionalAccessories: string[];
+	setOptionalAccessories: (value: string[]) => void;
+	operationRequirements: string[];
+	setOperationRequirements: (value: string[]) => void;
+	applications: string[];
+	setApplications: (value: string[]) => void;
+	recommendations: string[];
+	setRecommendations: (value: string[]) => void;
+	images: string[];
+	setImages: (value: string[]) => void;
+	manuals: string[];
+	setManuals: (value: string[]) => void;
+	videos: string[];
+	setVideos: (value: string[]) => void;
+	createdBy: string;
+	setCreatedBy: (value: string) => void;
 }
 // Datos que vienen del backend - GET
 export interface ProductDataBackend {

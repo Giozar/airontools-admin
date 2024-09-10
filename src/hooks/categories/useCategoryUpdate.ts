@@ -1,7 +1,7 @@
+import useErrorHandling from '@hooks/common/useErrorHandling';
+import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { updateCategoryRequest } from '@services/categories/updateCategory.service';
-import useErrorHandling from '../common/useErrorHandling';
-import useSuccessHandling from '../common/useSuccessHandling';
 
 const useCategoryUpdate = () => {
 	const { errorLog: errorLogCategory, showError: showErrorCategory } =

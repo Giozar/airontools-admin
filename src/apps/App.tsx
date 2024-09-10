@@ -1,4 +1,4 @@
-import { AuthContext, AuthProvider } from '@contexts/AuthContext';
+import { AuthProvider, useAuthContext } from '@contexts/auth/AuthContext';
 import {
 	Navigate,
 	Outlet,
@@ -7,7 +7,7 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
-import { Role } from '@interfaces/Role.interface';
+import { ProductCreateProvider } from '@contexts/product/ProductContext';
 import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
@@ -21,30 +21,28 @@ import LandingPage from '@pages/generalPages/LandingPage';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
 import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
+import CreateProductPage from '@pages/productPages/CreateProductPage';
+import EditProductPage from '@pages/productPages/EditProductPage';
+import ToolMenu from '@pages/productPages/ProductMenu';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
-import CreateTool from '@pages/toolPages/CreateTool';
-import EditTool from '@pages/toolPages/EditTool';
-import ToolMenu from '@pages/toolPages/ToolMenu';
 import UserOptionCreate from '@pages/userPages/UserOptionCreate';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
 import UserOptionEdit from '@pages/userPages/UserOptionEdit';
 import UserOptions from '@pages/userPages/UserOptions';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 const PrivateRoute = () => {
-	const authContext = React.useContext(AuthContext);
+	const { auth, loading } = useAuthContext();
 	const location = useLocation();
 	const selectedCompany = localStorage.getItem('selectedCompany');
-	if (!authContext) return null;
 
-	if (authContext.loading) {
+	if (loading) {
 		return <div>cargando...</div>;
 	}
-	console.log(authContext.isAuthenticated);
-	console.log(selectedCompany);
-	return authContext.isAuthenticated ? (
+
+	return auth ? (
 		<Outlet />
 	) : selectedCompany ? (
 		<Navigate
@@ -58,15 +56,16 @@ const PrivateRoute = () => {
 };
 
 const PrivateRouteAdmin = () => {
-	const authContext = React.useContext(AuthContext);
-	const role = authContext?.user?.role as Role;
-	if (!authContext) return null;
-	if (!authContext.user) return null;
-	if (authContext.loading && !authContext.user.role) {
+	const { user, auth, loading } = useAuthContext();
+	if (!user) return null;
+
+	if (loading) {
 		return <div>cargando...</div>;
 	}
-	console.log(authContext);
-	return authContext.isAuthenticated && role?.name === 'Administrador' ? (
+
+	// console.log(user);
+
+	return auth && user?.role?.name === 'Administrador' ? (
 		<Outlet />
 	) : (
 		<Navigate to='/home' replace />
@@ -182,11 +181,19 @@ const router = createBrowserRouter([
 								children: [
 									{
 										path: 'crear-herramienta',
-										element: <CreateTool />,
+										element: (
+											<ProductCreateProvider>
+												<CreateProductPage />
+											</ProductCreateProvider>
+										),
 									},
 									{
 										path: 'editar-herramienta',
-										element: <EditTool />,
+										element: (
+											<ProductCreateProvider>
+												<EditProductPage />
+											</ProductCreateProvider>
+										),
 									},
 								],
 							},
@@ -211,7 +218,7 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-	//Para que se actualicen todas las paginas y se salga sesión
+	// Para que se actualicen todas las paginas y se salga sesión
 	useEffect(() => {
 		const handleStorageChange = (event: StorageEvent) => {
 			if (event.key === 'token' && !localStorage.getItem('token')) {

@@ -7,14 +7,14 @@ import { RoleDataFront } from '@interfaces/Role.interface';
 import createUser from '@services/users/createUser.service';
 import { ChangeEvent, FormEvent, useEffect } from 'react';
 
+import ErrorMessage from '@components/commons/ErrorMessage';
+import SuccessMessage from '@components/commons/SuccessMessage';
 import TextInput from '@components/commons/TextInput';
+import FileUpload from '@components/files/FileUpload';
 import useFileUpload from '@hooks/files/useFileUpload';
 import useUserUpdate from '@hooks/users/useUserUpdate';
 import { UserDataFrontend } from '@interfaces/User.interface';
 import { copyPassword } from '@utils/copyPassword.util';
-import ErrorMessage from '../commons/ErrorMessage';
-import SuccessMessage from '../commons/SuccessMessage';
-import FileUpload from '../files/FileUpload';
 
 export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 	const {
@@ -104,7 +104,7 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 			if (password) {
 				await updateUser(user.id || '', {
 					password,
-					imageUrl: uploadedUrlImage ? uploadedUrlImage : imageUrl,
+					imageUrl: uploadedUrlImage || imageUrl,
 					email,
 					name,
 					role,
@@ -112,7 +112,7 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 				});
 			} else {
 				await updateUser(user.id || '', {
-					imageUrl: uploadedUrlImage ? uploadedUrlImage : user.imageUrl,
+					imageUrl: uploadedUrlImage || user.imageUrl,
 					email,
 					name,
 					role,

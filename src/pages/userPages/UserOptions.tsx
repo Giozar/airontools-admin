@@ -5,17 +5,17 @@ import RoleChangeModal from '@components/roles/RoleChangeModal';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
 import EditUserIcon from '@components/svg/EditUserIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import { AuthContext } from '@contexts/AuthContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import useUserManagement from '@hooks/users/useUserManagement';
 import useUsers from '@hooks/users/useUsers';
 import '@pages/css/UserOptions.css';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /* No se que hice con los custom hooks pero parece funcionar si puedes hacerlo mejor estaría chido */
 function ReturnUsers() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
-	const authContext = useContext(AuthContext);
+	const { user: loggedUser } = useAuthContext();
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
@@ -75,8 +75,8 @@ function ReturnUsers() {
 					style={
 						user.role?.name === 'Administrador' &&
 						!(
-							authContext?.user?.name === 'root' &&
-							authContext?.user?.role?.name === 'Administrador'
+							loggedUser?.name === 'root' &&
+							loggedUser?.role?.name === 'Administrador'
 						)
 							? { opacity: '0.2' }
 							: {}
@@ -85,8 +85,8 @@ function ReturnUsers() {
 					disabled={
 						user.role?.name === 'Administrador' &&
 						!(
-							authContext?.user?.name === 'root' &&
-							authContext?.user?.role?.name === 'Administrador'
+							loggedUser?.name === 'root' &&
+							loggedUser?.role?.name === 'Administrador'
 						)
 					}
 				>

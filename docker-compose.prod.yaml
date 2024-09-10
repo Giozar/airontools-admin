@@ -8,10 +8,10 @@ services:
       target: runner
     environment:
       NODE_ENV: production
-      VITE_API_URL: "${VITE_API_URL}"
-      PORT: "${VITE_PORT}"
+      VITE_API_URL: '${VITE_API_URL}'
+      PORT: '${VITE_PORT}'
     ports:
-      - "${VITE_PORT}:${VITE_PORT}"
+      - '${VITE_PORT}:${VITE_PORT}'
     restart: always
     networks:
       - app-network

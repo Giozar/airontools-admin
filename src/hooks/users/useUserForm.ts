@@ -1,22 +1,24 @@
-import { AuthContext } from '@contexts/AuthContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import { UserDataFrontend } from '@interfaces/User.interface';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export function useUserForm(user: UserDataFrontend | null) {
-	const [email, setEmail] = useState(user ? user.email || '' : '');
-	const [imageUrl, setImageUrl] = useState(user ? user.imageUrl || '' : '');
-	const [name, setName] = useState(user ? user.name || '' : '');
-	const [role, setRole] = useState(user ? user.role?.id || '' : ''); // Cambiado a un valor vacío inicial
-	const [createdBy, setCreatedBy] = useState(
-		user ? user.createdBy?.id || '' : '',
+export function useUserForm(userToEdit: UserDataFrontend | null) {
+	const [email, setEmail] = useState(userToEdit ? userToEdit.email || '' : '');
+	const [imageUrl, setImageUrl] = useState(
+		userToEdit ? userToEdit.imageUrl || '' : '',
 	);
-	const authContext = useContext(AuthContext);
+	const [name, setName] = useState(userToEdit ? userToEdit.name || '' : '');
+	const [role, setRole] = useState(userToEdit ? userToEdit.role?.id || '' : ''); // Cambiado a un valor vacío inicial
+	const [createdBy, setCreatedBy] = useState(
+		userToEdit ? userToEdit.createdBy?.id || '' : '',
+	);
+	const { user } = useAuthContext();
 
 	useEffect(() => {
-		if (authContext?.user) {
-			setCreatedBy(authContext.user.id);
+		if (user) {
+			setCreatedBy(user.id);
 		}
-	}, [authContext]);
+	}, [user]);
 
 	return {
 		email,

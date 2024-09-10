@@ -104,7 +104,7 @@ Ejemplo de salida: Ella fue al mercado con unas pijas nuevas.
 	);
 };
 
-/*import axios from 'axios';
+/* import axios from 'axios';
 import { useState } from 'react';
 import { useCompletion } from 'ai/react';
 
@@ -231,9 +231,9 @@ const Corrector: React.FC<CorrectorProps> = textoinicial => {
 						stop: ['[/INST]'],
 					},
 				},
-			);*/
+			); */
 // Envía la solicitud a la API
-//const prompt = `Regresa el texto corregido a español estandar: "${texto}"`;
+// const prompt = `Regresa el texto corregido a español estandar: "${texto}"`;
 /*	const prompt = `[INST] Corrige y reescribe los errores gramaticales del texto del usuario delimitado por triples acentos graves al español estándar.
             Texto=\`\`\`ella no fue al mercado\`\`\` [/INST]
             [INST] Salida: Ella no fue al mercado. [/INST]

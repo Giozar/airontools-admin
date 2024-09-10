@@ -6,7 +6,7 @@ import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { useEffect, useState } from 'react';
 
-const useToolCategorizationEdit = () => {
+const useProductCategorization = () => {
 	const { families } = useFetchFamilies();
 	const { categories } = useFetchCategories();
 	const { subcategories } = useFetchSubcategories();
@@ -94,4 +94,4 @@ const useToolCategorizationEdit = () => {
 		handleSubcategoryChange,
 	};
 };
-export default useToolCategorizationEdit;
+export default useProductCategorization;

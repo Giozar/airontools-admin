@@ -12,8 +12,8 @@
 
 header {
 	display: flex;
-	justify-content: space-around;
 	top: 0;
+	justify-content: space-around;
 	background-color: var(--menu-bg);
 	padding: 20px 0;
 	min-width: 100%;
@@ -88,7 +88,7 @@ header h1 span {
 	grid-template-columns: 1fr auto;
 }
 
-.login form .passwordInput>button {
+.login form .passwordInput > button {
 	border-radius: 10px;
 	background-color: transparent;
 	padding: 5px;

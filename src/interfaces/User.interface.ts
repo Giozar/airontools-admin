@@ -30,6 +30,17 @@ export interface UserDataFrontend {
 	role?: RoleDataFront | null;
 	createdBy?: UserDataFrontend;
 	updatedBy?: UserDataFrontend;
+	createdAt?: string;
+	updatedAt?: string;
+}
+
+export interface UserAuthContext {
+	user: UserDataFrontend | null;
+	setUser: (value: UserDataFrontend | null) => void;
+	auth: boolean;
+	setAuth: (value: boolean) => void;
+	loading: boolean;
+	setLoading: (value: boolean) => void;
 }
 
 export interface RegisterResponse {
@@ -39,4 +50,11 @@ export interface RegisterResponse {
 
 export interface ValidationError {
 	message: string[];
+}
+
+export interface UserLoginResponse {
+	token: string;
+	user: UserDataBackend;
+	exp: number;
+	iat: number;
 }

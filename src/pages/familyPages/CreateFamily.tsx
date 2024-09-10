@@ -7,14 +7,14 @@ import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { airontoolsAPI } from '@configs/api.config';
-import { AuthContext } from '@contexts/AuthContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
 import useCreateCategories from '@handlers/categories.handler';
 import useCreateSubcategories from '@handlers/subcategories.handler';
 import useFamilyCreate from '@hooks/families/useFamilyCreate';
 import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
 import '@pages/css/createFamily.css';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 interface Category {
 	name: string;
@@ -28,8 +28,8 @@ interface Subcategory {
 function CreateFamilyForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
-	const authContext = useContext(AuthContext);
-	const createdBy = authContext?.user?.id || 'user';
+	const { user } = useAuthContext();
+	const createdBy = user?.id || 'user';
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
 	const { errorLog, successLog, createFamily } = useFamilyCreate();

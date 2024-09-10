@@ -1,9 +1,25 @@
 import DeletionModal from '@components/commons/DeletionModal';
 import ManualUploader from '@components/commons/ManualUploader';
 import TrashIcon from '@components/svg/TrashIcon';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
-const ManualUpdate = ({
+interface ManualUpdateProps {
+	manuals: string[];
+	filePreviews: any;
+	handleRemoveFile: (type: string, index: number) => void;
+	handleFileSelect: (
+		event: ChangeEvent<HTMLInputElement>,
+		type: string,
+	) => void;
+	setShowDeletionModalForFile: Dispatch<SetStateAction<string | null>>;
+	showDeletionModalForFile: any;
+	deletionMessageFile: any;
+	handleCloseModalFile: any;
+	handleDeleteFileFor: any;
+	handleCloseModalDeletionManuals: any;
+}
+
+function ManualUpdate({
 	manuals,
 	filePreviews,
 	handleRemoveFile,
@@ -14,23 +30,7 @@ const ManualUpdate = ({
 	handleCloseModalFile,
 	handleDeleteFileFor,
 	handleCloseModalDeletionManuals,
-}: {
-	manuals: string[];
-	filePreviews: any;
-	handleRemoveFile: (type: string, index: number) => void;
-	handleFileSelect: (
-		event: ChangeEvent<HTMLInputElement>,
-		type: string,
-	) => void;
-	setShowDeletionModalForFile: React.Dispatch<
-		React.SetStateAction<string | null>
-	>;
-	showDeletionModalForFile: any;
-	deletionMessageFile: any;
-	handleCloseModalFile: any;
-	handleDeleteFileFor: any;
-	handleCloseModalDeletionManuals: any;
-}) => {
+}: ManualUpdateProps) {
 	return (
 		<div className='column'>
 			<p>Manuales:</p>
@@ -77,6 +77,6 @@ const ManualUpdate = ({
 			/>
 		</div>
 	);
-};
+}
 
 export default ManualUpdate;

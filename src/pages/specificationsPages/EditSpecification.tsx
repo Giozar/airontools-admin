@@ -15,7 +15,5 @@ export default function EditSpecification() {
 		localStorage.setItem('specToEdit', JSON.stringify(state));
 	}, [state]);
 
-	return (
-			<EditSpecifications specToEdit={state} />
-	);
+	return <EditSpecifications specToEdit={state} />;
 }

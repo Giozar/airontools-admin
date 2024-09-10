@@ -6,10 +6,12 @@ export function errorHandler(error: unknown, callback?: Function) {
 		if (error.response) {
 			const { response } = error as AxiosErrorCustom;
 			callback &&
-				callback(`Error al crear: ${Object.values(response.data)[0]} `);
+				callback(
+					`Error al realizar la petición: ${Object.values(response.data)[0]} `,
+				);
 			throw new AxiosErrorCustom(
 				response,
-				`Error al crear: \n ${Object.values(response.data)[0]}`,
+				`Error al realizar la petición: \n ${Object.values(response.data)[0]}`,
 			);
 		}
 	}
