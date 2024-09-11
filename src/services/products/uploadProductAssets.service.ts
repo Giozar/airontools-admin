@@ -1,4 +1,5 @@
 import { airontoolsAPI } from '@configs/api.config';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 export async function uploadProductUrlImages({
@@ -8,9 +9,17 @@ export async function uploadProductUrlImages({
 	productId: string;
 	images: string[];
 }) {
-	await axios.patch(airontoolsAPI + '/products/' + productId, {
-		images: images,
-	});
+	try {
+		const productUpdated = await axios.patch(
+			airontoolsAPI + '/products/' + productId,
+			{
+				images,
+			},
+		);
+		return productUpdated;
+	} catch (error) {
+		errorHandler(error);
+	}
 }
 
 export async function uploadProductUrlManual({
@@ -20,7 +29,15 @@ export async function uploadProductUrlManual({
 	productId: string;
 	manuals: string[];
 }) {
-	await axios.patch(airontoolsAPI + '/products/' + productId, {
-		manuals: manuals,
-	});
+	try {
+		const productUpdated = await axios.patch(
+			airontoolsAPI + '/products/' + productId,
+			{
+				manuals,
+			},
+		);
+		return productUpdated;
+	} catch (error) {
+		errorHandler(error);
+	}
 }
