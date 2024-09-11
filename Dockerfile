@@ -6,11 +6,14 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+# Copiar solo package.json y package-lock.json
+COPY package.json package-lock.json ./
+
+# Instalar dependencias con npm ci
 RUN \
-  if [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --frozen-lockfile; \
+  if [ -f yarn.lock ]; then echo "Using yarn.lock"; yarn install --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then echo "Using package-lock.json"; npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then echo "Using pnpm-lock.yaml"; corepack enable pnpm && pnpm install --frozen-lockfile; \
   else echo "No lockfile found." && exit 1; \
   fi
 
@@ -30,7 +33,7 @@ ENV VITE_AI_URL=${VITE_AI_URL}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Ensure the build uses the passed environment variables
+# Build de la aplicación con las variables de entorno
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
   elif [ -f package-lock.json ]; then npm run build; \
@@ -50,14 +53,11 @@ COPY --from=builder /app/dist ./dist
 # Create non-root group and user
 RUN addgroup -S vitegroup && adduser -S viteuser -G vitegroup
 
-# Assign correct permissions to the non-root user
+# Asignar permisos correctos al usuario sin root
 RUN chown -R viteuser:vitegroup /app
 
 # Switch to non-root user
 USER viteuser
-
-# Install serve to serve the static files
-RUN npm install serve
 
 # Expose the application's port
 EXPOSE 3000
