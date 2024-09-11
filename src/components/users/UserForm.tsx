@@ -39,8 +39,8 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 		fileUrl,
 		fileName,
 		previewUrl,
-		handleFileSelect,
-		handleFileUpload,
+		handlerFileSelect,
+		uploadFile,
 		setFileType,
 		setfileFeature,
 	} = useFileUpload();
@@ -54,7 +54,7 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 	}, [handleOptionChange]);
 
 	const handleImageUpload = async () => {
-		return await handleFileUpload();
+		return await uploadFile();
 	};
 	const handleSubmitCreate = async (e: FormEvent) => {
 		e.preventDefault();
@@ -146,7 +146,7 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 						fileUrl={fileUrl}
 						previewUrl={previewUrl}
 						fileName={fileName}
-						handleFileSelect={handleFileSelect}
+						handlerFileSelect={handlerFileSelect}
 					/>
 					<TextInput
 						id={'name'}

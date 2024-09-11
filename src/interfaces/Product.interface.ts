@@ -117,4 +117,3 @@ export interface ProductDataFrontend {
 	videos?: string[];
 	createdBy: UserDataFrontend;
 }
-// DELETE se hace directo con ids

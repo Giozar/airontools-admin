@@ -9,7 +9,7 @@ export default function FileUpload({
 	fileUrl,
 	previewUrl,
 	fileName,
-	handleFileSelect,
+	handlerFileSelect,
 }: {
 	setImageUrl?: Dispatch<SetStateAction<string>>;
 	fileType?: string;
@@ -19,7 +19,7 @@ export default function FileUpload({
 	fileUrl: any;
 	previewUrl: any;
 	fileName: any;
-	handleFileSelect: any;
+	handlerFileSelect: any;
 }) {
 	useEffect(() => {
 		if (setImageUrl) setImageUrl(fileUrl);
@@ -42,7 +42,7 @@ export default function FileUpload({
 				id='file-upload'
 				accept='image/*'
 				style={{ display: 'none' }}
-				onChange={handleFileSelect}
+				onChange={handlerFileSelect}
 			/>
 		</div>
 	);
