@@ -1,7 +1,7 @@
 import { airontoolsAPI } from '@configs/api.config';
 import axios from 'axios';
 
-const uploadFile = async (
+const uploadFileService = async (
 	file: File,
 	type?: string | undefined,
 	feature?: string | undefined,
@@ -32,4 +32,4 @@ const uploadFile = async (
 	}
 };
 
-export default uploadFile;
+export default uploadFileService;

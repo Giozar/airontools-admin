@@ -1,31 +1,24 @@
 import { DynamicInputSection } from '@components/commons/DynamicInputSection';
 import ImageUploader from '@components/commons/ImageUploader';
-import ManualUploader from '@components/commons/ManualUploader';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
-import useMultipleFileUpload from '@hooks/files/useMultipleFileUpload';
-import { ProductDataFrontend } from '@interfaces/Product.interface';
-import {
-	uploadProductUrlImages,
-	uploadProductUrlManual,
-} from '@services/products/uploadProductAssets.service';
 import SpecificationsSection from './SpecificationsSection';
 
 interface ProductFormProps {
 	actionName: string;
-	callback: (e: any) => Promise<ProductDataFrontend | undefined>;
+	action: (e: any) => Promise<void>;
 }
 
 /**
  * Ejecuta una acción al enviar el formulario de producto.
  *
  * @param {string} actionName - Nombre de la acción a ejecutar, por ejemplo, "crear" o "editar".
- * @param {(e: any) => Promise<ProductDataFrontend | undefined>} callback - Función asíncrona que se ejecutará al enviar el formulario. Recibe un evento como argumento y devuelve un `ProductDataFrontend` o `undefined`.
+ * @param {(e: any) => Promise<ProductDataFrontend | undefined>} action - Función asíncrona que se ejecutará al enviar el formulario. Recibe un evento como argumento y devuelve un `ProductDataFrontend` o `undefined`.
  * @returns {void} No devuelve ningún valor.
  */
-const ProductForm = ({ actionName, callback }: ProductFormProps) => {
+const ProductForm = ({ actionName, action }: ProductFormProps) => {
 	const {
 		name,
 		setName,
@@ -33,10 +26,8 @@ const ProductForm = ({ actionName, callback }: ProductFormProps) => {
 		setModel,
 		description,
 		setDescription,
-		// images,
-		// setImages,
-		// manuals,
-		// setManuals,
+		imagesRaw,
+		setImagesRaw,
 		setCharacteristics,
 		setApplications,
 		setRecommendations,
@@ -48,18 +39,6 @@ const ProductForm = ({ actionName, callback }: ProductFormProps) => {
 		category,
 		subcategory,
 	} = useProductCreateContext();
-	const { filePreviews, handleFileSelect, handleRemoveFile, handleFileUpload } =
-		useMultipleFileUpload();
-
-	const handlerImageUpload = async (productId: string) => {
-		const imageUrls = await handleFileUpload('images', productId, 'images');
-		await uploadProductUrlImages({ productId, images: imageUrls });
-	};
-
-	const handlerManualUpload = async (productId: string) => {
-		const manualUrls = await handleFileUpload('manuals', productId, 'manuals');
-		await uploadProductUrlManual({ productId, manuals: manualUrls });
-	};
 	return (
 		<div className='createproductform'>
 			<form className='productform'>
@@ -124,16 +103,15 @@ const ProductForm = ({ actionName, callback }: ProductFormProps) => {
 					<div className='right-column'>
 						<ImageUploader
 							title='Fotos de herramienta'
-							filePreviews={filePreviews}
-							onFileSelect={handleFileSelect}
-							onRemoveFile={handleRemoveFile}
+							images={imagesRaw}
+							setImages={setImagesRaw}
 						/>
-						<ManualUploader
+						{/* <ManualUploader
 							title='Manuales de herramienta'
 							filePreviews={filePreviews}
 							onFileSelect={handleFileSelect}
 							onRemoveFile={handleRemoveFile}
-						/>
+						/> */}
 						<DynamicInputSection
 							label='Videos'
 							onValuesChange={setVideos}
@@ -151,25 +129,7 @@ const ProductForm = ({ actionName, callback }: ProductFormProps) => {
 						/>
 					</div>
 				</div>
-				<button
-					onClick={async e => {
-						try {
-							const product = await callback(e);
-							// Si se creo el producto
-							if (product) {
-								// Se suben las imágenes y se guardan en el producto
-								handlerImageUpload(product.id);
-								// Se suben los manuales y se guardan en la imagen
-								handlerManualUpload(product.id);
-							}
-						} catch (error) {
-							console.error(error);
-							// console.log('No se pudo subir la imagen', error);
-						}
-					}}
-				>
-					{actionName}
-				</button>
+				<button onClick={action}>{actionName}</button>
 			</form>
 		</div>
 	);
