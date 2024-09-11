@@ -26,6 +26,8 @@ const ProductForm = ({ actionName, action }: ProductFormProps) => {
 		setModel,
 		description,
 		setDescription,
+		images,
+		setImages,
 		imagesRaw,
 		setImagesRaw,
 		setCharacteristics,
@@ -105,6 +107,10 @@ const ProductForm = ({ actionName, action }: ProductFormProps) => {
 							title='Fotos de herramienta'
 							files={imagesRaw}
 							setFiles={setImagesRaw}
+							filePreviews={images}
+							setFilePreviews={setImages}
+							fileNames={images}
+							setFileNames={setImages}
 						/>
 						{/* <ManualUploader
 							title='Manuales de herramienta'

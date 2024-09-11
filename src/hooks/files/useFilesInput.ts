@@ -1,105 +1,52 @@
-import { deleteFileService } from '@services/files/deleteFile.service';
-import uploadFile from '@services/files/fileUpload.service';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
+
+interface UseFilesInputParams {
+	files: File[];
+	setFiles: (value: File[]) => void;
+	filePreviews: string[];
+	setFilePreviews: (value: string[]) => void;
+	fileNames: string[];
+	setFileNames: (value: string[]) => void;
+}
 
 export default function useFilesInput() {
-	const [files, setFiles] = useState<{ [key: string]: File[] }>({});
-	const [filePreviews, setFilePreviews] = useState<{ [key: string]: string[] }>(
-		{},
-	);
-	const [fileNames, setFileNames] = useState<{ [key: string]: string[] }>({});
-	const [uploadedFileUrls, setUploadedFileUrls] = useState<{
-		[key: string]: string[];
-	}>({});
-
-	// Función que se encarga de seleccionar ya añadir archivos al estado
-	const selectFiles = (
-		event: ChangeEvent<HTMLInputElement>,
-		fileType: string,
-	) => {
+	// Añade archivos seleccionados y actualiza sus previsualizaciones y nombres
+	const selectFiles = ({
+		event,
+		files,
+		fileNames,
+		filePreviews,
+		setFiles,
+		setFilePreviews,
+		setFileNames,
+	}: UseFilesInputParams & { event: ChangeEvent<HTMLInputElement> }) => {
 		if (event.target.files && event.target.files.length > 0) {
 			const selectedFiles = Array.from(event.target.files);
 			const previews = selectedFiles.map(file => URL.createObjectURL(file));
 			const names = selectedFiles.map(file => file.name);
 
-			setFiles(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...selectedFiles],
-			}));
-			setFilePreviews(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...previews],
-			}));
-			setFileNames(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...names],
-			}));
+			setFiles([...files, ...selectedFiles]);
+			setFilePreviews([...filePreviews, ...previews]);
+			setFileNames([...fileNames, ...names]);
 		}
 	};
 
-	// Función que se encarga de eliminar las archivos del estado
-	const removeFiles = (fileType: string, index: number) => {
-		files[fileType] &&
-			setFiles(prev => ({
-				...prev,
-				[fileType]: prev[fileType].filter((_, i) => i !== index),
-			}));
-
-		filePreviews[fileType] &&
-			setFilePreviews(prev => ({
-				...prev,
-				[fileType]: prev[fileType].filter((_, i) => i !== index),
-			}));
-		fileNames[fileType] &&
-			setFileNames(prev => ({
-				...prev,
-				[fileType]: prev[fileType].filter((_, i) => i !== index),
-			}));
-	};
-
-	// Función que se encarga de subir los archivos al servidor y regresa las urls donde se aloja
-	const fileUpload = async (
-		type: string,
-		feature: string,
-		fileType: string,
-	) => {
-		const urls: string[] = [];
-		for (const file of files[fileType] || []) {
-			try {
-				const url = await uploadFile(file, type, feature);
-				urls.push(url);
-			} catch (error) {
-				console.error('No se pudo subir archivos:', file.name, error);
-			}
-		}
-		setUploadedFileUrls(prev => ({
-			...prev,
-			[fileType]: urls,
-		}));
-		console.log(urls);
-		setFilePreviews({});
-		setFiles({});
-		setFileNames({});
-		return urls;
-	};
-
-	// Funcón que se encarga de eliminar los archivos del servidor
-	const deleteFile = async (fileId: string) => {
-		try {
-			await deleteFileService(fileId);
-		} catch (error) {
-			console.error(`Error al eliminar archivo ${fileId}:`, error);
-		}
-	};
-
-	return {
+	// Elimina archivos, previsualizaciones y nombres del estado
+	const removeFiles = ({
+		index,
 		files,
+		setFiles,
 		filePreviews,
+		setFilePreviews,
 		fileNames,
-		uploadedFileUrls,
+		setFileNames,
+	}: UseFilesInputParams & { index: number }) => {
+		setFiles(files.filter((_, i) => i !== index));
+		setFilePreviews(filePreviews.filter((_, i) => i !== index));
+		setFileNames(fileNames.filter((_, i) => i !== index));
+	};
+	return {
 		selectFiles,
 		removeFiles,
-		deleteFile,
-		fileUpload,
 	};
 }
