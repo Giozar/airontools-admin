@@ -1,69 +1,53 @@
 import '@components/css/FilesInput.css';
 import TrashIcon from '@components/svg/TrashIcon';
-import { ChangeEvent, SetStateAction, useEffect, useState } from 'react';
+import useFilesInput from '@hooks/files/useFilesInput';
+import { ChangeEvent, useEffect } from 'react';
 
 interface FilesInputProps {
 	title: string;
-	files: { [key: string]: File[] };
-	setFiles: (
-		value: SetStateAction<{
-			[key: string]: File[];
-		}>,
-	) => void;
+	files: File[];
+	setFiles: (value: File[]) => void;
+	filePreviews: string[];
+	setFilePreviews: (value: string[]) => void;
+	fileNames: string[];
+	setFileNames: (value: string[]) => void;
 }
+
 export default function FilesInput({
 	title,
 	files,
 	setFiles,
+	filePreviews,
+	setFilePreviews,
+	fileNames,
+	setFileNames,
 }: FilesInputProps) {
-	const [filePreviews, setFilePreviews] = useState<{ [key: string]: string[] }>(
-		{},
-	);
-	const [fileNames, setFileNames] = useState<{ [key: string]: string[] }>({});
+	const { selectFiles, removeFiles } = useFilesInput();
 
-	// Añade imágenes al estado
-	const handleFileSelect = (
-		event: ChangeEvent<HTMLInputElement>,
-		fileType: string,
-	) => {
-		if (event.target.files && event.target.files.length > 0) {
-			const selectedFiles: File[] = Array.from(event.target.files);
-			const previews = selectedFiles.map(file => URL.createObjectURL(file));
-			const names = selectedFiles.map(file => file.name);
-
-			setFiles(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...selectedFiles],
-			}));
-			setFilePreviews(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...previews],
-			}));
-			setFileNames(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...names],
-			}));
-		}
+	// Maneja la selección de archivos
+	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+		selectFiles({
+			event,
+			files,
+			setFiles,
+			filePreviews,
+			setFilePreviews,
+			fileNames,
+			setFileNames,
+		});
 	};
 
-	// Se remueven las imágenes del estado
-	const handleRemoveFile = (fileType: string, index: number) => {
-		files[fileType] &&
-			setFiles(prev => ({
-				...prev,
-				[fileType]: prev[fileType].filter((_, i) => i !== index),
-			}));
-
-		filePreviews[fileType] &&
-			setFilePreviews(prev => ({
-				...prev,
-				[fileType]: prev[fileType].filter((_, i) => i !== index),
-			}));
-		fileNames[fileType] &&
-			setFileNames(prev => ({
-				...prev,
-				[fileType]: prev[fileType].filter((_, i) => i !== index),
-			}));
+	// Maneja la eliminación de archivos
+	const handleRemoveFile = (index: number) => {
+		removeFiles({
+			index,
+			files,
+			setFiles,
+			filePreviews,
+			setFilePreviews,
+			fileNames,
+			setFileNames,
+		});
 	};
 
 	useEffect(() => {
@@ -81,14 +65,14 @@ export default function FilesInput({
 						id='file-input'
 						multiple
 						accept='image/*'
-						onChange={event => handleFileSelect(event, 'files')}
+						onChange={handleFileSelect}
 					/>
 				</div>
-				{filePreviews.files?.map((preview, index) => (
+				{filePreviews.map((preview, index) => (
 					<div key={index} className='image-preview'>
 						<img src={preview} alt={`preview-${index}`} />
 						<button
-							onClick={() => handleRemoveFile('files', index)}
+							onClick={() => handleRemoveFile(index)}
 							className='delete'
 							type='button'
 						>

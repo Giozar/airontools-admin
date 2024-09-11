@@ -1,4 +1,3 @@
-import { SetStateAction } from 'react';
 import { CategoryDataToSend } from './Category.interface';
 import { FamilyDataToSend } from './Family.interface';
 import {
@@ -63,12 +62,8 @@ export interface ProductCreateContextProps {
 	setImages: (value: string[]) => void;
 	manuals: string[];
 	setManuals: (value: string[]) => void;
-	imagesRaw: { [key: string]: File[] };
-	setImagesRaw: (
-		value: SetStateAction<{
-			[key: string]: File[];
-		}>,
-	) => void;
+	imagesRaw: File[];
+	setImagesRaw: (value: File[]) => void;
 	manualsRaw: File[];
 	setManualsRaw: (value: File[]) => void;
 	videos: string[];
