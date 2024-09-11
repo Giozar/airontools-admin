@@ -41,8 +41,8 @@ function ListOfTools() {
 					`${airontoolsAPI}/products`,
 				);
 				setProducts(response.data.map(transformProductDataToFrontend));
-				console.log(response.data);
-				console.log(response.data.map(transformProductDataToFrontend));
+				// console.log(response.data);
+				// console.log(response.data.map(transformProductDataToFrontend));
 			} catch (error) {
 				console.error('Failed to fetch tools:', error);
 			}

@@ -1,5 +1,5 @@
 import { DynamicInputSection } from '@components/commons/DynamicInputSection';
-import FileInput from '@components/commons/FileInput';
+import FilesInput from '@components/commons/FilesInput';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
@@ -101,10 +101,10 @@ const ProductForm = ({ actionName, action }: ProductFormProps) => {
 					</div>
 
 					<div className='right-column'>
-						<FileInput
+						<FilesInput
 							title='Fotos de herramienta'
-							images={imagesRaw}
-							setImages={setImagesRaw}
+							files={imagesRaw}
+							setFiles={setImagesRaw}
 						/>
 						{/* <ManualUploader
 							title='Manuales de herramienta'

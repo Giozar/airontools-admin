@@ -2,7 +2,7 @@ import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFile from '@services/files/fileUpload.service';
 import { ChangeEvent, useState } from 'react';
 
-const useMultipleFileUpload = () => {
+export default function useFilesInput() {
 	const [files, setFiles] = useState<{ [key: string]: File[] }>({});
 	const [filePreviews, setFilePreviews] = useState<{ [key: string]: string[] }>(
 		{},
@@ -11,31 +11,9 @@ const useMultipleFileUpload = () => {
 	const [uploadedFileUrls, setUploadedFileUrls] = useState<{
 		[key: string]: string[];
 	}>({});
-	const initFileSelect = (fileOrPath: string, fileType: string) => {
-		if (fileOrPath) {
-			// For a single string, we create arrays with one element
-			const previews = [fileOrPath];
-			const names = [fileOrPath]; // You might want to adjust this depending on how you handle names
 
-			setFiles(prev => ({
-				...prev,
-				[fileType]: [
-					...(prev[fileType] ||
-						[]) /* Add corresponding file object if needed */,
-				],
-			}));
-			setFilePreviews(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...previews],
-			}));
-			setFileNames(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...names],
-			}));
-		}
-	};
-
-	const handleFileSelect = (
+	// Función que se encarga de seleccionar ya añadir archivos al estado
+	const selectFiles = (
 		event: ChangeEvent<HTMLInputElement>,
 		fileType: string,
 	) => {
@@ -59,8 +37,8 @@ const useMultipleFileUpload = () => {
 		}
 	};
 
-	// Remove a file from the state
-	const handleRemoveFile = (fileType: string, index: number) => {
+	// Función que se encarga de eliminar las archivos del estado
+	const removeFiles = (fileType: string, index: number) => {
 		files[fileType] &&
 			setFiles(prev => ({
 				...prev,
@@ -79,8 +57,8 @@ const useMultipleFileUpload = () => {
 			}));
 	};
 
-	// Handle file upload
-	const handleFileUpload = async (
+	// Función que se encarga de subir los archivos al servidor y regresa las urls donde se aloja
+	const fileUpload = async (
 		type: string,
 		feature: string,
 		fileType: string,
@@ -104,7 +82,9 @@ const useMultipleFileUpload = () => {
 		setFileNames({});
 		return urls;
 	};
-	const handleDeleteFile = async (fileId: string) => {
+
+	// Funcón que se encarga de eliminar los archivos del servidor
+	const deleteFile = async (fileId: string) => {
 		try {
 			await deleteFileService(fileId);
 		} catch (error) {
@@ -117,12 +97,9 @@ const useMultipleFileUpload = () => {
 		filePreviews,
 		fileNames,
 		uploadedFileUrls,
-		initFileSelect,
-		handleFileSelect,
-		handleRemoveFile,
-		handleDeleteFile,
-		handleFileUpload,
+		selectFiles,
+		removeFiles,
+		deleteFile,
+		fileUpload,
 	};
-};
-
-export default useMultipleFileUpload;
+}
