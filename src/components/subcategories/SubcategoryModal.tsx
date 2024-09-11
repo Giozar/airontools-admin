@@ -28,7 +28,7 @@ function SubcategoryModal({
 	};
 
 	const { subcategories, setSubcategories, fetchSubcategories } =
-		useFetchSubcategoriesByFamily();
+		useFetchSubcategoriesByFamily(categoryId);
 
 	useEffect(() => {
 		fetchSubcategories(categoryId || '');
