@@ -1,4 +1,5 @@
-import uploadFile from '@services/files/fileUpload.service';
+import uploadFileService from '@services/files/fileUpload.service';
+
 import { ChangeEvent, useState } from 'react';
 
 const useFileUpload = () => {
@@ -10,7 +11,7 @@ const useFileUpload = () => {
 	// Para tener una imagen de preview
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
+	const handlerFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files.length > 0) {
 			const file = event.target.files[0];
 			setSelectedFile(file);
@@ -24,13 +25,9 @@ const useFileUpload = () => {
 		}
 	};
 
-	const handleFileUpload = async () => {
-		return await getFileUrl();
-	};
-
-	const getFileUrl = async () => {
+	const uploadFile = async () => {
 		if (selectedFile) {
-			const url = await uploadFile(selectedFile, fileType, fileFeature);
+			const url = await uploadFileService(selectedFile, fileType, fileFeature);
 			setFileUrl(url);
 			return url;
 		}
@@ -39,11 +36,10 @@ const useFileUpload = () => {
 	return {
 		selectedFile,
 		fileUrl,
-		getFileUrl,
+		uploadFile,
 		fileName,
 		previewUrl,
-		handleFileSelect,
-		handleFileUpload,
+		handlerFileSelect,
 		setFileType,
 		setfileFeature,
 	};

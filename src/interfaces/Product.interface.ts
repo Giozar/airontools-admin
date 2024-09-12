@@ -62,6 +62,10 @@ export interface ProductCreateContextProps {
 	setImages: (value: string[]) => void;
 	manuals: string[];
 	setManuals: (value: string[]) => void;
+	imagesRaw: File[];
+	setImagesRaw: (value: File[]) => void;
+	manualsRaw: File[];
+	setManualsRaw: (value: File[]) => void;
 	videos: string[];
 	setVideos: (value: string[]) => void;
 	createdBy: string;
@@ -113,4 +117,3 @@ export interface ProductDataFrontend {
 	videos?: string[];
 	createdBy: UserDataFrontend;
 }
-// DELETE se hace directo con ids
