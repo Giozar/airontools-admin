@@ -1,7 +1,8 @@
 import { DynamicInputSection } from '@components/commons/DynamicInputSection';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import FilesInput from '@components/files/FilesInput';
+import ImagesInput from '@components/files/ImagesInput';
+import ManualsInput from '@components/files/ManualsInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
 import SpecificationsSection from './SpecificationsSection';
@@ -30,6 +31,10 @@ const ProductForm = ({ actionName, action }: ProductFormProps) => {
 		setImages,
 		imagesRaw,
 		setImagesRaw,
+		manuals,
+		setManuals,
+		manualsRaw,
+		setManualsRaw,
 		setCharacteristics,
 		setApplications,
 		setRecommendations,
@@ -103,19 +108,20 @@ const ProductForm = ({ actionName, action }: ProductFormProps) => {
 					</div>
 
 					<div className='right-column'>
-						<FilesInput
+						<ImagesInput
 							title='Fotos de herramienta'
 							files={imagesRaw}
 							setFiles={setImagesRaw}
 							urls={images}
 							setUrls={setImages}
 						/>
-						{/* <ManualUploader
+						<ManualsInput
 							title='Manuales de herramienta'
-							filePreviews={filePreviews}
-							onFileSelect={handleFileSelect}
-							onRemoveFile={handleRemoveFile}
-						/> */}
+							files={manualsRaw}
+							setFiles={setManualsRaw}
+							urls={manuals}
+							setUrls={setManuals}
+						/>
 						<DynamicInputSection
 							label='Videos'
 							onValuesChange={setVideos}

@@ -1,0 +1,69 @@
+/* ManualUploader.css */
+.manual-uploader-container {
+	border-radius: 0.375rem; /* 6px */
+	padding: 1rem;
+}
+
+.manual-uploader-label {
+	margin-bottom: 0.5rem; /* 8px */
+	font-size: 1.125rem; /* 18px */
+}
+
+.manual-upload {
+	display: flex;
+	flex-direction: column;
+}
+
+.embed-placeholder {
+	margin-bottom: 0.5rem; /* 8px */
+	border-radius: 0.375rem; /* 6px */
+	padding: 1rem;
+}
+
+.embed-placeholder label {
+	cursor: pointer;
+	font-weight: 700; /* bold */
+	font-size: 1.125rem; /* 18px */
+}
+
+.embed-preview {
+	position: relative;
+	margin-bottom: 0.5rem; /* 8px */
+	border-radius: 0.375rem; /* 6px */
+	padding: 1rem;
+}
+
+.embed-preview iframe {
+	width: 100%;
+	height: 12.5rem; /* 200px */
+}
+
+.embed-preview > .delete {
+	position: absolute;
+	top: 0.5rem; /* 8px */
+	right: 0.5rem; /* 8px */
+	border-radius: 0.375rem; /* 6px */
+	background-color: #ef4444; /* Red-500 */
+	padding: 0.5rem 1rem; /* 8px 16px */
+	color: white;
+	font-weight: 700; /* bold */
+}
+
+.delete:hover {
+	background-color: #dc2626; /* Red-700 */
+}
+
+.overlay {
+	display: flex;
+	position: absolute;
+	top: 0;
+	left: 0;
+	justify-content: center;
+	align-items: center;
+	background: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+	width: 100%;
+	height: 100%;
+	color: #000; /* Text color */
+	font-weight: bold;
+	font-size: 16px;
+}

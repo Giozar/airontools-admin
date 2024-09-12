@@ -2,7 +2,7 @@ import TrashIcon from '@components/svg/TrashIcon';
 import useFilesInput from '@hooks/files/useFilesInput';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { transformFilesToUrls } from './helpers/transformFilesToUrls.helper';
-import './styles/FilesInput.css';
+import './styles/ManualsInput.css';
 
 interface FilesInputProps {
 	title: string;
@@ -10,15 +10,13 @@ interface FilesInputProps {
 	setFiles: (value: File[]) => void;
 	urls: string[];
 	setUrls: (value: string[]) => void;
-	fileType: string;
 }
 
-export default function FilesInput({
+export default function ManualsInput({
 	title,
 	files,
 	urls,
 	setFiles,
-	fileType,
 }: FilesInputProps) {
 	const { selectFiles, removeFiles } = useFilesInput();
 	const [filePreviews, setFilePreviews] = useState<string[]>([]);
@@ -46,24 +44,24 @@ export default function FilesInput({
 	}, [files]);
 
 	return (
-		<div className='file-uploader-container'>
-			<label className='file-uploader-label'>{title}</label>
-			<div className='file-upload'>
-				<div className='file-placeholder add-file'>
-					<label htmlFor='file-input'>{title}</label>
+		<div className='manual-uploader-container'>
+			<label className='manual-uploader-label'>{title}</label>
+			<div className='manual-upload'>
+				<div className='embed-placeholder add-manual'>
+					<label htmlFor='file-input-m'>{title}</label>
 					<input
 						type='file'
-						id='file-input'
+						id='file-input-m'
 						multiple
-						accept={`${fileType}/*`}
+						accept='.pdf, .html, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 						onChange={handleFileSelect}
 					/>
 				</div>
 				{urls.length > 0 &&
 					urls.map((url, index) => (
-						<div key={index} className='file-preview'>
+						<div key={index} className='manual-preview'>
 							<h4>Archivos cargados</h4>
-							<img src={url} alt={`preview-${index}`} />
+							<iframe src={url} title={`preview-${index}`} />
 							<button
 								onClick={() => handleRemoveFile(index)}
 								className='delete'
@@ -75,9 +73,9 @@ export default function FilesInput({
 					))}
 				{filePreviews.length > 0 &&
 					filePreviews.map((url, index) => (
-						<div key={index} className='file-preview'>
+						<div key={index} className='manual-preview'>
 							<h4>Archivos previos</h4>
-							<img src={url} alt={`preview-${index}`} />
+							<iframe src={url} title={`preview-${index}`} />
 							<button
 								onClick={() => handleRemoveFile(index)}
 								className='delete'
