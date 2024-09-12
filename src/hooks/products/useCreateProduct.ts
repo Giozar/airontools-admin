@@ -43,6 +43,16 @@ export function useCreateProduct() {
 				setFileUrls: productToCreate.setImages,
 			}));
 
+		productToCreate.manualsRaw.length > 0 &&
+			productToCreate &&
+			(await filesUpload({
+				type: 'manuals',
+				feature: 'products',
+				files: productToCreate.manualsRaw,
+				setFiles: productToCreate.setManualsRaw,
+				setFileUrls: productToCreate.setManuals,
+			}));
+
 		return createdProduct;
 	};
 

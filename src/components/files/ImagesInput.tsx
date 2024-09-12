@@ -2,7 +2,7 @@ import TrashIcon from '@components/svg/TrashIcon';
 import useFilesInput from '@hooks/files/useFilesInput';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { transformFilesToUrls } from './helpers/transformFilesToUrls.helper';
-import './styles/FilesInput.css';
+import './styles/ImagesInput.css';
 
 interface FilesInputProps {
 	title: string;
@@ -10,15 +10,13 @@ interface FilesInputProps {
 	setFiles: (value: File[]) => void;
 	urls: string[];
 	setUrls: (value: string[]) => void;
-	fileType: string;
 }
 
-export default function FilesInput({
+export default function ImagesInput({
 	title,
 	files,
 	urls,
 	setFiles,
-	fileType,
 }: FilesInputProps) {
 	const { selectFiles, removeFiles } = useFilesInput();
 	const [filePreviews, setFilePreviews] = useState<string[]>([]);
@@ -46,22 +44,22 @@ export default function FilesInput({
 	}, [files]);
 
 	return (
-		<div className='file-uploader-container'>
-			<label className='file-uploader-label'>{title}</label>
-			<div className='file-upload'>
-				<div className='file-placeholder add-file'>
+		<div className='image-uploader-container'>
+			<label className='image-uploader-label'>{title}</label>
+			<div className='image-upload'>
+				<div className='image-placeholder add-image'>
 					<label htmlFor='file-input'>{title}</label>
 					<input
 						type='file'
 						id='file-input'
 						multiple
-						accept={`${fileType}/*`}
+						accept='image/*'
 						onChange={handleFileSelect}
 					/>
 				</div>
 				{urls.length > 0 &&
 					urls.map((url, index) => (
-						<div key={index} className='file-preview'>
+						<div key={index} className='image-preview'>
 							<h4>Archivos cargados</h4>
 							<img src={url} alt={`preview-${index}`} />
 							<button
@@ -75,7 +73,7 @@ export default function FilesInput({
 					))}
 				{filePreviews.length > 0 &&
 					filePreviews.map((url, index) => (
-						<div key={index} className='file-preview'>
+						<div key={index} className='image-preview'>
 							<h4>Archivos previos</h4>
 							<img src={url} alt={`preview-${index}`} />
 							<button

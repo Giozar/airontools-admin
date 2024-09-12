@@ -12,7 +12,7 @@
 	font-size: 1.125rem; /* equivalent to text-lg */
 }
 
-/* Image upload placeholder styling */
+/* image upload placeholder styling */
 .image-upload {
 	display: flex;
 	flex-wrap: wrap;
@@ -35,7 +35,7 @@
 	font-size: 1.125rem; /* equivalent to text-lg */
 }
 
-/* Image preview styling */
+/* image preview styling */
 .image-preview {
 	position: relative;
 	width: 12rem; /* equivalent to w-40 */
