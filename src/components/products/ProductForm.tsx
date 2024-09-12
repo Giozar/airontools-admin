@@ -1,7 +1,7 @@
 import { DynamicInputSection } from '@components/commons/DynamicInputSection';
-import FilesInput from '@components/commons/FilesInput';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import FilesInput from '@components/files/FilesInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
 import SpecificationsSection from './SpecificationsSection';
