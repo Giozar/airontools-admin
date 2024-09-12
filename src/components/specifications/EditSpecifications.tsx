@@ -10,32 +10,37 @@ export default function EditSpecifications({
 	specToEdit: SpecDataToSend;
 }) {
 	const [categorizations, setCategorizations] = useState<Categorization[]>(
-		specToEdit.families.map((family, index) => ({
+		specToEdit.families.map(family => ({
 			selectedFamily: family as string,
-			selectedCategory: specToEdit.categories[index] as string, // Agrega un valor por defecto en caso de que falte
-			selectedSubcategory: specToEdit.subcategories[index] as string, // Agrega un valor por defecto en caso de que falte
+			selectedCategories: specToEdit.categories as string[], // Agrega un valor por defecto en caso de que falte
+			selectedSubcategories: specToEdit.subcategories as string[], // Agrega un valor por defecto en caso de que falte
 		})),
 	);
 
 	const addCategorization = () => {
 		setCategorizations([
 			...categorizations,
-			{ selectedFamily: '', selectedCategory: '', selectedSubcategory: '' },
+			{
+				selectedFamily: '',
+				selectedCategories: [''],
+				selectedSubcategories: [''],
+			},
 		]);
 	};
 
 	const handleCategorizationChange = (
 		index: number,
 		selectedFamily: string,
-		selectedCategory: string,
-		selectedSubcategory: string,
+		selectedCategories: string[],
+		selectedSubcategories: string[],
 	) => {
 		const updatedCategorizations = categorizations.map((cat, i) => {
 			if (i === index) {
 				return {
 					selectedFamily: selectedFamily || cat.selectedFamily,
-					selectedCategory: selectedCategory || cat.selectedCategory,
-					selectedSubcategory: selectedSubcategory || cat.selectedSubcategory,
+					selectedCategories: selectedCategories || cat.selectedCategories,
+					selectedSubcategories:
+						selectedSubcategories || cat.selectedSubcategories,
 				};
 			}
 			return cat;
@@ -62,9 +67,23 @@ export default function EditSpecifications({
 			{categorizations.some(cat => cat.selectedFamily) && (
 				<SpecificationFormEdit
 					specToEdit={specToEdit}
-					familiesId={categorizations.map(cat => cat.selectedFamily)}
-					categoriesId={categorizations.map(cat => cat.selectedCategory)}
-					subcategoriesId={categorizations.map(cat => cat.selectedSubcategory)}
+					familiesId={
+						categorizations.map(cat => cat.selectedFamily).length !== 0
+							? categorizations.map(cat => cat.selectedFamily)
+							: specToEdit.families
+					}
+					categoriesId={
+						categorizations.map(cat => cat.selectedCategories).flat().length !==
+						0
+							? categorizations.map(cat => cat.selectedCategories).flat()
+							: specToEdit.categories
+					}
+					subcategoriesId={
+						categorizations.map(cat => cat.selectedSubcategories).flat()
+							.length !== 0
+							? categorizations.map(cat => cat.selectedSubcategories).flat()
+							: specToEdit.subcategories
+					}
 				/>
 			)}
 		</div>
