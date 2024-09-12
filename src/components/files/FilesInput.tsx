@@ -1,7 +1,8 @@
 import '@components/css/FilesInput.css';
 import TrashIcon from '@components/svg/TrashIcon';
 import useFilesInput from '@hooks/files/useFilesInput';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { transformFilesToUrls } from './helpers/transformFilesToUrls.helper';
 
 interface FilesInputProps {
 	title: string;
@@ -18,6 +19,7 @@ export default function FilesInput({
 	setFiles,
 }: FilesInputProps) {
 	const { selectFiles, removeFiles } = useFilesInput();
+	const [filePreviews, setFilePreviews] = useState<string[]>([]);
 
 	// Maneja la selección de archivos
 	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +39,10 @@ export default function FilesInput({
 		});
 	};
 
+	useEffect(() => {
+		setFilePreviews(transformFilesToUrls(files));
+	}, [files]);
+
 	return (
 		<div className='image-uploader-container'>
 			<label className='image-uploader-label'>{title}</label>
@@ -54,6 +60,21 @@ export default function FilesInput({
 				{urls.length > 0 &&
 					urls.map((url, index) => (
 						<div key={index} className='image-preview'>
+							<h4>Archivos cargados</h4>
+							<img src={url} alt={`preview-${index}`} />
+							<button
+								onClick={() => handleRemoveFile(index)}
+								className='delete'
+								type='button'
+							>
+								<TrashIcon />
+							</button>
+						</div>
+					))}
+				{filePreviews.length > 0 &&
+					filePreviews.map((url, index) => (
+						<div key={index} className='image-preview'>
+							<h4>Archivos previos</h4>
 							<img src={url} alt={`preview-${index}`} />
 							<button
 								onClick={() => handleRemoveFile(index)}

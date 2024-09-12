@@ -11,29 +11,6 @@ const useMultipleFileUpload = () => {
 	const [uploadedFileUrls, setUploadedFileUrls] = useState<{
 		[key: string]: string[];
 	}>({});
-	const initFileSelect = (fileOrPath: string, fileType: string) => {
-		if (fileOrPath) {
-			// For a single string, we create arrays with one element
-			const previews = [fileOrPath];
-			const names = [fileOrPath]; // You might want to adjust this depending on how you handle names
-
-			setFiles(prev => ({
-				...prev,
-				[fileType]: [
-					...(prev[fileType] ||
-						[]) /* Add corresponding file object if needed */,
-				],
-			}));
-			setFilePreviews(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...previews],
-			}));
-			setFileNames(prev => ({
-				...prev,
-				[fileType]: [...(prev[fileType] || []), ...names],
-			}));
-		}
-	};
 
 	const handleFileSelect = (
 		event: ChangeEvent<HTMLInputElement>,
@@ -117,7 +94,6 @@ const useMultipleFileUpload = () => {
 		filePreviews,
 		fileNames,
 		uploadedFileUrls,
-		initFileSelect,
 		handleFileSelect,
 		handleRemoveFile,
 		handleDeleteFile,
