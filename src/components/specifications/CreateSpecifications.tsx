@@ -9,22 +9,23 @@ export default function CreateSpecifications() {
 	const addCategorization = () => {
 		setCategorizations([
 			...categorizations,
-			{ selectedFamily: '', selectedCategory: '', selectedSubcategory: '' },
+			{ selectedFamily: '', selectedCategories: [], selectedSubcategories: [] },
 		]);
 	};
 
 	const handleCategorizationChange = (
 		index: number,
 		selectedFamily: string,
-		selectedCategory: string,
-		selectedSubcategory: string,
+		selectedCategories: string[],
+		selectedSubcategories: string[],
 	) => {
 		const updatedCategorizations = categorizations.map((cat, i) => {
 			if (i === index) {
 				return {
 					selectedFamily: selectedFamily || cat.selectedFamily,
-					selectedCategory: selectedCategory || cat.selectedCategory,
-					selectedSubcategory: selectedSubcategory || cat.selectedSubcategory,
+					selectedCategories: selectedCategories || cat.selectedCategories,
+					selectedSubcategories:
+						selectedSubcategories || cat.selectedSubcategories,
 				};
 			}
 			return cat;
@@ -49,8 +50,12 @@ export default function CreateSpecifications() {
 			{categorizations.some(cat => cat.selectedFamily) && (
 				<SpecificationForm
 					familiesId={categorizations.map(cat => cat.selectedFamily)}
-					categoriesId={categorizations.map(cat => cat.selectedCategory)}
-					subcategoriesId={categorizations.map(cat => cat.selectedSubcategory)}
+					categoriesId={categorizations
+						.map(cat => cat.selectedCategories)
+						.flat()}
+					subcategoriesId={categorizations
+						.map(cat => cat.selectedSubcategories)
+						.flat()}
 				/>
 			)}
 		</div>

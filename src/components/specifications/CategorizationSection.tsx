@@ -1,5 +1,6 @@
+import CheckboxInputList from '@components/commons/CheckboxInputList';
 import SelectInput from '@components/commons/SelectInput';
-import { useFamilySpecifications } from '@hooks/families/useFamilySpecifications';
+import { useMultipleFamilySpecifications } from '@hooks/families/useMultipleFamilySpecifications';
 import React, { useEffect } from 'react';
 
 interface CategorizationSectionProps {
@@ -7,8 +8,8 @@ interface CategorizationSectionProps {
 	onChange: (
 		index: number,
 		selectedFamily: string,
-		selectedCategory: string,
-		selectedSubcategory: string,
+		selectedCategories: string[],
+		selectedSubcategories: string[],
 	) => void;
 }
 
@@ -26,7 +27,7 @@ const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 		handleSelectFamily,
 		handleSelectCategory,
 		handleSelectSubcategory,
-	} = useFamilySpecifications();
+	} = useMultipleFamilySpecifications();
 
 	// Usar useEffect para manejar los cambios de selección en tiempo real
 	useEffect(() => {
@@ -39,7 +40,12 @@ const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 		// 	`Subcategoría seleccionada en sección ${index}:`,
 		// 	selectedSubcategory,
 		// );
-		onChange(index, selectedFamily, selectedCategory, selectedSubcategory);
+		onChange(
+			index,
+			selectedFamily || '',
+			selectedCategory,
+			selectedSubcategory,
+		);
 	}, [selectedFamily, selectedCategory, selectedSubcategory, index]);
 
 	const handleFamilyChange = (value: string) => {
@@ -47,12 +53,12 @@ const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 		// console.log(`Cambio de familia a: ${value}`);
 	};
 
-	const handleCategoryChange = (value: string) => {
+	const handleCategoryChange = (value: string[]) => {
 		handleSelectCategory(value);
 		// console.log(`Cambio de categoría a: ${value}`);
 	};
 
-	const handleSubcategoryChange = (value: string) => {
+	const handleSubcategoryChange = (value: string[]) => {
 		handleSelectSubcategory(value);
 		// console.log(`Cambio de subcategoría a: ${value}`);
 	};
@@ -66,15 +72,15 @@ const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 				onChange={handleFamilyChange}
 			/>
 			{selectedFamily && selectedFamily.length > 0 && (
-				<SelectInput
+				<CheckboxInputList
 					id={`catselect-${index}`}
-					name='Selecciona una categoría'
+					name='Selecciona las categorías'
 					options={categories}
 					onChange={handleCategoryChange}
 				/>
 			)}
 			{selectedCategory && selectedCategory.length > 0 && (
-				<SelectInput
+				<CheckboxInputList
 					id={`subcatselect-${index}`}
 					name='Selecciona una subcategoría'
 					options={subcategories}
