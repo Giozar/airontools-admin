@@ -47,8 +47,11 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 		setIncludedItems,
 		setOptionalAccessories,
 		family,
+		setFamily,
 		category,
+		setCategory,
 		subcategory,
+		setSubcategory,
 	} = useProductCreateContext();
 
 	// Use initialData to prefill form values if available
@@ -66,6 +69,9 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			setVideos(initialData.videos || []);
 			setIncludedItems(initialData.includedItems || []);
 			setOptionalAccessories(initialData.optionalAccessories || []);
+			setFamily(initialData.family?._id || '');
+			setCategory(initialData.category?._id || '');
+			setSubcategory(initialData.subcategory?._id || '');
 		}
 	}, [initialData]);
 	return (
