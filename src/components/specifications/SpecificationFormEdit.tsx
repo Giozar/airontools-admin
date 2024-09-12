@@ -24,7 +24,7 @@ function SpecificationFormEdit({
 		createdBy: '',
 		families: familiesId,
 		categories: categoriesId,
-		subcategories: subcategoriesId || '',
+		subcategories: subcategoriesId || [],
 	});
 
 	const { user } = useAuthContext();
@@ -40,7 +40,7 @@ function SpecificationFormEdit({
 			createdBy,
 			families: familiesId,
 			categories: categoriesId,
-			subcategories: subcategoriesId || '',
+			subcategories: subcategoriesId || [],
 		}));
 	}, [familiesId, categoriesId, subcategoriesId, createdBy]);
 
