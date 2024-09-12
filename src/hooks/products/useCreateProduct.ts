@@ -37,7 +37,7 @@ export function useCreateProduct() {
 			productToCreate &&
 			(await filesUpload({
 				type: 'images',
-				feature: 'products',
+				feature: `products/${productToCreate.id}`,
 				files: productToCreate.imagesRaw,
 				setFiles: productToCreate.setImagesRaw,
 				setFileUrls: productToCreate.setImages,
@@ -47,7 +47,7 @@ export function useCreateProduct() {
 			productToCreate &&
 			(await filesUpload({
 				type: 'manuals',
-				feature: 'products',
+				feature: `products/${productToCreate.id}`,
 				files: productToCreate.manualsRaw,
 				setFiles: productToCreate.setManualsRaw,
 				setFileUrls: productToCreate.setManuals,
