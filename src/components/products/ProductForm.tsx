@@ -7,14 +7,11 @@ import { ProductCategorization } from '@components/products/ProductCategorizatio
 import { useProductCreateContext } from '@contexts/product/ProductContext';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 import { useEffect } from 'react';
-import { ProductDataFrontend } from '@interfaces/Product.interface';
-import { useEffect } from 'react';
 import SpecificationsSection from './SpecificationsSection';
 
 interface ProductFormProps {
 	actionName: string;
 	action: (e: any) => Promise<void>;
-	initialData?: Partial<ProductDataFrontend>; // Datos iniciales opcionales para edición
 	initialData?: Partial<ProductDataFrontend>; // Datos iniciales opcionales para edición
 }
 
@@ -27,7 +24,7 @@ interface ProductFormProps {
  * @param {Partial<ProductDataFrontend>} initalData - Datos del producto para editar (Opcional)
  * @returns {void} No devuelve ningún valor.
  */
-const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
+
 const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 	const {
 		name,
@@ -99,7 +96,6 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 	}, [initialData]);
 	return (
 		<div className='createproductform'>
-			<form onSubmit={action} className='productform'>
 			<form onSubmit={action} className='productform'>
 				<div className='form-header'>
 					<TextInput
