@@ -5,11 +5,14 @@ import ImagesInput from '@components/files/ImagesInput';
 import ManualsInput from '@components/files/ManualsInput';
 import { ProductCategorization } from '@components/products/ProductCategorization';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
+import { ProductDataFrontend } from '@interfaces/Product.interface';
+import { useEffect } from 'react';
 import SpecificationsSection from './SpecificationsSection';
 
 interface ProductFormProps {
 	actionName: string;
 	action: (e: any) => Promise<void>;
+	initialData?: Partial<ProductDataFrontend>; // Datos iniciales opcionales para edición
 }
 
 /**
@@ -17,9 +20,10 @@ interface ProductFormProps {
  *
  * @param {string} actionName - Nombre de la acción a ejecutar, por ejemplo, "crear" o "editar".
  * @param {(e: any) => Promise<ProductDataFrontend | undefined>} action - Función asíncrona que se ejecutará al enviar el formulario. Recibe un evento como argumento y devuelve un `ProductDataFrontend` o `undefined`.
+ * @param {Partial<ProductDataFrontend>} initalData - Datos del producto para editar (Opcional)
  * @returns {void} No devuelve ningún valor.
  */
-const ProductForm = ({ actionName, action }: ProductFormProps) => {
+const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 	const {
 		name,
 		setName,
@@ -46,9 +50,27 @@ const ProductForm = ({ actionName, action }: ProductFormProps) => {
 		category,
 		subcategory,
 	} = useProductCreateContext();
+
+	// Use initialData to prefill form values if available
+	useEffect(() => {
+		if (initialData) {
+			setName(initialData.name || '');
+			setModel(initialData.model || '');
+			setDescription(initialData.description || '');
+			setImages(initialData.images || []);
+			setManuals(initialData.manuals || []);
+			setCharacteristics(initialData.characteristics || []);
+			setApplications(initialData.applications || []);
+			setRecommendations(initialData.recommendations || []);
+			setOperationRequirements(initialData.operationRequirements || []);
+			setVideos(initialData.videos || []);
+			setIncludedItems(initialData.includedItems || []);
+			setOptionalAccessories(initialData.optionalAccessories || []);
+		}
+	}, [initialData]);
 	return (
 		<div className='createproductform'>
-			<form className='productform'>
+			<form onSubmit={action} className='productform'>
 				<div className='form-header'>
 					<TextInput
 						id='productName'
@@ -139,7 +161,7 @@ const ProductForm = ({ actionName, action }: ProductFormProps) => {
 						/>
 					</div>
 				</div>
-				<button onClick={action}>{actionName}</button>
+				<button type='submit'>{actionName}</button>
 			</form>
 		</div>
 	);
