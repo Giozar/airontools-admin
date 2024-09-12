@@ -26,6 +26,7 @@ function SpecificationFormEdit({
 		categories: categoriesId,
 		subcategories: subcategoriesId || [],
 	});
+	console.log(categoriesId);
 
 	const { user } = useAuthContext();
 

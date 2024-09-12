@@ -67,13 +67,23 @@ export default function EditSpecifications({
 			{categorizations.some(cat => cat.selectedFamily) && (
 				<SpecificationFormEdit
 					specToEdit={specToEdit}
-					familiesId={categorizations.map(cat => cat.selectedFamily)}
-					categoriesId={categorizations
-						.map(cat => cat.selectedCategories)
-						.flat()}
-					subcategoriesId={categorizations
-						.map(cat => cat.selectedSubcategories)
-						.flat()}
+					familiesId={
+						categorizations.map(cat => cat.selectedFamily).length !== 0
+							? categorizations.map(cat => cat.selectedFamily)
+							: specToEdit.families
+					}
+					categoriesId={
+						categorizations.map(cat => cat.selectedCategories).flat().length !==
+						0
+							? categorizations.map(cat => cat.selectedCategories).flat()
+							: specToEdit.categories
+					}
+					subcategoriesId={
+						categorizations.map(cat => cat.selectedSubcategories).flat()
+							.length !== 0
+							? categorizations.map(cat => cat.selectedSubcategories).flat()
+							: specToEdit.subcategories
+					}
 				/>
 			)}
 		</div>
