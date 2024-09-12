@@ -18,27 +18,30 @@ const AuthContext = createContext<UserAuthContext | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<UserDataFrontend | null>(null);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true); // loading comienza en true
 	const [auth, setAuth] = useState(false);
 
 	useEffect(() => {
-		setLoading(true);
-		const token = getToken();
-		if (token) {
-			const decodedToken = decodeToken(token);
-			if (decodedToken && isTokenValid(decodedToken)) {
-				setAuth(true);
-				setUser(transformUserDataFront(decodedToken.user));
+		const initializeAuth = async () => {
+			const token = getToken();
+			if (token) {
+				const decodedToken = decodeToken(token);
+				if (decodedToken && isTokenValid(decodedToken)) {
+					setAuth(true);
+					setUser(transformUserDataFront(decodedToken.user));
+				} else {
+					clearAuthData();
+					setAuth(false);
+					setUser(null);
+				}
 			} else {
-				clearAuthData();
 				setAuth(false);
 				setUser(null);
 			}
-		} else {
-			setAuth(false);
-			setUser(null);
-		}
-		setLoading(false);
+			setLoading(false); // Finaliza la carga
+		};
+
+		initializeAuth();
 	}, []);
 
 	return (
@@ -53,7 +56,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuthContext = () => {
 	const context = useContext(AuthContext);
 	if (!context) {
-		throw new Error('useAuthContext debe ser usado dentro de un AuthContext');
+		throw new Error('useAuthContext debe ser usado dentro de un AuthProvider');
 	}
 	return context;
 };
