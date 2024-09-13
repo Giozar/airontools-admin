@@ -35,7 +35,6 @@ export const transformProductDataToBackend = (
 ): ProductDataToSend => {
 	const transformedSpecifications = Product.specifications.map(spec => ({
 		specification: spec.specification._id || '', // id de la especificación
-		name: spec.specification.name || '', // nombre de la especificación
 		value: spec.value, // valor para el producto específico
 	}));
 	return {

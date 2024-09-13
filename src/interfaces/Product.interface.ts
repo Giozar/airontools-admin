@@ -78,9 +78,7 @@ export interface ProductDataBackend {
 	model?: string;
 	description?: string;
 	characteristics?: string[];
-	specifications: [
-		{ _id: string; specification: SpecDataToSend; value: string },
-	];
+	specifications: [{ specification: SpecDataToSend; value: string }];
 	family: FamilyDataToSend;
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;
@@ -101,9 +99,7 @@ export interface ProductDataFrontend {
 	model?: string;
 	description?: string;
 	characteristics?: string[];
-	specifications: [
-		{ _id: string; specification: SpecDataToSend; value: string },
-	];
+	specifications: [{ specification: SpecDataToSend; value: string }];
 	family: FamilyDataToSend;
 	category: CategoryDataToSend;
 	subcategory: SubcategoryDataToSend;

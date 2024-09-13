@@ -24,12 +24,14 @@ export default function SpecificationsSection({
 	const { specificationsBySubcategoryId } =
 		useSpecificationsBySubcategory(subcategoryId);
 
-	const { setApplications } = useProductCreateContext();
+	const { setSpecifications } = useProductCreateContext();
 
-	// Estado para almacenar las especificaciones de cada origen y sus valores
+	// Estado para almacenar la lista de las especificaciones
 	const [specificationList, setSpecificationList] = useState<
 		SpecDataFrontend[]
 	>([]);
+
+	// Estado para almacenar el valor de las especificaciones del producto
 	const [specificationValues, setSpecificationValues] = useState<{
 		[key: string]: string;
 	}>({});
@@ -67,9 +69,16 @@ export default function SpecificationsSection({
 
 	// Cada vez que cambien los valores de las especificaciones, se actualiza el contexto
 	useEffect(() => {
-		const valuesArray = Object.values(specificationValues);
-		setApplications(valuesArray); // Actualiza las aplicaciones en el contexto con los valores actuales
-	}, [specificationValues, setApplications]);
+		// Mapeamos los valores actuales a la interfaz ProductSpecification
+		const specificationArray = Object.entries(specificationValues).map(
+			([specId, value]) => ({
+				specification: specId,
+				value,
+			}),
+		);
+
+		setSpecifications(specificationArray); // Actualiza las especificaciones en el contexto con el formato correcto
+	}, [specificationValues, setSpecifications]);
 
 	// Manejar el cambio en el valor de una especificación específica
 	const handleSpecificationChange = (specId: string, newValue: string) => {
