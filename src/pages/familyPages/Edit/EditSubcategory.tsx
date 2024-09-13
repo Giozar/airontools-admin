@@ -1,12 +1,10 @@
-import SelectInput from '@components/commons/SelectInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import '@pages/css/createFamily.css';
 
-function CreateSubcategoryForm() {
+export default function EditSubcategories() {
 	const {
 		subcategoryInstances,
 		addSubcategoryInstance,
@@ -14,14 +12,13 @@ function CreateSubcategoryForm() {
 		getSubcategoryInstance,
 		updateSubcategoryInstance,
 	} = useSubcategoryCreateContext();
-	const { getAllCategoryInstances } = useCategoryCreateContext();
-	const categoryInstances = getAllCategoryInstances();
 
 	return (
 		<div>
 			<button
 				type='button'
 				onClick={() => addSubcategoryInstance(`subcat-${Date.now()}`)}
+				className='add'
 			>
 				Añadir nueva Subcategoria
 			</button>
@@ -33,15 +30,6 @@ function CreateSubcategoryForm() {
 					return (
 						<li key={key}>
 							<h2>Subcategorías</h2>
-							<SelectInput
-								id={`select-${key}`}
-								name={`Seleccionar Categoria`}
-								options={categoryInstances.map(category => ({
-									value: category.name,
-									label: category.name,
-								}))}
-								onChange={value => Subcategory.setCategory(value)}
-							/>
 							<TextInput
 								id={'Subcategoria' + key}
 								label={'Nombre de Subcategoria:'}
@@ -70,7 +58,7 @@ function CreateSubcategoryForm() {
 								filePreview={
 									Subcategory.rawImage
 										? URL.createObjectURL(Subcategory.rawImage)
-										: ''
+										: Subcategory.image || ''
 								}
 								setFilePreview={file =>
 									updateSubcategoryInstance(key, { rawImage: file })
@@ -79,6 +67,7 @@ function CreateSubcategoryForm() {
 							<button
 								type='button'
 								onClick={() => removeSubcategoryInstance(key)}
+								className='delete'
 							>
 								Borrar
 							</button>
@@ -88,7 +77,4 @@ function CreateSubcategoryForm() {
 			</ul>
 		</div>
 	);
-}
-export default function CreateSubcategories() {
-	return <CreateSubcategoryForm />;
 }

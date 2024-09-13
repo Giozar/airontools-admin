@@ -18,6 +18,7 @@ function CreateCategoryForm() {
 			<button
 				type='button'
 				onClick={() => addCategoryInstance(`cat-${Date.now()}`)}
+				className='add'
 			>
 				Añadir nueva categoria
 			</button>
@@ -55,13 +56,17 @@ function CreateCategoryForm() {
 								filePreview={
 									category.rawImage
 										? URL.createObjectURL(category.rawImage)
-										: ''
+										: category.image || ''
 								}
 								setFilePreview={file =>
 									updateCategoryInstance(key, { rawImage: file })
 								}
 							/>
-							<button type='button' onClick={() => removeCategoryInstance(key)}>
+							<button
+								type='button'
+								onClick={() => removeCategoryInstance(key)}
+								className='delete'
+							>
 								Borrar
 							</button>
 						</li>

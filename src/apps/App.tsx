@@ -18,8 +18,8 @@ import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
 import Security from '@pages/css/miscPages.tsx/security';
 import ErrorPage from '@pages/ErrorPages/ErrorPage';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
-import CreateCategorization from '@pages/familyPages/CreateCategorization';
-import EditFamily from '@pages/familyPages/EditFamily';
+import CreateCategorization from '@pages/familyPages/Create/CreateCategorization';
+import EditCategorization from '@pages/familyPages/Edit/EditCategorization';
 import LandingPage from '@pages/generalPages/LandingPage';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
@@ -155,7 +155,7 @@ const router = createBrowserRouter([
 											<FamilyCreateProvider>
 												<CategoryCreateProvider>
 													<SubcategoryCreateProvider>
-														<EditFamily />
+														<EditCategorization />
 													</SubcategoryCreateProvider>
 												</CategoryCreateProvider>
 											</FamilyCreateProvider>

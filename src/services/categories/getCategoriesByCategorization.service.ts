@@ -12,7 +12,7 @@ export const getcategoryByFamilyId = async (
 ): Promise<CategoryDataFrontend[]> => {
 	try {
 		const response = await axios.get<CategoryDataBackend[]>(
-			airontoolsAPI + `/category/family/${familyId}`,
+			airontoolsAPI + `/categories/family/${familyId}`,
 		);
 		const category = response.data;
 		return category.map(product => transformCategoryDataToFrontend(product));

@@ -17,7 +17,9 @@ const useFamilyManagement = () => {
 
 	const handleEdit = (family: FamilyDataFrontend) => {
 		localStorage.setItem('familyToEdit', JSON.stringify({ family }));
-		navigate(`${location.pathname}/editar-familia`);
+		navigate(`${location.pathname}/editar-familia`, {
+			state: { familyId: family.id },
+		});
 	};
 
 	const handleCloseModal = () => {

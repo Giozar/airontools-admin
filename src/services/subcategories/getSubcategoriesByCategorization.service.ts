@@ -12,7 +12,7 @@ export const getSubcategoryByFamilyId = async (
 ): Promise<SubcategoryDataFrontend[]> => {
 	try {
 		const response = await axios.get<SubcategoryDataBackend[]>(
-			airontoolsAPI + `/Subcategory/family/${familyId}`,
+			airontoolsAPI + `/subcategories/family/${familyId}`,
 		);
 		const Subcategory = response.data;
 		return Subcategory.map(product =>
@@ -29,7 +29,7 @@ export const getSubcategoryBySubcategoryId = async (
 ): Promise<SubcategoryDataFrontend[]> => {
 	try {
 		const response = await axios.get<SubcategoryDataBackend[]>(
-			airontoolsAPI + `/Subcategory/Subcategory/${SubcategoryId}`,
+			airontoolsAPI + `/subcategories/category/${SubcategoryId}`,
 		);
 		const Subcategory = response.data;
 		return Subcategory.map(product =>
