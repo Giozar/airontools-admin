@@ -19,21 +19,34 @@ function CreateSubcategoryForm() {
 
 	return (
 		<div>
-			<button
-				type='button'
-				onClick={() => addSubcategoryInstance(`subcat-${Date.now()}`)}
-				className='add'
-			>
-				Añadir nueva Subcategoria
-			</button>
-			<ul>
+			<div>
+				<h2>Subcategorias:</h2>
+				<button
+					type='button'
+					onClick={() => addSubcategoryInstance(`subcat-${Date.now()}`)}
+					className='save-button'
+				>
+					Añadir nueva Subcategoria
+				</button>
+			</div>
+
+			<ul className='subcategory'>
 				{Object.keys(subcategoryInstances).map(key => {
 					const Subcategory = getSubcategoryInstance(key);
 					if (!Subcategory) return null;
 
 					return (
 						<li key={key}>
-							<h2>Subcategorías</h2>
+							<h2 className='item-header'>
+								Nueva Subcategoría{' '}
+								<button
+									type='button'
+									onClick={() => removeSubcategoryInstance(key)}
+									className='cancel-button'
+								>
+									Borrar
+								</button>
+							</h2>
 							<SelectInput
 								id={`select-${key}`}
 								name={`Seleccionar Categoria`}
@@ -44,6 +57,7 @@ function CreateSubcategoryForm() {
 								onChange={value => Subcategory.setCategory(value)}
 							/>
 							<TextInput
+								className='item-name'
 								id={'Subcategoria' + key}
 								label={'Nombre de Subcategoria:'}
 								value={Subcategory.name}
@@ -55,6 +69,7 @@ function CreateSubcategoryForm() {
 							/>
 							<br />
 							<TextAreaInput
+								className='item-description'
 								id={'description' + key}
 								label={'Descripción de Subcategoria:'}
 								value={Subcategory.description}
@@ -77,13 +92,6 @@ function CreateSubcategoryForm() {
 									updateSubcategoryInstance(key, { rawImage: file })
 								}
 							/>
-							<button
-								type='button'
-								onClick={() => removeSubcategoryInstance(key)}
-								className='delete'
-							>
-								Borrar
-							</button>
 						</li>
 					);
 				})}

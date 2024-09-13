@@ -15,22 +15,36 @@ function CreateCategoryForm() {
 
 	return (
 		<div>
-			<button
-				type='button'
-				onClick={() => addCategoryInstance(`cat-${Date.now()}`)}
-				className='add'
-			>
-				Añadir nueva categoria
-			</button>
-			<ul>
+			<div>
+				<h2>Categorias:</h2>
+				<button
+					type='button'
+					onClick={() => addCategoryInstance(`cat-${Date.now()}`)}
+					className='save-button'
+				>
+					Añadir nueva categoria
+				</button>
+			</div>
+
+			<ul className='category'>
 				{Object.keys(categoryInstances).map(key => {
 					const category = getCategoryInstance(key);
 					if (!category) return null; // Asegúrate de retornar algo válido
 
 					return (
 						<li key={key}>
-							<h2>Categorías</h2>
+							<h2 className='item-header'>
+								Nueva categoría
+								<button
+									type='button'
+									onClick={() => removeCategoryInstance(key)}
+									className='cancel-button'
+								>
+									Borrar
+								</button>
+							</h2>
 							<TextInput
+								className='item-name'
 								id={'Categoria' + key}
 								label={'Nombre de categoria:'}
 								value={category.name}
@@ -42,6 +56,7 @@ function CreateCategoryForm() {
 							/>
 							<br />
 							<TextAreaInput
+								className='item-description'
 								id={'description' + key}
 								label={'Descripción de categoria:'}
 								value={category.description}
@@ -62,13 +77,6 @@ function CreateCategoryForm() {
 									updateCategoryInstance(key, { rawImage: file })
 								}
 							/>
-							<button
-								type='button'
-								onClick={() => removeCategoryInstance(key)}
-								className='delete'
-							>
-								Borrar
-							</button>
 						</li>
 					);
 				})}

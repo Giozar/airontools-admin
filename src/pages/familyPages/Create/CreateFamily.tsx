@@ -8,9 +8,11 @@ export default function CreateFamily() {
 	const { ...familyToCreate } = useFamilyCreateContext();
 
 	return (
-		<>
-			<h2>Familia</h2>
+		<div className='family'>
+			<h2 className='item-header'>Familia</h2>
+
 			<TextInput
+				className='item-name'
 				id={'family'}
 				label={'Nombre de familia:'}
 				value={familyToCreate.name}
@@ -20,6 +22,7 @@ export default function CreateFamily() {
 			/>
 			<br></br>
 			<TextAreaInput
+				className='item-description'
 				id={'description'}
 				label={'Descripción de familia:'}
 				value={familyToCreate.description}
@@ -32,10 +35,10 @@ export default function CreateFamily() {
 				filePreview={
 					familyToCreate.rawImage
 						? URL.createObjectURL(familyToCreate.rawImage)
-						: ''
+						: familyToCreate.image || ''
 				}
 				setFilePreview={familyToCreate.setRawImage}
 			/>
-		</>
+		</div>
 	);
 }
