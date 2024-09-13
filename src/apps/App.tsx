@@ -7,6 +7,7 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
+import { CategorizationCreateProvider } from '@contexts/categorization/CategorizationContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
 import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
@@ -136,11 +137,19 @@ const router = createBrowserRouter([
 								children: [
 									{
 										path: 'crear-familia',
-										element: <CreateFamily />,
+										element: (
+											<CategorizationCreateProvider>
+												<CreateFamily />
+											</CategorizationCreateProvider>
+										),
 									},
 									{
 										path: 'editar-familia',
-										element: <EditFamily />,
+										element: (
+											<CategorizationCreateProvider>
+												<EditFamily />
+											</CategorizationCreateProvider>
+										),
 									},
 									{
 										path: 'especificaciones',

@@ -29,3 +29,13 @@ export interface CategoryDataFrontend {
 	createdBy: UserDataFrontend;
 }
 // DELETE se hace directo con ids
+
+export interface CategoryCategorization {
+	_id?: string;
+	name: string;
+	description?: string;
+	images?: string[];
+	rawImages?: string[];
+	family: string;
+	createdBy: string;
+}

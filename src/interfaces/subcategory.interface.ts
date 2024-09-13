@@ -33,3 +33,14 @@ export interface SubcategoryDataFrontend {
 	createdBy: UserDataFrontend;
 }
 // DELETE se hace directo con ids
+
+export interface SubcategoryCategorization {
+	_id?: string;
+	name: string;
+	description?: string;
+	images?: string[];
+	rawImages?: string[];
+	family: string;
+	category: string;
+	createdBy: string;
+}
