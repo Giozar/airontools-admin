@@ -18,7 +18,7 @@ import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
 import Security from '@pages/css/miscPages.tsx/security';
 import ErrorPage from '@pages/ErrorPages/ErrorPage';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
-import CreateFamily from '@pages/familyPages/CreateFamily';
+import CreateCategorization from '@pages/familyPages/CreateCategorization';
 import EditFamily from '@pages/familyPages/EditFamily';
 import LandingPage from '@pages/generalPages/LandingPage';
 import Login from '@pages/Login';
@@ -143,7 +143,7 @@ const router = createBrowserRouter([
 											<FamilyCreateProvider>
 												<CategoryCreateProvider>
 													<SubcategoryCreateProvider>
-														<CreateFamily />
+														<CreateCategorization />
 													</SubcategoryCreateProvider>
 												</CategoryCreateProvider>
 											</FamilyCreateProvider>

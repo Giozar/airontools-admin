@@ -1,6 +1,8 @@
+import SelectInput from '@components/commons/SelectInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import '@pages/css/createFamily.css';
 
@@ -12,6 +14,8 @@ function CreateSubcategoryForm() {
 		getSubcategoryInstance,
 		updateSubcategoryInstance,
 	} = useSubcategoryCreateContext();
+	const { getAllCategoryInstances } = useCategoryCreateContext();
+	const categoryInstances = getAllCategoryInstances();
 
 	return (
 		<div>
@@ -24,11 +28,20 @@ function CreateSubcategoryForm() {
 			<ul>
 				{Object.keys(subcategoryInstances).map(key => {
 					const Subcategory = getSubcategoryInstance(key);
-					if (!Subcategory) return null; // Asegúrate de retornar algo válido
+					if (!Subcategory) return null;
 
 					return (
 						<li key={key}>
 							<h2>Subcategorías</h2>
+							<SelectInput
+								id={`select-${key}`}
+								name={`Seleccionar Categoria`}
+								options={categoryInstances.map(category => ({
+									value: category.name,
+									label: category.name,
+								}))}
+								onChange={value => Subcategory.setCategory(value)}
+							/>
 							<TextInput
 								id={'Subcategoria' + key}
 								label={'Nombre de Subcategoria:'}
