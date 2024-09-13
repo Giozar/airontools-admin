@@ -4,61 +4,104 @@ import SingleImageChange from '@components/commons/SingleImageChange';
 import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import { airontoolsAPI } from '@configs/api.config';
 import { useAuthContext } from '@contexts/auth/AuthContext';
-import { useCategorizationCreateContext } from '@contexts/categorization/CategorizationContext';
+import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
+import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
+import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import useFamilyCreate from '@hooks/families/useFamilyCreate';
 import '@pages/css/createFamily.css';
 import uploadFileService from '@services/files/fileUpload.service';
+import axios from 'axios';
+import CreateCategories from './CreateCategory';
+import CreateSubcategories from './CreateSubcategory';
 
 function CreateFamilyForm() {
-	const { ...familyToCreate } = useCategorizationCreateContext();
+	const { ...familyToCreate } = useFamilyCreateContext();
 	const { errorLog, successLog, createFamily } = useFamilyCreate();
+	const { createCategory } = useCategoryCreate();
 	const { user } = useAuthContext();
-	const handleImageUpload = async (familyId: string) => {
+	const { getAllCategoryInstances } = useCategoryCreateContext();
+	const categoryInstances = getAllCategoryInstances();
+
+	// Convierte las instancias en el formato necesario
+	const formattedCategories = categoryInstances.map(category => ({
+		family: category.family,
+		name: category.name,
+		description: category.description,
+		image: category.rawImage,
+	}));
+
+	const handleRawImageUpload = async (rawImage: File, id: string) => {
 		try {
-			if (familyToCreate.rawImage === null) return;
-			const url = await uploadFileService(
-				familyToCreate.rawImage,
-				'image',
-				familyId,
-			);
-			console.log(url);
+			if (rawImage === null) return;
+			const url = await uploadFileService(rawImage, 'image', id);
+			console.log('Imagen subida ', url);
+			return url;
 		} catch (error) {
-			console.error(
-				'No se pudo subir archivos:',
-				familyToCreate.rawImage,
-				error,
-			);
+			console.error('No se pudo subir archivos:', rawImage, error);
 		}
 	};
+
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
-
 		try {
+			if (!user) return;
 			// Crear la familia
-			console.log({
+			console.log('Familia creada: ', {
 				name: familyToCreate.name,
 				description: familyToCreate.description,
-				createdBy: user?.id,
+				createdBy: familyToCreate.createdBy || user.id,
 				path: '',
 				images: [],
-			});
-			/*const familyId = await createFamily({
-				name: familyToCreate.name,
-				description: familyToCreate.description,
-				createdBy: familyToCreate.createdBy || 'xd',
-				path: '',
-				images: [],
-			});
-			console.log(familyId);
-			// Actualizar familia para imagen
-			const uploadedUrlImages = await handleImageUpload(familyId);
-			console.log(uploadedUrlImages);
-			await axios.patch(airontoolsAPI + '/families/' + familyId, {
-				images: uploadedUrlImages,
 			});
 
-			console.log('ID de la familia:', familyId);*/
+			const familyId = await createFamily({
+				name: familyToCreate.name,
+				description: familyToCreate.description,
+				createdBy: familyToCreate.createdBy || user.id,
+				path: '',
+				images: [],
+			});
+			console.log('ID de la familia:', familyId);
+			// Actualizar familia para imagen
+			const uploadedUrlImages = familyToCreate.rawImage
+				? await handleRawImageUpload(familyToCreate.rawImage, familyId)
+				: '';
+			console.log('imagen subida: ', uploadedUrlImages);
+			console.log(
+				await axios.patch(airontoolsAPI + '/families/' + familyId, {
+					images: [uploadedUrlImages],
+				}),
+			);
+
+			console.log('Categorias creadas');
+			for (const category of formattedCategories) {
+				const categoryId = await createCategory({
+					name: category.name,
+					description: category.description,
+					createdBy: user.id,
+					images: [],
+					family: familyId,
+				});
+				console.log('ID de la categoría:', categoryId._id);
+
+				// Actualizar categoría con imagen
+
+				const uploadedCategoryImageUrl = category.image
+					? await handleRawImageUpload(category.image, categoryId._id)
+					: '';
+				console.log(
+					'Imagen subida para la categoría:',
+					uploadedCategoryImageUrl,
+				);
+
+				await axios.patch(`${airontoolsAPI}/categories/${categoryId._id}`, {
+					images: [uploadedCategoryImageUrl],
+				});
+			}
+
+			console.log('Proceso completado exitosamente');
 		} catch (error) {
 			console.error(
 				'Error al crear familias, categorías o subcategorías:',
@@ -106,32 +149,10 @@ function CreateFamilyForm() {
 				</div>
 			</div>
 			<div>
-				<h2>Categorías</h2>
-
-				{/*<DynamicImageInputAreaList
-					name='categoría'
-					onChange={handleCategoriesChange}
-					filePreviews={filePreviews}
-					onFileSelect={handleFileSelect}
-					onRemoveFile={handleRemoveFile}
-					type='category'
-				/>*/}
+				<CreateCategories />
 			</div>
 			<div>
-				<h2>Subcategorías</h2>
-
-				{/*<DynamicImageSelectInputAreaList
-					name='subcategoría'
-					selectOptions={
-						categories.map(cat => ({ value: cat.name, label: cat.name })) || []
-					}
-					optionsName={'categoría:'}
-					onChange={handleSubcategoriesChange}
-					filePreviews={filePreviews}
-					onFileSelect={handleFileSelect}
-					onRemoveFile={handleRemoveFile}
-					type='subcategory'
-				/>*/}
+				<CreateSubcategories />
 			</div>
 		</form>
 	);

@@ -30,12 +30,32 @@ export interface CategoryDataFrontend {
 }
 // DELETE se hace directo con ids
 
-export interface CategoryCategorization {
-	_id?: string;
+/*Para el contexto */
+export interface CategoryCreateContextProps {
+	id: string;
 	name: string;
-	description?: string;
-	images?: string[];
-	rawImages?: string[];
 	family: string;
+	setFamily: (family: string) => void;
+	description: string;
+	rawImage: File | null;
+	image: string;
 	createdBy: string;
+	setId: (id: string) => void;
+	setName: (name: string) => void;
+	setDescription: (description: string) => void;
+	setRawImage: (file: File | null) => void;
+	setImage: (image: string) => void;
+	setCreatedBy: (createdBy: string) => void;
+}
+
+export interface CategoryCreateContextType {
+	categoryInstances: Record<string, CategoryCreateContextProps>;
+	addCategoryInstance: (key: string) => void;
+	removeCategoryInstance: (key: string) => void;
+	getCategoryInstance: (key: string) => CategoryCreateContextProps | undefined;
+	updateCategoryInstance: (
+		key: string,
+		update: Partial<CategoryCreateContextProps>,
+	) => void;
+	getAllCategoryInstances: () => CategoryCreateContextProps[];
 }

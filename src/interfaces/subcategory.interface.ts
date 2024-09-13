@@ -44,3 +44,36 @@ export interface SubcategoryCategorization {
 	category: string;
 	createdBy: string;
 }
+
+export interface SubcategoryCreateContextProps {
+	id: string;
+	name: string;
+	family: string;
+	setFamily: (family: string) => void;
+	category: string;
+	setCategory: (category: string) => void;
+	description: string;
+	rawImage: File | null;
+	image: string;
+	createdBy: string;
+	setId: (id: string) => void;
+	setName: (name: string) => void;
+	setDescription: (description: string) => void;
+	setRawImage: (file: File | null) => void;
+	setImage: (image: string) => void;
+	setCreatedBy: (createdBy: string) => void;
+}
+
+export interface SubcategoryCreateContextType {
+	subcategoryInstances: Record<string, SubcategoryCreateContextProps>;
+	addSubcategoryInstance: (key: string) => void;
+	removeSubcategoryInstance: (key: string) => void;
+	getSubcategoryInstance: (
+		key: string,
+	) => SubcategoryCreateContextProps | undefined;
+	updateSubcategoryInstance: (
+		key: string,
+		update: Partial<SubcategoryCreateContextProps>,
+	) => void;
+	getAllSubcategoryInstances: () => SubcategoryCreateContextProps[];
+}
