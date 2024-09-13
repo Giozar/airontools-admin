@@ -8,7 +8,7 @@ interface UploadProductFileUrlsArgs {
 	imageUrls: string[];
 	manualUrls: string[];
 }
-export async function uploadProductFileUrls({
+export async function useUploadProductFileUrls({
 	productId,
 	imageUrls,
 	manualUrls,
@@ -17,7 +17,7 @@ export async function uploadProductFileUrls({
 		imageUrls &&
 		imageUrls.length > 0 &&
 		(await uploadProductUrlImages({
-			productId: productId,
+			productId,
 			images: imageUrls,
 		}));
 
@@ -25,7 +25,7 @@ export async function uploadProductFileUrls({
 		manualUrls &&
 		manualUrls.length > 0 &&
 		(await uploadProductUrlManual({
-			productId: productId,
+			productId,
 			manuals: manualUrls,
 		}));
 }

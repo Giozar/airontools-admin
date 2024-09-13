@@ -1,18 +1,20 @@
 import { filesUpload } from '@components/files/helpers/filesUpload.helper';
-import { uploadProductFileUrls } from '@components/products/helpers/UploadProductFileUrls.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
+import { useUploadProductFileUrls } from '@hooks/products/useUploadProductFileUrls.helper';
 import createProductService from '@services/products/createProduct.service';
 
 import { useEffect } from 'react';
+import useResetProduct from './useResetProduct';
 
 export function useCreateProduct() {
 	const { user } = useAuthContext();
 	const { ...productToCreate } = useProductCreateContext();
+	const { resetProduct } = useResetProduct();
 
 	useEffect(() => {
 		productToCreate.id &&
-			uploadProductFileUrls({
+			useUploadProductFileUrls({
 				productId: productToCreate.id,
 				imageUrls: productToCreate.images,
 				manualUrls: productToCreate.manuals,
@@ -52,6 +54,13 @@ export function useCreateProduct() {
 				setFiles: productToCreate.setManualsRaw,
 				setFileUrls: productToCreate.setManuals,
 			}));
+
+		if (
+			productToCreate.imagesRaw.length === 0 &&
+			productToCreate.manualsRaw.length === 0
+		) {
+			resetProduct();
+		}
 
 		return createdProduct;
 	};

@@ -75,6 +75,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			setCategory(initialData.category?._id || '');
 			setSubcategory(initialData.subcategory?._id || '');
 		}
+		console.log(initialData);
 	}, [initialData]);
 
 	// Use initialData to prefill form values if available
@@ -187,7 +188,6 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 						/>
 					</div>
 				</div>
-				<button type='submit'>{actionName}</button>
 				<button type='submit'>{actionName}</button>
 			</form>
 		</div>

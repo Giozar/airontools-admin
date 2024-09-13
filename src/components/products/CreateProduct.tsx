@@ -12,7 +12,6 @@ export default function CreateProduct() {
 	const { successLog, showSuccess } = useSuccessHandling();
 
 	const create = async (e: Event) => {
-		e.preventDefault();
 		try {
 			const createdProduct = await createProduct(e);
 			showSuccess(`Herramienta ${createdProduct?.name}`);
