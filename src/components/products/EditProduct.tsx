@@ -1,7 +1,9 @@
+import { useProductCreateContext } from '@contexts/product/ProductContext';
 import { useEffect, useState } from 'react';
 import ProductForm from './ProductForm';
 
 export default function EditProduct() {
+	const { ...productToEdit } = useProductCreateContext();
 	const initialState = {
 		spec: { _id: 'N/A', name: 'Desconocido' },
 	};
@@ -19,7 +21,8 @@ export default function EditProduct() {
 			key={'Editar Productos'}
 			actionName='Editar herramientas'
 			action={async (e: Event) => {
-				console.log('Editar productos', e);
+				e.preventDefault();
+				console.log(productToEdit, e);
 			}}
 			initialData={state}
 		/>

@@ -1,6 +1,5 @@
 import TableRow from '@components/commons/TableRow';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
-import { useEffect, useState } from 'react';
 import useSpecificationsProductCategorization from './hooks/useSpecificationsProductCategorization';
 
 interface SpecificationsSectionProps {
@@ -21,49 +20,25 @@ export default function SpecificationsSection({
 	});
 	const { specifications, setSpecifications } = useProductCreateContext(); // Usar el contexto
 
-	// Estado para almacenar el valor de las especificaciones del producto
-	const [specificationValues, setSpecificationValues] = useState<{
-		[key: string]: string;
-	}>({});
-
-	// Al cargar el componente, inicializamos los valores si ya existen especificaciones en el estado
-	useEffect(() => {
-		if (specifications && specifications.length > 0) {
-			const initialValues = specifications.reduce(
-				(acc, spec) => {
-					acc[spec.specification] = spec.value; // Mapea el valor del contexto
-					return acc;
-				},
-				{} as { [key: string]: string },
-			);
-			setSpecificationValues(initialValues); // Establece los valores en el estado
-		}
-	}, []);
-
-	// Cada vez que cambien los valores de las especificaciones, se actualiza el contexto
-	useEffect(() => {
-		// Mapeamos los valores actuales a la interfaz ProductSpecification
-		const specificationArray = Object.entries(specificationValues).map(
-			([specId, value]) => ({
-				specification: specId,
-				value,
-			}),
-		);
-
-		setSpecifications(specificationArray); // Actualiza las especificaciones en el contexto con el formato correcto
-	}, [specificationValues]);
-
 	// Manejar el cambio en el valor de una especificación específica
 	const handleSpecificationChange = (specId: string, newValue: string) => {
-		setSpecificationValues(prevValues => ({
-			...prevValues,
-			[specId]: newValue,
-		}));
+		// Actualizar el valor directamente en el contexto de especificaciones
+		const updatedSpecifications = specifications.map(spec =>
+			spec.specification === specId ? { ...spec, value: newValue } : spec,
+		);
+
+		// Si no existe la especificación, agregarla al array
+		if (!updatedSpecifications.some(spec => spec.specification === specId)) {
+			updatedSpecifications.push({ specification: specId, value: newValue });
+		}
+
+		// Actualizar el contexto
+		setSpecifications(updatedSpecifications);
 	};
 
 	return (
 		<>
-			{specificationList.length > 0 && (
+			{specificationList && specificationList.length > 0 ? (
 				<div style={{ marginBottom: '100px' }}>
 					<label htmlFor='spec'>Lista de Especificaciones</label>
 					<table id='spec'>
@@ -74,7 +49,12 @@ export default function SpecificationsSection({
 									label={spec.name}
 									unit={spec.unit || ''}
 									placeholder={`Agregar ${spec.name || ''}`}
-									value={specificationValues[spec.id] || ''} // Muestra el valor si existe
+									// Buscar el valor en las especificaciones si existe, de lo contrario, dejar vacío
+									value={
+										specifications.find(
+											productSpec => productSpec.specification === spec.id,
+										)?.value || ''
+									}
 									onValueChange={newValue =>
 										handleSpecificationChange(spec.id, newValue)
 									}
@@ -84,6 +64,8 @@ export default function SpecificationsSection({
 					</table>
 					<p style={{ marginTop: '20px' }}>Nuevas especificaciones:</p>
 				</div>
+			) : (
+				<p>No hay especificaciones disponibles.</p>
 			)}
 		</>
 	);

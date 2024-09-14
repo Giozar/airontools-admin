@@ -75,7 +75,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			setFamily(initialData.family?._id || '');
 			setSpecifications(
 				initialData.specifications?.map(specProd => ({
-					specification: specProd.specification.name,
+					specification: specProd.specification._id || '',
 					value: specProd.value,
 				})) || [],
 			);

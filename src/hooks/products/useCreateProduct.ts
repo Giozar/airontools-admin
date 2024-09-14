@@ -10,11 +10,12 @@ import useResetProduct from './useResetProduct';
 export function useCreateProduct() {
 	const { user } = useAuthContext();
 	const { ...productToCreate } = useProductCreateContext();
+	const { uploadProductFileUrls } = useUploadProductFileUrls();
 	const { resetProduct } = useResetProduct();
 
 	useEffect(() => {
 		productToCreate.id &&
-			useUploadProductFileUrls({
+			uploadProductFileUrls({
 				productId: productToCreate.id,
 				imageUrls: productToCreate.images,
 				manualUrls: productToCreate.manuals,
