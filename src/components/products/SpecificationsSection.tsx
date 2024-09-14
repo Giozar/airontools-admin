@@ -1,10 +1,7 @@
 import TableRow from '@components/commons/TableRow';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
-import { useSpecificationsByCategory } from '@hooks/specifications/useSpecificationsByCategory';
-import { useSpecificationsByFamily } from '@hooks/specifications/useSpecificationsByFamily';
-import { useSpecificationsBySubcategory } from '@hooks/specifications/useSpecificationsBySubcategory';
-import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { useEffect, useState } from 'react';
+import useSpecificationsProductCategorization from './hooks/useSpecificationsProductCategorization';
 
 interface SpecificationsSectionProps {
 	familyId: string;
@@ -17,49 +14,11 @@ export default function SpecificationsSection({
 	categoryId,
 	subcategoryId,
 }: SpecificationsSectionProps) {
-	// Consultamos las especificaciones
-	const { specificationsByFamilyId } = useSpecificationsByFamily(familyId);
-	const { specificationsByCategoryId } =
-		useSpecificationsByCategory(categoryId);
-	const { specificationsBySubcategoryId } =
-		useSpecificationsBySubcategory(subcategoryId);
-
-	// Estado para almacenar la lista de las especificaciones
-	const [specificationList, setSpecificationList] = useState<
-		SpecDataFrontend[]
-	>([]);
-
-	// Cada vez que cambien los ids o los datos obtenidos se actualiza la lista de especificaciones
-	useEffect(() => {
-		// Filtrar y actualizar las especificaciones dependiendo de los IDs
-		const updatedSpecifications: SpecDataFrontend[] = [
-			...specificationsByFamilyId,
-			...specificationsByCategoryId,
-			...specificationsBySubcategoryId,
-		];
-
-		// Setear las especificaciones, eliminando posibles duplicados basados en el ID de la especificación
-		const uniqueSpecifications = updatedSpecifications.reduce(
-			(acc: SpecDataFrontend[], spec) => {
-				if (!acc.some(existingSpec => existingSpec.id === spec.id)) {
-					acc.push(spec);
-				}
-				return acc;
-			},
-			[],
-		);
-
-		// Actualizamos la lista con las especificaciones únicas
-		setSpecificationList(uniqueSpecifications);
-	}, [
+	const { specificationList } = useSpecificationsProductCategorization({
 		familyId,
-		specificationsByFamilyId,
 		categoryId,
-		specificationsByCategoryId,
 		subcategoryId,
-		specificationsBySubcategoryId,
-	]);
-
+	});
 	const { specifications, setSpecifications } = useProductCreateContext(); // Usar el contexto
 
 	// Estado para almacenar el valor de las especificaciones del producto
