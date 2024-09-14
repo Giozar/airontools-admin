@@ -2,26 +2,20 @@ import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
+import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 
 export default function EditSubcategories() {
 	const {
 		subcategoryInstances,
-		addSubcategoryInstance,
 		removeSubcategoryInstance,
 		getSubcategoryInstance,
 		updateSubcategoryInstance,
 	} = useSubcategoryCreateContext();
 
+	const { handleUpdateSubcategory } = useEditCategorization();
 	return (
 		<div>
-			<button
-				type='button'
-				onClick={() => addSubcategoryInstance(`subcat-${Date.now()}`)}
-				className='add'
-			>
-				Añadir nueva Subcategoria
-			</button>
 			<ul>
 				{Object.keys(subcategoryInstances).map(key => {
 					const Subcategory = getSubcategoryInstance(key);
@@ -29,7 +23,16 @@ export default function EditSubcategories() {
 
 					return (
 						<li key={key}>
-							<h2>Subcategorías</h2>
+							<h2>
+								Subcategoría
+								<button
+									type='button'
+									onClick={() => removeSubcategoryInstance(key)}
+									className='delete'
+								>
+									Borrar
+								</button>
+							</h2>
 							<TextInput
 								id={'Subcategoria' + key}
 								label={'Nombre de Subcategoria:'}
@@ -66,10 +69,10 @@ export default function EditSubcategories() {
 							/>
 							<button
 								type='button'
-								onClick={() => removeSubcategoryInstance(key)}
-								className='delete'
+								onClick={() => handleUpdateSubcategory(key)}
+								className='add'
 							>
-								Borrar
+								Actualizar Subcategoria
 							</button>
 						</li>
 					);

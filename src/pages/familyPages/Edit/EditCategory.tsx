@@ -2,26 +2,19 @@ import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
+import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 
 export default function EditCategories() {
 	const {
 		categoryInstances,
-		addCategoryInstance,
 		removeCategoryInstance,
 		getCategoryInstance,
 		updateCategoryInstance,
 	} = useCategoryCreateContext();
-
+	const { handleUpdateCategory } = useEditCategorization();
 	return (
 		<div>
-			<button
-				type='button'
-				onClick={() => addCategoryInstance(`cat-${Date.now()}`)}
-				className='add'
-			>
-				Añadir nueva categoria
-			</button>
 			<ul>
 				{Object.keys(categoryInstances).map(key => {
 					const category = getCategoryInstance(key);
@@ -29,7 +22,16 @@ export default function EditCategories() {
 
 					return (
 						<li key={key}>
-							<h2>Categorías</h2>
+							<h2>
+								Categoría
+								<button
+									type='button'
+									onClick={() => removeCategoryInstance(key)}
+									className='delete'
+								>
+									Borrar
+								</button>
+							</h2>
 							<TextInput
 								id={'Categoria' + key}
 								label={'Nombre de categoria:'}
@@ -64,10 +66,10 @@ export default function EditCategories() {
 							/>
 							<button
 								type='button'
-								onClick={() => removeCategoryInstance(key)}
-								className='delete'
+								onClick={() => handleUpdateCategory(key)}
+								className='add'
 							>
-								Borrar
+								Actualizar Categoria
 							</button>
 						</li>
 					);

@@ -4,11 +4,11 @@ import { UserDataBackend, UserDataFrontend } from './User.interface';
 // Datos para enviar al backend - PATCH, POST, PUT
 export interface CategoryDataToSend {
 	_id?: string;
-	name: string;
+	name?: string;
 	description?: string;
 	images?: string[];
-	family: string;
-	createdBy: string;
+	family?: string;
+	createdBy?: string;
 }
 // Datos que vienen del backend - GET
 export interface CategoryDataBackend {

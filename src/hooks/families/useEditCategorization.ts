@@ -4,7 +4,9 @@ import { useCategoryCreateContext } from '@contexts/categorization/CategoryConte
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import useCategoryCreate from '@hooks/categories/useCategoryCreate';
+import useCategoryUpdate from '@hooks/categories/useCategoryUpdate';
 import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
+import useSubcategoryUpdate from '@hooks/subcategories/useSubcategoryUpdate';
 import { getcategoryByFamilyId } from '@services/categories/getCategoriesByCategorization.service';
 import uploadFileService from '@services/files/fileUpload.service';
 import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
@@ -23,14 +25,20 @@ export function useEditCategorization() {
 		addCategoryInstance,
 		updateCategoryInstance,
 		getAllCategoryInstances,
+		getCategoryInstance,
 	} = useCategoryCreateContext();
 	const categoryInstances = getAllCategoryInstances();
 	const {
 		addSubcategoryInstance,
 		updateSubcategoryInstance,
 		getAllSubcategoryInstances,
+		getSubcategoryInstance,
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
+	const { errorLogCategory, successLogCategory, updateCategory } =
+		useCategoryUpdate();
+	const { errorLogSubcategory, successLogSubcategory, updateSubcategory } =
+		useSubcategoryUpdate();
 
 	const location = useLocation();
 	const family = location.state?.familyId;
@@ -46,6 +54,7 @@ export function useEditCategorization() {
 
 		const getCategoryData = async () => {
 			const response = await getcategoryByFamilyId(family);
+			console.log('oola', response[0].id);
 			if (response.length === 0) return;
 			response.forEach((category, index) => {
 				const instanceId = 'cat' + index;
@@ -57,6 +66,7 @@ export function useEditCategorization() {
 					family: category.family.id,
 					image: category.images ? category.images[0] : '',
 				});
+				console.log('adios', getCategoryInstance(instanceId));
 			});
 			console.log(response);
 		};
@@ -103,5 +113,30 @@ export function useEditCategorization() {
 		});
 	};
 
-	return { handleUpdateFamily };
+	const handleUpdateCategory = async (key: string) => {
+		try {
+			const category = getCategoryInstance(key);
+			if (category)
+				await axios.patch(`${airontoolsAPI}/categories/${category.id}`, {
+					name: category.name,
+					description: category.description,
+				});
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+	const handleUpdateSubcategory = async (key: string) => {
+		try {
+			const subcategory = getSubcategoryInstance(key);
+			if (subcategory)
+				await axios.patch(`${airontoolsAPI}/subcategories/${subcategory.id}`, {
+					name: subcategory.name,
+					description: subcategory.description,
+				});
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+
+	return { handleUpdateFamily, handleUpdateCategory, handleUpdateSubcategory };
 }
