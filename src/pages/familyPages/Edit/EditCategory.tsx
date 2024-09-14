@@ -53,15 +53,25 @@ export default function EditCategories() {
 								}
 								rows={6}
 							/>
+
 							<SingleImageChange
 								title={`Imagen de categoria:`}
 								filePreview={
 									category.rawImage
 										? URL.createObjectURL(category.rawImage)
-										: category.image || ''
+										: !category.imageToDelete
+											? category.image
+											: ''
 								}
 								setFilePreview={file =>
-									updateCategoryInstance(key, { rawImage: file })
+									updateCategoryInstance(key, {
+										rawImage: file,
+									})
+								}
+								setFileToDelete={bool =>
+									updateCategoryInstance(key, {
+										imageToDelete: bool,
+									})
 								}
 							/>
 							<button

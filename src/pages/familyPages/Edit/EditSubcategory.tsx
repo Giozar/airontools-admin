@@ -56,15 +56,25 @@ export default function EditSubcategories() {
 								}
 								rows={6}
 							/>
+
 							<SingleImageChange
-								title={`Imagen de Subcategoria:`}
+								title={`Imagen de categoria:`}
 								filePreview={
 									Subcategory.rawImage
 										? URL.createObjectURL(Subcategory.rawImage)
-										: Subcategory.image || ''
+										: !Subcategory.imageToDelete
+											? Subcategory.image
+											: ''
 								}
 								setFilePreview={file =>
-									updateSubcategoryInstance(key, { rawImage: file })
+									updateSubcategoryInstance(key, {
+										rawImage: file,
+									})
+								}
+								setFileToDelete={bool =>
+									updateSubcategoryInstance(key, {
+										imageToDelete: bool,
+									})
 								}
 							/>
 							<button

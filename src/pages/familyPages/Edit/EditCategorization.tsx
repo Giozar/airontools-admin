@@ -6,13 +6,13 @@ import EditFamily from './EditFamily';
 import EditSubcategories from './EditSubcategory';
 
 export function CreateFamilyForm() {
-	const { handleUpdateFamily } = useEditCategorization();
+	const { handleUpdateCategorization } = useEditCategorization();
 
 	return (
-		<form onSubmit={handleUpdateFamily}>
+		<form onSubmit={handleUpdateCategorization}>
 			<FormHeader
 				action='Editar Categorización'
-				onSubmit={handleUpdateFamily}
+				onSubmit={handleUpdateCategorization}
 			/>
 			<EditFamily />
 			<EditCategories />

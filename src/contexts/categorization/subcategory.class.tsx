@@ -10,6 +10,7 @@ export class SubcategoryInstance implements SubcategoryCreateContextProps {
 	description: string;
 	rawImage: File | null;
 	image: string;
+	imageToDelete: boolean;
 	createdBy: string;
 
 	constructor() {
@@ -20,6 +21,7 @@ export class SubcategoryInstance implements SubcategoryCreateContextProps {
 		this.description = '';
 		this.rawImage = null;
 		this.image = '';
+		this.imageToDelete = false;
 		this.createdBy = '';
 	}
 
@@ -50,7 +52,9 @@ export class SubcategoryInstance implements SubcategoryCreateContextProps {
 	setImage(image: string) {
 		this.image = image;
 	}
-
+	setImageToDelete(imageToDelete: boolean) {
+		this.imageToDelete = imageToDelete;
+	}
 	setCreatedBy(createdBy: string) {
 		this.createdBy = createdBy;
 	}

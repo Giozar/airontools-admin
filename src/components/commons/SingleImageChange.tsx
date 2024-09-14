@@ -6,6 +6,7 @@ interface ImageUploaderProps {
 	title: string;
 	filePreview: string;
 	setFilePreview: (value: File | null) => void;
+	setFileToDelete?: (value: boolean) => void;
 	placeholder?: string;
 }
 
@@ -13,6 +14,7 @@ const SingleImageChange = ({
 	title,
 	filePreview,
 	setFilePreview,
+	setFileToDelete,
 	placeholder,
 }: ImageUploaderProps) => {
 	const [isHovering, setIsHovering] = useState(false);
@@ -25,6 +27,7 @@ const SingleImageChange = ({
 
 	const handleRemoveImage = () => {
 		setFilePreview(null);
+		if (setFileToDelete) setFileToDelete(true);
 	};
 
 	return (

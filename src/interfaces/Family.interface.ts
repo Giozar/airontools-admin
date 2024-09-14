@@ -40,6 +40,8 @@ export interface FamilyCreateContextProps {
 	setRawImage: (value: File | null) => void;
 	image: string;
 	setImage: (value: string) => void;
+	imageToDelete?: boolean;
+	setImageToDelete?: (value: boolean) => void;
 	createdBy: string;
 	setCreatedBy: (value: string) => void;
 }

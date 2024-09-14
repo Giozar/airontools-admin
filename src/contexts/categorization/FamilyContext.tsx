@@ -11,6 +11,7 @@ export const FamilyCreateProvider = ({ children }: { children: ReactNode }) => {
 	const [description, setDescription] = useState('');
 	const [rawImage, setRawImage] = useState<File | null>(null);
 	const [image, setImage] = useState('');
+	const [imageToDelete, setImageToDelete] = useState(false);
 	const [createdBy, setCreatedBy] = useState<string>('');
 
 	return (
@@ -26,6 +27,8 @@ export const FamilyCreateProvider = ({ children }: { children: ReactNode }) => {
 				setRawImage,
 				image,
 				setImage,
+				imageToDelete,
+				setImageToDelete,
 				createdBy,
 				setCreatedBy,
 			}}

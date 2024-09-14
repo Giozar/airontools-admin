@@ -4,10 +4,9 @@ import { useCategoryCreateContext } from '@contexts/categorization/CategoryConte
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import useCategoryCreate from '@hooks/categories/useCategoryCreate';
-import useCategoryUpdate from '@hooks/categories/useCategoryUpdate';
 import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
-import useSubcategoryUpdate from '@hooks/subcategories/useSubcategoryUpdate';
 import { getcategoryByFamilyId } from '@services/categories/getCategoriesByCategorization.service';
+import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFileService from '@services/files/fileUpload.service';
 import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
 import axios from 'axios';
@@ -35,40 +34,42 @@ export function useEditCategorization() {
 		getSubcategoryInstance,
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
-	const { errorLogCategory, successLogCategory, updateCategory } =
-		useCategoryUpdate();
-	const { errorLogSubcategory, successLogSubcategory, updateSubcategory } =
-		useSubcategoryUpdate();
 
 	const location = useLocation();
 	const family = location.state?.familyId;
 	//Obten los valores de para editar xdxdxd
+
 	useEffect(() => {
 		const getFamilyData = async () => {
 			const response = await axios.get(`${airontoolsAPI}/families/${family}`);
+			const imageUrl = response.data.images ? response.data.images[0] : '';
 			familyToEdit.setId(response.data._id);
 			familyToEdit.setName(response.data.name);
 			familyToEdit.setDescription(response.data.description);
-			familyToEdit.setImage(response.data.images);
+			familyToEdit.setImage(imageUrl);
 		};
 
 		const getCategoryData = async () => {
-			const response = await getcategoryByFamilyId(family);
-			console.log('oola', response[0].id);
-			if (response.length === 0) return;
-			response.forEach((category, index) => {
-				const instanceId = 'cat' + index;
-				addCategoryInstance(instanceId);
-				updateCategoryInstance(instanceId, {
-					id: category.id,
-					name: category.name,
-					description: category.description,
-					family: category.family.id,
-					image: category.images ? category.images[0] : '',
-				});
-				console.log('adios', getCategoryInstance(instanceId));
-			});
-			console.log(response);
+			try {
+				const response = await getcategoryByFamilyId(family);
+				if (response.length === 0) return;
+
+				for (const [index, category] of response.entries()) {
+					const instanceId = 'cat' + index;
+					addCategoryInstance(instanceId);
+					const imageUrl = category.images ? category.images[0] : '';
+
+					updateCategoryInstance(instanceId, {
+						id: category.id,
+						name: category.name,
+						description: category.description,
+						family: category.family.id,
+						image: imageUrl,
+					});
+				}
+			} catch (error) {
+				console.error('Error al obtener los datos de la categoría:', error);
+			}
 		};
 
 		const getSubcategoryData = async () => {
@@ -85,7 +86,6 @@ export function useEditCategorization() {
 					image: category.images ? category.images[0] : '',
 				});
 			});
-			console.log(response);
 		};
 		getSubcategoryData();
 		getFamilyData();
@@ -103,24 +103,64 @@ export function useEditCategorization() {
 		}
 	};
 
-	const handleUpdateFamily = async (e: { preventDefault: () => void }) => {
-		e.preventDefault();
+	const handleDeleteFile = async (fileId: string) => {
+		try {
+			await deleteFileService(fileId);
+		} catch (error) {
+			console.error(`Error al eliminar archivo ${fileId}:`, error);
+		}
+	};
+	/*
+	const handleDelete = async (familyId: string, familyName: string) => {
+		try {
+			await deleteFamilyService(familyId);
+			console.log('borrefamailia');
+		} catch (error) {
+			console.error(error);
+		}
+	};*/
+
+	const handleUpdateFamily = async () => {
 		if (!user) return;
 		// Crear la familia
+		let img = familyToEdit.image;
+		if (familyToEdit.imageToDelete) {
+			await handleDeleteFile(familyToEdit.image);
+			img = '';
+		}
+		if (familyToEdit.rawImage && familyToEdit.id) {
+			if (familyToEdit.image) await handleDeleteFile(familyToEdit.image);
+			img =
+				(await handleRawImageUpload(familyToEdit.rawImage, familyToEdit.id)) ||
+				'';
+		}
 		await axios.patch(`${airontoolsAPI}/families/${familyToEdit.id}`, {
 			name: familyToEdit.name,
 			description: familyToEdit.description,
+			images: [img],
 		});
 	};
 
 	const handleUpdateCategory = async (key: string) => {
 		try {
 			const category = getCategoryInstance(key);
-			if (category)
+			if (category) {
+				let img = category.image;
+				if (category.imageToDelete) {
+					await handleDeleteFile(category.image);
+					img = '';
+				}
+				if (category.rawImage && category.id) {
+					if (category.image) await handleDeleteFile(category.image);
+					img =
+						(await handleRawImageUpload(category.rawImage, category.id)) || '';
+				}
 				await axios.patch(`${airontoolsAPI}/categories/${category.id}`, {
 					name: category.name,
 					description: category.description,
+					images: [img],
 				});
+			}
 		} catch (error) {
 			console.error('Error:', error);
 		}
@@ -128,15 +168,41 @@ export function useEditCategorization() {
 	const handleUpdateSubcategory = async (key: string) => {
 		try {
 			const subcategory = getSubcategoryInstance(key);
-			if (subcategory)
+			if (subcategory) {
+				let img = subcategory.image;
+				if (subcategory.imageToDelete) {
+					await handleDeleteFile(subcategory.image);
+					img = '';
+				}
+				if (subcategory.rawImage && subcategory.id) {
+					if (subcategory.image) await handleDeleteFile(subcategory.image);
+					img =
+						(await handleRawImageUpload(
+							subcategory.rawImage,
+							subcategory.id,
+						)) || '';
+				}
 				await axios.patch(`${airontoolsAPI}/subcategories/${subcategory.id}`, {
 					name: subcategory.name,
 					description: subcategory.description,
+					images: [img],
 				});
+			}
 		} catch (error) {
 			console.error('Error:', error);
 		}
 	};
+	const handleUpdateCategorization = async (e: {
+		preventDefault: () => void;
+	}) => {
+		e.preventDefault;
+		console.log('a');
+	};
 
-	return { handleUpdateFamily, handleUpdateCategory, handleUpdateSubcategory };
+	return {
+		handleUpdateFamily,
+		handleUpdateCategory,
+		handleUpdateSubcategory,
+		handleUpdateCategorization,
+	};
 }

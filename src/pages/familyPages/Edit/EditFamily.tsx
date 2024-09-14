@@ -2,10 +2,12 @@ import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
+import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 
 export default function EditFamily() {
 	const { ...familyToCreate } = useFamilyCreateContext();
+	const { handleUpdateFamily } = useEditCategorization();
 
 	return (
 		<>
@@ -32,10 +34,18 @@ export default function EditFamily() {
 				filePreview={
 					familyToCreate.rawImage
 						? URL.createObjectURL(familyToCreate.rawImage)
-						: familyToCreate.image || ''
+						: !familyToCreate.imageToDelete
+							? familyToCreate.image
+							: ''
 				}
-				setFilePreview={familyToCreate.setRawImage}
+				setFilePreview={file => {
+					familyToCreate.setRawImage(file);
+				}}
+				setFileToDelete={familyToCreate.setImageToDelete}
 			/>
+			<button type='button' onClick={handleUpdateFamily} className='add'>
+				Actualizar Familia
+			</button>
 		</>
 	);
 }

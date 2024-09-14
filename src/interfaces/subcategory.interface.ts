@@ -55,12 +55,14 @@ export interface SubcategoryCreateContextProps {
 	description: string;
 	rawImage: File | null;
 	image: string;
+	imageToDelete: boolean;
 	createdBy: string;
 	setId: (id: string) => void;
 	setName: (name: string) => void;
 	setDescription: (description: string) => void;
 	setRawImage: (file: File | null) => void;
 	setImage: (image: string) => void;
+	setImageToDelete: (image: boolean) => void;
 	setCreatedBy: (createdBy: string) => void;
 }
 
