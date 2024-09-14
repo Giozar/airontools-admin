@@ -24,8 +24,8 @@ export default function SpecificationsSection({
 	const { specificationsBySubcategoryId } =
 		useSpecificationsBySubcategory(subcategoryId);
 
-	const { setSpecifications } = useProductCreateContext();
-
+	const { specifications, setSpecifications } = useProductCreateContext(); // Usar el contexto
+	console.log(specifications);
 	// Estado para almacenar la lista de las especificaciones
 	const [specificationList, setSpecificationList] = useState<
 		SpecDataFrontend[]
@@ -35,6 +35,20 @@ export default function SpecificationsSection({
 	const [specificationValues, setSpecificationValues] = useState<{
 		[key: string]: string;
 	}>({});
+
+	// Al cargar el componente, inicializamos los valores si ya existen especificaciones en el estado
+	useEffect(() => {
+		if (specifications && specifications.length > 0) {
+			const initialValues = specifications.reduce(
+				(acc, spec) => {
+					acc[spec.specification] = spec.value; // Mapea el valor del contexto
+					return acc;
+				},
+				{} as { [key: string]: string },
+			);
+			setSpecificationValues(initialValues); // Establece los valores en el estado
+		}
+	}, [specifications]);
 
 	// Cada vez que cambien los ids o los datos obtenidos se actualiza la lista de especificaciones
 	useEffect(() => {
@@ -101,6 +115,7 @@ export default function SpecificationsSection({
 									label={spec.name}
 									unit={spec.unit || ''}
 									placeholder={`Agregar ${spec.name || ''}`}
+									value={specificationValues[spec.id] || ''} // Muestra el valor si existe
 									onValueChange={newValue =>
 										handleSpecificationChange(spec.id, newValue)
 									}

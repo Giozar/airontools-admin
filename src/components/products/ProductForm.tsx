@@ -54,6 +54,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 		setCategory,
 		subcategory,
 		setSubcategory,
+		setSpecifications,
 	} = useProductCreateContext();
 
 	// Use initialData to prefill form values if available
@@ -72,10 +73,17 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			setIncludedItems(initialData.includedItems || []);
 			setOptionalAccessories(initialData.optionalAccessories || []);
 			setFamily(initialData.family?._id || '');
+			/** TODO: Corregir esto */
+			// setSpecifications(
+			// 	initialData.specifications?.map(specProd => ({
+			// 		specification: specProd.specification.name,
+			// 		value: specProd.value,
+			// 	})) || [],
+			// );
+
 			setCategory(initialData.category?._id || '');
 			setSubcategory(initialData.subcategory?._id || '');
 		}
-		console.log(initialData);
 	}, [initialData]);
 
 	// Use initialData to prefill form values if available
