@@ -73,36 +73,18 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			setIncludedItems(initialData.includedItems || []);
 			setOptionalAccessories(initialData.optionalAccessories || []);
 			setFamily(initialData.family?._id || '');
-			/** TODO: Corregir esto */
-			// setSpecifications(
-			// 	initialData.specifications?.map(specProd => ({
-			// 		specification: specProd.specification.name,
-			// 		value: specProd.value,
-			// 	})) || [],
-			// );
-
+			setSpecifications(
+				initialData.specifications?.map(specProd => ({
+					specification: specProd.specification.name,
+					value: specProd.value,
+				})) || [],
+			);
 			setCategory(initialData.category?._id || '');
 			setSubcategory(initialData.subcategory?._id || '');
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialData]);
 
-	// Use initialData to prefill form values if available
-	useEffect(() => {
-		if (initialData) {
-			setName(initialData.name || '');
-			setModel(initialData.model || '');
-			setDescription(initialData.description || '');
-			setImages(initialData.images || []);
-			setManuals(initialData.manuals || []);
-			setCharacteristics(initialData.characteristics || []);
-			setApplications(initialData.applications || []);
-			setRecommendations(initialData.recommendations || []);
-			setOperationRequirements(initialData.operationRequirements || []);
-			setVideos(initialData.videos || []);
-			setIncludedItems(initialData.includedItems || []);
-			setOptionalAccessories(initialData.optionalAccessories || []);
-		}
-	}, [initialData]);
 	return (
 		<div className='createproductform'>
 			<form onSubmit={action} className='productform'>

@@ -24,31 +24,10 @@ export default function SpecificationsSection({
 	const { specificationsBySubcategoryId } =
 		useSpecificationsBySubcategory(subcategoryId);
 
-	const { specifications, setSpecifications } = useProductCreateContext(); // Usar el contexto
-	console.log(specifications);
 	// Estado para almacenar la lista de las especificaciones
 	const [specificationList, setSpecificationList] = useState<
 		SpecDataFrontend[]
 	>([]);
-
-	// Estado para almacenar el valor de las especificaciones del producto
-	const [specificationValues, setSpecificationValues] = useState<{
-		[key: string]: string;
-	}>({});
-
-	// Al cargar el componente, inicializamos los valores si ya existen especificaciones en el estado
-	useEffect(() => {
-		if (specifications && specifications.length > 0) {
-			const initialValues = specifications.reduce(
-				(acc, spec) => {
-					acc[spec.specification] = spec.value; // Mapea el valor del contexto
-					return acc;
-				},
-				{} as { [key: string]: string },
-			);
-			setSpecificationValues(initialValues); // Establece los valores en el estado
-		}
-	}, [specifications]);
 
 	// Cada vez que cambien los ids o los datos obtenidos se actualiza la lista de especificaciones
 	useEffect(() => {
@@ -81,6 +60,27 @@ export default function SpecificationsSection({
 		specificationsBySubcategoryId,
 	]);
 
+	const { specifications, setSpecifications } = useProductCreateContext(); // Usar el contexto
+
+	// Estado para almacenar el valor de las especificaciones del producto
+	const [specificationValues, setSpecificationValues] = useState<{
+		[key: string]: string;
+	}>({});
+
+	// Al cargar el componente, inicializamos los valores si ya existen especificaciones en el estado
+	useEffect(() => {
+		if (specifications && specifications.length > 0) {
+			const initialValues = specifications.reduce(
+				(acc, spec) => {
+					acc[spec.specification] = spec.value; // Mapea el valor del contexto
+					return acc;
+				},
+				{} as { [key: string]: string },
+			);
+			setSpecificationValues(initialValues); // Establece los valores en el estado
+		}
+	}, []);
+
 	// Cada vez que cambien los valores de las especificaciones, se actualiza el contexto
 	useEffect(() => {
 		// Mapeamos los valores actuales a la interfaz ProductSpecification
@@ -92,7 +92,7 @@ export default function SpecificationsSection({
 		);
 
 		setSpecifications(specificationArray); // Actualiza las especificaciones en el contexto con el formato correcto
-	}, [specificationValues, setSpecifications]);
+	}, [specificationValues]);
 
 	// Manejar el cambio en el valor de una especificación específica
 	const handleSpecificationChange = (specId: string, newValue: string) => {

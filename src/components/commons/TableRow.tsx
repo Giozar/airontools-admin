@@ -13,7 +13,7 @@ const TableRow: React.FC<TableRowProps> = ({
 	unit,
 	placeholder,
 	onValueChange,
-	value = '', // Valor inicial opcional
+	value = 'Hola', // Valor inicial opcional
 }) => {
 	const [inputValue, setInputValue] = useState(value);
 
