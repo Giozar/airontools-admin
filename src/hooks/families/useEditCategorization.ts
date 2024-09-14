@@ -5,9 +5,12 @@ import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
+import { deleteCategory } from '@services/categories/deleteCategory.service';
 import { getcategoryByFamilyId } from '@services/categories/getCategoriesByCategorization.service';
+import { deleteFamilyService } from '@services/families/deleteFamily.service';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFileService from '@services/files/fileUpload.service';
+import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
 import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -110,15 +113,33 @@ export function useEditCategorization() {
 			console.error(`Error al eliminar archivo ${fileId}:`, error);
 		}
 	};
-	/*
-	const handleDelete = async (familyId: string, familyName: string) => {
+
+	const handleDeleteFamily = async (familyId: string) => {
 		try {
 			await deleteFamilyService(familyId);
 			console.log('borrefamailia');
 		} catch (error) {
 			console.error(error);
 		}
-	};*/
+	};
+
+	const handleDeleteCategory = async (id: string) => {
+		try {
+			await deleteCategory(id);
+			console.log('borrefamailia');
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const handleDeleteSubcategory = async (id: string) => {
+		try {
+			await deleteSubcategoryService(id);
+			console.log('borrefamailia');
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	const handleUpdateFamily = async () => {
 		if (!user) return;
@@ -201,8 +222,11 @@ export function useEditCategorization() {
 
 	return {
 		handleUpdateFamily,
+		handleDeleteFamily,
 		handleUpdateCategory,
+		handleDeleteCategory,
 		handleUpdateSubcategory,
+		handleDeleteSubcategory,
 		handleUpdateCategorization,
 	};
 }

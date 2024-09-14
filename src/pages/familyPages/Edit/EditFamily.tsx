@@ -1,17 +1,33 @@
+import Modal from '@components/commons/Modal';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
+import { useState } from 'react';
 
 export default function EditFamily() {
 	const { ...familyToCreate } = useFamilyCreateContext();
-	const { handleUpdateFamily } = useEditCategorization();
+	const { handleUpdateFamily, handleDeleteFamily } = useEditCategorization();
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const openModal = () => setIsModalOpen(true);
+	const closeModal = () => setIsModalOpen(false);
+	const handleConfirm = () => {
+		console.log('Acción confirmada');
+		if (familyToCreate.id) handleDeleteFamily(familyToCreate.id);
+		closeModal();
+	};
 
 	return (
 		<>
-			<h2>Familia</h2>
+			<h2>
+				Familia {familyToCreate.name}
+				<button type='button' className='delete' onClick={openModal}>
+					Eliminar familia
+				</button>
+			</h2>
 			<TextInput
 				id={'family'}
 				label={'Nombre de familia:'}
@@ -46,6 +62,18 @@ export default function EditFamily() {
 			<button type='button' onClick={handleUpdateFamily} className='add'>
 				Actualizar Familia
 			</button>
+
+			<div>
+				<Modal
+					isOpen={isModalOpen}
+					onClose={closeModal}
+					onConfirm={handleConfirm}
+					title='Eliminar familia'
+					content='Vas a eliminar esta familia. ¿Estás seguro de que quieres continuar?'
+					cancelText='Cancelar'
+					confirmText='Eliminar'
+				/>
+			</div>
 		</>
 	);
 }
