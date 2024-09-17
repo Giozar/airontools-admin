@@ -4,11 +4,11 @@ import { UserDataBackend, UserDataFrontend } from './User.interface';
 // Datos para enviar al backend - PATCH, POST, PUT
 export interface CategoryDataToSend {
 	_id?: string;
-	name: string;
+	name?: string;
 	description?: string;
 	images?: string[];
-	family: string;
-	createdBy: string;
+	family?: string;
+	createdBy?: string;
 }
 // Datos que vienen del backend - GET
 export interface CategoryDataBackend {
@@ -29,3 +29,59 @@ export interface CategoryDataFrontend {
 	createdBy: UserDataFrontend;
 }
 // DELETE se hace directo con ids
+export interface CategoryClass {
+	id?: string;
+	family?: string;
+	name?: string;
+	description?: string;
+	image?: string;
+	imageToDelete?: boolean;
+	createdBy?: string;
+	mode?: 'create' | 'edit';
+}
+
+/*Para el contexto */
+export interface CategoryCreateContextProps {
+	id: string;
+	name: string;
+	family: string;
+	setFamily: (family: string) => void;
+	description: string;
+	rawImage: File | null;
+	image: string;
+	imageToDelete: boolean;
+	createdBy: string;
+	mode: 'create' | 'edit';
+	setId: (id: string) => void;
+	setName: (name: string) => void;
+	setDescription: (description: string) => void;
+	setRawImage: (file: File | null) => void;
+	setImage: (image: string) => void;
+	setImageToDelete: (image: boolean) => void;
+	setCreatedBy: (createdBy: string) => void;
+	setMode: (mode: 'create' | 'edit') => void;
+}
+
+export interface CategoryCreateContextType {
+	categoryInstances: Record<string, CategoryCreateContextProps>;
+	addCategoryInstance: (
+		key: string,
+		{
+			id,
+			family,
+			name,
+			description,
+			image,
+			imageToDelete,
+			createdBy,
+			mode,
+		}: CategoryClass,
+	) => void;
+	removeCategoryInstance: (key: string) => void;
+	getCategoryInstance: (key: string) => CategoryCreateContextProps | undefined;
+	updateCategoryInstance: (
+		key: string,
+		update: Partial<CategoryCreateContextProps>,
+	) => void;
+	getAllCategoryInstances: () => CategoryCreateContextProps[];
+}

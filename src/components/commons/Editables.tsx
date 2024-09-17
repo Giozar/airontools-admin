@@ -35,6 +35,7 @@ function Editables({
 
 	useEffect(() => {
 		setInput(valueOf);
+		if (!valueOf) setEditing(true);
 	}, [valueOf]);
 
 	const handleEditClick = () => {
@@ -128,11 +129,6 @@ function Editables({
 					{editing && !onUpdateMany && (
 						<button className='edit' onClick={handleEditClick}>
 							Cancelar
-						</button>
-					)}
-					{!valueOf && !editing && (
-						<button className='edit' onClick={handleEditClick}>
-							Añadir
 						</button>
 					)}
 					{editing && !onUpdateMany && (

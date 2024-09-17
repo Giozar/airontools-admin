@@ -225,7 +225,7 @@ function EditFamilyForm({ familyToEdit }: EditFamilyFormProps) {
 	);
 }
 
-export default function EditFamily() {
+export default function EditFamily2() {
 	const initialState = {
 		family: { id: 'N/A', name: 'Desconocido' },
 	};

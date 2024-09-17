@@ -7,6 +7,9 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
+import { CategoryCreateProvider } from '@contexts/categorization/CategoryContext';
+import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
+import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
 import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
@@ -15,8 +18,8 @@ import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
 import Security from '@pages/css/miscPages.tsx/security';
 import ErrorPage from '@pages/ErrorPages/ErrorPage';
 import CategorizationMenu from '@pages/familyPages/CategorizationMenu';
-import CreateFamily from '@pages/familyPages/CreateFamily';
-import EditFamily from '@pages/familyPages/EditFamily';
+import CreateCategorization from '@pages/familyPages/Create/CreateCategorization';
+import EditCategorization from '@pages/familyPages/Edit/EditCategorization';
 import LandingPage from '@pages/generalPages/LandingPage';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
@@ -136,11 +139,27 @@ const router = createBrowserRouter([
 								children: [
 									{
 										path: 'crear-familia',
-										element: <CreateFamily />,
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<CreateCategorization />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
 									},
 									{
 										path: 'editar-familia',
-										element: <EditFamily />,
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<EditCategorization />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
 									},
 									{
 										path: 'especificaciones',

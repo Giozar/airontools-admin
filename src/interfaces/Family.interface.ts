@@ -28,3 +28,20 @@ export interface FamilyDataFrontend {
 	createdBy: UserDataFrontend;
 }
 // DELETE se hace directo con ids
+
+export interface FamilyCreateContextProps {
+	id?: string;
+	setId: (value: string) => void;
+	name: string;
+	setName: (value: string) => void;
+	description: string;
+	setDescription: (value: string) => void;
+	rawImage: File | null;
+	setRawImage: (value: File | null) => void;
+	image: string;
+	setImage: (value: string) => void;
+	imageToDelete?: boolean;
+	setImageToDelete?: (value: boolean) => void;
+	createdBy: string;
+	setCreatedBy: (value: string) => void;
+}
