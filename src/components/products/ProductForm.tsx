@@ -108,7 +108,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 						id='productModel'
 						label='Modelo de herramienta'
 						value={model}
-						placeholder='---'
+						placeholder='H-1'
 						onChange={e => setModel(e.target.value)}
 					/>
 				</div>

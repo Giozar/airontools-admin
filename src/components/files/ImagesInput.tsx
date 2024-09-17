@@ -1,6 +1,6 @@
 import TrashIcon from '@components/svg/TrashIcon';
 import useFilesInput from '@hooks/files/useFilesInput';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { transformFilesToUrls } from './helpers/transformFilesToUrls.helper';
 import './styles/ImagesInput.css';
 
@@ -17,9 +17,13 @@ export default function ImagesInput({
 	files,
 	urls,
 	setFiles,
+	setUrls,
 }: FilesInputProps) {
-	const { selectFiles, removeFiles } = useFilesInput();
+	const { selectFiles, removeFiles, removeUrls } = useFilesInput();
 	const [filePreviews, setFilePreviews] = useState<string[]>([]);
+
+	// Referencia al input file
+	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	// Maneja la selección de archivos
 	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,20 +32,41 @@ export default function ImagesInput({
 			files,
 			setFiles,
 		});
+
+		// Resetea el input después de seleccionar archivos
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
 	};
 
 	// Maneja la eliminación de archivos
 	const handleRemoveFile = (index: number) => {
+		// console.log('Elimino el archivo');
 		removeFiles({
 			index,
 			files,
 			setFiles,
 		});
+
+		// Resetea el input después de eliminar un archivo
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
+	};
+
+	// Maneja la eliminación de las URLs de las imágenes
+	const handleRemoveUrl = (index: number) => {
+		// console.log('Elimino la url');
+		removeUrls({
+			index,
+			urls,
+			setUrls,
+		});
 	};
 
 	useEffect(() => {
 		setFilePreviews(transformFilesToUrls(files));
-	}, [files]);
+	}, [files, urls]);
 
 	return (
 		<div className='image-uploader-container'>
@@ -55,15 +80,17 @@ export default function ImagesInput({
 						multiple
 						accept='image/*'
 						onChange={handleFileSelect}
+						ref={fileInputRef} // Asignamos la referencia al input
 					/>
 				</div>
+
 				{urls.length > 0 &&
 					urls.map((url, index) => (
 						<div key={index} className='image-preview'>
-							<h4>Archivos cargados</h4>
+							<h4>Imágenes cargadas</h4>
 							<img src={url} alt={`preview-${index}`} />
 							<button
-								onClick={() => handleRemoveFile(index)}
+								onClick={() => handleRemoveUrl(index)}
 								className='delete'
 								type='button'
 							>
@@ -71,11 +98,12 @@ export default function ImagesInput({
 							</button>
 						</div>
 					))}
+
 				{filePreviews.length > 0 &&
-					filePreviews.map((url, index) => (
+					filePreviews.map((filePreview, index) => (
 						<div key={index} className='image-preview'>
-							<h4>Archivos previos</h4>
-							<img src={url} alt={`preview-${index}`} />
+							<h4>Imágenes previas</h4>
+							<img src={filePreview} alt={`preview-${index}`} />
 							<button
 								onClick={() => handleRemoveFile(index)}
 								className='delete'
