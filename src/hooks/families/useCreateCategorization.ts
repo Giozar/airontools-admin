@@ -122,5 +122,50 @@ export function useCreateCategorization() {
 			);
 		}
 	};
-	return { handleSubmit, errorLog, successLog };
+
+	const handleCreateSubcategory = async (category: string) => {
+		try {
+			if (!user) return;
+
+			console.log('Subcategorias creadas');
+			for (const subcategory of subcategoryInstances) {
+				const subcategoryId = await createSubcategory({
+					name: subcategory.name,
+					description: subcategory.description,
+					createdBy: user.id,
+					images: [],
+					family: familyToCreate.id,
+					category: category,
+				});
+				console.log('ID de la subcategoría:', subcategoryId._id);
+
+				// Actualizar categoría con imagen
+
+				const uploadedSubcategoryImageUrl = subcategory.rawImage
+					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
+					: '';
+				console.log(
+					'Imagen subida para la subcategoría:',
+					uploadedSubcategoryImageUrl,
+				);
+
+				await axios.patch(
+					`${airontoolsAPI}/subcategories/${subcategoryId._id}`,
+					{
+						images: [uploadedSubcategoryImageUrl],
+					},
+				);
+			}
+			console.log('Proceso completado exitosamente');
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
+		} catch (error) {
+			console.error(
+				'Error al crear familias, categorías o subcategorías:',
+				error,
+			);
+		}
+	};
+	return { handleSubmit, handleCreateSubcategory, errorLog, successLog };
 }

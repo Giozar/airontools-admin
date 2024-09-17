@@ -57,6 +57,7 @@ export interface SubcategoryCreateContextProps {
 	image: string;
 	imageToDelete: boolean;
 	createdBy: string;
+	mode: 'create' | 'edit';
 	setId: (id: string) => void;
 	setName: (name: string) => void;
 	setDescription: (description: string) => void;
@@ -64,6 +65,7 @@ export interface SubcategoryCreateContextProps {
 	setImage: (image: string) => void;
 	setImageToDelete: (image: boolean) => void;
 	setCreatedBy: (createdBy: string) => void;
+	setMode: (mode: 'create' | 'edit') => void;
 }
 
 export interface SubcategoryCreateContextType {

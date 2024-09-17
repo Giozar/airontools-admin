@@ -12,6 +12,7 @@ export class SubcategoryInstance implements SubcategoryCreateContextProps {
 	image: string;
 	imageToDelete: boolean;
 	createdBy: string;
+	mode: 'create' | 'edit';
 
 	constructor() {
 		this.id = '';
@@ -23,6 +24,7 @@ export class SubcategoryInstance implements SubcategoryCreateContextProps {
 		this.image = '';
 		this.imageToDelete = false;
 		this.createdBy = '';
+		this.mode = 'create';
 	}
 
 	setId(id: string) {
@@ -57,5 +59,8 @@ export class SubcategoryInstance implements SubcategoryCreateContextProps {
 	}
 	setCreatedBy(createdBy: string) {
 		this.createdBy = createdBy;
+	}
+	setMode(mode: 'create' | 'edit') {
+		this.mode = mode;
 	}
 }

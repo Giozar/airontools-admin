@@ -3,8 +3,6 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
-import useCategoryCreate from '@hooks/categories/useCategoryCreate';
-import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import { deleteCategory } from '@services/categories/deleteCategory.service';
 import { getcategoryByFamilyId } from '@services/categories/getCategoriesByCategorization.service';
 import { deleteFamilyService } from '@services/families/deleteFamily.service';
@@ -15,28 +13,17 @@ import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategori
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import useFamilyUpdate from './useFamilyUpdate';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
-	const { updateFamily } = useFamilyUpdate();
-	const { createCategory } = useCategoryCreate();
-	const { createSubcategory } = useSubcategoryCreate();
 	const { user } = useAuthContext();
-	const {
-		addCategoryInstance,
-		updateCategoryInstance,
-		getAllCategoryInstances,
-		getCategoryInstance,
-	} = useCategoryCreateContext();
-	const categoryInstances = getAllCategoryInstances();
+	const { addCategoryInstance, updateCategoryInstance, getCategoryInstance } =
+		useCategoryCreateContext();
 	const {
 		addSubcategoryInstance,
 		updateSubcategoryInstance,
-		getAllSubcategoryInstances,
 		getSubcategoryInstance,
 	} = useSubcategoryCreateContext();
-	const subcategoryInstances = getAllSubcategoryInstances();
 
 	const location = useLocation();
 	const family = location.state?.familyId;
@@ -68,6 +55,7 @@ export function useEditCategorization() {
 						description: category.description,
 						family: category.family.id,
 						image: imageUrl,
+						mode: 'edit',
 					});
 				}
 			} catch (error) {
@@ -78,15 +66,17 @@ export function useEditCategorization() {
 		const getSubcategoryData = async () => {
 			const response = await getSubcategoryByFamilyId(family);
 			if (response.length === 0) return;
-			response.forEach((category, index) => {
+			response.forEach((subcategory, index) => {
 				const instanceId = 'cat' + index;
 				addSubcategoryInstance(instanceId);
 				updateSubcategoryInstance(instanceId, {
-					id: category.id,
-					name: category.name,
-					description: category.description,
-					family: category.family.id,
-					image: category.images ? category.images[0] : '',
+					id: subcategory.id,
+					name: subcategory.name,
+					description: subcategory.description,
+					family: subcategory.family.id,
+					category: subcategory.category._id,
+					image: subcategory.images ? subcategory.images[0] : '',
+					mode: 'edit',
 				});
 			});
 		};

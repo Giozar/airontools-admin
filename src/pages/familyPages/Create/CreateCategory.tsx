@@ -29,7 +29,8 @@ function CreateCategoryForm() {
 			<ul className='category'>
 				{Object.keys(categoryInstances).map(key => {
 					const category = getCategoryInstance(key);
-					if (!category) return null; // Asegúrate de retornar algo válido
+					if (!category) return null;
+					if (category.mode !== 'create') return null;
 
 					return (
 						<li key={key}>

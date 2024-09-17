@@ -11,6 +11,7 @@ export class CategoryInstance implements CategoryCreateContextProps {
 	image: string;
 	imageToDelete: boolean;
 	createdBy: string;
+	mode: 'create' | 'edit';
 
 	constructor() {
 		this.id = '';
@@ -21,6 +22,7 @@ export class CategoryInstance implements CategoryCreateContextProps {
 		this.image = '';
 		this.imageToDelete = false;
 		this.createdBy = '';
+		this.mode = 'create';
 	}
 
 	setId(id: string) {
@@ -51,5 +53,8 @@ export class CategoryInstance implements CategoryCreateContextProps {
 	}
 	setCreatedBy(createdBy: string) {
 		this.createdBy = createdBy;
+	}
+	setMode(mode: 'create' | 'edit') {
+		this.mode = mode;
 	}
 }

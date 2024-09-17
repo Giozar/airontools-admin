@@ -6,6 +6,8 @@ import { useCategoryCreateContext } from '@contexts/categorization/CategoryConte
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 import { useState } from 'react';
+import CreateSubcategories from '../Create/CreateSubcategory';
+import EditSubcategories from './EditSubcategory';
 
 export default function EditCategories() {
 	const {
@@ -37,7 +39,8 @@ export default function EditCategories() {
 		<ul>
 			{Object.keys(categoryInstances).map(key => {
 				const category = getCategoryInstance(key);
-				if (!category) return null; // Asegúrate de retornar algo válido
+				if (!category) return null;
+				if (category.mode !== 'edit') return null;
 
 				return (
 					<li key={key}>
@@ -112,6 +115,9 @@ export default function EditCategories() {
 							cancelText='Cancelar'
 							confirmText='Eliminar'
 						/>
+
+						<EditSubcategories desiredCategory={category.id} />
+						<CreateSubcategories />
 					</li>
 				);
 			})}

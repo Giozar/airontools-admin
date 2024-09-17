@@ -34,11 +34,12 @@ function CreateSubcategoryForm() {
 				{Object.keys(subcategoryInstances).map(key => {
 					const Subcategory = getSubcategoryInstance(key);
 					if (!Subcategory) return null;
+					if (Subcategory.mode !== 'create') return null;
 
 					return (
 						<li key={key}>
 							<h2 className='item-header'>
-								Nueva Subcategoría{' '}
+								Nueva Subcategoría
 								<button
 									type='button'
 									onClick={() => removeSubcategoryInstance(key)}
