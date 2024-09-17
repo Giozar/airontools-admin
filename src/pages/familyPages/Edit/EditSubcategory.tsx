@@ -6,7 +6,20 @@ import { useSubcategoryCreateContext } from '@contexts/categorization/Subcategor
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 import { useState } from 'react';
-
+/**
+ * Filtra y muestra las subcategorías del contexto que tienen el modo de edición y pertenecen a la categoría deseada.
+ *
+ * Esta función obtiene todas las subcategorías del contexto y las filtra para mostrar solo aquellas
+ * que tienen el `mode` igual a `'edit'` y pertenecen a la `desiredCategory` especificada. Además, proporciona
+ * una interfaz para actualizar o eliminar subcategorías. La eliminación de una subcategoría requiere confirmación
+ * a través de un modal.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.desiredCategory - La categoría por la cual filtrar la lista de subcategorías.
+ *
+ * @returns {JSX.Element} - Un componente que muestra la lista de subcategorías filtradas junto con la opción
+ *   de editar o eliminar cada una. Incluye un modal para confirmar la eliminación de una subcategoría.
+ */
 export default function EditSubcategories({
 	desiredCategory,
 }: {

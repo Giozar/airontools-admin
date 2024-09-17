@@ -6,9 +6,20 @@ import { useCategoryCreateContext } from '@contexts/categorization/CategoryConte
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 import { useState } from 'react';
-import CreateSubcategories from '../Create/CreateSubcategory';
+import CreateSubcategoriesWithCategory from '../Create/CreateSubcategory';
 import EditSubcategories from './EditSubcategory';
-
+/**
+ * Muestra y permite la edición de categorías existentes en modo 'edit'.
+ *
+ * Este componente lista todas las categorías en modo 'edit', permitiendo la actualización del nombre,
+ * descripción y imagen de cada categoría. También ofrece la opción de eliminar una categoría, con
+ * confirmación a través de un modal. Adicionalmente, muestra subcategorías asociadas a cada categoría
+ * y permite crear nuevas subcategorías para cada categoría editada.
+ *
+ * @returns {JSX.Element} - Un componente que muestra una lista de categorías en modo 'edit' con opciones
+ *   para actualizar, eliminar, y gestionar subcategorías relacionadas. Incluye un modal para confirmar
+ *   la eliminación de una categoría.
+ */
 export default function EditCategories() {
 	const {
 		categoryInstances,
@@ -117,7 +128,7 @@ export default function EditCategories() {
 						/>
 
 						<EditSubcategories desiredCategory={category.id} />
-						<CreateSubcategories />
+						<CreateSubcategoriesWithCategory category={category.id} />
 					</li>
 				);
 			})}

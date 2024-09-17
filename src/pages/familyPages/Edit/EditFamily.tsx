@@ -6,7 +6,17 @@ import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 import { useState } from 'react';
-
+/**
+ * Permite la edición y eliminación de una familia existente.
+ *
+ * Este componente muestra un formulario para editar una familia. Incluye campos para actualizar el nombre,
+ * la descripción y la imagen de la familia. También ofrece la opción de eliminar la familia mediante un modal
+ * de confirmación. La gestión del estado de la familia y las acciones de edición y eliminación se manejan
+ * a través de los contextos y hooks proporcionados.
+ *
+ * @returns {JSX.Element} - Un componente que muestra un formulario para editar una familia, con opciones
+ *   para actualizar la información y eliminar la familia, incluyendo un modal de confirmación para la eliminación.
+ */
 export default function EditFamily() {
 	const { ...familyToCreate } = useFamilyCreateContext();
 	const { handleUpdateFamily, handleDeleteFamily } = useEditCategorization();

@@ -29,6 +29,16 @@ export interface CategoryDataFrontend {
 	createdBy: UserDataFrontend;
 }
 // DELETE se hace directo con ids
+export interface CategoryClass {
+	id?: string;
+	family?: string;
+	name?: string;
+	description?: string;
+	image?: string;
+	imageToDelete?: boolean;
+	createdBy?: string;
+	mode?: 'create' | 'edit';
+}
 
 /*Para el contexto */
 export interface CategoryCreateContextProps {
@@ -54,7 +64,19 @@ export interface CategoryCreateContextProps {
 
 export interface CategoryCreateContextType {
 	categoryInstances: Record<string, CategoryCreateContextProps>;
-	addCategoryInstance: (key: string) => void;
+	addCategoryInstance: (
+		key: string,
+		{
+			id,
+			family,
+			name,
+			description,
+			image,
+			imageToDelete,
+			createdBy,
+			mode,
+		}: CategoryClass,
+	) => void;
 	removeCategoryInstance: (key: string) => void;
 	getCategoryInstance: (key: string) => CategoryCreateContextProps | undefined;
 	updateCategoryInstance: (

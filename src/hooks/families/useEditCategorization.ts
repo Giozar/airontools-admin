@@ -17,13 +17,10 @@ import { useLocation } from 'react-router-dom';
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
 	const { user } = useAuthContext();
-	const { addCategoryInstance, updateCategoryInstance, getCategoryInstance } =
+	const { addCategoryInstance, getCategoryInstance } =
 		useCategoryCreateContext();
-	const {
-		addSubcategoryInstance,
-		updateSubcategoryInstance,
-		getSubcategoryInstance,
-	} = useSubcategoryCreateContext();
+	const { addSubcategoryInstance, getSubcategoryInstance } =
+		useSubcategoryCreateContext();
 
 	const location = useLocation();
 	const family = location.state?.familyId;
@@ -45,11 +42,10 @@ export function useEditCategorization() {
 				if (response.length === 0) return;
 
 				for (const [index, category] of response.entries()) {
-					const instanceId = 'cat' + index;
-					addCategoryInstance(instanceId);
 					const imageUrl = category.images ? category.images[0] : '';
+					const instanceId = 'cat' + index;
 
-					updateCategoryInstance(instanceId, {
+					addCategoryInstance(instanceId, {
 						id: category.id,
 						name: category.name,
 						description: category.description,
@@ -68,8 +64,7 @@ export function useEditCategorization() {
 			if (response.length === 0) return;
 			response.forEach((subcategory, index) => {
 				const instanceId = 'cat' + index;
-				addSubcategoryInstance(instanceId);
-				updateSubcategoryInstance(instanceId, {
+				addSubcategoryInstance(instanceId, {
 					id: subcategory.id,
 					name: subcategory.name,
 					description: subcategory.description,

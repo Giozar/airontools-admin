@@ -44,6 +44,18 @@ export interface SubcategoryCategorization {
 	category: string;
 	createdBy: string;
 }
+//de aqui me hice bolas xd
+export interface SubcategoryClass {
+	id?: string;
+	family?: string;
+	category?: string;
+	name?: string;
+	description?: string;
+	image?: string;
+	imageToDelete?: boolean;
+	createdBy?: string;
+	mode?: 'create' | 'edit';
+}
 
 export interface SubcategoryCreateContextProps {
 	id: string;
@@ -70,7 +82,20 @@ export interface SubcategoryCreateContextProps {
 
 export interface SubcategoryCreateContextType {
 	subcategoryInstances: Record<string, SubcategoryCreateContextProps>;
-	addSubcategoryInstance: (key: string) => void;
+	addSubcategoryInstance: (
+		key: string,
+		{
+			id,
+			family,
+			category,
+			name,
+			description,
+			image,
+			imageToDelete,
+			createdBy,
+			mode,
+		}: SubcategoryClass,
+	) => void;
 	removeSubcategoryInstance: (key: string) => void;
 	getSubcategoryInstance: (
 		key: string,

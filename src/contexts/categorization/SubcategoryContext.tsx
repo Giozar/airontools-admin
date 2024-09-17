@@ -1,5 +1,6 @@
 //Esta funcion crea varias instancias de la clase subcategoria
 import {
+	SubcategoryClass,
 	SubcategoryCreateContextProps,
 	SubcategoryCreateContextType,
 } from '@interfaces/subcategory.interface';
@@ -27,15 +28,17 @@ export const SubcategoryCreateProvider = ({
 	const addSubcategoryInstance = useCallback(
 		(
 			key: string,
-			id?: string,
-			family?: string,
-			category?: string,
-			name?: string,
-			description?: string,
-			image?: string,
-			imageToDelete?: boolean,
-			createdBy?: string,
-			mode?: 'create' | 'edit',
+			{
+				id = '',
+				family = '',
+				category = '',
+				name = '',
+				description = '',
+				image = '',
+				imageToDelete = false,
+				createdBy = '',
+				mode = 'create',
+			}: SubcategoryClass = {},
 		) => {
 			setSubcategoryInstances(prevInstances => ({
 				...prevInstances,

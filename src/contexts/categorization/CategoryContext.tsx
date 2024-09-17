@@ -1,4 +1,5 @@
 import {
+	CategoryClass,
 	CategoryCreateContextProps,
 	CategoryCreateContextType,
 } from '@interfaces/Category.interface';
@@ -28,14 +29,16 @@ export const CategoryCreateProvider = ({
 	const addCategoryInstance = useCallback(
 		(
 			key: string,
-			id?: string,
-			family?: string,
-			name?: string,
-			description?: string,
-			image?: string,
-			imageToDelete?: boolean,
-			createdBy?: string,
-			mode?: 'create' | 'edit',
+			{
+				id = '',
+				family = '',
+				name = '',
+				description = '',
+				image = '',
+				imageToDelete = false,
+				createdBy = '',
+				mode = 'create',
+			}: CategoryClass = {},
 		) => {
 			setCategoryInstances(prevInstances => ({
 				...prevInstances,
