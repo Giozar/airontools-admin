@@ -2,6 +2,7 @@ import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
+import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 /**
  * Permite crear nuevas subcategorías y asignarles una categoría específica.
@@ -29,6 +30,7 @@ export default function CreateSubcategoriesWithCategory({
 		updateSubcategoryInstance,
 	} = useSubcategoryCreateContext();
 
+	const { handleCreateSubcategory } = useEditCategorization();
 	return (
 		<div>
 			<div>
@@ -107,6 +109,9 @@ export default function CreateSubcategoriesWithCategory({
 						);
 					})}
 			</ul>
+			<button type='button' onClick={handleCreateSubcategory} className='save'>
+				Crear subcategorias
+			</button>
 		</div>
 	);
 }

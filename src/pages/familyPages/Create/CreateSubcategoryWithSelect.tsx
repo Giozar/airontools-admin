@@ -23,7 +23,7 @@ export default function CreateSubcategoriesWithSelect() {
 				<h2>Subcategorias:</h2>
 				<button
 					type='button'
-					onClick={() => addSubcategoryInstance(`subcat-${Date.now()}`)}
+					onClick={() => addSubcategoryInstance(`subcat-${Date.now()}`, {})}
 					className='save-button'
 				>
 					Añadir nueva Subcategoria

@@ -1,7 +1,9 @@
 import FormHeader from '@components/commons/form/FormHeader';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
-import EditCategoriesSubcategories from './EditCategoriesSubcategories';
+
+import CreateCategories from '../Create/CreateCategory';
+import EditCategories from './EditCategory';
 import EditFamily from './EditFamily';
 
 export function CreateFamilyForm() {
@@ -14,7 +16,8 @@ export function CreateFamilyForm() {
 				onSubmit={handleUpdateCategorization}
 			/>
 			<EditFamily />
-			<EditCategoriesSubcategories />
+			<EditCategories />
+			<CreateCategories createButton={true} />
 		</form>
 	);
 }

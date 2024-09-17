@@ -3,6 +3,8 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
+import useCategoryCreate from '@hooks/categories/useCategoryCreate';
+import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
 import { deleteCategory } from '@services/categories/deleteCategory.service';
 import { getcategoryByFamilyId } from '@services/categories/getCategoriesByCategorization.service';
 import { deleteFamilyService } from '@services/families/deleteFamily.service';
@@ -17,10 +19,17 @@ import { useLocation } from 'react-router-dom';
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
 	const { user } = useAuthContext();
-	const { addCategoryInstance, getCategoryInstance } =
+	const { addCategoryInstance, getCategoryInstance, getAllCategoryInstances } =
 		useCategoryCreateContext();
-	const { addSubcategoryInstance, getSubcategoryInstance } =
-		useSubcategoryCreateContext();
+	const {
+		addSubcategoryInstance,
+		getSubcategoryInstance,
+		getAllSubcategoryInstances,
+	} = useSubcategoryCreateContext();
+	const subcategoryInstances = getAllSubcategoryInstances();
+	const categoryInstances = getAllCategoryInstances();
+	const { createSubcategory } = useSubcategoryCreate();
+	const { createCategory } = useCategoryCreate();
 
 	const location = useLocation();
 	const family = location.state?.familyId;
@@ -205,13 +214,101 @@ export function useEditCategorization() {
 		console.log('a');
 	};
 
+	const handleCreateSubcategory = async () => {
+		try {
+			if (!user) return;
+			console.log('Subcategorias creadas');
+			for (const subcategory of subcategoryInstances) {
+				if (subcategory.mode !== 'create') continue;
+
+				const subcategoryId = await createSubcategory({
+					name: subcategory.name,
+					description: subcategory.description,
+					createdBy: user.id,
+					images: [],
+					family: familyToEdit.id,
+					category: subcategory.category,
+				});
+				console.log('ID de la subcategoría:', subcategoryId._id);
+
+				// Actualizar categoría con imagen
+
+				const uploadedSubcategoryImageUrl = subcategory.rawImage
+					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
+					: '';
+				console.log(
+					'Imagen subida para la subcategoría:',
+					uploadedSubcategoryImageUrl,
+				);
+
+				await axios.patch(
+					`${airontoolsAPI}/subcategories/${subcategoryId._id}`,
+					{
+						images: [uploadedSubcategoryImageUrl],
+					},
+				);
+			}
+			console.log('Proceso completado exitosamente');
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
+		} catch (error) {
+			console.error(
+				'Error al crear familias, categorías o subcategorías:',
+				error,
+			);
+		}
+	};
+	const handleCreateCategory = async () => {
+		try {
+			if (!user) return;
+			console.log('Subcategorias creadas');
+			for (const category of categoryInstances) {
+				if (category.mode !== 'create') continue;
+
+				const categoryId = await createCategory({
+					name: category.name,
+					description: category.description,
+					createdBy: user.id,
+					images: [],
+					family: familyToEdit.id,
+				});
+				console.log('ID de la categoría:', categoryId._id);
+
+				// Actualizar categoría con imagen
+
+				const uploadedCategoryImageUrl = category.rawImage
+					? await handleRawImageUpload(category.rawImage, categoryId._id)
+					: '';
+				console.log(
+					'Imagen subida para la categoría:',
+					uploadedCategoryImageUrl,
+				);
+
+				await axios.patch(`${airontoolsAPI}/categories/${categoryId._id}`, {
+					images: [uploadedCategoryImageUrl],
+				});
+			}
+			console.log('Proceso completado exitosamente');
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
+		} catch (error) {
+			console.error(
+				'Error al crear familias, categorías o subcategorías:',
+				error,
+			);
+		}
+	};
 	return {
 		handleUpdateFamily,
 		handleDeleteFamily,
 		handleUpdateCategory,
 		handleDeleteCategory,
+		handleCreateCategory,
 		handleUpdateSubcategory,
 		handleDeleteSubcategory,
 		handleUpdateCategorization,
+		handleCreateSubcategory,
 	};
 }

@@ -2,15 +2,25 @@ import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
-import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
-
-interface createCategoryprops {
-	createButton?: boolean;
-}
-export default function CreateCategories({
-	createButton,
-}: createCategoryprops) {
+/**
+ * Permite la creación y gestión de categorías asociadas a una familia específica.
+ *
+ * Este componente muestra una interfaz para añadir nuevas categorías relacionadas con una familia.
+ * Incluye un formulario para ingresar el nombre, la descripción y la imagen de cada categoría.
+ * Las categorías se pueden eliminar y se muestran sólo aquellas que están en modo de creación.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.family - El identificador de la familia a la que se asignarán las nuevas categorías.
+ *
+ * @returns {JSX.Element} - Un componente que muestra un formulario para añadir nuevas categorías y
+ *   una lista de categorías en modo de creación, con opciones para actualizar la información y eliminar categorías.
+ */
+export default function CreateCategoriesWithFamily({
+	family,
+}: {
+	family: string;
+}) {
 	const {
 		categoryInstances,
 		addCategoryInstance,
@@ -19,14 +29,13 @@ export default function CreateCategories({
 		updateCategoryInstance,
 	} = useCategoryCreateContext();
 
-	const { handleCreateCategory } = useEditCategorization();
 	return (
 		<div>
 			<div>
 				<h2>Categorias:</h2>
 				<button
 					type='button'
-					onClick={() => addCategoryInstance(`cat-${Date.now()}`, {})}
+					onClick={() => addCategoryInstance(`cat-${Date.now()}`, { family })}
 					className='save-button'
 				>
 					Añadir nueva categoria
@@ -89,11 +98,6 @@ export default function CreateCategories({
 					);
 				})}
 			</ul>
-			{createButton && (
-				<button type='button' onClick={handleCreateCategory} className='save'>
-					Crear categorias
-				</button>
-			)}
 		</div>
 	);
 }
