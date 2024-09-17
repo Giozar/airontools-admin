@@ -1,5 +1,6 @@
 import TableRow from '@components/commons/TableRow';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
+import { useEffect } from 'react';
 import useSpecificationsProductCategorization from './hooks/useSpecificationsProductCategorization';
 
 interface SpecificationsSectionProps {
@@ -18,7 +19,8 @@ export default function SpecificationsSection({
 		categoryId,
 		subcategoryId,
 	});
-	const { specifications, setSpecifications } = useProductCreateContext(); // Usar el contexto
+	const { specifications, setSpecifications, family, category, subcategory } =
+		useProductCreateContext(); // Usar el contexto
 
 	// Manejar el cambio en el valor de una especificación específica
 	const handleSpecificationChange = (specId: string, newValue: string) => {
@@ -35,6 +37,20 @@ export default function SpecificationsSection({
 		// Actualizar el contexto
 		setSpecifications(updatedSpecifications);
 	};
+
+	useEffect(() => {
+		// console.log(specifications);
+		// console.log(specificationList);
+		if (specificationList.length > 0 && specifications.length > 0) {
+			// console.log('Voy a monitorear y reiniciar');
+			const updatedSpecifications = specifications.filter(spec =>
+				specificationList.some(listSpec => listSpec.id === spec.specification),
+			);
+			console.log(updatedSpecifications);
+
+			setSpecifications(updatedSpecifications); // Actualizar las especificaciones eliminando las no encontradas
+		}
+	}, [family, category, subcategory]);
 
 	return (
 		<>
