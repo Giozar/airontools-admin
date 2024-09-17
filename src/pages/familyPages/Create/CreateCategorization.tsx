@@ -5,7 +5,7 @@ import { useCreateCategorization } from '@hooks/families/useCreateCategorization
 import '@pages/css/createFamily.css';
 import CreateCategories from './CreateCategory';
 import CreateFamily from './CreateFamily';
-import CreateSubcategories from './CreateSubcategory';
+import CreateSubcategories from './CreateSubcategoryWithSelect';
 
 export function CreateFamilyForm() {
 	const { handleSubmit, errorLog, successLog } = useCreateCategorization();

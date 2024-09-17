@@ -25,12 +25,34 @@ export const CategoryCreateProvider = ({
 		Record<string, CategoryCreateContextProps>
 	>({});
 
-	const addCategoryInstance = useCallback((key: string) => {
-		setCategoryInstances(prevInstances => ({
-			...prevInstances,
-			[key]: new CategoryInstance(),
-		}));
-	}, []);
+	const addCategoryInstance = useCallback(
+		(
+			key: string,
+			id?: string,
+			family?: string,
+			name?: string,
+			description?: string,
+			image?: string,
+			imageToDelete?: boolean,
+			createdBy?: string,
+			mode?: 'create' | 'edit',
+		) => {
+			setCategoryInstances(prevInstances => ({
+				...prevInstances,
+				[key]: new CategoryInstance(
+					id,
+					family,
+					name,
+					description,
+					image,
+					imageToDelete,
+					createdBy,
+					mode,
+				),
+			}));
+		},
+		[],
+	);
 
 	const removeCategoryInstance = useCallback((key: string) => {
 		setCategoryInstances(prevInstances => {

@@ -24,12 +24,36 @@ export const SubcategoryCreateProvider = ({
 		Record<string, SubcategoryCreateContextProps>
 	>({});
 
-	const addSubcategoryInstance = useCallback((key: string) => {
-		setSubcategoryInstances(prevInstances => ({
-			...prevInstances,
-			[key]: new SubcategoryInstance(),
-		}));
-	}, []);
+	const addSubcategoryInstance = useCallback(
+		(
+			key: string,
+			id?: string,
+			family?: string,
+			category?: string,
+			name?: string,
+			description?: string,
+			image?: string,
+			imageToDelete?: boolean,
+			createdBy?: string,
+			mode?: 'create' | 'edit',
+		) => {
+			setSubcategoryInstances(prevInstances => ({
+				...prevInstances,
+				[key]: new SubcategoryInstance(
+					id,
+					family,
+					category,
+					name,
+					description,
+					image,
+					imageToDelete,
+					createdBy,
+					mode,
+				),
+			}));
+		},
+		[],
+	);
 
 	const removeSubcategoryInstance = useCallback((key: string) => {
 		setSubcategoryInstances(prevInstances => {

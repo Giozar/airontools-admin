@@ -13,16 +13,25 @@ export class CategoryInstance implements CategoryCreateContextProps {
 	createdBy: string;
 	mode: 'create' | 'edit';
 
-	constructor() {
-		this.id = '';
-		this.family = '';
-		this.name = '';
-		this.description = '';
+	constructor(
+		id?: string,
+		family?: string,
+		name?: string,
+		description?: string,
+		image?: string,
+		imageToDelete?: boolean,
+		createdBy?: string,
+		mode?: 'create' | 'edit',
+	) {
+		this.id = id || '';
+		this.family = family || '';
+		this.name = name || '';
+		this.description = description || '';
 		this.rawImage = null;
-		this.image = '';
-		this.imageToDelete = false;
-		this.createdBy = '';
-		this.mode = 'create';
+		this.image = image || '';
+		this.imageToDelete = imageToDelete || false;
+		this.createdBy = createdBy || '';
+		this.mode = mode || 'create';
 	}
 
 	setId(id: string) {

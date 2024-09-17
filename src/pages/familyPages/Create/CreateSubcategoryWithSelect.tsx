@@ -1,10 +1,12 @@
+import SelectInput from '@components/commons/SelectInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import '@pages/css/createFamily.css';
 
-export default function CreateSubcategoriesWithCategory() {
+export default function CreateSubcategoriesWithSelect() {
 	const {
 		subcategoryInstances,
 		addSubcategoryInstance,
@@ -12,6 +14,8 @@ export default function CreateSubcategoriesWithCategory() {
 		getSubcategoryInstance,
 		updateSubcategoryInstance,
 	} = useSubcategoryCreateContext();
+	const { getAllCategoryInstances } = useCategoryCreateContext();
+	const categoryInstances = getAllCategoryInstances();
 
 	return (
 		<div>
@@ -44,7 +48,15 @@ export default function CreateSubcategoriesWithCategory() {
 									Borrar
 								</button>
 							</h2>
-
+							<SelectInput
+								id={`select-${key}`}
+								name={`Seleccionar Categoria`}
+								options={categoryInstances.map(category => ({
+									value: category.name,
+									label: category.name,
+								}))}
+								onChange={value => Subcategory.setCategory(value)}
+							/>
 							<TextInput
 								className='item-name'
 								id={'Subcategoria' + key}

@@ -14,17 +14,27 @@ export class SubcategoryInstance implements SubcategoryCreateContextProps {
 	createdBy: string;
 	mode: 'create' | 'edit';
 
-	constructor() {
-		this.id = '';
-		this.family = '';
-		this.category = '';
-		this.name = '';
-		this.description = '';
+	constructor(
+		id?: string,
+		family?: string,
+		category?: string,
+		name?: string,
+		description?: string,
+		image?: string,
+		imageToDelete?: boolean,
+		createdBy?: string,
+		mode?: 'create' | 'edit',
+	) {
+		this.id = id || '';
+		this.family = family || '';
+		this.category = category || '';
+		this.name = name || '';
+		this.description = description || '';
 		this.rawImage = null;
-		this.image = '';
-		this.imageToDelete = false;
-		this.createdBy = '';
-		this.mode = 'create';
+		this.image = image || '';
+		this.imageToDelete = imageToDelete || false;
+		this.createdBy = createdBy || '';
+		this.mode = mode || 'create';
 	}
 
 	setId(id: string) {
