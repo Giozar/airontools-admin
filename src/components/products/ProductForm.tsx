@@ -1,4 +1,4 @@
-import { DynamicInputSection } from '@components/commons/DynamicInputSection';
+import DynamicInputs from '@components/commons/DynamicInputs';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import ImagesInput from '@components/files/ImagesInput';
@@ -41,12 +41,19 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 		setManuals,
 		manualsRaw,
 		setManualsRaw,
+		characteristics,
 		setCharacteristics,
+		applications,
 		setApplications,
+		recommendations,
 		setRecommendations,
+		operationRequirements,
 		setOperationRequirements,
+		videos,
 		setVideos,
+		includedItems,
 		setIncludedItems,
+		optionalAccessories,
 		setOptionalAccessories,
 		family,
 		setFamily,
@@ -124,25 +131,29 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 							categoryId={category}
 							subcategoryId={subcategory}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Características'
-							onValuesChange={setCharacteristics}
+							setValues={setCharacteristics}
 							placeholder='Carácteristica'
+							values={characteristics}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Aplicaciones'
-							onValuesChange={setApplications}
+							setValues={setApplications}
 							placeholder='Aplicación'
+							values={applications}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Recomendaciones'
-							onValuesChange={setRecommendations}
+							setValues={setRecommendations}
 							placeholder='Recomendación'
+							values={recommendations}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Requisitos de operación'
-							onValuesChange={setOperationRequirements}
+							setValues={setOperationRequirements}
 							placeholder='Requisito'
+							values={operationRequirements}
 						/>
 					</div>
 
@@ -161,20 +172,23 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 							urls={manuals}
 							setUrls={setManuals}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Videos'
-							onValuesChange={setVideos}
+							setValues={setVideos}
 							placeholder='URL de video'
+							values={videos}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Extras'
-							onValuesChange={setIncludedItems}
+							setValues={setIncludedItems}
 							placeholder='Incuye...'
+							values={includedItems}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Accesorios opcionales'
-							onValuesChange={setOptionalAccessories}
+							setValues={setOptionalAccessories}
 							placeholder='Accesorio opcional'
+							values={optionalAccessories}
 						/>
 					</div>
 				</div>
