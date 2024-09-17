@@ -27,6 +27,7 @@ interface ProductFormProps {
 
 const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 	const {
+		setId,
 		name,
 		setName,
 		model,
@@ -62,11 +63,13 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 		subcategory,
 		setSubcategory,
 		setSpecifications,
+		setCreatedBy,
 	} = useProductCreateContext();
 
 	// Use initialData to prefill form values if available
 	useEffect(() => {
 		if (initialData) {
+			setId(initialData.id || '');
 			setName(initialData.name || '');
 			setModel(initialData.model || '');
 			setDescription(initialData.description || '');
@@ -88,6 +91,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			);
 			setCategory(initialData.category?._id || '');
 			setSubcategory(initialData.subcategory?._id || '');
+			setCreatedBy(initialData.createdBy?.id || '');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialData]);

@@ -27,6 +27,7 @@ export interface ProductDataToSend {
 	manuals?: string[];
 	videos?: string[];
 	createdBy: string;
+	updatedBy?: string;
 }
 
 export interface ProductCreateContextProps {
@@ -70,6 +71,8 @@ export interface ProductCreateContextProps {
 	setVideos: (value: string[]) => void;
 	createdBy: string;
 	setCreatedBy: (value: string) => void;
+	updatedBy?: string;
+	setUpdatedBy?: (value: string) => void;
 }
 // Datos que vienen del backend - GET
 export interface ProductDataBackend {
