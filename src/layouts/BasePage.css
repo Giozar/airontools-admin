@@ -152,7 +152,7 @@ header {
 	color: yellow;
 }
 
-.content .userinfo button {
+.header__button-toggle-theme {
 	border: 0px;
 	border-radius: 50%;
 	background-color: transparent;

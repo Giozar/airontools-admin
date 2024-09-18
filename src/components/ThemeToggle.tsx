@@ -37,7 +37,11 @@ function ThemeToggleButton() {
 		localStorage.setItem('themeIndex', nextThemeIndex.toString());
 	};
 
-	return <button onClick={toggleTheme}>{icons[currentThemeIndex]}</button>;
+	return (
+		<button onClick={toggleTheme} className='header__button-toggle-theme '>
+			{icons[currentThemeIndex]}
+		</button>
+	);
 }
 
 export default ThemeToggleButton;
