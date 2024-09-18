@@ -6,7 +6,7 @@
 	justify-content: center;
 	margin-bottom: 1rem;
 	border-radius: 8px;
-	background-color: var(--bg-secondary);
+	background-color: var(--bg-tertiary);
 	padding: 1rem;
 }
 
@@ -116,6 +116,8 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 	gap: 1rem;
+
+	padding: 0;
 	width: 100%;
 	list-style: none;
 }

@@ -54,7 +54,7 @@ export default function EditSubcategories({
 	return (
 		<>
 			<h2 className='subcategory-item__title'>Subcategorías</h2>
-			{desiredCategory}
+
 			<ul className='subcategory__container'>
 				{Object.keys(subcategoryInstances).map(key => {
 					const Subcategory = getSubcategoryInstance(key);
@@ -64,7 +64,6 @@ export default function EditSubcategories({
 
 					return (
 						<li key={key} className='subcategory-item'>
-							{Subcategory.category}
 							<div className='subcategory-item__header'>
 								<h2 className='subcategory-item__title'>{Subcategory.name}</h2>
 								<button
@@ -75,59 +74,66 @@ export default function EditSubcategories({
 									Eliminar subcategoria
 								</button>
 							</div>
-							<TextInput
-								id={'Subcategoria' + key}
-								label={'Nombre de Subcategoria:'}
-								value={Subcategory.name}
-								placeholder={'Subcategoria 1'}
-								onChange={e =>
-									updateSubcategoryInstance(key, { name: e.target.value })
-								}
-								required={true}
-								classNameForInput='subcategory-item__text-input'
-							/>
-							<br />
-							<TextAreaInput
-								id={'description' + key}
-								label={'Descripción de Subcategoria:'}
-								value={Subcategory.description}
-								placeholder={'Introduce la descripción de la Subcategoria...'}
-								onChange={e =>
-									updateSubcategoryInstance(key, {
-										description: e.target.value,
-									})
-								}
-								className='subcategory-item__text-area-input'
-								rows={6}
-							/>
+							<div className='subcategory__columns'>
+								<div className='subcategory__column-left'>
+									<TextInput
+										id={'Subcategoria' + key}
+										label={'Nombre de Subcategoria:'}
+										value={Subcategory.name}
+										placeholder={'Subcategoria 1'}
+										onChange={e =>
+											updateSubcategoryInstance(key, { name: e.target.value })
+										}
+										required={true}
+										className='subcategory-item__text-input'
+									/>
+									<TextAreaInput
+										id={'description' + key}
+										label={'Descripción de Subcategoria:'}
+										value={Subcategory.description}
+										placeholder={
+											'Introduce la descripción de la Subcategoria...'
+										}
+										onChange={e =>
+											updateSubcategoryInstance(key, {
+												description: e.target.value,
+											})
+										}
+										className='subcategory-item__text-area-input'
+										rows={6}
+									/>
+									<button
+										type='button'
+										onClick={() => handleUpdateSubcategory(key)}
+										className='subcategory-item__update-button'
+									>
+										Actualizar Subcategoria
+									</button>
+								</div>
+								<div className='subcategory__column-right'>
+									<SingleImageChange
+										title={`Imagen de categoria:`}
+										filePreview={
+											Subcategory.rawImage
+												? URL.createObjectURL(Subcategory.rawImage)
+												: !Subcategory.imageToDelete
+													? Subcategory.image
+													: ''
+										}
+										setFilePreview={file =>
+											updateSubcategoryInstance(key, {
+												rawImage: file,
+											})
+										}
+										setFileToDelete={bool =>
+											updateSubcategoryInstance(key, {
+												imageToDelete: bool,
+											})
+										}
+									/>
+								</div>
+							</div>
 
-							<SingleImageChange
-								title={`Imagen de categoria:`}
-								filePreview={
-									Subcategory.rawImage
-										? URL.createObjectURL(Subcategory.rawImage)
-										: !Subcategory.imageToDelete
-											? Subcategory.image
-											: ''
-								}
-								setFilePreview={file =>
-									updateSubcategoryInstance(key, {
-										rawImage: file,
-									})
-								}
-								setFileToDelete={bool =>
-									updateSubcategoryInstance(key, {
-										imageToDelete: bool,
-									})
-								}
-							/>
-							<button
-								type='button'
-								onClick={() => handleUpdateSubcategory(key)}
-								className='subcategory-item__update-button'
-							>
-								Actualizar Subcategoria
-							</button>
 							<Modal
 								isOpen={isModalOpen}
 								onClose={closeModal}

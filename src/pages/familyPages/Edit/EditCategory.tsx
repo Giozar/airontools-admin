@@ -1,4 +1,6 @@
+import EditCreateToggle from '@components/commons/EditCreateToggle';
 import Modal from '@components/commons/Modal';
+import ModalContent from '@components/commons/ModalContent';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
@@ -47,7 +49,10 @@ export default function EditCategories() {
 		closeModal();
 	};
 
-	const [openSubcategories, setOpenSubcategories] = useState(false);
+	const [openSubcategories, setOpenSubcategories] = useState<{
+		open: boolean;
+		id: string;
+	}>({ open: false, id: '' });
 
 	return (
 		<>
@@ -134,22 +139,43 @@ export default function EditCategories() {
 										}
 									/>
 								</div>
-								{category.id}
 							</div>
 
 							<button
 								type='button'
 								className='category-item__edit-button'
-								onClick={() => setOpenSubcategories(true)}
+								onClick={() =>
+									setOpenSubcategories({ open: true, id: category.id })
+								}
 							>
 								Editar subcategorias
 							</button>
-							{openSubcategories && (
-								<div onClick={() => setOpenSubcategories(false)}>
-									<EditSubcategories desiredCategory={category.id} />
-									<CreateSubcategoriesWithCategory category={category.id} />
+
+							<ModalContent
+								isOpen={
+									openSubcategories.open && openSubcategories.id === category.id
+								}
+								onClose={() => setOpenSubcategories({ open: false, id: '' })}
+								title={`Subcategorías de ${category.name}`}
+							>
+								<div
+									style={{
+										overflowY: 'auto',
+										maxHeight: '80vh',
+									}}
+								>
+									<EditCreateToggle
+										name={'Subcategorías'}
+										EditComponent={
+											<EditSubcategories desiredCategory={category.id} />
+										}
+										CreateComponent={
+											<CreateSubcategoriesWithCategory category={category.id} />
+										}
+									/>
 								</div>
-							)}
+							</ModalContent>
+
 							<Modal
 								isOpen={isModalOpen}
 								onClose={closeModal}

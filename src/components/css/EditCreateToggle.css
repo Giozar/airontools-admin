@@ -1,0 +1,20 @@
+.form__toggle-buttons {
+	display: flex;
+	margin-bottom: 20px;
+}
+
+.form__button {
+	transition: background-color 0.3s;
+	cursor: pointer;
+	margin-right: 10px;
+	border: none;
+	border-radius: 4px;
+	background-color: var(--bg-secondary);
+	padding: 10px 20px;
+	color: var(--text-primary);
+}
+
+.form__button--active {
+	background-color: var(--accent-primary);
+	color: var(--text-primary);
+}
