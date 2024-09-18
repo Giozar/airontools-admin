@@ -1,26 +1,29 @@
+import '@components/css/DynamicTable.css';
 import { TableData } from '@interfaces/TableData.interface';
-import React from 'react';
-
 interface TableComponentProps {
 	data: TableData;
 }
 
-const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
+const TableComponent = ({ data }: TableComponentProps) => {
 	return (
-		<div>
-			<table>
-				<thead>
-					<tr>
+		<div className='table'>
+			<table className='table__element'>
+				<thead className='table__head'>
+					<tr className='table__row'>
 						{data.headers.map((header, index) => (
-							<th key={index}>{header}</th>
+							<th className='table__header' key={index}>
+								{header}
+							</th>
 						))}
 					</tr>
 				</thead>
-				<tbody>
+				<tbody className='table__body'>
 					{data.rows.map((row, rowIndex) => (
-						<tr key={rowIndex}>
+						<tr className='table__row' key={rowIndex}>
 							{row.map((cell, cellIndex) => (
-								<td key={cellIndex}>{cell}</td>
+								<td className='table__cell' key={cellIndex}>
+									{cell}
+								</td>
 							))}
 						</tr>
 					))}
