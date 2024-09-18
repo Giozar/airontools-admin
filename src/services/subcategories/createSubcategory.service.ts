@@ -13,7 +13,7 @@ export async function createSubcategoryService(
 	try {
 		const response = await axios.post(API_URL, {
 			...subcategoryData,
-			path: formatPathName(subcategoryData.name),
+			path: formatPathName(subcategoryData.name || ''),
 		});
 		return response.data;
 	} catch (error) {
