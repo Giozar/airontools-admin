@@ -39,18 +39,22 @@ export default function SpecificationsSection({
 	};
 
 	useEffect(() => {
+		console.log(
+			`FAMILIA: ${family},  CATEGORÍA: ${category}, SUBCATEGORÍA: ${subcategory}`,
+		);
 		// console.log(specifications);
-		// console.log(specificationList);
+		console.log(specificationList);
 		if (specificationList.length > 0 && specifications.length > 0) {
+			console.log(specificationList);
 			// console.log('Voy a monitorear y reiniciar');
 			const updatedSpecifications = specifications.filter(spec =>
 				specificationList.some(listSpec => listSpec.id === spec.specification),
 			);
-			console.log(updatedSpecifications);
+			// console.log(updatedSpecifications);
 
 			setSpecifications(updatedSpecifications); // Actualizar las especificaciones eliminando las no encontradas
 		}
-	}, [family, category, subcategory]);
+	}, [specificationList]);
 
 	return (
 		<>

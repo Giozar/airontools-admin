@@ -6,7 +6,6 @@ import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcateg
 import { useEffect } from 'react';
 
 export function ProductCategorization() {
-	const { families } = useFetchFamilies();
 	const {
 		family,
 		setFamily,
@@ -16,7 +15,8 @@ export function ProductCategorization() {
 		setSubcategory,
 	} = useProductCreateContext();
 
-	// Fetch categories and subcategories based on family and category selections
+	// Fetch families categories and subcategories based on family and category selections
+	const { families } = useFetchFamilies();
 	const { categories } = useFetchCategoriesByFamily(family);
 	const { subcategories } = useFetchSubcategoriesByFamily(category);
 
@@ -32,6 +32,21 @@ export function ProductCategorization() {
 			setSubcategory(subcategory);
 		}
 	}, [family, category, subcategory, setFamily, setCategory, setSubcategory]);
+
+	useEffect(() => {
+		// console.log('Cambió la familia');
+		setCategory('');
+		setSubcategory('');
+	}, [family]);
+
+	useEffect(() => {
+		// console.log('Cambió la categoría');
+		setSubcategory('');
+	}, [category]);
+
+	useEffect(() => {
+		// console.log('Cambió la subcategoría');
+	}, [subcategory]);
 
 	return (
 		<div>
