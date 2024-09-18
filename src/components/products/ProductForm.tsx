@@ -56,11 +56,8 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 		setIncludedItems,
 		optionalAccessories,
 		setOptionalAccessories,
-		family,
 		setFamily,
-		category,
 		setCategory,
-		subcategory,
 		setSubcategory,
 		setSpecifications,
 		setCreatedBy,
@@ -130,11 +127,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 				<div className='form-content'>
 					<div className='left-column'>
 						<ProductCategorization />
-						<SpecificationsSection
-							familyId={family}
-							categoryId={category}
-							subcategoryId={subcategory}
-						/>
+						<SpecificationsSection />
 						<DynamicInputs
 							label='Características'
 							setValues={setCharacteristics}

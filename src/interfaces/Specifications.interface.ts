@@ -31,9 +31,9 @@ export interface SpecDataFrontend {
 	name: string;
 	description?: string;
 	unit?: string;
-	families: FamilyDataToSend[];
-	categories: CategoryDataToSend[];
-	subcategories: SubcategoryDataToSend[];
+	families: string[];
+	categories: string[];
+	subcategories: string[];
 	createdBy: UserDataFrontend;
 }
 

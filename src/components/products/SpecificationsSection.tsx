@@ -3,24 +3,9 @@ import { useProductCreateContext } from '@contexts/product/ProductContext';
 import { useEffect } from 'react';
 import useSpecificationsProductCategorization from './hooks/useSpecificationsProductCategorization';
 
-interface SpecificationsSectionProps {
-	familyId: string;
-	categoryId: string;
-	subcategoryId: string;
-}
-
-export default function SpecificationsSection({
-	familyId,
-	categoryId,
-	subcategoryId,
-}: SpecificationsSectionProps) {
-	const { specificationList } = useSpecificationsProductCategorization({
-		familyId,
-		categoryId,
-		subcategoryId,
-	});
-	const { specifications, setSpecifications, family, category, subcategory } =
-		useProductCreateContext(); // Usar el contexto
+export default function SpecificationsSection() {
+	const { specificationList } = useSpecificationsProductCategorization();
+	const { specifications, setSpecifications } = useProductCreateContext(); // Usar el contexto
 
 	// Manejar el cambio en el valor de una especificación específica
 	const handleSpecificationChange = (specId: string, newValue: string) => {
@@ -39,18 +24,18 @@ export default function SpecificationsSection({
 	};
 
 	useEffect(() => {
-		console.log(
-			`FAMILIA: ${family},  CATEGORÍA: ${category}, SUBCATEGORÍA: ${subcategory}`,
-		);
 		// console.log(specifications);
-		console.log(specificationList);
+		// console.log(specificationList);
 		if (specificationList.length > 0 && specifications.length > 0) {
-			console.log(specificationList);
 			// console.log('Voy a monitorear y reiniciar');
+			/**
+			 * Filtra las especificaciones de la herramienta para ver si en las lista de especificaciones categorizadas hay alguna
+			 * especificación categorizada que su id se igual a alguna especificación de la herramienta, si es así
+			 * la guarda y actualiza las especificaciones de la herramienta
+			 */
 			const updatedSpecifications = specifications.filter(spec =>
 				specificationList.some(listSpec => listSpec.id === spec.specification),
 			);
-			// console.log(updatedSpecifications);
 
 			setSpecifications(updatedSpecifications); // Actualizar las especificaciones eliminando las no encontradas
 		}
