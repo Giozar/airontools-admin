@@ -103,19 +103,25 @@
 }
 
 header {
-	display: flex;
 	position: sticky;
 	top: 0;
-	align-items: center;
 	z-index: 100;
 	background-color: var(--menu-bg);
 	color: var(--text-primary);
 }
 
-.content header {
+.header__group {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+.header__button-toggle-sidebar {
+	margin: 0 1rem;
+	background-color: transparent;
+	padding: 0 1rem;
+}
+.content header {
+	flex-direction: column;
 	padding: 1rem 0;
 }
 
