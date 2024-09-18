@@ -173,44 +173,6 @@ header {
 	padding: 2rem;
 }
 
-.content main .options .card {
-	display: flex;
-	flex-direction: column;
-	transition: opacity 200ms ease-in-out;
-	box-shadow:
-		0 1px 3px 0 rgba(0, 0, 0, 0.1),
-		0 1px 2px 0 rgba(0, 0, 0, 0.06);
-	border: 0px;
-	border-radius: 0.5rem;
-	background-color: var(--accent-primary);
-	overflow: hidden;
-	text-align: center;
-}
-
-.content main .options .card:hover {
-	opacity: 0.5;
-}
-
-.content main .options .card svg {
-	align-self: center;
-	width: 6rem;
-	height: 6rem;
-	color: var(--bg-primary);
-	text-align: center;
-}
-.content main .options .card dl {
-	align-self: center;
-}
-.content main .options .card dl dt {
-	overflow: hidden;
-	color: var(--text-primary);
-	font-weight: lighter;
-
-	font-size: 1.5rem;
-	line-break: auto;
-	text-align: left;
-}
-
 /* Media queries */
 @media (min-width: 640px) {
 	.content main {
