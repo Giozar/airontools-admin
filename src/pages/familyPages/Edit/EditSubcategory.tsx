@@ -4,8 +4,8 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
-import '@pages/css/createFamily.css';
 import { useState } from 'react';
+import './EditSubcategory.css';
 /**
  * Filtra y muestra las subcategorías del contexto que tienen el modo de edición y pertenecen a la categoría deseada.
  *
@@ -52,26 +52,29 @@ export default function EditSubcategories({
 	};
 
 	return (
-		<ul>
-			{Object.keys(subcategoryInstances)
-				.filter(key => subcategoryInstances[key].category === desiredCategory)
-				.map(key => {
+		<>
+			<h2 className='subcategory-item__title'>Subcategorías</h2>
+			{desiredCategory}
+			<ul className='subcategory__container'>
+				{Object.keys(subcategoryInstances).map(key => {
 					const Subcategory = getSubcategoryInstance(key);
 					if (!Subcategory) return null;
 					if (Subcategory.mode !== 'edit') return null;
+					if (Subcategory.category !== desiredCategory) return null;
 
 					return (
-						<li key={key}>
-							<h2>
-								Subcategoría
+						<li key={key} className='subcategory-item'>
+							{Subcategory.category}
+							<div className='subcategory-item__header'>
+								<h2 className='subcategory-item__title'>{Subcategory.name}</h2>
 								<button
 									type='button'
 									onClick={() => openModal(Subcategory.id, key)}
-									className='delete'
+									className='subcategory-item__delete-button'
 								>
 									Eliminar subcategoria
 								</button>
-							</h2>
+							</div>
 							<TextInput
 								id={'Subcategoria' + key}
 								label={'Nombre de Subcategoria:'}
@@ -81,6 +84,7 @@ export default function EditSubcategories({
 									updateSubcategoryInstance(key, { name: e.target.value })
 								}
 								required={true}
+								classNameForInput='subcategory-item__text-input'
 							/>
 							<br />
 							<TextAreaInput
@@ -93,6 +97,7 @@ export default function EditSubcategories({
 										description: e.target.value,
 									})
 								}
+								className='subcategory-item__text-area-input'
 								rows={6}
 							/>
 
@@ -119,7 +124,7 @@ export default function EditSubcategories({
 							<button
 								type='button'
 								onClick={() => handleUpdateSubcategory(key)}
-								className='add'
+								className='subcategory-item__update-button'
 							>
 								Actualizar Subcategoria
 							</button>
@@ -135,6 +140,7 @@ export default function EditSubcategories({
 						</li>
 					);
 				})}
-		</ul>
+			</ul>
+		</>
 	);
 }

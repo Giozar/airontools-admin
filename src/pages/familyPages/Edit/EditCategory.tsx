@@ -7,6 +7,7 @@ import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 import { useState } from 'react';
 import CreateSubcategoriesWithCategory from '../Create/CreateSubcategory';
+import './EditCategory.css';
 import EditSubcategories from './EditSubcategory';
 /**
  * Muestra y permite la edición de categorías existentes en modo 'edit'.
@@ -46,92 +47,122 @@ export default function EditCategories() {
 		closeModal();
 	};
 
-	return (
-		<ul>
-			{Object.keys(categoryInstances).map(key => {
-				const category = getCategoryInstance(key);
-				if (!category) return null;
-				if (category.mode !== 'edit') return null;
+	const [openSubcategories, setOpenSubcategories] = useState(false);
 
-				return (
-					<li key={key}>
-						<h2>
-							Categoría
+	return (
+		<>
+			<h2 className='category-item__title'>Categorías</h2>
+
+			<ul className='category__container'>
+				{Object.keys(categoryInstances).map(key => {
+					const category = getCategoryInstance(key);
+					if (!category) return null;
+					if (category.mode !== 'edit') return null;
+
+					return (
+						<li className='category-item' key={key}>
+							<div className='category-item__header'>
+								<h2 className='category-item__title'>{category.name}</h2>
+								<button
+									type='button'
+									onClick={() => {
+										openModal(category.id, key);
+									}}
+									className='category-item__delete-button'
+								>
+									Eliminar categoria
+								</button>
+							</div>
+							<div className='category__columns'>
+								<div className='category__column-left'>
+									<TextInput
+										id={'Categoria' + key}
+										label={'Nombre de categoria:'}
+										value={category.name}
+										placeholder={'categoria 1'}
+										onChange={e =>
+											updateCategoryInstance(key, { name: e.target.value })
+										}
+										required={true}
+										className='category-item__text-input'
+										classNameForLabel=''
+										classNameForInput='category-item__text-input'
+									/>
+									<br />
+									<TextAreaInput
+										id={'description' + key}
+										label={'Descripción de categoria:'}
+										value={category.description}
+										placeholder={'Introduce la descripción de la categoria...'}
+										onChange={e =>
+											updateCategoryInstance(key, {
+												description: e.target.value,
+											})
+										}
+										rows={6}
+										className='category-item__text-area-input'
+										classNameForLabel=''
+										classNameForTextArea=''
+									/>
+									<button
+										type='button'
+										onClick={() => handleUpdateCategory(key)}
+										className='category-item__update-button'
+									>
+										Actualizar Categoria
+									</button>
+								</div>
+								<div className='category__column-right'>
+									<SingleImageChange
+										title={`Imagen de categoria:`}
+										filePreview={
+											category.rawImage
+												? URL.createObjectURL(category.rawImage)
+												: !category.imageToDelete
+													? category.image
+													: ''
+										}
+										setFilePreview={file =>
+											updateCategoryInstance(key, {
+												rawImage: file,
+											})
+										}
+										setFileToDelete={bool =>
+											updateCategoryInstance(key, {
+												imageToDelete: bool,
+											})
+										}
+									/>
+								</div>
+								{category.id}
+							</div>
+
 							<button
 								type='button'
-								onClick={() => {
-									openModal(category.id, key);
-								}}
-								className='delete'
+								className='category-item__edit-button'
+								onClick={() => setOpenSubcategories(true)}
 							>
-								Eliminar categoria
+								Editar subcategorias
 							</button>
-						</h2>
-						<TextInput
-							id={'Categoria' + key}
-							label={'Nombre de categoria:'}
-							value={category.name}
-							placeholder={'categoria 1'}
-							onChange={e =>
-								updateCategoryInstance(key, { name: e.target.value })
-							}
-							required={true}
-						/>
-						<br />
-						<TextAreaInput
-							id={'description' + key}
-							label={'Descripción de categoria:'}
-							value={category.description}
-							placeholder={'Introduce la descripción de la categoria...'}
-							onChange={e =>
-								updateCategoryInstance(key, { description: e.target.value })
-							}
-							rows={6}
-						/>
-
-						<SingleImageChange
-							title={`Imagen de categoria:`}
-							filePreview={
-								category.rawImage
-									? URL.createObjectURL(category.rawImage)
-									: !category.imageToDelete
-										? category.image
-										: ''
-							}
-							setFilePreview={file =>
-								updateCategoryInstance(key, {
-									rawImage: file,
-								})
-							}
-							setFileToDelete={bool =>
-								updateCategoryInstance(key, {
-									imageToDelete: bool,
-								})
-							}
-						/>
-						<button
-							type='button'
-							onClick={() => handleUpdateCategory(key)}
-							className='add'
-						>
-							Actualizar Categoria
-						</button>
-
-						<Modal
-							isOpen={isModalOpen}
-							onClose={closeModal}
-							onConfirm={handleConfirm}
-							title='Eliminar Categoria'
-							content='Vas a eliminar esta Categoria. ¿Estás seguro de que quieres continuar?'
-							cancelText='Cancelar'
-							confirmText='Eliminar'
-						/>
-
-						<EditSubcategories desiredCategory={category.id} />
-						<CreateSubcategoriesWithCategory category={category.id} />
-					</li>
-				);
-			})}
-		</ul>
+							{openSubcategories && (
+								<div onClick={() => setOpenSubcategories(false)}>
+									<EditSubcategories desiredCategory={category.id} />
+									<CreateSubcategoriesWithCategory category={category.id} />
+								</div>
+							)}
+							<Modal
+								isOpen={isModalOpen}
+								onClose={closeModal}
+								onConfirm={handleConfirm}
+								title='Eliminar Categoria'
+								content='Vas a eliminar esta Categoria. ¿Estás seguro de que quieres continuar?'
+								cancelText='Cancelar'
+								confirmText='Eliminar'
+							/>
+						</li>
+					);
+				})}
+			</ul>
+		</>
 	);
 }

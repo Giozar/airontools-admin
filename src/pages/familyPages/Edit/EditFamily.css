@@ -1,0 +1,84 @@
+.family__container__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+	margin: 1rem auto;
+}
+
+.family__container__title {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.family__container__delete-button {
+	cursor: pointer;
+	margin-top: 0;
+	border: none;
+	border-radius: 4px;
+	background-color: #e74c3c;
+	padding: 0.5rem 1rem;
+	color: #fff;
+}
+
+.family__container__delete-button:hover {
+	background-color: #c0392b;
+}
+
+/* Estilos para el input de texto y el área de texto */
+.family__container__text-input,
+.family__container__text-area-input {
+	margin-bottom: 1rem;
+}
+
+.family__container__text-input input,
+.family__container__text-area-input textarea {
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 0.5rem;
+	width: 100%;
+}
+
+.family__container__text-area-input textarea {
+	resize: vertical;
+}
+
+.family__container__update-button {
+	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	background-color: #1f7944;
+	padding: 0.5rem 1rem;
+	color: #fff;
+}
+
+.family__container__update-button:hover {
+	background-color: #27ae60;
+}
+
+.family__container {
+	display: flex;
+	position: relative; /* Necesario para posicionar el modal */
+	flex-direction: column;
+	margin-bottom: 1rem;
+	border-radius: 8px;
+	background-color: var(--bg-secondary);
+	padding: 1rem;
+	width: 100%;
+}
+.family__columns {
+	display: flex;
+	gap: 1rem;
+	margin: 0 auto;
+}
+.family__column-left {
+	flex: 1;
+}
+.family__column-right {
+	width: fit-content;
+}
+
+form {
+	max-width: 1200px;
+}
