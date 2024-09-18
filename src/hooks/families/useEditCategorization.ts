@@ -97,6 +97,7 @@ export function useEditCategorization() {
 			return url;
 		} catch (error) {
 			console.error('No se pudo subir archivos:', rawImage, error);
+			alert('no se pudo subir el archivo');
 		}
 	};
 
@@ -105,6 +106,7 @@ export function useEditCategorization() {
 			await deleteFileService(fileId);
 		} catch (error) {
 			console.error(`Error al eliminar archivo ${fileId}:`, error);
+			alert('no se pudo borrar el archivo');
 		}
 	};
 
@@ -112,8 +114,13 @@ export function useEditCategorization() {
 		try {
 			await deleteFamilyService(familyId);
 			console.log('borrefamailia');
+			alert('Familia borrada');
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
 		} catch (error) {
 			console.error(error);
+			alert('no se pudo borrar familia');
 		}
 	};
 
@@ -121,8 +128,13 @@ export function useEditCategorization() {
 		try {
 			await deleteCategory(id);
 			console.log('borrefamailia');
+			alert('Categoría borrada');
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
 		} catch (error) {
 			console.error(error);
+			alert('no se pudo borrar categoria');
 		}
 	};
 
@@ -130,30 +142,42 @@ export function useEditCategorization() {
 		try {
 			await deleteSubcategoryService(id);
 			console.log('borrefamailia');
+			alert('Subcategoría borrada');
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
 		} catch (error) {
 			console.error(error);
+			alert('no se pudo borrar subcategoria');
 		}
 	};
 
 	const handleUpdateFamily = async () => {
-		if (!user) return;
-		// Crear la familia
-		let img = familyToEdit.image;
-		if (familyToEdit.imageToDelete) {
-			await handleDeleteFile(familyToEdit.image);
-			img = '';
+		try {
+			if (!user) return;
+			// Crear la familia
+			let img = familyToEdit.image;
+			if (familyToEdit.imageToDelete) {
+				await handleDeleteFile(familyToEdit.image);
+				img = '';
+			}
+			if (familyToEdit.rawImage && familyToEdit.id) {
+				if (familyToEdit.image) await handleDeleteFile(familyToEdit.image);
+				img =
+					(await handleRawImageUpload(
+						familyToEdit.rawImage,
+						familyToEdit.id,
+					)) || '';
+			}
+			await axios.patch(`${airontoolsAPI}/families/${familyToEdit.id}`, {
+				name: familyToEdit.name,
+				description: familyToEdit.description,
+				images: [img],
+			});
+			alert('Familia actualizada');
+		} catch (error) {
+			alert('no se pudo actualizar familia');
 		}
-		if (familyToEdit.rawImage && familyToEdit.id) {
-			if (familyToEdit.image) await handleDeleteFile(familyToEdit.image);
-			img =
-				(await handleRawImageUpload(familyToEdit.rawImage, familyToEdit.id)) ||
-				'';
-		}
-		await axios.patch(`${airontoolsAPI}/families/${familyToEdit.id}`, {
-			name: familyToEdit.name,
-			description: familyToEdit.description,
-			images: [img],
-		});
 	};
 
 	const handleUpdateCategory = async (key: string) => {
@@ -176,8 +200,10 @@ export function useEditCategorization() {
 					images: [img],
 				});
 			}
+			alert('Categoria actualizada');
 		} catch (error) {
 			console.error('Error:', error);
+			alert('No se pudo actualizar categoria');
 		}
 	};
 	const handleUpdateSubcategory = async (key: string) => {
@@ -203,8 +229,10 @@ export function useEditCategorization() {
 					images: [img],
 				});
 			}
+			alert('Subcategoria actualizada');
 		} catch (error) {
 			console.error('Error:', error);
+			alert('No se pudo actualizar subcategoria');
 		}
 	};
 	const handleUpdateCategorization = async (e: {
@@ -248,7 +276,7 @@ export function useEditCategorization() {
 					},
 				);
 			}
-			console.log('Proceso completado exitosamente');
+			alert('Proceso completado exitosamente');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300);
@@ -257,6 +285,7 @@ export function useEditCategorization() {
 				'Error al crear familias, categorías o subcategorías:',
 				error,
 			);
+			alert('no se pudo crear subcategorias');
 		}
 	};
 	const handleCreateCategory = async () => {
@@ -289,7 +318,7 @@ export function useEditCategorization() {
 					images: [uploadedCategoryImageUrl],
 				});
 			}
-			console.log('Proceso completado exitosamente');
+			alert('Proceso completado exitosamente');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300);
@@ -298,6 +327,7 @@ export function useEditCategorization() {
 				'Error al crear familias, categorías o subcategorías:',
 				error,
 			);
+			alert('no se pudo crear categorias');
 		}
 	};
 	return {

@@ -27,9 +27,9 @@
 	cursor: pointer;
 	border: none;
 	border-radius: 4px;
-	background-color: #e74c3c;
+	background-color: var(--error);
 	padding: 0.5rem 1rem;
-	color: #fff;
+	color: var(--text-primary);
 }
 
 .subcategory-item__delete-button:hover {
@@ -60,21 +60,13 @@
 	cursor: pointer;
 	border: none;
 	border-radius: 4px;
-	background-color: #1f7944;
+	background-color: var(--success);
 	padding: 0.5rem 1rem;
 	color: #fff;
 }
 
 .subcategory-item__update-button:hover {
 	background-color: #27ae60;
-}
-.subcategory-item__edit-button {
-	cursor: pointer;
-	border: none;
-	border-radius: 4px;
-	background-color: #79611f;
-	padding: 0.5rem 1rem;
-	color: #fff;
 }
 
 /* Estilos para el modal */

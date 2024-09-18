@@ -18,11 +18,13 @@ import aironLogo from './Logo-Blanco.png'; // cambiar por otro el general
 function HeaderLogin({ title }: { title: string }) {
 	return (
 		<header>
-			<img src={aironLogo} alt={`logo de ${title}`} className='logoimg' />
-			<h1>
-				¡Bienvenido a tu sistema de gestión de trabajo <span>{title}</span>!
-			</h1>
-			<ThemeToggleButton />
+			<div className='header__group'>
+				<img src={aironLogo} alt={`logo de ${title}`} className='logoimg' />
+				<h1>
+					¡Bienvenido a tu sistema de gestión de trabajo <span>{title}</span>!
+				</h1>
+				<ThemeToggleButton />
+			</div>
 		</header>
 	);
 }

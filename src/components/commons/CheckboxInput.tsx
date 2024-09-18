@@ -1,5 +1,4 @@
-import React from 'react';
-
+import '@components/css/CheckboxInput.css';
 interface CheckboxInputProps {
 	id: string;
 	label: string;
@@ -11,7 +10,7 @@ interface CheckboxInputProps {
 	className?: string;
 }
 
-const CheckboxInput: React.FC<CheckboxInputProps> = ({
+const CheckboxInput = ({
 	id,
 	label,
 	checked,
@@ -20,10 +19,10 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
 	required,
 	readOnly,
 	className,
-}) => {
+}: CheckboxInputProps) => {
 	return (
-		<div className={className || 'checkboxInput'}>
-			<label htmlFor={id}>
+		<div className={className || 'checkbox-input'}>
+			<label htmlFor={id} className='checkbox-input__label'>
 				<input
 					type='checkbox'
 					id={id}
@@ -32,7 +31,9 @@ const CheckboxInput: React.FC<CheckboxInputProps> = ({
 					onChange={onChange}
 					required={required}
 					readOnly={readOnly}
+					className='checkbox-input__checkbox'
 				/>
+				<span className='checkbox-input__custom-checkbox'></span>
 				{label}
 			</label>
 		</div>

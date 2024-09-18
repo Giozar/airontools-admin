@@ -1,4 +1,5 @@
 import HeaderTitle from '@components/commons/HeaderTitle';
+import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import './BasePage.css';
 import HeaderApp from './HeaderApp';
@@ -6,22 +7,46 @@ import Sidebar from './Sidebar';
 
 function BasePage() {
 	const location = useLocation();
-	const pathSegments = location.pathname.split('/').filter(Boolean); // Divide la ruta y filtra las partes vacías
+	const pathSegments = location.pathname.split('/').filter(Boolean);
 	const lastSegment =
 		pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : 'Home';
 
-	// Reemplaza guiones con espacios y capitaliza la primera letra de cada palabra
 	const formattedTitle = lastSegment
-		.replace(/-/g, ' ') // Reemplaza guiones con espacios
+		.replace(/-/g, ' ')
 		.split(' ')
-		.map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitaliza cada palabra
-		.join(' '); // Une las palabras con un espacio
+		.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(' ');
+
+	// Estado para controlar la visibilidad del sidebar
+	const [isSidebarVisible, setIsSidebarVisible] = useState(() => {
+		// Recuperar el estado del localStorage o usar true como valor por defecto
+		const savedState = localStorage.getItem('isSidebarVisible');
+		return savedState !== null ? JSON.parse(savedState) : true;
+	});
+
+	const toggleSidebar = () => {
+		setIsSidebarVisible((prev: any) => {
+			const newState = !prev;
+			// Guardar el nuevo estado en localStorage
+			localStorage.setItem('isSidebarVisible', JSON.stringify(newState));
+			return newState;
+		});
+	};
+
+	useEffect(() => {
+		// Actualizar el localStorage cada vez que isSidebarVisible cambie
+		localStorage.setItem('isSidebarVisible', JSON.stringify(isSidebarVisible));
+	}, [isSidebarVisible]);
 
 	return (
 		<div className='mainPage'>
-			<Sidebar />
+			{isSidebarVisible && <Sidebar />}
 			<div className='content'>
-				<HeaderApp />
+				<HeaderApp
+					toggleSidebar={toggleSidebar}
+					isSidebarVisible={isSidebarVisible}
+				/>
+
 				<main>
 					<HeaderTitle title={formattedTitle} />
 					<Outlet />

@@ -202,7 +202,7 @@
 .light-theme .sidebar .title h1 {
 	color: var(--text-primary);
 }
-.content .userinfo button svg {
+.header__button-toggle-theme svg {
 	color: var(--text-primary);
 }
 /* Estilos base */

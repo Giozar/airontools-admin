@@ -74,7 +74,7 @@ function ListOfTools() {
 			tool.category.name,
 			tool.subcategory.name || '---',
 			<button
-				className='view'
+				className='table__button table__button--view'
 				onClick={() => {
 					setSelectedProduct(tool);
 					setModalOpen(true);
@@ -83,14 +83,17 @@ function ListOfTools() {
 			>
 				<EyeIcon />
 			</button>,
-			<button className='edit' onClick={() => handleEdit(tool)} key='edit'>
+			<button
+				className='table__button table__button--edit'
+				onClick={() => handleEdit(tool)}
+				key='edit'
+			>
 				<EditIcon />
 			</button>,
-
 			user && (
 				<button
-					disabled={user.role?.name !== 'Administrador'} // Deshabilita el botón si el usuario no es Administrador
-					className={`delete ${user?.role?.name !== 'Administrador' ? 'disabled' : ''}`} // Aplica la clase 'disabled' si el usuario no es Administrador
+					disabled={user.role?.name !== 'Administrador'}
+					className={`table__button table__button--delete ${user?.role?.name !== 'Administrador' ? 'table__button--disabled' : ''}`}
 					onClick={() => {
 						if (user?.role?.name === 'Administrador') {
 							setShowDeletionModalFor(tool.id);
