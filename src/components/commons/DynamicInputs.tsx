@@ -1,21 +1,23 @@
+import '@components/css/DynamicInputs.css';
 import TrashIcon from '@components/svg/TrashIcon';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface DynamicInput {
 	id: number;
 	value: string;
 }
+
 interface DynamicInputsProps {
 	label: string;
 	onValuesChange?: (values: string[]) => void;
 	placeholder: string;
 }
 
-const DynamicInputs: React.FC<DynamicInputsProps> = ({
+const DynamicInputs = ({
 	label,
 	onValuesChange,
 	placeholder,
-}) => {
+}: DynamicInputsProps) => {
 	const [inputs, setInputs] = useState<DynamicInput[]>([]);
 
 	const handleAdd = () => {
@@ -31,6 +33,7 @@ const DynamicInputs: React.FC<DynamicInputsProps> = ({
 			inputs.map((input, i) => (i === index ? { ...input, value } : input)),
 		);
 	};
+
 	useEffect(() => {
 		const values = inputs.map(input => input.value);
 		if (onValuesChange) {
@@ -39,26 +42,27 @@ const DynamicInputs: React.FC<DynamicInputsProps> = ({
 	}, [inputs, onValuesChange]);
 
 	return (
-		<div className='dynamicInputs'>
-			<label>{label}</label>
+		<div className='dynamic-inputs'>
+			<label className='dynamic-inputs__label'>{label}</label>
 			{inputs.map((input, index) => (
-				<div key={index} className='input-group'>
+				<div key={index} className='dynamic-inputs__input-group'>
 					<input
 						type='text'
 						value={input.value}
 						onChange={e => handleChange(index, e.target.value)}
 						placeholder={placeholder}
+						className='dynamic-inputs__input'
 					/>
 					<button
 						onClick={() => handleRemove(index)}
 						type='button'
-						className='delete'
+						className='dynamic-inputs__delete'
 					>
 						<TrashIcon />
 					</button>
 				</div>
 			))}
-			<button onClick={handleAdd} type='button' className='add'>
+			<button onClick={handleAdd} type='button' className='dynamic-inputs__add'>
 				Añadir {label}
 			</button>
 		</div>

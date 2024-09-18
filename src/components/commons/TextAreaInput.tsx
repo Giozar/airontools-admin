@@ -1,5 +1,4 @@
-import React from 'react';
-
+import '@components/css/TextAreaInput.css';
 interface TextAreaInputProps {
 	id: string;
 	label: string;
@@ -12,7 +11,7 @@ interface TextAreaInputProps {
 	classNameForTextArea?: string;
 }
 
-const TextAreaInput: React.FC<TextAreaInputProps> = ({
+const TextAreaInput = ({
 	id,
 	label,
 	placeholder = '',
@@ -22,10 +21,13 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
 	className,
 	classNameForLabel,
 	classNameForTextArea,
-}) => {
+}: TextAreaInputProps) => {
 	return (
-		<div className={className || `textAreaInput`}>
-			<label htmlFor={id} className={classNameForLabel}>
+		<div className={className || 'text-area-input'}>
+			<label
+				htmlFor={id}
+				className={classNameForLabel || 'text-area-input__label'}
+			>
 				{label}
 			</label>
 			<textarea
@@ -34,7 +36,7 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
 				rows={rows}
 				value={value}
 				onChange={onChange}
-				className={classNameForTextArea}
+				className={classNameForTextArea || 'text-area-input__textarea'}
 			/>
 		</div>
 	);
