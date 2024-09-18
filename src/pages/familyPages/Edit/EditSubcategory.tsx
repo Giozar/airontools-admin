@@ -4,8 +4,8 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
-import '@pages/css/createFamily.css';
 import { useState } from 'react';
+import './EditSubcategory.css';
 /**
  * Filtra y muestra las subcategorías del contexto que tienen el modo de edición y pertenecen a la categoría deseada.
  *
@@ -52,77 +52,88 @@ export default function EditSubcategories({
 	};
 
 	return (
-		<ul>
-			{Object.keys(subcategoryInstances)
-				.filter(key => subcategoryInstances[key].category === desiredCategory)
-				.map(key => {
+		<>
+			<h2 className='subcategory-item__title'>Subcategorías</h2>
+
+			<ul className='subcategory__container'>
+				{Object.keys(subcategoryInstances).map(key => {
 					const Subcategory = getSubcategoryInstance(key);
 					if (!Subcategory) return null;
 					if (Subcategory.mode !== 'edit') return null;
+					if (Subcategory.category !== desiredCategory) return null;
 
 					return (
-						<li key={key}>
-							<h2>
-								Subcategoría
+						<li key={key} className='subcategory-item'>
+							<div className='subcategory-item__header'>
+								<h2 className='subcategory-item__title'>{Subcategory.name}</h2>
 								<button
 									type='button'
 									onClick={() => openModal(Subcategory.id, key)}
-									className='delete'
+									className='subcategory-item__delete-button'
 								>
 									Eliminar subcategoria
 								</button>
-							</h2>
-							<TextInput
-								id={'Subcategoria' + key}
-								label={'Nombre de Subcategoria:'}
-								value={Subcategory.name}
-								placeholder={'Subcategoria 1'}
-								onChange={e =>
-									updateSubcategoryInstance(key, { name: e.target.value })
-								}
-								required={true}
-							/>
-							<br />
-							<TextAreaInput
-								id={'description' + key}
-								label={'Descripción de Subcategoria:'}
-								value={Subcategory.description}
-								placeholder={'Introduce la descripción de la Subcategoria...'}
-								onChange={e =>
-									updateSubcategoryInstance(key, {
-										description: e.target.value,
-									})
-								}
-								rows={6}
-							/>
+							</div>
+							<div className='subcategory__columns'>
+								<div className='subcategory__column-left'>
+									<TextInput
+										id={'Subcategoria' + key}
+										label={'Nombre de Subcategoria:'}
+										value={Subcategory.name}
+										placeholder={'Subcategoria 1'}
+										onChange={e =>
+											updateSubcategoryInstance(key, { name: e.target.value })
+										}
+										required={true}
+										className='subcategory-item__text-input'
+									/>
+									<TextAreaInput
+										id={'description' + key}
+										label={'Descripción de Subcategoria:'}
+										value={Subcategory.description}
+										placeholder={
+											'Introduce la descripción de la Subcategoria...'
+										}
+										onChange={e =>
+											updateSubcategoryInstance(key, {
+												description: e.target.value,
+											})
+										}
+										className='subcategory-item__text-area-input'
+										rows={6}
+									/>
+									<button
+										type='button'
+										onClick={() => handleUpdateSubcategory(key)}
+										className='subcategory-item__update-button'
+									>
+										Actualizar Subcategoria
+									</button>
+								</div>
+								<div className='subcategory__column-right'>
+									<SingleImageChange
+										title={`Imagen de categoria:`}
+										filePreview={
+											Subcategory.rawImage
+												? URL.createObjectURL(Subcategory.rawImage)
+												: !Subcategory.imageToDelete
+													? Subcategory.image
+													: ''
+										}
+										setFilePreview={file =>
+											updateSubcategoryInstance(key, {
+												rawImage: file,
+											})
+										}
+										setFileToDelete={bool =>
+											updateSubcategoryInstance(key, {
+												imageToDelete: bool,
+											})
+										}
+									/>
+								</div>
+							</div>
 
-							<SingleImageChange
-								title={`Imagen de categoria:`}
-								filePreview={
-									Subcategory.rawImage
-										? URL.createObjectURL(Subcategory.rawImage)
-										: !Subcategory.imageToDelete
-											? Subcategory.image
-											: ''
-								}
-								setFilePreview={file =>
-									updateSubcategoryInstance(key, {
-										rawImage: file,
-									})
-								}
-								setFileToDelete={bool =>
-									updateSubcategoryInstance(key, {
-										imageToDelete: bool,
-									})
-								}
-							/>
-							<button
-								type='button'
-								onClick={() => handleUpdateSubcategory(key)}
-								className='add'
-							>
-								Actualizar Subcategoria
-							</button>
 							<Modal
 								isOpen={isModalOpen}
 								onClose={closeModal}
@@ -135,6 +146,7 @@ export default function EditSubcategories({
 						</li>
 					);
 				})}
-		</ul>
+			</ul>
+		</>
 	);
 }

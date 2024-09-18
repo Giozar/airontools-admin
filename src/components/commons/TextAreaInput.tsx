@@ -8,6 +8,8 @@ interface TextAreaInputProps {
 	rows?: number;
 	onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 	className?: string;
+	classNameForLabel?: string;
+	classNameForTextArea?: string;
 }
 
 const TextAreaInput: React.FC<TextAreaInputProps> = ({
@@ -18,16 +20,21 @@ const TextAreaInput: React.FC<TextAreaInputProps> = ({
 	rows = 3,
 	onChange,
 	className,
+	classNameForLabel,
+	classNameForTextArea,
 }) => {
 	return (
 		<div className={className || `textAreaInput`}>
-			<label htmlFor={id}>{label}</label>
+			<label htmlFor={id} className={classNameForLabel}>
+				{label}
+			</label>
 			<textarea
 				id={id}
 				placeholder={placeholder}
 				rows={rows}
 				value={value}
 				onChange={onChange}
+				className={classNameForTextArea}
 			/>
 		</div>
 	);

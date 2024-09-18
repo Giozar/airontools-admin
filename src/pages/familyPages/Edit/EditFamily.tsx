@@ -4,8 +4,8 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
-import '@pages/css/createFamily.css';
 import { useState } from 'react';
+import './EditFamily.css';
 /**
  * Permite la edición y eliminación de una familia existente.
  *
@@ -31,47 +31,65 @@ export default function EditFamily() {
 	};
 
 	return (
-		<>
-			<h2>
-				Familia {familyToCreate.name}
-				<button type='button' className='delete' onClick={openModal}>
+		<div className='family__container'>
+			<div className='family__container__header'>
+				<h2 className='family__container__title'>
+					Familia: {familyToCreate.name}
+				</h2>
+				<button
+					type='button'
+					className='family__container__delete-button'
+					onClick={openModal}
+				>
 					Eliminar familia
 				</button>
-			</h2>
-			<TextInput
-				id={'family'}
-				label={'Nombre de familia:'}
-				value={familyToCreate.name}
-				placeholder={'Familia 1'}
-				onChange={e => familyToCreate.setName(e.target.value)}
-				required={true}
-			/>
-			<br></br>
-			<TextAreaInput
-				id={'description'}
-				label={'Descripción de familia:'}
-				value={familyToCreate.description}
-				placeholder={'Introduce la descripción de la familia...'}
-				onChange={e => familyToCreate.setDescription(e.target.value)}
-				rows={6}
-			/>
-			<SingleImageChange
-				title={`Imagen de Familia:`}
-				filePreview={
-					familyToCreate.rawImage
-						? URL.createObjectURL(familyToCreate.rawImage)
-						: !familyToCreate.imageToDelete
-							? familyToCreate.image
-							: ''
-				}
-				setFilePreview={file => {
-					familyToCreate.setRawImage(file);
-				}}
-				setFileToDelete={familyToCreate.setImageToDelete}
-			/>
-			<button type='button' onClick={handleUpdateFamily} className='add'>
-				Actualizar Familia
-			</button>
+			</div>
+			<div className='family__columns'>
+				<div className='family__columns-left'>
+					<TextInput
+						id={'family'}
+						label={'Nombre de familia:'}
+						value={familyToCreate.name}
+						placeholder={'Familia 1'}
+						onChange={e => familyToCreate.setName(e.target.value)}
+						required={true}
+						className='family__container__text-input'
+					/>
+					<br></br>
+					<TextAreaInput
+						id={'description'}
+						label={'Descripción de familia:'}
+						value={familyToCreate.description}
+						placeholder={'Introduce la descripción de la familia...'}
+						onChange={e => familyToCreate.setDescription(e.target.value)}
+						rows={6}
+						className='family__container__text-area-input'
+					/>
+					<button
+						type='button'
+						onClick={handleUpdateFamily}
+						className='family__container__update-button'
+					>
+						Actualizar Familia
+					</button>
+				</div>
+				<div className='family__columns-right'>
+					<SingleImageChange
+						title={`Imagen de Familia:`}
+						filePreview={
+							familyToCreate.rawImage
+								? URL.createObjectURL(familyToCreate.rawImage)
+								: !familyToCreate.imageToDelete
+									? familyToCreate.image
+									: ''
+						}
+						setFilePreview={file => {
+							familyToCreate.setRawImage(file);
+						}}
+						setFileToDelete={familyToCreate.setImageToDelete}
+					/>
+				</div>
+			</div>
 
 			<div>
 				<Modal
@@ -84,6 +102,6 @@ export default function EditFamily() {
 					confirmText='Eliminar'
 				/>
 			</div>
-		</>
+		</div>
 	);
 }
