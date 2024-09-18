@@ -53,7 +53,7 @@ export default function EditSubcategories({
 
 	return (
 		<>
-			<h2 className='subcategory-item__title'>Subcategorías</h2>
+			<h2 className='subcategory-item__title'>Editar Subcategorías</h2>
 
 			<ul className='subcategory__container'>
 				{Object.keys(subcategoryInstances).map(key => {

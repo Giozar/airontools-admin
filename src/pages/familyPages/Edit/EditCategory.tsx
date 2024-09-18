@@ -56,7 +56,7 @@ export default function EditCategories() {
 
 	return (
 		<>
-			<h2 className='category-item__title'>Categorías</h2>
+			<h2 className='category-item__title'>Editar categorías</h2>
 
 			<ul className='category__container'>
 				{Object.keys(categoryInstances).map(key => {

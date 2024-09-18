@@ -36,7 +36,11 @@ export default function CreateCategories({
 					Añadir nueva categoria
 				</button>
 			</div>
-
+			{createButton && hasCategories && (
+				<button type='button' onClick={handleCreateCategory} className='save'>
+					Crear categorias
+				</button>
+			)}
 			{hasCategories && (
 				<ul className='category__container'>
 					{Object.keys(categoryInstances).map(key => {
@@ -94,11 +98,6 @@ export default function CreateCategories({
 						);
 					})}
 				</ul>
-			)}
-			{createButton && hasCategories && (
-				<button type='button' onClick={handleCreateCategory} className='save'>
-					Crear categorias
-				</button>
 			)}
 		</div>
 	);
