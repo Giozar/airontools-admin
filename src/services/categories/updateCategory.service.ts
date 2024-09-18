@@ -11,7 +11,7 @@ export async function updateCategoryRequest(
 	try {
 		await axios.patch(airontoolsAPI + `/categories/${id}`, {
 			...categoryData,
-			path: formatPathName(categoryData.name),
+			path: formatPathName(categoryData.name || ''),
 		});
 	} catch (error) {
 		errorHandler(error);
