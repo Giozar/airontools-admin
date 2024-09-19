@@ -20,9 +20,9 @@ export default function useSpecificationsProductCategorization() {
 
 	// useEffect para manejar la lógica de recuperación, eliminación de duplicados y filtrado secuencial
 	useEffect(() => {
-		console.log('Familia', family);
-		console.log('Categoría', category);
-		console.log('Subcategoría', subcategory);
+		// console.log('Familia', family);
+		// console.log('Categoría', category);
+		// console.log('Subcategoría', subcategory);
 		// 1. Recuperar todas las especificaciones de familia, categoría y subcategoría
 		const allSpecifications: SpecDataFrontend[] = [
 			...specificationsByFamilyId,

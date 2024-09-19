@@ -8,6 +8,8 @@ interface UseFilesInputParams {
 interface UseUrlsInputParams {
 	urls: string[];
 	setUrls: (value: string[]) => void;
+	urlsRemoved: string[];
+	setUrlsRemoved: (value: string[]) => void;
 }
 
 export default function useFilesInput() {
@@ -46,9 +48,16 @@ export default function useFilesInput() {
 		index,
 		urls,
 		setUrls,
+		urlsRemoved,
+		setUrlsRemoved,
 	}: UseUrlsInputParams & { index: number }) => {
-		// console.log(urls);
+		// Obtener la URL a eliminar
+		const urlToRemove = urls[index];
+		// Actualizar el estado de URLs, eliminando la URL correspondiente
 		setUrls(urls.filter((_, i) => i !== index));
+
+		// Actualizar el estado de URLs removidas, agregando la URL eliminada
+		setUrlsRemoved([...urlsRemoved, urlToRemove]);
 	};
 
 	return {

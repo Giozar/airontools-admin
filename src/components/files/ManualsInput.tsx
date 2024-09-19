@@ -10,6 +10,8 @@ interface FilesInputProps {
 	setFiles: (value: File[]) => void;
 	urls: string[];
 	setUrls: (value: string[]) => void;
+	urlsRemoved: string[];
+	setUrlsRemoved: (value: string[]) => void;
 }
 
 export default function ManualsInput({
@@ -18,6 +20,8 @@ export default function ManualsInput({
 	urls,
 	setFiles,
 	setUrls,
+	urlsRemoved,
+	setUrlsRemoved,
 }: FilesInputProps) {
 	const { selectFiles, removeFiles, removeUrls } = useFilesInput();
 	const [filePreviews, setFilePreviews] = useState<string[]>([]);
@@ -59,6 +63,8 @@ export default function ManualsInput({
 			index,
 			urls,
 			setUrls,
+			urlsRemoved,
+			setUrlsRemoved,
 		});
 	};
 

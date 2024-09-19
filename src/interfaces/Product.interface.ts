@@ -61,8 +61,12 @@ export interface ProductCreateContextProps {
 	setRecommendations: (value: string[]) => void;
 	images: string[];
 	setImages: (value: string[]) => void;
+	imagesRemoved: string[];
+	setImagesRemoved: (value: string[]) => void;
 	manuals: string[];
 	setManuals: (value: string[]) => void;
+	manualsRemoved: string[];
+	setManualsRemoved: (value: string[]) => void;
 	imagesRaw: File[];
 	setImagesRaw: (value: File[]) => void;
 	manualsRaw: File[];

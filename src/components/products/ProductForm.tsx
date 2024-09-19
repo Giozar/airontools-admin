@@ -61,6 +61,10 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 		setSubcategory,
 		setSpecifications,
 		setCreatedBy,
+		imagesRemoved,
+		setImagesRemoved,
+		manualsRemoved,
+		setManualsRemoved,
 	} = useProductCreateContext();
 
 	// Use initialData to prefill form values if available
@@ -161,6 +165,8 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 							setFiles={setImagesRaw}
 							urls={images}
 							setUrls={setImages}
+							urlsRemoved={imagesRemoved}
+							setUrlsRemoved={setImagesRemoved}
 						/>
 						<ManualsInput
 							title='Manuales de herramienta'
@@ -168,6 +174,8 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 							setFiles={setManualsRaw}
 							urls={manuals}
 							setUrls={setManuals}
+							urlsRemoved={manualsRemoved}
+							setUrlsRemoved={setManualsRemoved}
 						/>
 						<DynamicInputs
 							label='Videos'
