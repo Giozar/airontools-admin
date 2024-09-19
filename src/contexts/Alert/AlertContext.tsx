@@ -1,6 +1,6 @@
 // AlertContext.tsx
 import Alert from '@components/commons/AlertComponent';
-import { createContext, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 type AlertType = 'success' | 'warning' | 'error';
 
@@ -10,9 +10,7 @@ interface AlertContextType {
 
 const AlertContext = createContext<AlertContextType | undefined>(undefined);
 
-export const AlertProvider: React.FC<{ children: React.ReactNode }> = ({
-	children,
-}) => {
+export const AlertProvider = ({ children }: { children: ReactNode }) => {
 	const [alert, setAlert] = useState<{
 		message: string;
 		type: AlertType;
