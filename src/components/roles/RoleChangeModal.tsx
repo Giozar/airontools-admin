@@ -1,5 +1,3 @@
-import ErrorMessage from '@components/commons/ErrorMessage';
-import useErrorHandling from '@hooks/common/useErrorHandling';
 import { useRoles } from '@hooks/roles/useRoles';
 import { RoleDataFront } from '@interfaces/Role.interface';
 import { RegisterResponse, UserDataFrontend } from '@interfaces/User.interface';
@@ -9,6 +7,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import '@components/css/roleChangeModal.css';
 import CloseIcon from '@components/svg/CloseIcon';
 import { airontoolsAPI } from '@configs/api.config';
+import { useAlert } from '@contexts/Alert/AlertContext';
 
 interface ValidationError {
 	message: string[];
@@ -26,10 +25,9 @@ function RoleChangeModal({
 	onUpdateList,
 }: RoleChangeModalProps) {
 	const [role, setRole] = useState(userToEdit?.role?.id);
-	const { errorLog, showError } = useErrorHandling();
-
 	// Se obtiene la lista de roles para el usuario
 	const { roles: roleOptions } = useRoles();
+	const { showAlert } = useAlert();
 
 	const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setRole(e.target.value);
@@ -52,6 +50,7 @@ function RoleChangeModal({
 			);
 			onUpdateList();
 			onCloseModal();
+			showAlert('Se cambio el rol con éxito', 'success');
 		} catch (error) {
 			if (!axios.isAxiosError<ValidationError>(error)) {
 				console.error('Edition failed', error);
@@ -63,13 +62,12 @@ function RoleChangeModal({
 			const message = Array.isArray(errorMessage)
 				? errorMessage.join(', ')
 				: errorMessage;
-			showError(message);
+			showAlert(message, 'error');
 		}
 	};
 
 	return (
 		<form onSubmit={handleSubmit} className='choserol'>
-			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
 			<button type='button' className='close' onClick={onCloseModal}>
 				<CloseIcon />
 			</button>

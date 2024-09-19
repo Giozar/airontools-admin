@@ -1,11 +1,11 @@
 import { transformCategoryDataToFrontend } from '@adapters/category.adapter';
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { getCategories } from '@services/categories/getCategories.service';
 import { useEffect, useState } from 'react';
 
 function useFetchCategories() {
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const [categories, setCategories] = useState<CategoryDataFrontend[]>([]);
 	const [filteredCategories, setFilteredCategories] = useState<
 		CategoryDataFrontend[]
@@ -27,7 +27,7 @@ function useFetchCategories() {
 					);
 				setLoading(false);
 			} catch (error) {
-				showError('Error al cargar las categorías');
+				showAlert('Error al cargar las categorías', 'error');
 				setLoading(false);
 			}
 		};
@@ -47,7 +47,6 @@ function useFetchCategories() {
 	return {
 		categories,
 		loading,
-		errorLog,
 		setCategories,
 		filteredCategories,
 		setFilteredCategories,

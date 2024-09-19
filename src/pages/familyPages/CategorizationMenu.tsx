@@ -1,7 +1,6 @@
 import ActionCard from '@components/commons/ActionCard';
 import DeletionModal from '@components/commons/DeletionModal';
 import DropdownMenu from '@components/commons/DropdownMenu';
-import ErrorMessage from '@components/commons/ErrorMessage';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 
@@ -29,7 +28,6 @@ function ListOfFamilies() {
 
 	const {
 		loading,
-		errorLog,
 		setFamilies,
 		filteredFamilies,
 		setFilteredFamilies,
@@ -79,7 +77,6 @@ function ListOfFamilies() {
 	}, [filteredCategories, filteredSubcategories, filteredSpecifications]);
 
 	if (loading) return <p>Cargando...</p>;
-	if (errorLog.isError) return <ErrorMessage message={errorLog.message} />;
 
 	return (
 		<div>

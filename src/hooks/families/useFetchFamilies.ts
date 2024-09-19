@@ -1,11 +1,11 @@
 // hooks/useFetchFamilies.ts
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { getFamiliesService } from '@services/families/getFamilies.service';
 import { useEffect, useState } from 'react';
 
 function useFetchFamilies(updateListFlag?: boolean) {
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const [families, setFamilies] = useState<FamilyDataFrontend[]>([]);
 	const [filteredFamilies, setFilteredFamilies] = useState<
 		FamilyDataFrontend[]
@@ -21,7 +21,7 @@ function useFetchFamilies(updateListFlag?: boolean) {
 				setFilteredFamilies(fetchedFamilies);
 			} catch (error) {
 				console.error('Failed to fetch families:', error);
-				showError('Error al cargar las familias');
+				showAlert('Error al cargar las familias', 'error');
 			} finally {
 				setLoading(false);
 			}
@@ -43,7 +43,6 @@ function useFetchFamilies(updateListFlag?: boolean) {
 	return {
 		families,
 		loading,
-		errorLog,
 		setFamilies,
 		filteredFamilies,
 		setFilteredFamilies,

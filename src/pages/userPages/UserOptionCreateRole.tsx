@@ -4,22 +4,18 @@ import '@pages/css/UserOptionsCreateRole.css';
 import axios from 'axios';
 import React, { useState } from 'react';
 
-import ErrorMessage from '@components/commons/ErrorMessage';
-import SuccessMessage from '@components/commons/SuccessMessage';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import RoleList from '@components/roles/RoleList';
 import { airontoolsAPI } from '@configs/api.config';
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 
 function CreateRoleForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
-	const { errorLog, showError } = useErrorHandling();
-	const { successLog, showSuccess } = useSuccessHandling();
+	const { showAlert } = useAlert();
 	const [updateRole, setUpdateRole] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -31,7 +27,7 @@ function CreateRoleForm() {
 				createdBy,
 			});
 			console.log('Role created successfully:', response.data);
-			showSuccess('Rol creado con éxito');
+			showAlert('Rol creado con éxito', 'success');
 			setUpdateRole(!updateRole);
 			setName('');
 			setDescription('');
@@ -39,9 +35,9 @@ function CreateRoleForm() {
 			if (axios.isAxiosError(error)) {
 				const errorMessage =
 					error.response?.data?.message || 'Error desconocido';
-				showError(errorMessage);
+				showAlert(errorMessage, 'error');
 			} else {
-				showError('Error desconocido');
+				showAlert('Error desconocido', 'error');
 			}
 			console.error('Error creating role:', error);
 		}
@@ -50,11 +46,6 @@ function CreateRoleForm() {
 	return (
 		<div className='cuerpo'>
 			<div className='create-role-form'>
-				{successLog.isSuccess && (
-					<SuccessMessage message={successLog.message} />
-				)}
-				{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-
 				<h2>Crear Nuevo Rol</h2>
 				<form onSubmit={handleSubmit}>
 					<TextInput

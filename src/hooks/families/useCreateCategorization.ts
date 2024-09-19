@@ -1,4 +1,5 @@
 import { airontoolsAPI } from '@configs/api.config';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
@@ -10,8 +11,9 @@ import axios from 'axios';
 import useFamilyCreate from './useFamilyCreate';
 
 export function useCreateCategorization() {
+	const { showAlert } = useAlert();
 	const { ...familyToCreate } = useFamilyCreateContext();
-	const { errorLog, successLog, createFamily } = useFamilyCreate();
+	const { createFamily } = useFamilyCreate();
 	const { createCategory } = useCategoryCreate();
 	const { createSubcategory } = useSubcategoryCreate();
 	const { user } = useAuthContext();
@@ -111,7 +113,7 @@ export function useCreateCategorization() {
 					},
 				);
 			}
-			console.log('Proceso completado exitosamente');
+			showAlert('Proceso completado exitosamente', 'success');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300);
@@ -120,6 +122,7 @@ export function useCreateCategorization() {
 				'Error al crear familias, categorías o subcategorías:',
 				error,
 			);
+			showAlert(`Error al crear familias, categorías o subcategorías`, 'error');
 		}
 	};
 
@@ -156,7 +159,7 @@ export function useCreateCategorization() {
 					},
 				);
 			}
-			console.log('Proceso completado exitosamente');
+			showAlert('Proceso completado exitosamente', 'success');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300);
@@ -165,7 +168,8 @@ export function useCreateCategorization() {
 				'Error al crear familias, categorías o subcategorías:',
 				error,
 			);
+			showAlert('Error al crear familias, categorías o subcategorías', 'error');
 		}
 	};
-	return { handleSubmit, handleCreateSubcategory, errorLog, successLog };
+	return { handleSubmit, handleCreateSubcategory };
 }

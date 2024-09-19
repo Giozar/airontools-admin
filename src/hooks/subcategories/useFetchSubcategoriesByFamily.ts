@@ -1,13 +1,13 @@
 // src/hooks/useFetchSubcategoriesByFamily.ts
 
 import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { getSubcategoriesByFamilyService } from '@services/subcategories/getSubcategoriesByFamily.service';
 import { useEffect, useState } from 'react';
 
 const useFetchSubcategoriesByFamily = (id: string) => {
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const [subcategories, setSubcategories] = useState<SubcategoryDataFrontend[]>(
 		[],
 	);
@@ -29,7 +29,7 @@ const useFetchSubcategoriesByFamily = (id: string) => {
 			setFilteredSubcategories(frontendSubcategories);
 		} catch (error) {
 			console.error('Failed to fetch subcategories:', error);
-			showError('Error al cargar las subcategorías');
+			showAlert('Error al cargar las subcategorías', 'error');
 		} finally {
 			setLoading(false);
 		}
@@ -51,7 +51,6 @@ const useFetchSubcategoriesByFamily = (id: string) => {
 	return {
 		subcategories,
 		loading,
-		errorLog,
 		setSubcategories,
 		filteredSubcategories,
 		setFilteredSubcategories,

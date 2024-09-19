@@ -1,15 +1,12 @@
 // src/hooks/useUserUpdate.ts
 
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { UserDataSend } from '@interfaces/User.interface';
 import { updateUserService } from '@services/users/updateUser.service';
 import { useState } from 'react';
 
 const useUserUpdate = () => {
-	const { errorLog, showError } = useErrorHandling();
-	const { successLog, showSuccess } = useSuccessHandling();
-
+	const { showAlert } = useAlert();
 	const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
 	const updateUser = async (userId: string, userData: UserDataSend) => {
@@ -18,16 +15,16 @@ const useUserUpdate = () => {
 			const data = await updateUserService(userId, userData);
 			const { user } = data;
 			console.log(user);
-			showSuccess('Usuario Editado Con Éxito');
+			showAlert('Usuario Editado Con Éxito', 'success');
 		} catch (error) {
-			showError('No se ha podido editar el usuario');
+			showAlert('No se ha podido editar el usuario', 'error');
 			console.error(error);
 		} finally {
 			setIsUpdating(false);
 		}
 	};
 
-	return { errorLog, successLog, updateUser, isUpdating };
+	return { updateUser, isUpdating };
 };
 
 export default useUserUpdate;

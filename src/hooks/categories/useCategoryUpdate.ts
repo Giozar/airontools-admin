@@ -1,23 +1,18 @@
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
 import { updateCategoryRequest } from '@services/categories/updateCategory.service';
 
 const useCategoryUpdate = () => {
-	const { errorLog: errorLogCategory, showError: showErrorCategory } =
-		useErrorHandling();
-	const { successLog: successLogCategory, showSuccess: showSuccessCategory } =
-		useSuccessHandling();
-
+	const { showAlert } = useAlert();
 	const updateCategory = async (categoryData: CategoryDataToSend) => {
 		try {
 			updateCategoryRequest(categoryData._id as string, categoryData);
-			showSuccessCategory('Categoría actualizada Con Éxito');
+			showAlert('Categoría actualizada Con Éxito', 'success');
 		} catch (error) {
-			showErrorCategory('Error al actualizar la categoría');
+			showAlert('Error al actualizar la categoría', 'error');
 		}
 	};
-	return { errorLogCategory, successLogCategory, updateCategory };
+	return { updateCategory };
 };
 
 export default useCategoryUpdate;

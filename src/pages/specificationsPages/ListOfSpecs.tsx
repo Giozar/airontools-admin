@@ -1,9 +1,8 @@
 import ActionCard from '@components/commons/ActionCard';
 import DeletionModal from '@components/commons/DeletionModal';
-import ErrorMessage from '@components/commons/ErrorMessage';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import useFetchCounts from '@hooks/common/useFetchCounts';
 import useSpecificationsManagement from '@hooks/specifications/useSpecificationsDelete';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
@@ -15,8 +14,8 @@ import { useLocation } from 'react-router-dom';
 
 function SpecificationsGrid() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
-	const { showError, errorLog } = useErrorHandling();
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
+	const { showAlert } = useAlert();
 	const {
 		showDeletionModalFor,
 		setShowDeletionModalFor,
@@ -44,7 +43,7 @@ function SpecificationsGrid() {
 				const specs = await getSpecifications();
 				setSpecifications(specs);
 			} catch (error) {
-				errorHandler(error, showError);
+				showAlert(errorHandler(error), 'error');
 			}
 		};
 		fetchSpecifications();
@@ -61,7 +60,6 @@ function SpecificationsGrid() {
 
 	return (
 		<div className='container'>
-			<ErrorMessage message={errorLog.message} />
 			<div className='search-bar'>
 				<input
 					type='text'

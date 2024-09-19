@@ -1,32 +1,23 @@
 // hooks/useSubcategoryUpdate.ts
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
 import { updateSubcategory } from '@services/subcategories/updateSubcategory.service';
 
 const useSubcategoryUpdate = () => {
-	const { errorLog: errorLogSubcategory, showError: showErrorSubcategory } =
-		useErrorHandling();
-	const {
-		successLog: successLogSubcategory,
-		showSuccess: showSuccessSubcategory,
-	} = useSuccessHandling();
-
+	const { showAlert } = useAlert();
 	const handleUpdateSubcategory = async (
 		subcategoryData: SubcategoryDataToSend,
 	) => {
 		try {
 			const data = await updateSubcategory(subcategoryData);
-			showSuccessSubcategory('Subcategoría actualizada con éxito');
+			showAlert('Subcategoría actualizada con éxito', 'success');
 			return data;
 		} catch (error) {
-			showErrorSubcategory('Error al actualizar la subcategoría');
+			showAlert('Error al actualizar la subcategoría', 'error');
 		}
 	};
 
 	return {
-		errorLogSubcategory,
-		successLogSubcategory,
 		updateSubcategory: handleUpdateSubcategory,
 	};
 };
