@@ -1,0 +1,31 @@
+.table-row {
+	display: table-row;
+}
+
+.table-row__cell {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+}
+
+.table-row__label {
+	margin-right: 10px;
+	font-weight: bold;
+}
+
+.table-row__input-container {
+	display: flex;
+	align-items: center;
+}
+
+.table-row__input {
+	margin: 0;
+	margin-right: 5px;
+	border-radius: 4px;
+	padding: 5px;
+}
+
+.table-row__unit {
+	color: var(--text-secondary);
+	font-size: 0.9rem;
+}
