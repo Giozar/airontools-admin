@@ -1,0 +1,28 @@
+.select-input {
+	margin-bottom: 15px;
+}
+
+.select-input__label {
+	display: block;
+	margin-bottom: 5px;
+	color: #333;
+	font-size: 1rem;
+}
+
+.select-input__select {
+	transition: border-color 0.3s;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 10px;
+	width: 100%;
+	font-size: 1rem;
+}
+
+.select-input__select:focus {
+	outline: none;
+	border-color: #007bff;
+}
+
+.select-input__option {
+	padding: 10px;
+}

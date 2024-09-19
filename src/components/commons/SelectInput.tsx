@@ -1,5 +1,5 @@
+import '@components/css/SelectInput.css';
 import React from 'react';
-
 interface SelectInputProps {
 	id: string;
 	name: string;
@@ -20,12 +20,23 @@ const SelectInput: React.FC<SelectInputProps> = ({
 	};
 
 	return (
-		<div className='selectInput'>
-			<label htmlFor={id}>{name}</label>
-			<select id={id} value={value || ''} onChange={handleChange}>
+		<div className='select-input'>
+			<label htmlFor={id} className='select-input__label'>
+				{name}
+			</label>
+			<select
+				id={id}
+				value={value || ''}
+				onChange={handleChange}
+				className='select-input__select'
+			>
 				<option value=''>Selecciona una opción</option>
 				{options.map(option => (
-					<option key={option.value} value={option.value}>
+					<option
+						key={option.value}
+						value={option.value}
+						className='select-input__option'
+					>
 						{option.label}
 					</option>
 				))}
