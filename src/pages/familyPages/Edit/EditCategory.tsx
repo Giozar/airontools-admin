@@ -43,7 +43,6 @@ export default function EditCategories() {
 			'Eliminar Categoria',
 			'Vas a eliminar esta Categoria. ¿Estás seguro de que quieres continuar?',
 			() => handleConfirm(id, key),
-			true,
 		);
 	};
 

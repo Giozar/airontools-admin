@@ -115,7 +115,6 @@ export function useEditCategorization() {
 	const handleDeleteFamily = async (familyId: string) => {
 		try {
 			await deleteFamilyService(familyId);
-			console.log('borrefamailia');
 			showAlert('Familia borrada', 'success');
 			navigate('/home/categorizacion');
 		} catch (error) {
