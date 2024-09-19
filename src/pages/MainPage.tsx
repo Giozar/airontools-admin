@@ -13,14 +13,17 @@ export default function ContentMainPage() {
 						<ActionCard
 							title='Usuarios'
 							path={location.pathname + '/usuarios'}
+							description='Lista de usuarios, crear usuarios, crear rol'
 						/>
 						<ActionCard
 							title='Categorización'
 							path={location.pathname + '/categorizacion'}
+							description='Lista de familias (con categorias, subcategorias), crear familia (con categorias, subcategorias), especificaciones, crear especificaciones'
 						/>
 						<ActionCard
 							title='Herramientas'
 							path={location.pathname + '/herramientas'}
+							description='Lista de herramientas, crear herramientas'
 						/>
 						<ActionCard title='Monitor' path={location.pathname + '/monitor'} />
 					</>

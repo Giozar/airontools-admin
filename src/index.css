@@ -202,7 +202,7 @@
 .light-theme .sidebar .title h1 {
 	color: var(--text-primary);
 }
-.content .userinfo button svg {
+.header__button-toggle-theme svg {
 	color: var(--text-primary);
 }
 /* Estilos base */
@@ -336,4 +336,150 @@ hr {
 .add {
 	background-color: var(--add);
 	color: var(--button-text);
+}
+
+/**/
+.admin-interface {
+	margin: 0 auto;
+	padding: 20px;
+	max-width: 800px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+h1 {
+	margin-bottom: 30px;
+	color: #333;
+	text-align: center;
+}
+.families {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+.family,
+.category,
+.subcategory {
+	transition: all 0.3s ease;
+	margin-bottom: 15px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	background-color: var(--card-bg);
+	padding: 15px;
+	list-style-type: none;
+}
+.category .category__container,
+.subcategory {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5rem;
+	padding: 0 5rem;
+}
+.family:hover,
+.category:hover,
+.subcategory:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.item {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+.item-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border-radius: 4px;
+	padding: 10px;
+}
+.toggle {
+	cursor: pointer;
+	color: #666;
+}
+.item-image {
+	border-radius: 4px;
+	width: 40px;
+	height: 40px;
+	object-fit: cover;
+}
+.item-name {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+	color: #333;
+	font-weight: bold;
+}
+.item-description {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+	margin-top: 5px;
+	color: #666;
+	font-size: 0.9em;
+}
+.edit-button {
+	transition: color 0.3s ease;
+	cursor: pointer;
+	border: none;
+	background: none;
+	color: #007bff;
+}
+.edit-button:hover {
+	color: #0056b3;
+}
+.edit-form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 10px;
+	border-radius: 4px;
+	padding: 15px;
+}
+.edit-form input,
+.edit-form textarea {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 8px;
+	font-size: 14px;
+}
+.edit-form textarea {
+	min-height: 100px;
+}
+.button-group {
+	display: flex;
+	gap: 10px;
+}
+.save-button,
+.cancel-button {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	transition: background-color 0.3s ease;
+	cursor: pointer;
+	margin-top: 0;
+	border: none;
+	border-radius: 4px;
+	padding: 8px 15px;
+	font-size: 14px;
+}
+.save-button {
+	background-color: #186b2c;
+	color: white;
+}
+.save-button:hover {
+	background-color: #218838;
+}
+.cancel-button {
+	background-color: #a01e2b;
+	color: white;
+}
+.cancel-button:hover {
+	background-color: #c82333;
+}
+.level-0 {
+	margin-left: 0;
+}
+.level-1 {
+	margin-left: 20px;
+}
+.level-2 {
+	margin-left: 40px;
 }

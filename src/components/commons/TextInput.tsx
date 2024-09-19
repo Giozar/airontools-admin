@@ -1,5 +1,4 @@
-import React from 'react';
-
+import '@components/css/TextInput.css';
 interface TextInputProps {
 	id: string;
 	label: string;
@@ -9,9 +8,11 @@ interface TextInputProps {
 	required?: boolean;
 	readOnly?: boolean;
 	className?: string;
+	classNameForLabel?: string;
+	classNameForInput?: string;
 }
 
-const TextInput: React.FC<TextInputProps> = ({
+const TextInput = ({
 	id,
 	label,
 	value,
@@ -20,10 +21,14 @@ const TextInput: React.FC<TextInputProps> = ({
 	required,
 	readOnly,
 	className,
-}) => {
+	classNameForLabel,
+	classNameForInput,
+}: TextInputProps) => {
 	return (
-		<div className={className || `textInput`}>
-			<label htmlFor={id}>{label}</label>
+		<div className={className || 'text-input'}>
+			<label htmlFor={id} className={classNameForLabel || 'text-input__label'}>
+				{label}
+			</label>
 			<input
 				type='text'
 				id={id}
@@ -32,6 +37,7 @@ const TextInput: React.FC<TextInputProps> = ({
 				placeholder={placeholder}
 				required={required}
 				readOnly={readOnly}
+				className={classNameForInput || 'text-input__input'}
 			/>
 		</div>
 	);

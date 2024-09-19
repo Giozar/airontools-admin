@@ -13,7 +13,7 @@ export async function updateSubcategory(
 	try {
 		const response = await axios.patch(`${API_URL}/${subcategoryData._id}`, {
 			...subcategoryData,
-			path: formatPathName(subcategoryData.name),
+			path: formatPathName(subcategoryData.name || ''),
 		});
 		return response.data;
 	} catch (error) {

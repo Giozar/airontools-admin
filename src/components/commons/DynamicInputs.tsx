@@ -1,3 +1,4 @@
+import '@components/css/DynamicInputs.css';
 import TrashIcon from '@components/svg/TrashIcon';
 
 interface DynamicInputsProps {
@@ -30,25 +31,26 @@ const DynamicInputs = ({
 
 	return (
 		<div className='dynamic-inputs'>
-			<label>{label}</label>
+			<label className='dynamic-inputs__label'>{label}</label>
 			{values.map((value, index) => (
-				<div key={index} className='input-group'>
+				<div key={index} className='dynamic-inputs__input-group'>
 					<input
 						type='text'
 						value={value}
 						onChange={e => handleChange(index, e.target.value)}
 						placeholder={placeholder}
+            className='dynamic-inputs__input'
 					/>
 					<button
 						onClick={() => handleRemove(index)}
 						type='button'
-						className='delete'
+						className='dynamic-inputs__delete'
 					>
 						<TrashIcon />
 					</button>
 				</div>
 			))}
-			<button onClick={handleAdd} type='button' className='add'>
+			<button onClick={handleAdd} type='button' className='dynamic-inputs__add'>
 				Añadir {label}
 			</button>
 		</div>
@@ -56,3 +58,4 @@ const DynamicInputs = ({
 };
 
 export default DynamicInputs;
+

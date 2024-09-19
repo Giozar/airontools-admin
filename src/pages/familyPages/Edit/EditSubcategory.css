@@ -1,0 +1,129 @@
+/* Bloque principal: subcategory-item */
+.subcategory-item {
+	display: flex;
+	position: relative; /* Necesario para posicionar el modal */
+	flex-direction: column;
+	justify-content: center;
+	margin-bottom: 1rem;
+	border-radius: 8px;
+	background-color: var(--bg-tertiary);
+	padding: 1rem;
+}
+
+/* Header del item de categoría */
+.subcategory-item__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.subcategory-item__title {
+	margin: 0;
+	font-size: 1.5rem;
+}
+
+.subcategory-item__delete-button {
+	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	background-color: var(--error);
+	padding: 0.5rem 1rem;
+	color: var(--text-primary);
+}
+
+.subcategory-item__delete-button:hover {
+	background-color: #c0392b;
+}
+
+/* Estilos para el input de texto y el área de texto */
+.subcategory-item__text-input,
+.subcategory-item__text-area-input {
+	margin-bottom: 1rem;
+}
+
+.subcategory-item__text-input input,
+.subcategory-item__text-area-input textarea {
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 0.5rem;
+	width: 100%;
+}
+
+.subcategory-item__text-area-input textarea {
+	resize: vertical; /* Permite ajustar la altura */
+}
+
+/* Estilo para el botón de actualizar categoría */
+.subcategory-item__update-button {
+	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	background-color: var(--success);
+	padding: 0.5rem 1rem;
+	color: #fff;
+}
+
+.subcategory-item__update-button:hover {
+	background-color: #27ae60;
+}
+
+/* Estilos para el modal */
+.subcategory-item__modal {
+	display: flex;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	flex-direction: column;
+	transform: translate(-50%, -50%);
+	z-index: 1000;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	background-color: #fff;
+	padding: 2rem;
+	width: 80%;
+	max-width: 800px;
+	overflow: auto;
+}
+
+.subcategory-item__modal .button {
+	margin-top: 1rem;
+}
+
+/* Estilo para el overlay del modal */
+.subcategory-item__modal::before {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	background: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	height: 100%;
+	content: '';
+}
+
+.subcategory__container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	gap: 1rem;
+
+	padding: 0;
+	width: 100%;
+	list-style: none;
+}
+.subcategory__columns {
+	display: flex;
+	gap: 1rem;
+}
+.subcategory__column-left {
+	flex: 1;
+}
+.subcategory__column-right {
+	width: fit-content;
+}
+
+form {
+	max-width: 1200px;
+}

@@ -43,7 +43,7 @@ const SubcategoryForm: React.FC<SubcategoryFormProps> = ({
 					</h2>
 					<Editables
 						what='Nombre'
-						valueOf={subcategory.name}
+						valueOf={subcategory.name || ''}
 						type='input'
 						whichOne={index + 1}
 						onUpdateOne={value => handleSubcategoryNameChange(value, index)}

@@ -1,0 +1,73 @@
+.table {
+	margin: 20px 0;
+	border-collapse: collapse;
+	width: 100%;
+	overflow: auto;
+}
+
+.table__element {
+	background-color: var(--accent-secondary);
+	width: 100%;
+}
+
+.table__head {
+	background-color: var(--accent-primary);
+}
+
+.table__row {
+	transition: background-color 0.3s;
+}
+
+.table__header {
+	padding: 10px;
+	font-weight: bold;
+	text-align: left;
+}
+
+.table__body .table__row:hover {
+	background-color: var(--accent-primary);
+}
+
+.table__cell {
+	border-top: 1px solid var(--bg-secondary);
+	border-right: 1px solid var(--bg-secondary);
+	padding: 10px;
+	text-align: left;
+}
+.table__button {
+	transition: background-color 0.3s;
+	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	padding: 8px 12px;
+}
+
+.table__button--view {
+	background-color: var(--info);
+	color: var(--text-primary);
+}
+
+.table__button--edit-role {
+	background-color: var(--info);
+	color: var(--text-primary);
+}
+
+.table__button--edit {
+	background-color: var(--warning);
+	color: var(--text-primary);
+}
+
+.table__button--delete {
+	background-color: var(--error);
+	color: var(--text-primary);
+}
+
+.table__button:hover {
+	opacity: 0.8;
+}
+
+.table__button--disabled {
+	cursor: not-allowed;
+	background-color: var(--neutral);
+	color: var(--bg-secondary);
+}

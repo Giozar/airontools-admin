@@ -1,0 +1,28 @@
+.text-area-input {
+	margin: 16px 0; /* Espaciado entre los elementos */
+	font-family: Arial, sans-serif; /* Fuente por defecto */
+}
+
+.text-area-input__label {
+	display: block; /* Para que la etiqueta ocupe toda la línea */
+	margin-bottom: 8px; /* Espaciado debajo de la etiqueta */
+	font-weight: bold; /* Negrita para la etiqueta */
+}
+
+.text-area-input__textarea {
+	border: 1px solid var(--accent-secondary); /* Borde suave */
+	border-radius: 4px; /* Bordes redondeados */
+	padding: 8px; /* Espaciado interno */
+	width: 100%; /* Ocupa todo el ancho del contenedor */
+	resize: vertical; /* Permite cambiar el tamaño verticalmente */
+	font-size: 14px; /* Tamaño de fuente */
+}
+
+.text-area-input__textarea:focus {
+	outline: none; /* Quitar el contorno por defecto */
+	border-color: var(--accent-primary); /* Color del borde al enfocar */
+}
+
+.text-area-input__textarea::placeholder {
+	color: #aaa; /* Color del texto del placeholder */
+}

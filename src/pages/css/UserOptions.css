@@ -1,13 +1,3 @@
-.content main h3 span {
-	padding-right: 100px;
-}
-.content main h3 {
-	border-bottom: 2px solid var(--text-primary);
-	width: fit-content;
-	color: var(--text-primary);
-	font-size: xx-large;
-}
-
 .content main .options.users .card {
 	flex-direction: row;
 	justify-content: space-between;

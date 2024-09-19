@@ -57,30 +57,21 @@ function ReturnUsers() {
 				user.role?.name,
 				<button
 					key={user.id + 'role'}
-					className='editrol'
+					className='table__button table__button--edit-role' // Clase BEM para cambiar rol
 					onClick={() => setShowModalFor(user.id || '')}
 				>
 					<EditRoleIcon />
 				</button>,
 				<button
 					key={user.id + 'edit'}
-					className='edit'
+					className='table__button table__button--edit' // Clase BEM para editar
 					onClick={() => handleEdit(user)}
 				>
 					<EditUserIcon />
 				</button>,
 				<button
 					key={user.id + 'delete'}
-					className='delete'
-					style={
-						user.role?.name === 'Administrador' &&
-						!(
-							loggedUser?.name === 'root' &&
-							loggedUser?.role?.name === 'Administrador'
-						)
-							? { opacity: '0.2' }
-							: {}
-					}
+					className={`table__button table__button--delete ${user.role?.name === 'Administrador' && !(loggedUser?.name === 'root' && loggedUser?.role?.name === 'Administrador') ? 'table__button--disabled' : ''}`}
 					onClick={() => setShowDeletionModalFor(user.id || '')}
 					disabled={
 						user.role?.name === 'Administrador' &&

@@ -1,0 +1,10 @@
+.header-title {
+	margin: 1rem 0;
+	color: var(--text-secondary);
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.header-title__text {
+	text-transform: capitalize;
+}
