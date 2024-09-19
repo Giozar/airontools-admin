@@ -80,8 +80,8 @@ function ReturnUsers() {
 	};
 
 	return (
-		<div className='userlist'>
-			<h2 className='listtitle'>Lista de usuarios</h2>
+		<div className='user-list'>
+			<h2 className='user-list__title'>Lista de usuarios</h2>
 			<input
 				type='text'
 				placeholder='Buscar usuarios...'
@@ -90,7 +90,7 @@ function ReturnUsers() {
 					handleSearch(e.target.value);
 					setSearchTerm(e.target.value);
 				}}
-				className='search'
+				className='user-list__search'
 			/>
 			<TableComponent data={tableData} />
 			{showModalFor && (

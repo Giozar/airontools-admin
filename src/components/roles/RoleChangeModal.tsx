@@ -25,7 +25,6 @@ function RoleChangeModal({
 	onUpdateList,
 }: RoleChangeModalProps) {
 	const [role, setRole] = useState(userToEdit?.role?.id);
-	// Se obtiene la lista de roles para el usuario
 	const { roles: roleOptions } = useRoles();
 	const { showAlert } = useAlert();
 
@@ -36,7 +35,7 @@ function RoleChangeModal({
 	useEffect(() => {
 		console.log(userToEdit);
 		console.log(role);
-	}, [handleOptionChange]);
+	}, [userToEdit, role]);
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
@@ -50,10 +49,10 @@ function RoleChangeModal({
 			);
 			onUpdateList();
 			onCloseModal();
-			showAlert('Se cambio el rol con éxito', 'success');
+			showAlert('Se cambió el rol con éxito', 'success');
 		} catch (error) {
 			if (!axios.isAxiosError<ValidationError>(error)) {
-				console.error('Edition failed', error);
+				console.error('Edición fallida', error);
 				return;
 			}
 
@@ -67,21 +66,41 @@ function RoleChangeModal({
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className='choserol'>
-			<button type='button' className='close' onClick={onCloseModal}>
+		<form onSubmit={handleSubmit} className='role-change-modal'>
+			<button
+				type='button'
+				className='role-change-modal__close'
+				onClick={onCloseModal}
+			>
 				<CloseIcon />
 			</button>
-			<p>Nuevo rol para: {userToEdit?.name}</p>
-			<label htmlFor='options'>Nuevo rol:</label>
-			<select id='options' value={role as string} onChange={handleOptionChange}>
+			<p className='role-change-modal__title'>
+				Nuevo rol para: {userToEdit?.name}
+			</p>
+			<label htmlFor='options' className='role-change-modal__label'>
+				Nuevo rol:
+			</label>
+			<select
+				id='options'
+				className='role-change-modal__select'
+				value={role as string}
+				onChange={handleOptionChange}
+			>
 				{roleOptions.map((roleOption: RoleDataFront, index) => (
-					<option key={index} value={roleOption.id}>
+					<option
+						key={index}
+						value={roleOption.id}
+						className='role-change-modal__option'
+					>
 						{roleOption.name}
 					</option>
 				))}
 			</select>
-			<button type='submit'>Cambiar</button>
+			<button type='submit' className='role-change-modal__submit'>
+				Cambiar
+			</button>
 		</form>
 	);
 }
+
 export default RoleChangeModal;
