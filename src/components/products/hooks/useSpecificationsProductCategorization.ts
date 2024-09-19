@@ -49,7 +49,7 @@ export default function useSpecificationsProductCategorization() {
 			filteredSpecs = uniqueSpecifications.filter(spec =>
 				spec.families.some(
 					fam =>
-						fam === family &&
+						fam._id === family &&
 						spec.categories.length === 0 &&
 						spec.subcategories.length === 0,
 				),
@@ -60,9 +60,9 @@ export default function useSpecificationsProductCategorization() {
 		if (category.length > 0) {
 			filteredSpecs = uniqueSpecifications.filter(
 				spec =>
-					spec.families.some(fam => fam === family) && // Coincide con la familia
+					spec.families.some(fam => fam._id === family) && // Coincide con la familia
 					(spec.categories.length === 0 ||
-						spec.categories.some(cat => cat === category)) &&
+						spec.categories.some(cat => cat._id === category)) &&
 					spec.subcategories.length === 0,
 			);
 		}
@@ -71,11 +71,11 @@ export default function useSpecificationsProductCategorization() {
 		if (subcategory.length > 0) {
 			filteredSpecs = uniqueSpecifications.filter(
 				spec =>
-					spec.families.some(fam => fam === family) && // Coincide con la familia
+					spec.families.some(fam => fam._id === family) && // Coincide con la familia
 					(spec.categories.length === 0 ||
-						spec.categories.some(cat => cat === category)) && // Coincide con la categoría o no tiene categoría
+						spec.categories.some(cat => cat._id === category)) && // Coincide con la categoría o no tiene categoría
 					(spec.subcategories.length === 0 ||
-						spec.subcategories.some(sub => sub === subcategory)), // Coincide con la subcategoría o no tiene subcategoría
+						spec.subcategories.some(sub => sub._id === subcategory)), // Coincide con la subcategoría o no tiene subcategoría
 			);
 		}
 
