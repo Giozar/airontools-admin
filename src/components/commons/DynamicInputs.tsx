@@ -39,7 +39,7 @@ const DynamicInputs = ({
 						value={value}
 						onChange={e => handleChange(index, e.target.value)}
 						placeholder={placeholder}
-            className='dynamic-inputs__input'
+						className='dynamic-inputs__input'
 					/>
 					<button
 						onClick={() => handleRemove(index)}
@@ -58,4 +58,3 @@ const DynamicInputs = ({
 };
 
 export default DynamicInputs;
-
