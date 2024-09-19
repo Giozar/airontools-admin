@@ -1,6 +1,6 @@
 import TrashIcon from '@components/svg/TrashIcon';
 import useFilesInput from '@hooks/files/useFilesInput';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { transformFilesToUrls } from './helpers/transformFilesToUrls.helper';
 import './styles/ManualsInput.css';
 
@@ -10,6 +10,8 @@ interface FilesInputProps {
 	setFiles: (value: File[]) => void;
 	urls: string[];
 	setUrls: (value: string[]) => void;
+	urlsRemoved: string[];
+	setUrlsRemoved: (value: string[]) => void;
 }
 
 export default function ManualsInput({
@@ -17,9 +19,15 @@ export default function ManualsInput({
 	files,
 	urls,
 	setFiles,
+	setUrls,
+	urlsRemoved,
+	setUrlsRemoved,
 }: FilesInputProps) {
-	const { selectFiles, removeFiles } = useFilesInput();
+	const { selectFiles, removeFiles, removeUrls } = useFilesInput();
 	const [filePreviews, setFilePreviews] = useState<string[]>([]);
+
+	// Referencia para resetear el input
+	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
 	// Maneja la selección de archivos
 	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +36,11 @@ export default function ManualsInput({
 			files,
 			setFiles,
 		});
+
+		// Resetea el input después de seleccionar archivos
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
 	};
 
 	// Maneja la eliminación de archivos
@@ -37,8 +50,25 @@ export default function ManualsInput({
 			files,
 			setFiles,
 		});
+
+		// Resetea el input después de eliminar un archivo
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
 	};
 
+	// Maneja la eliminación de URLs
+	const handleRemoveUrl = (index: number) => {
+		removeUrls({
+			index,
+			urls,
+			setUrls,
+			urlsRemoved,
+			setUrlsRemoved,
+		});
+	};
+
+	// Actualiza las previsualizaciones cada vez que los archivos cambian
 	useEffect(() => {
 		setFilePreviews(transformFilesToUrls(files));
 	}, [files]);
@@ -53,17 +83,20 @@ export default function ManualsInput({
 						type='file'
 						id='file-input-m'
 						multiple
-						accept='.pdf, .html, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+						accept='.pdf, .doc, .docx, .xml, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
 						onChange={handleFileSelect}
+						ref={fileInputRef} // Referencia al input
 					/>
 				</div>
+
+				{/* Previsualización de URLs cargadas */}
 				{urls.length > 0 &&
 					urls.map((url, index) => (
 						<div key={index} className='manual-preview'>
 							<h4>Archivos cargados</h4>
-							<iframe src={url} title={`preview-${index}`} />
+							<iframe src={url} title={`preview-url-${index}`} />
 							<button
-								onClick={() => handleRemoveFile(index)}
+								onClick={() => handleRemoveUrl(index)}
 								className='delete'
 								type='button'
 							>
@@ -71,11 +104,13 @@ export default function ManualsInput({
 							</button>
 						</div>
 					))}
+
+				{/* Previsualización de archivos recién seleccionados */}
 				{filePreviews.length > 0 &&
-					filePreviews.map((url, index) => (
+					filePreviews.map((preview, index) => (
 						<div key={index} className='manual-preview'>
 							<h4>Archivos previos</h4>
-							<iframe src={url} title={`preview-${index}`} />
+							<iframe src={preview} title={`preview-file-${index}`} />
 							<button
 								onClick={() => handleRemoveFile(index)}
 								className='delete'

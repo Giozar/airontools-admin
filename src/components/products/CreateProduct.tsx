@@ -14,7 +14,7 @@ export default function CreateProduct() {
 	const create = async (e: Event) => {
 		try {
 			const createdProduct = await createProduct(e);
-			showSuccess(`Herramienta ${createdProduct?.name}`);
+			showSuccess(`Herramienta ${createdProduct?.name} creada con éxito`);
 		} catch (err) {
 			const error = err as ErrorResponse;
 			showError(error.message);

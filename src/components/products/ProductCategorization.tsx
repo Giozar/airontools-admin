@@ -3,10 +3,8 @@ import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useFetchCategoriesByFamily from '@hooks/categories/useFetchCategoriesByFamily';
 import useFetchFamilies from '@hooks/families/useFetchFamilies';
 import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcategoriesByFamily';
-import { useEffect } from 'react';
 
 export function ProductCategorization() {
-	const { families } = useFetchFamilies();
 	const {
 		family,
 		setFamily,
@@ -16,57 +14,60 @@ export function ProductCategorization() {
 		setSubcategory,
 	} = useProductCreateContext();
 
-	// Fetch categories and subcategories based on family and category selections
+	// Fetch families, categories, and subcategories based on current selections
+	const { families } = useFetchFamilies();
 	const { categories } = useFetchCategoriesByFamily(family);
 	const { subcategories } = useFetchSubcategoriesByFamily(category);
 
-	// Ensure that selected family, category, and subcategory are updated when editing an existing product
-	useEffect(() => {
-		if (family) {
-			setFamily(family);
-		}
-		if (category) {
-			setCategory(category);
-		}
-		if (subcategory) {
-			setSubcategory(subcategory);
-		}
-	}, [family, category, subcategory, setFamily, setCategory, setSubcategory]);
+	// Handle changes when family changes
+	const handleFamilyChange = (newFamily: string) => {
+		setFamily(newFamily);
+		// Reset category and subcategory when family changes
+		setCategory('');
+		setSubcategory('');
+	};
+
+	// Handle changes when category changes
+	const handleCategoryChange = (newCategory: string) => {
+		setCategory(newCategory);
+		// Reset subcategory when category changes
+		setSubcategory('');
+	};
 
 	return (
 		<div>
 			<SelectInput
 				id='familiaselect'
 				name='Selecciona una familia'
-				options={families.map(family => ({
-					value: family.id,
-					label: family.name,
+				options={families.map(f => ({
+					value: f.id,
+					label: f.name,
 				}))}
-				value={family} // Preselect the current family
-				onChange={setFamily}
+				value={family || ''} // Preselect the current family, fallback to an empty string
+				onChange={handleFamilyChange} // Handle family change
 			/>
-			{family && family.length > 0 && (
+			{family && (
 				<SelectInput
 					id='catselect'
 					name='Selecciona una categoría'
-					options={categories.map(category => ({
-						value: category.id,
-						label: category.name,
+					options={categories.map(cat => ({
+						value: cat.id,
+						label: cat.name,
 					}))}
-					value={category} // Preselect the current category
-					onChange={setCategory}
+					value={category || ''} // Preselect the current category, fallback to an empty string
+					onChange={handleCategoryChange} // Handle category change
 				/>
 			)}
-			{category && category.length > 0 && (
+			{category && (
 				<SelectInput
 					id='subcatselect'
 					name='Selecciona una subcategoría'
-					options={subcategories.map(subcategory => ({
-						value: subcategory.id,
-						label: subcategory.name,
+					options={subcategories.map(subcat => ({
+						value: subcat.id,
+						label: subcat.name,
 					}))}
-					value={subcategory} // Preselect the current subcategory
-					onChange={setSubcategory}
+					value={subcategory || ''} // Preselect the current subcategory, fallback to an empty string
+					onChange={setSubcategory} // Directly set subcategory
 				/>
 			)}
 		</div>

@@ -1,57 +1,45 @@
 import '@components/css/DynamicInputs.css';
 import TrashIcon from '@components/svg/TrashIcon';
-import { useEffect, useState } from 'react';
-
-interface DynamicInput {
-	id: number;
-	value: string;
-}
 
 interface DynamicInputsProps {
 	label: string;
-	onValuesChange?: (values: string[]) => void;
+	setValues: (values: string[]) => void; // Función para actualizar el estado externo
+	values: string[]; // Array de valores
 	placeholder: string;
 }
 
 const DynamicInputs = ({
 	label,
-	onValuesChange,
+	setValues,
+	values,
 	placeholder,
 }: DynamicInputsProps) => {
-	const [inputs, setInputs] = useState<DynamicInput[]>([]);
-
+	// Añadir un nuevo input vacío
 	const handleAdd = () => {
-		setInputs([...inputs, { id: Date.now(), value: '' }]);
+		setValues([...values, '']);
 	};
 
+	// Eliminar un input específico
 	const handleRemove = (index: number) => {
-		setInputs(inputs.filter((_, i) => i !== index));
+		setValues(values.filter((_, i) => i !== index));
 	};
 
+	// Cambiar el valor de un input específico
 	const handleChange = (index: number, value: string) => {
-		setInputs(
-			inputs.map((input, i) => (i === index ? { ...input, value } : input)),
-		);
+		setValues(values.map((val, i) => (i === index ? value : val)));
 	};
-
-	useEffect(() => {
-		const values = inputs.map(input => input.value);
-		if (onValuesChange) {
-			onValuesChange(values);
-		}
-	}, [inputs, onValuesChange]);
 
 	return (
 		<div className='dynamic-inputs'>
 			<label className='dynamic-inputs__label'>{label}</label>
-			{inputs.map((input, index) => (
+			{values.map((value, index) => (
 				<div key={index} className='dynamic-inputs__input-group'>
 					<input
 						type='text'
-						value={input.value}
+						value={value}
 						onChange={e => handleChange(index, e.target.value)}
 						placeholder={placeholder}
-						className='dynamic-inputs__input'
+            className='dynamic-inputs__input'
 					/>
 					<button
 						onClick={() => handleRemove(index)}
@@ -70,3 +58,4 @@ const DynamicInputs = ({
 };
 
 export default DynamicInputs;
+

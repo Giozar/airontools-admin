@@ -32,6 +32,8 @@ export const ProductCreateProvider = ({
 	const [recommendations, setRecommendations] = useState<string[]>([]);
 	const [images, setImages] = useState<string[]>([]);
 	const [manuals, setManuals] = useState<string[]>([]);
+	const [imagesRemoved, setImagesRemoved] = useState<string[]>([]);
+	const [manualsRemoved, setManualsRemoved] = useState<string[]>([]);
 	const [imagesRaw, setImagesRaw] = useState<File[]>([]);
 	const [manualsRaw, setManualsRaw] = useState<File[]>([]);
 	const [videos, setVideos] = useState<string[]>([]);
@@ -80,6 +82,10 @@ export const ProductCreateProvider = ({
 				setVideos,
 				createdBy,
 				setCreatedBy,
+				imagesRemoved,
+				setImagesRemoved,
+				manualsRemoved,
+				setManualsRemoved,
 			}}
 		>
 			{children}
