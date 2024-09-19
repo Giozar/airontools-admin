@@ -1,17 +1,18 @@
 .select-input {
 	margin-bottom: 15px;
+	max-width: 500px;
 }
 
 .select-input__label {
 	display: block;
 	margin-bottom: 5px;
-	color: #333;
+	color: var(--text-primary);
 	font-size: 1rem;
 }
 
 .select-input__select {
 	transition: border-color 0.3s;
-	border: 1px solid #ccc;
+	border: 1px solid var(--accent-primary);
 	border-radius: 4px;
 	padding: 10px;
 	width: 100%;
@@ -20,7 +21,7 @@
 
 .select-input__select:focus {
 	outline: none;
-	border-color: #007bff;
+	border-color: var(--accent-secondary);
 }
 
 .select-input__option {
