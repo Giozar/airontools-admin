@@ -1,28 +1,3 @@
-.content main .options.users .card {
-	flex-direction: row;
-	justify-content: space-between;
-	height: 4rem;
-}
-
-.userlist ul {
-	background-color: var(--bg-tertiary);
-	padding: 0;
-	color: var(--text-primary);
-	list-style-type: none;
-}
-.userlist ul .title {
-	opacity: 0.8;
-	background-color: var(--accent-primary);
-}
-.userlist ul li {
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr)) repeat(3, 130px);
-	margin: 0;
-	border-bottom: 1px solid var(--bg-secondary);
-	padding: 5px;
-	overflow: hidden;
-}
-.userlist ul li p,
 .userpicture {
 	margin: auto;
 	padding: 10px 0;
@@ -38,45 +13,37 @@
 	height: 2rem;
 	object-fit: cover;
 }
-.userlist ul li p:first-child {
-	padding-left: 15px;
-}
-.userlist ul li p {
-	word-break: break-all;
-}
-.userlist ul li button {
+
+.user-list {
 	margin: auto;
-	border: 0px;
-	border-radius: 10px;
+	box-shadow:
+		rgba(0, 0, 0, 0.09) 0px 2px 1px,
+		rgba(0, 0, 0, 0.09) 0px 4px 2px,
+		rgba(0, 0, 0, 0.09) 0px 8px 4px,
+		rgba(0, 0, 0, 0.09) 0px 16px 8px,
+		rgba(0, 0, 0, 0.09) 0px 32px 16px;
+	border-radius: 8px;
+	width: 100%;
+}
+
+.user-list__title {
+	margin-bottom: 15px;
+	color: var(--text-primary);
+	font-size: 1.8rem;
+}
+
+.user-list__search {
+	transition: border-color 0.3s;
+	margin-bottom: 20px;
+	border: 1px solid var(--accent-secondary);
+	border-radius: 4px;
 	padding: 10px;
-	width: fit-content;
+	width: 100%;
+	max-width: 800px;
+	font-size: 1rem;
 }
 
-.userlist ul li .editrol {
-	background-color: rgba(255, 0, 157, 0.521);
-}
-@media (max-width: 1024px) {
-	.userlist ul li {
-		grid-template-columns: repeat(7, minmax(0, 1fr));
-	}
-	.userlist ul li p {
-		font-size: small;
-	}
-	.userlist ul li button {
-		padding: 5px;
-	}
-}
-
-.images {
-	display: flex;
-}
-
-.circular-image {
-	border-radius: 50%;
-	background-color: black;
-	object-fit: contain;
-}
-
-.new-image-container {
-	padding: 0 20px;
+.user-list__search:focus {
+	outline: none;
+	border-color: var(--accent-primary);
 }

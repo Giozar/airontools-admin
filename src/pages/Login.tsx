@@ -1,18 +1,18 @@
-import useErrorHandling from '@hooks/common/useErrorHandling';
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './css/Login.css';
 
 import ThemeToggleButton from '@components/ThemeToggle';
-import ErrorMessage from '@components/commons/ErrorMessage';
 import EyeIcon from '@components/svg/EyeIcon';
 import EyeOffIcon from '@components/svg/EyeOffIcon';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
 import logoAiron from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
 import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
 import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
 import { loginUserService } from '@services/users/loginUser.service';
+import { errorHandler } from '@utils/errorHandler.util';
 import aironLogo from './Logo-Blanco.png'; // cambiar por otro el general
 
 function HeaderLogin({ title }: { title: string }) {
@@ -32,7 +32,7 @@ function HeaderLogin({ title }: { title: string }) {
 function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const { setUser, setAuth } = useAuthContext();
 	const [showPassword, setShowPassword] = useState(false);
 	const { company } = useParams();
@@ -69,7 +69,7 @@ function Login() {
 			navigate('/home');
 		} catch (err) {
 			const error = err as ErrorResponse;
-			showError(error.message);
+			showAlert(errorHandler(error), 'error');
 		}
 	};
 	/*
@@ -79,9 +79,6 @@ function Login() {
 	return (
 		<>
 			<HeaderLogin title={company || ''} />
-
-			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-
 			<div className='login'>
 				<form onSubmit={handleLogin}>
 					<img src={logo} alt={`logo de ${company}`} />

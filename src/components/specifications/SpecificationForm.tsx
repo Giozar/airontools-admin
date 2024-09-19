@@ -1,9 +1,6 @@
-import ErrorMessage from '@components/commons/ErrorMessage';
-import SuccessMessage from '@components/commons/SuccessMessage';
 import '@components/css/createSpecs.css';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
@@ -17,9 +14,8 @@ function SpecificationForm({
 }: SpecificationFormProps) {
 	const { user } = useAuthContext();
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
-	const { showError, errorLog } = useErrorHandling();
 	const createdBy = user?.id || 'user';
-	const { showSuccess, successLog } = useSuccessHandling();
+	const { showAlert } = useAlert();
 
 	// Inicializa el estado de especificaciones cada vez que cambian las IDs
 	useEffect(() => {
@@ -80,17 +76,15 @@ function SpecificationForm({
 				await createSpecification({
 					specification,
 				});
-				showSuccess('Especificación creada con éxito');
+				showAlert('Especificación creada con éxito', 'success');
 			} catch (error) {
-				errorHandler(error, showError);
+				showAlert(errorHandler(error), 'error');
 			}
 		}
 	};
 
 	return (
 		<div id='specifications'>
-			{<ErrorMessage message={errorLog.message} />}
-			{<SuccessMessage message={successLog.message} />}
 			{specifications.map((spec, index) => (
 				<div
 					key={index}

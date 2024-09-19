@@ -7,9 +7,11 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
+import { AlertProvider } from '@contexts/Alert/AlertContext';
 import { CategoryCreateProvider } from '@contexts/categorization/CategoryContext';
 import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
 import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
+import { ModalProvider } from '@contexts/Modal/ModalContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
 import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
@@ -83,13 +85,23 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/login/:company',
-		element: <Login />,
+		element: (
+			<AlertProvider>
+				<Login />
+			</AlertProvider>
+		),
 	},
 	{
 		element: <PrivateRoute />,
 		children: [
 			{
-				element: <BasePage />,
+				element: (
+					<AlertProvider>
+						<ModalProvider>
+							<BasePage />
+						</ModalProvider>
+					</AlertProvider>
+				),
 				children: [
 					{
 						path: 'home',

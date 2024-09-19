@@ -1,10 +1,9 @@
-import Modal from '@components/commons/Modal';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
+import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
-import { useState } from 'react';
 import './EditFamily.css';
 /**
  * Permite la edición y eliminación de una familia existente.
@@ -20,16 +19,16 @@ import './EditFamily.css';
 export default function EditFamily() {
 	const { ...familyToCreate } = useFamilyCreateContext();
 	const { handleUpdateFamily, handleDeleteFamily } = useEditCategorization();
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const { openModal } = useModal();
 
-	const openModal = () => setIsModalOpen(true);
-	const closeModal = () => setIsModalOpen(false);
-	const handleConfirm = () => {
-		console.log('Acción confirmada');
-		if (familyToCreate.id) handleDeleteFamily(familyToCreate.id);
-		closeModal();
+	const handleOpenModal = (id: string) => {
+		openModal(
+			'Eliminar Familia',
+			'Vas a eliminar esta Familia. ¿Estás seguro de que quieres continuar?',
+			() => handleDeleteFamily(id),
+			true,
+		);
 	};
-
 	return (
 		<div className='family__container'>
 			<div className='family__container__header'>
@@ -39,7 +38,7 @@ export default function EditFamily() {
 				<button
 					type='button'
 					className='family__container__delete-button'
-					onClick={openModal}
+					onClick={() => handleOpenModal(familyToCreate.id || '')}
 				>
 					Eliminar familia
 				</button>
@@ -89,18 +88,6 @@ export default function EditFamily() {
 						setFileToDelete={familyToCreate.setImageToDelete}
 					/>
 				</div>
-			</div>
-
-			<div>
-				<Modal
-					isOpen={isModalOpen}
-					onClose={closeModal}
-					onConfirm={handleConfirm}
-					title='Eliminar familia'
-					content='Vas a eliminar esta familia. ¿Estás seguro de que quieres continuar?'
-					cancelText='Cancelar'
-					confirmText='Eliminar'
-				/>
 			</div>
 		</div>
 	);

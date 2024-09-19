@@ -1,10 +1,10 @@
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { getSpecificationsBySubcategoryId } from '@services/specifications/getSpecificationsByCategorization.service';
 import { useEffect, useState } from 'react';
 
 export function useSpecificationsBySubcategory(id: string) {
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const [specificationsBySubcategoryId, setSpecificationsBySubcategoryId] =
 		useState<SpecDataFrontend[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -18,7 +18,10 @@ export function useSpecificationsBySubcategory(id: string) {
 				setSpecificationsBySubcategoryId(specsSubcategoryIdResponse);
 			}
 		} catch (error) {
-			showError('Error al cargar las especificaciones por Id de Subcategoría');
+			showAlert(
+				'Error al cargar las especificaciones por Id de Subcategoría',
+				'error',
+			);
 		} finally {
 			setLoading(false);
 		}
@@ -31,6 +34,5 @@ export function useSpecificationsBySubcategory(id: string) {
 	return {
 		specificationsBySubcategoryId,
 		loadingSpecificationsBySUbcategory: loading,
-		errorLog,
 	};
 }

@@ -1,11 +1,11 @@
 // hooks/useFetchFamilies.ts
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { getSpecifications } from '@services/specifications/getSpecifications.service';
 import { useEffect, useState } from 'react';
 
 function useFetchSpecifications() {
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -20,7 +20,7 @@ function useFetchSpecifications() {
 				specsResponse && setFilteredSpecifications(specsResponse);
 				setLoading(false);
 			} catch (error) {
-				showError('Error al cargar las familias');
+				showAlert('Error al cargar las familias', 'error');
 			} finally {
 				setLoading(false);
 			}
@@ -41,7 +41,6 @@ function useFetchSpecifications() {
 	return {
 		specifications,
 		loading,
-		errorLog,
 		searchTerm,
 		setSearchTerm,
 		setSpecifications,

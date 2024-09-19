@@ -1,28 +1,26 @@
 // src/hooks/useFamilyCreate.ts
 
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { FamilyDataToSend } from '@interfaces/Family.interface';
 import { createFamilyService } from '@services/families/createFamily.service';
 import { useState } from 'react';
 
 const useFamilyCreate = () => {
-	const { errorLog, showError } = useErrorHandling();
-	const { successLog, showSuccess } = useSuccessHandling();
+	const { showAlert } = useAlert();
 	const [familyId, setFamilyId] = useState<string>('');
 
 	const createFamily = async (familyData: FamilyDataToSend) => {
 		try {
 			const result = await createFamilyService(familyData);
 			setFamilyId(result._id);
-			showSuccess('Familia Creada Con Éxito');
+			showAlert('Familia Creada Con Éxito', 'success');
 			return result._id;
 		} catch (error) {
-			showError('Error al crear la familia');
+			showAlert('Error al crear la familia', 'error');
 		}
 	};
 
-	return { errorLog, successLog, createFamily, familyId };
+	return { createFamily, familyId };
 };
 
 export default useFamilyCreate;

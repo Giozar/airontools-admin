@@ -1,9 +1,6 @@
-import ErrorMessage from '@components/commons/ErrorMessage';
-import SuccessMessage from '@components/commons/SuccessMessage';
 import '@components/css/createSpecs.css';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { SpecificationFormEditProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import editSpecification from '@services/specifications/editSpecification.service';
@@ -29,9 +26,7 @@ function SpecificationFormEdit({
 	console.log(categoriesId);
 
 	const { user } = useAuthContext();
-
-	const { showError, errorLog } = useErrorHandling();
-	const { showSuccess, successLog } = useSuccessHandling();
+	const { showAlert } = useAlert();
 	const createdBy = user?.id || 'user';
 
 	useEffect(() => {
@@ -57,17 +52,14 @@ function SpecificationFormEdit({
 	const saveSpecification = async () => {
 		try {
 			await editSpecification({ specification, id });
-			showSuccess('Especificación creada con éxito');
+			showAlert('Especificación creada con éxito', 'success');
 		} catch (error) {
-			errorHandler(error, showError);
+			showAlert(errorHandler(error), 'error');
 		}
 	};
 
 	return (
 		<div id='specifications'>
-			<ErrorMessage message={errorLog.message} />
-			<SuccessMessage message={successLog.message} />
-
 			<form className='form-group'>
 				<input
 					type='text'

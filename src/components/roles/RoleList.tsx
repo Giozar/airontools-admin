@@ -1,6 +1,7 @@
 import { transformRoleDataFront } from '@adapters/role.adapter';
-import DeletionModal from '@components/commons/DeletionModal';
 import { airontoolsAPI } from '@configs/api.config';
+import { useAlert } from '@contexts/Alert/AlertContext';
+import { useModal } from '@contexts/Modal/ModalContext';
 import { RoleDataBack, RoleDataFront } from '@interfaces/Role.interface';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -51,11 +52,17 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 		loading: true,
 		error: null,
 	});
-	const [updateRolei, setUpdateRolei] = useState(false);
-	const [deletionMessage, setDeletionMessage] = useState<string | null>(null);
-	const [showDeletionModalFor, setShowDeletionModalFor] = useState<
-		string | null
-	>(null);
+	const { openModal } = useModal();
+	const { showAlert } = useAlert();
+	const handleOpenModal = (id: string, name: string) => {
+		openModal(
+			'Eliminar Rol',
+			`Vas a eliminar el rol ${name}. ¿Estás seguro de que quieres continuar?`,
+			() => handleDelete(id, name),
+			false,
+			false,
+		);
+	};
 
 	useEffect(() => {
 		const fetchRoles = async () => {
@@ -78,25 +85,23 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 		};
 
 		fetchRoles();
-	}, [updateRole, updateRolei]);
-	const handleDelete = async ({
-		roleName,
-		roleId,
-	}: {
-		roleName: string;
-		roleId: string;
-	}) => {
+	}, [updateRole]);
+	const handleDelete = async (roleId: string, roleName: string) => {
 		try {
 			const response = await axios.delete(
 				airontoolsAPI + `/roles/delete/${roleId}`,
 			);
 			console.log(response.data);
-			setDeletionMessage(
+			showAlert(
 				`El rol ${roleName} (${roleId}) ha sido eliminado correctamente.`,
+				'success',
 			);
+			setTimeout(() => {
+				window.location.reload();
+			}, 300);
 		} catch (error) {
 			console.error(error);
-			setDeletionMessage(`No se ha podido eliminar el rol ${roleName}.`);
+			showAlert(`No se ha podido eliminar el rol ${roleName}.`, 'error');
 		}
 	};
 
@@ -116,28 +121,10 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 						</div>
 						{role.name !== 'Administrador' && (
 							<button
-								onClick={() => setShowDeletionModalFor(role.id as string)}
+								onClick={() => handleOpenModal(role.id as string, role.name)}
 							>
 								Eliminar rol
 							</button>
-						)}
-						{showDeletionModalFor === role.id && (
-							<DeletionModal
-								id={role.id}
-								name={`el rol ${role.name}`}
-								onClose={() => {
-									setShowDeletionModalFor(null);
-									setDeletionMessage(null);
-								}}
-								onCloseDelete={() => setUpdateRolei(!updateRolei)}
-								onDelete={() =>
-									handleDelete({
-										roleName: role.name,
-										roleId: role.id as string,
-									})
-								}
-								message={deletionMessage}
-							/>
 						)}
 					</li>
 				))}

@@ -1,26 +1,21 @@
 // src/hooks/useFamilyUpdate.ts
 
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { FamilyDataToSend } from '@interfaces/Family.interface';
 import { updateFamilyService } from '@services/families/updateFamily.service';
 
 const useFamilyUpdate = () => {
-	const { errorLog: errorLogFamily, showError: showErrorFamily } =
-		useErrorHandling();
-	const { successLog: successLogFamily, showSuccess: showSuccessFamily } =
-		useSuccessHandling();
-
+	const { showAlert } = useAlert();
 	const updateFamily = async (familyData: FamilyDataToSend) => {
 		try {
 			await updateFamilyService(familyData);
-			showSuccessFamily('Familia Actualizada Con Éxito');
+			showAlert('Familia Actualizada Con Éxito', 'success');
 		} catch (error) {
-			showErrorFamily(errorLogFamily.message);
+			showAlert('No se pudo actualizar la familia', 'success');
 		}
 	};
 
-	return { errorLogFamily, successLogFamily, updateFamily };
+	return { updateFamily };
 };
 
 export default useFamilyUpdate;

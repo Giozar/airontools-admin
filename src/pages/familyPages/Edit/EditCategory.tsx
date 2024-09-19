@@ -1,10 +1,10 @@
 import EditCreateToggle from '@components/commons/EditCreateToggle';
-import Modal from '@components/commons/Modal';
 import ModalContent from '@components/commons/ModalContent';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
+import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 import { useState } from 'react';
@@ -32,21 +32,18 @@ export default function EditCategories() {
 	} = useCategoryCreateContext();
 	const { handleUpdateCategory, handleDeleteCategory } =
 		useEditCategorization();
+	const { openModal } = useModal();
 
-	const [id, setId] = useState('');
-	const [key, setKey] = useState('');
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const openModal = (id: string, key: string) => {
-		setIsModalOpen(true);
-		setId(id);
-		setKey(key);
-	};
-	const closeModal = () => setIsModalOpen(false);
-
-	const handleConfirm = () => {
-		if (id) handleDeleteCategory(id);
+	const handleConfirm = (id: string, key: string) => {
+		handleDeleteCategory(id);
 		removeCategoryInstance(key);
-		closeModal();
+	};
+	const handleOpenModal = (id: string, key: string) => {
+		openModal(
+			'Eliminar Categoria',
+			'Vas a eliminar esta Categoria. ¿Estás seguro de que quieres continuar?',
+			() => handleConfirm(id, key),
+		);
 	};
 
 	const [openSubcategories, setOpenSubcategories] = useState<{
@@ -71,7 +68,7 @@ export default function EditCategories() {
 								<button
 									type='button'
 									onClick={() => {
-										openModal(category.id, key);
+										handleOpenModal(category.id, key);
 									}}
 									className='category-item__delete-button'
 								>
@@ -175,16 +172,6 @@ export default function EditCategories() {
 									/>
 								</div>
 							</ModalContent>
-
-							<Modal
-								isOpen={isModalOpen}
-								onClose={closeModal}
-								onConfirm={handleConfirm}
-								title='Eliminar Categoria'
-								content='Vas a eliminar esta Categoria. ¿Estás seguro de que quieres continuar?'
-								cancelText='Cancelar'
-								confirmText='Eliminar'
-							/>
 						</li>
 					);
 				})}

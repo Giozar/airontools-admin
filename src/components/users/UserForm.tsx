@@ -1,20 +1,18 @@
-import useErrorHandling from '@hooks/common/useErrorHandling';
 import usePasswordGenerator from '@hooks/common/usePasswordGenerator';
-import useSuccessHandling from '@hooks/common/useSuccessHandling';
 import { useRoles } from '@hooks/roles/useRoles';
 import { useUserForm } from '@hooks/users/useUserForm';
 import { RoleDataFront } from '@interfaces/Role.interface';
 import createUser from '@services/users/createUser.service';
 import { ChangeEvent, FormEvent, useEffect } from 'react';
 
-import ErrorMessage from '@components/commons/ErrorMessage';
-import SuccessMessage from '@components/commons/SuccessMessage';
 import TextInput from '@components/commons/TextInput';
 import FileUpload from '@components/files/FileUpload';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import useFileUpload from '@hooks/files/useFileUpload';
 import useUserUpdate from '@hooks/users/useUserUpdate';
 import { UserDataFrontend } from '@interfaces/User.interface';
 import { copyPassword } from '@utils/copyPassword.util';
+import { errorHandler } from '@utils/errorHandler.util';
 
 export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 	const {
@@ -28,10 +26,8 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 		setRole,
 		createdBy,
 	} = useUserForm(user);
-
-	const { errorLog, showError } = useErrorHandling();
-	const { successLog, showSuccess } = useSuccessHandling();
 	const { updateUser } = useUserUpdate();
+	const { showAlert } = useAlert();
 	// Se obtiene la lista de roles para el usuario
 	const { roles: roleOptions } = useRoles();
 	const { password, generatePassword } = usePasswordGenerator({});
@@ -67,7 +63,7 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 				role,
 				createdBy,
 			});
-			showSuccess(`Usuario ${userCreated.name} creado con éxito`);
+			showAlert(`Usuario ${userCreated.name} creado con éxito`, 'success');
 			const uploadedUrlImage = await handleImageUpload();
 			if (uploadedUrlImage) {
 				const updatedUser = await updateUser(userCreated.id || '', {
@@ -76,7 +72,10 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 					email: userCreated.email,
 				});
 				console.log(updatedUser);
-				showSuccess(`Imagen y usuario ${userCreated.name} creados con éxito`);
+				showAlert(
+					`Imagen y usuario ${userCreated.name} creados con éxito`,
+					'success',
+				);
 			}
 			setImageUrl('');
 			setEmail('');
@@ -84,14 +83,9 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 			setRole('');
 			setTimeout(() => {
 				window.location.reload();
-			}, 300);
+			}, 500);
 		} catch (error) {
-			console.error('Error al subir datos del usuario:', error);
-			if (error instanceof Error) {
-				showError(error.message);
-			} else {
-				showError('Error desconocido');
-			}
+			showAlert(errorHandler(error), 'error');
 		}
 	};
 
@@ -119,22 +113,18 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 					createdBy,
 				});
 			}
-			showSuccess(`Imagen y usuario ${user.name} actualizado con éxito`);
 		} catch (error) {
 			console.error('Error al subir datos del usuario:', error);
 			if (error instanceof Error) {
-				showError(error.message);
+				showAlert(error.message, 'error');
 			} else {
-				showError('Error desconocido');
+				showAlert('Error desconocido', 'error');
 			}
 		}
 	};
 
 	return (
 		<>
-			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
-			{errorLog.isError && <ErrorMessage message={errorLog.message} />}
-
 			<div className='register'>
 				<form onSubmit={user ? handleSubmitUpdate : handleSubmitCreate}>
 					<FileUpload

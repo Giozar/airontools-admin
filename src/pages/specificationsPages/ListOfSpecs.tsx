@@ -1,10 +1,8 @@
 import ActionCard from '@components/commons/ActionCard';
-import DeletionModal from '@components/commons/DeletionModal';
-import ErrorMessage from '@components/commons/ErrorMessage';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import useErrorHandling from '@hooks/common/useErrorHandling';
-import useFetchCounts from '@hooks/common/useFetchCounts';
+import { useAlert } from '@contexts/Alert/AlertContext';
+import { useModal } from '@contexts/Modal/ModalContext';
 import useSpecificationsManagement from '@hooks/specifications/useSpecificationsDelete';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import '@pages/css/listofspecs.css';
@@ -15,27 +13,19 @@ import { useLocation } from 'react-router-dom';
 
 function SpecificationsGrid() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
-	const { showError, errorLog } = useErrorHandling();
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
-	const {
-		showDeletionModalFor,
-		setShowDeletionModalFor,
-		deletionMessage,
-		handleEdit,
-		handleCloseModal,
-		handleDelete,
-	} = useSpecificationsManagement();
-	const { numberOfProducts } = useFetchCounts(
-		showDeletionModalFor,
-		{
-			fetchProducts: true,
-		},
-		'BySpecification',
-	);
+	const { showAlert } = useAlert();
+	const { openModal } = useModal();
+	const { handleEdit, handleDelete } = useSpecificationsManagement();
 
-	const confirmationInfo = () => {
-		if (numberOfProducts && numberOfProducts > 0)
-			return `Se afectarán gravemente ${numberOfProducts} productos`;
+	const handleOpenModal = (id: string, name: string) => {
+		openModal(
+			'Eliminar Especificacion',
+			`Vas a eliminar la especificacion ${name}. ¿Estás seguro de que quieres continuar? `,
+			() => handleDelete(id, name),
+			true,
+			false,
+		);
 	};
 
 	useEffect(() => {
@@ -44,24 +34,18 @@ function SpecificationsGrid() {
 				const specs = await getSpecifications();
 				setSpecifications(specs);
 			} catch (error) {
-				errorHandler(error, showError);
+				showAlert(errorHandler(error), 'error');
 			}
 		};
 		fetchSpecifications();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const filteredSpecifications = specifications.filter(spec =>
 		spec.name.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
 
-	const handleCloseModalDeletion = (specId: string) => {
-		setSpecifications(specifications.filter(spec => spec.id !== specId));
-	};
-
 	return (
 		<div className='container'>
-			<ErrorMessage message={errorLog.message} />
 			<div className='search-bar'>
 				<input
 					type='text'
@@ -80,7 +64,9 @@ function SpecificationsGrid() {
 							</button>
 							<button
 								className='delete'
-								onClick={() => setShowDeletionModalFor(spec.id || '')}
+								onClick={() => {
+									handleOpenModal(spec.id, spec.name);
+								}}
 							>
 								<TrashIcon />
 							</button>
@@ -118,18 +104,6 @@ function SpecificationsGrid() {
 									),
 							)}
 						</div>
-
-						{showDeletionModalFor === spec.id && (
-							<DeletionModal
-								id={spec.id}
-								name={spec.name}
-								onClose={() => handleCloseModal()}
-								onCloseDelete={() => handleCloseModalDeletion(spec.id || '')}
-								onDelete={() => handleDelete(spec.id || '', spec.name)}
-								message={deletionMessage}
-								confirmationInfo={confirmationInfo()}
-							/>
-						)}
 					</div>
 				))}
 			</div>

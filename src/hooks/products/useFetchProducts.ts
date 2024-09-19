@@ -1,10 +1,10 @@
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 import { getProductsService } from '@services/products/getProducts.service';
 import { useEffect, useState } from 'react';
 
 const useFetchProducts = () => {
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const [products, setProducts] = useState<ProductDataFrontend[]>([]);
 	const [filteredProducts, setFilteredProducts] = useState<
 		ProductDataFrontend[]
@@ -20,7 +20,7 @@ const useFetchProducts = () => {
 				setFilteredProducts(data);
 				setLoading(false);
 			} catch (error) {
-				showError('Error al cargar las subcategorías');
+				showAlert('Error al cargar las subcategorías', 'error');
 				setLoading(false);
 			}
 		};
@@ -31,7 +31,6 @@ const useFetchProducts = () => {
 	return {
 		products,
 		loading,
-		errorLog,
 		setProducts,
 		filteredProducts,
 		setFilteredProducts,

@@ -2,10 +2,11 @@ import { UserDataFrontend } from '@interfaces/User.interface';
 import { getUsers } from '@services/users';
 import { useCallback, useEffect, useState } from 'react';
 
-const useFetchUsers = (updateListFlag: boolean) => {
+const useFetchUsers = () => {
 	const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
 	const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [updateListFlag, setupdateListFlag] = useState(false);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -38,6 +39,7 @@ const useFetchUsers = (updateListFlag: boolean) => {
 		filteredUsers,
 		setFilteredUsers,
 		handleSearch,
+		setupdateListFlag,
 	};
 };
 

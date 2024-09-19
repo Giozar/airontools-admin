@@ -1,12 +1,12 @@
 // src/hooks/useFetchSubcategories.ts
 
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { getSubcategoriesService } from '@services/subcategories/getSubcategories.service';
 import { useEffect, useState } from 'react';
 
 const useFetchSubcategories = () => {
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const [subcategories, setSubcategories] = useState<SubcategoryDataFrontend[]>(
 		[],
 	);
@@ -24,7 +24,7 @@ const useFetchSubcategories = () => {
 				setFilteredSubcategories(data);
 				setLoading(false);
 			} catch (error) {
-				showError('Error al cargar las subcategorías');
+				showAlert('Error al cargar las subcategorías', 'error');
 				setLoading(false);
 			}
 		};
@@ -35,7 +35,6 @@ const useFetchSubcategories = () => {
 	return {
 		subcategories,
 		loading,
-		errorLog,
 		setSubcategories,
 		filteredSubcategories,
 		setFilteredSubcategories,

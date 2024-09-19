@@ -1,10 +1,10 @@
-import useErrorHandling from '@hooks/common/useErrorHandling';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import { getSpecificationsByFamilyId } from '@services/specifications/getSpecificationsByCategorization.service';
 import { useEffect, useState } from 'react';
 
 export function useSpecificationsByFamily(id: string) {
-	const { errorLog, showError } = useErrorHandling();
+	const { showAlert } = useAlert();
 	const [specificationsByFamilyId, setSpecificationsByFamilyId] = useState<
 		SpecDataFrontend[]
 	>([]);
@@ -18,7 +18,10 @@ export function useSpecificationsByFamily(id: string) {
 				setSpecificationsByFamilyId(specsFamilyIdResponse);
 			}
 		} catch (error) {
-			showError('Error al cargar las especificaciones por Id de Familia');
+			showAlert(
+				'Error al cargar las especificaciones por Id de Familia',
+				'error',
+			);
 		} finally {
 			setLoading(false);
 		}
@@ -31,6 +34,5 @@ export function useSpecificationsByFamily(id: string) {
 	return {
 		specificationsByFamilyId,
 		loadingSpecificationsByFamily: loading,
-		errorLog,
 	};
 }

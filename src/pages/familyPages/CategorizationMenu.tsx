@@ -1,9 +1,8 @@
 import ActionCard from '@components/commons/ActionCard';
-import DeletionModal from '@components/commons/DeletionModal';
 import DropdownMenu from '@components/commons/DropdownMenu';
-import ErrorMessage from '@components/commons/ErrorMessage';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
+import { useModal } from '@contexts/Modal/ModalContext';
 
 import useFetchCategories from '@hooks/categories/useFetchCategories';
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
@@ -17,38 +16,15 @@ import { useLocation } from 'react-router-dom';
 
 function ListOfFamilies() {
 	const [searchTerm, setSearchTerm] = useState('');
-	const {
-		showDeletionModalFor,
-		setShowDeletionModalFor,
-		deletionMessage,
-		handleEdit,
-		handleCloseModal,
-		handleDelete,
-		updateListFlag,
-	} = useFamilyManagement();
-
-	const {
-		loading,
-		errorLog,
-		setFamilies,
-		filteredFamilies,
-		setFilteredFamilies,
-		handleSearch,
-	} = useFetchFamilies(updateListFlag);
+	const { handleEdit, handleDelete } = useFamilyManagement();
+	const { loading, filteredFamilies, handleSearch, setupdateListFlag } =
+		useFetchFamilies();
 
 	const { filteredCategories } = useFetchCategories();
 	const { filteredSubcategories } = useFetchSubcategories();
 	const { filteredSpecifications } = useFetchSpecifications();
 	const { filteredProducts } = useFetchProducts();
-
-	const handleCloseModalDeletion = (familyId: string) => {
-		setFamilies(prevFamilies =>
-			prevFamilies.filter(family => family.id !== familyId),
-		);
-		setFilteredFamilies(prevFiltered =>
-			prevFiltered.filter(family => family.id !== familyId),
-		);
-	};
+	const { openModal } = useModal();
 
 	const calcFamilyStats = useMemo(() => {
 		return (familyId: string | undefined) => {
@@ -61,10 +37,6 @@ function ListOfFamilies() {
 			const specifications = filteredSpecifications.filter(spec =>
 				spec.families.some(fam => fam._id === familyId),
 			);
-
-			// console.log(filteredSpecifications);
-			// console.log(specifications);
-
 			const products = filteredProducts.filter(
 				product => product.family._id === familyId,
 			);
@@ -78,8 +50,33 @@ function ListOfFamilies() {
 		};
 	}, [filteredCategories, filteredSubcategories, filteredSpecifications]);
 
+	const handleOpenModal = (id: string, name: string) => {
+		const {
+			categoriesLength,
+			subcategoriesLength,
+			specificationLength,
+			productsLength,
+		} = calcFamilyStats(id || '');
+		const suma =
+			categoriesLength +
+			subcategoriesLength +
+			specificationLength +
+			productsLength;
+		openModal(
+			'Eliminar la familia',
+			`Vas a eliminar la familia ${name}. 
+			Afectará a ${categoriesLength} categorias, ${subcategoriesLength} subcategorias,
+			${specificationLength} especificaciones y ${productsLength} productos
+			¿Estás seguro de que quieres continuar? `,
+			() => {
+				handleDelete(id, name), setupdateListFlag(prev => !prev);
+			},
+			suma !== 0,
+			suma !== 0,
+		);
+	};
+
 	if (loading) return <p>Cargando...</p>;
-	if (errorLog.isError) return <ErrorMessage message={errorLog.message} />;
 
 	return (
 		<div>
@@ -97,12 +94,6 @@ function ListOfFamilies() {
 
 			<div className='grid'>
 				{filteredFamilies.map(family => {
-					const {
-						categoriesLength,
-						subcategoriesLength,
-						specificationLength,
-						productsLength,
-					} = calcFamilyStats(family.id || '');
 					return (
 						<div key={family.id} className='card'>
 							<div className='cardHeader'>
@@ -113,7 +104,9 @@ function ListOfFamilies() {
 									</button>
 									<button
 										className='delete'
-										onClick={() => setShowDeletionModalFor(family.id || '')}
+										onClick={() =>
+											handleOpenModal(family.id || '', family.name)
+										}
 									>
 										<TrashIcon />
 									</button>
@@ -134,35 +127,6 @@ function ListOfFamilies() {
 									filteredSpecifications={filteredSpecifications}
 									family={family}
 								/>
-								{showDeletionModalFor === family.id && (
-									<DeletionModal
-										id={family.id}
-										name={family.name}
-										onClose={handleCloseModal}
-										onCloseDelete={() =>
-											handleCloseModalDeletion(family.id || '')
-										}
-										onDelete={() => handleDelete(family.id || '', family.name)}
-										message={deletionMessage}
-										confirmationInfo={
-											categoriesLength > 0 ||
-											subcategoriesLength > 0 ||
-											specificationLength > 0 ||
-											productsLength > 0
-												? `Al borrar esta familia se eliminarán ${categoriesLength > 0 ? categoriesLength + ' categorías, ' : ''}
-												${subcategoriesLength > 0 ? subcategoriesLength + ' subcategorías, ' : ''} 
-												${specificationLength > 0 ? specificationLength + ' especificaciones, ' : ''} 
-												${
-													productsLength > 0
-														? productsLength +
-															` productos, desligar y 
-												reclasificar estos productos antes de proceder con la eliminación`
-														: ''
-												} `
-												: null
-										}
-									/>
-								)}
 							</div>
 						</div>
 					);

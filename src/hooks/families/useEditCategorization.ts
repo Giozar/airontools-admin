@@ -1,4 +1,5 @@
 import { airontoolsAPI } from '@configs/api.config';
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
@@ -14,10 +15,11 @@ import { deleteSubcategoryService } from '@services/subcategories/deleteSubcateg
 import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
+	const { showAlert } = useAlert();
 	const { user } = useAuthContext();
 	const { addCategoryInstance, getCategoryInstance, getAllCategoryInstances } =
 		useCategoryCreateContext();
@@ -30,7 +32,7 @@ export function useEditCategorization() {
 	const categoryInstances = getAllCategoryInstances();
 	const { createSubcategory } = useSubcategoryCreate();
 	const { createCategory } = useCategoryCreate();
-
+	const navigate = useNavigate();
 	const location = useLocation();
 	const family = location.state?.familyId;
 	//Obten los valores de para editar xdxdxd
@@ -97,7 +99,7 @@ export function useEditCategorization() {
 			return url;
 		} catch (error) {
 			console.error('No se pudo subir archivos:', rawImage, error);
-			alert('no se pudo subir el archivo');
+			showAlert('no se pudo subir el archivo', 'error');
 		}
 	};
 
@@ -106,21 +108,18 @@ export function useEditCategorization() {
 			await deleteFileService(fileId);
 		} catch (error) {
 			console.error(`Error al eliminar archivo ${fileId}:`, error);
-			alert('no se pudo borrar el archivo');
+			showAlert('no se pudo borrar el archivo', 'error');
 		}
 	};
 
 	const handleDeleteFamily = async (familyId: string) => {
 		try {
 			await deleteFamilyService(familyId);
-			console.log('borrefamailia');
-			alert('Familia borrada');
-			setTimeout(() => {
-				window.location.reload();
-			}, 300);
+			showAlert('Familia borrada', 'success');
+			navigate('/home/categorizacion');
 		} catch (error) {
 			console.error(error);
-			alert('no se pudo borrar familia');
+			showAlert('no se pudo borrar familia', 'error');
 		}
 	};
 
@@ -128,13 +127,13 @@ export function useEditCategorization() {
 		try {
 			await deleteCategory(id);
 			console.log('borrefamailia');
-			alert('Categoría borrada');
+			showAlert('Categoría borrada', 'success');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300);
 		} catch (error) {
 			console.error(error);
-			alert('no se pudo borrar categoria');
+			showAlert('no se pudo borrar categoria', 'error');
 		}
 	};
 
@@ -142,13 +141,13 @@ export function useEditCategorization() {
 		try {
 			await deleteSubcategoryService(id);
 			console.log('borrefamailia');
-			alert('Subcategoría borrada');
+			showAlert('Subcategoría borrada', 'success');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300);
 		} catch (error) {
 			console.error(error);
-			alert('no se pudo borrar subcategoria');
+			showAlert('no se pudo borrar subcategoria', 'error');
 		}
 	};
 
@@ -174,9 +173,9 @@ export function useEditCategorization() {
 				description: familyToEdit.description,
 				images: [img],
 			});
-			alert('Familia actualizada');
+			showAlert('Familia actualizada', 'success');
 		} catch (error) {
-			alert('no se pudo actualizar familia');
+			showAlert('no se pudo actualizar familia', 'error');
 		}
 	};
 
@@ -200,10 +199,10 @@ export function useEditCategorization() {
 					images: [img],
 				});
 			}
-			alert('Categoria actualizada');
+			showAlert('Categoria actualizada', 'success');
 		} catch (error) {
 			console.error('Error:', error);
-			alert('No se pudo actualizar categoria');
+			showAlert('No se pudo actualizar categoria', 'error');
 		}
 	};
 	const handleUpdateSubcategory = async (key: string) => {
@@ -229,10 +228,10 @@ export function useEditCategorization() {
 					images: [img],
 				});
 			}
-			alert('Subcategoria actualizada');
+			showAlert('Subcategoria actualizada', 'success');
 		} catch (error) {
 			console.error('Error:', error);
-			alert('No se pudo actualizar subcategoria');
+			showAlert('No se pudo actualizar subcategoria', 'error');
 		}
 	};
 	const handleUpdateCategorization = async (e: {
@@ -276,7 +275,7 @@ export function useEditCategorization() {
 					},
 				);
 			}
-			alert('Proceso completado exitosamente');
+			showAlert('Proceso completado exitosamente', 'success');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300);
@@ -285,7 +284,7 @@ export function useEditCategorization() {
 				'Error al crear familias, categorías o subcategorías:',
 				error,
 			);
-			alert('no se pudo crear subcategorias');
+			showAlert('no se pudo crear subcategorias', 'error');
 		}
 	};
 	const handleCreateCategory = async () => {
@@ -318,7 +317,7 @@ export function useEditCategorization() {
 					images: [uploadedCategoryImageUrl],
 				});
 			}
-			alert('Proceso completado exitosamente');
+			showAlert('Proceso completado exitosamente', 'success');
 			setTimeout(() => {
 				window.location.reload();
 			}, 300);
@@ -327,7 +326,7 @@ export function useEditCategorization() {
 				'Error al crear familias, categorías o subcategorías:',
 				error,
 			);
-			alert('no se pudo crear categorias');
+			showAlert('no se pudo crear categorias', 'error');
 		}
 	};
 	return {

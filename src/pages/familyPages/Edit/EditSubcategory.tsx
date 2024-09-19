@@ -1,10 +1,9 @@
-import Modal from '@components/commons/Modal';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
+import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
-import { useState } from 'react';
 import './EditSubcategory.css';
 /**
  * Filtra y muestra las subcategorías del contexto que tienen el modo de edición y pertenecen a la categoría deseada.
@@ -35,20 +34,18 @@ export default function EditSubcategories({
 	const { handleUpdateSubcategory, handleDeleteSubcategory } =
 		useEditCategorization();
 
-	const [id, setId] = useState('');
-	const [key, setKey] = useState('');
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const openModal = (id: string, key: string) => {
-		setIsModalOpen(true);
-		setId(id);
-		setKey(key);
-	};
-	const closeModal = () => setIsModalOpen(false);
-
-	const handleConfirm = () => {
-		if (id) handleDeleteSubcategory(id);
+	const { openModal } = useModal();
+	const handleConfirm = (id: string, key: string) => {
+		handleDeleteSubcategory(id);
 		removeSubcategoryInstance(key);
-		closeModal();
+	};
+	const handleOpenModal = (id: string, key: string) => {
+		openModal(
+			'Eliminar Subcategoria',
+			'Vas a eliminar esta Subcategoria. ¿Estás seguro de que quieres continuar?',
+			() => handleConfirm(id, key),
+			true,
+		);
 	};
 
 	return (
@@ -68,7 +65,7 @@ export default function EditSubcategories({
 								<h2 className='subcategory-item__title'>{Subcategory.name}</h2>
 								<button
 									type='button'
-									onClick={() => openModal(Subcategory.id, key)}
+									onClick={() => handleOpenModal(Subcategory.id, key)}
 									className='subcategory-item__delete-button'
 								>
 									Eliminar subcategoria
@@ -133,16 +130,6 @@ export default function EditSubcategories({
 									/>
 								</div>
 							</div>
-
-							<Modal
-								isOpen={isModalOpen}
-								onClose={closeModal}
-								onConfirm={handleConfirm}
-								title='Eliminar Subcategoria'
-								content='Vas a eliminar esta Subcategoria. ¿Estás seguro de que quieres continuar?'
-								cancelText='Cancelar'
-								confirmText='Eliminar'
-							/>
 						</li>
 					);
 				})}
