@@ -1,11 +1,11 @@
+import '@components/css/TableRow.css';
 import React, { ChangeEvent, useEffect, useState } from 'react';
-
 interface TableRowProps {
 	label: string;
 	unit: string;
 	placeholder: string;
 	onValueChange: (newValue: string) => void;
-	value?: string; // Valor opcional inicial
+	value?: string;
 }
 
 const TableRow: React.FC<TableRowProps> = ({
@@ -13,11 +13,10 @@ const TableRow: React.FC<TableRowProps> = ({
 	unit,
 	placeholder,
 	onValueChange,
-	value = '', // Valor inicial opcional
+	value = '',
 }) => {
 	const [inputValue, setInputValue] = useState(value);
 
-	// Sincronizar el valor inicial si cambia
 	useEffect(() => {
 		setInputValue(value);
 	}, [value]);
@@ -25,20 +24,23 @@ const TableRow: React.FC<TableRowProps> = ({
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const newValue = e.target.value;
 		setInputValue(newValue);
-		onValueChange(newValue); // Llama a la función pasada desde el componente padre
+		onValueChange(newValue);
 	};
 
 	return (
-		<tr className='tableRow'>
-			<td className='cell'>
-				<div className='label'>{label}</div>
-				<input
-					type='text'
-					placeholder={placeholder}
-					value={inputValue}
-					onChange={handleChange}
-				/>
-				<div className='unit'>{unit}</div>
+		<tr className='table-row'>
+			<td className='table-row__cell'>
+				<div className='table-row__label'>{label}</div>
+				<div className='table-row__input-container'>
+					<input
+						type='text'
+						placeholder={placeholder}
+						value={inputValue}
+						onChange={handleChange}
+						className='table-row__input'
+					/>
+					<div className='table-row__unit'>{unit}</div>
+				</div>
 			</td>
 		</tr>
 	);
