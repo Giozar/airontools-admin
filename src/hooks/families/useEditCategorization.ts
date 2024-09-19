@@ -15,7 +15,7 @@ import { deleteSubcategoryService } from '@services/subcategories/deleteSubcateg
 import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
@@ -32,7 +32,7 @@ export function useEditCategorization() {
 	const categoryInstances = getAllCategoryInstances();
 	const { createSubcategory } = useSubcategoryCreate();
 	const { createCategory } = useCategoryCreate();
-
+	const navigate = useNavigate();
 	const location = useLocation();
 	const family = location.state?.familyId;
 	//Obten los valores de para editar xdxdxd
@@ -117,9 +117,7 @@ export function useEditCategorization() {
 			await deleteFamilyService(familyId);
 			console.log('borrefamailia');
 			showAlert('Familia borrada', 'success');
-			setTimeout(() => {
-				window.location.reload();
-			}, 300);
+			navigate('/home/categorizacion');
 		} catch (error) {
 			console.error(error);
 			showAlert('no se pudo borrar familia', 'error');
