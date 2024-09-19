@@ -1,19 +1,14 @@
 // src/hooks/useFamilyManagement.ts
 
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { deleteFamilyService } from '@services/families/deleteFamily.service';
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const useFamilyManagement = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [deletionMessage, setDeletionMessage] = useState<string | null>(null);
-	const [showDeletionModalFor, setShowDeletionModalFor] = useState<
-		string | null
-	>(null);
-	const [showModalFor, setShowModalFor] = useState<string | null>(null);
-	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
+	const { showAlert } = useAlert();
 
 	const handleEdit = (family: FamilyDataFrontend) => {
 		localStorage.setItem('familyToEdit', JSON.stringify({ family }));
@@ -22,37 +17,21 @@ const useFamilyManagement = () => {
 		});
 	};
 
-	const handleCloseModal = () => {
-		setShowDeletionModalFor(null);
-		setDeletionMessage(null);
-	};
-
-	const handleUpdateList = () => {
-		setUpdateListFlag(prevFlag => !prevFlag);
-	};
-
 	const handleDelete = async (familyId: string, familyName: string) => {
 		try {
 			await deleteFamilyService(familyId);
-			setDeletionMessage(
+			showAlert(
 				`${familyName} (${familyId}) ha sido eliminado correctamente.`,
+				'success',
 			);
 		} catch (error) {
-			setDeletionMessage(`No se ha podido eliminar la familia ${familyId}.`);
+			showAlert(`No se ha podido eliminar la familia ${familyId}.`, 'error');
 		}
 	};
 
 	return {
-		showDeletionModalFor,
-		setShowDeletionModalFor,
-		showModalFor,
-		setShowModalFor,
-		deletionMessage,
 		handleEdit,
-		handleCloseModal,
 		handleDelete,
-		handleUpdateList,
-		updateListFlag,
 	};
 };
 

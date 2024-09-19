@@ -1,6 +1,5 @@
 import { transformProductDataToFrontend } from '@adapters/products.adapter';
 import ActionCard from '@components/commons/ActionCard';
-import DeletionModal from '@components/commons/DeletionModal';
 import TableComponent from '@components/commons/DynamicTable';
 import ToolInfoModal from '@components/products/ToolInfoModal';
 import EditIcon from '@components/svg/EditIcon';
@@ -9,6 +8,7 @@ import TrashIcon from '@components/svg/TrashIcon';
 import { airontoolsAPI } from '@configs/api.config';
 
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { useModal } from '@contexts/Modal/ModalContext';
 import useProductManagement from '@hooks/products/useProductManagement';
 import {
 	ProductDataBackend,
@@ -23,15 +23,8 @@ function ListOfTools() {
 	const [selectedProduct, setSelectedProduct] =
 		useState<ProductDataFrontend | null>(null);
 	const [products, setProducts] = useState<ProductDataFrontend[]>([]);
-	const {
-		showDeletionModalFor,
-		setShowDeletionModalFor,
-		deletionMessage,
-		handleEdit,
-		handleCloseModal,
-		handleDelete,
-	} = useProductManagement();
-
+	const { handleEdit, handleDelete } = useProductManagement();
+	const { openModal } = useModal();
 	const { user } = useAuthContext();
 
 	useEffect(() => {
@@ -41,8 +34,6 @@ function ListOfTools() {
 					`${airontoolsAPI}/products`,
 				);
 				setProducts(response.data.map(transformProductDataToFrontend));
-				// console.log(response.data);
-				// console.log(response.data.map(transformProductDataToFrontend));
 			} catch (error) {
 				console.error('Failed to fetch tools:', error);
 			}
@@ -50,9 +41,16 @@ function ListOfTools() {
 
 		fetchProducts();
 	}, []);
-	const handleCloseModalDeletion = (toolid: string) => {
-		setProducts(products.filter(tool => tool.id !== toolid));
-		handleCloseModal();
+	const handleOpenModal = (product: ProductDataFrontend) => {
+		openModal(
+			'Eliminar Producto',
+			`Vas a eliminar el producto ${product.name}. ¿Estás seguro de que quieres continuar? `,
+			() => {
+				handleDelete(product);
+			},
+			true,
+			false,
+		);
 	};
 	const tableData = {
 		headers: [
@@ -96,7 +94,7 @@ function ListOfTools() {
 					className={`table__button table__button--delete ${user?.role?.name !== 'Administrador' ? 'table__button--disabled' : ''}`}
 					onClick={() => {
 						if (user?.role?.name === 'Administrador') {
-							setShowDeletionModalFor(tool.id);
+							handleOpenModal(tool);
 						}
 					}}
 					key='delete'
@@ -125,20 +123,6 @@ function ListOfTools() {
 				product={selectedProduct}
 			/>
 			<TableComponent data={tableData} />
-			{showDeletionModalFor && (
-				<DeletionModal
-					id={showDeletionModalFor}
-					name={products.find(p => p.id === showDeletionModalFor)?.name || ''}
-					onClose={() => handleCloseModal()}
-					onCloseDelete={() => handleCloseModalDeletion(showDeletionModalFor)}
-					onDelete={() =>
-						handleDelete(
-							products.find(p => p.id === showDeletionModalFor) || null,
-						)
-					}
-					message={deletionMessage}
-				/>
-			)}
 		</div>
 	);
 }

@@ -12,6 +12,7 @@ import useFileUpload from '@hooks/files/useFileUpload';
 import useUserUpdate from '@hooks/users/useUserUpdate';
 import { UserDataFrontend } from '@interfaces/User.interface';
 import { copyPassword } from '@utils/copyPassword.util';
+import { errorHandler } from '@utils/errorHandler.util';
 
 export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 	const {
@@ -84,12 +85,7 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 				window.location.reload();
 			}, 500);
 		} catch (error) {
-			console.error('Error al subir datos del usuario:', error);
-			if (error instanceof Error) {
-				showAlert(error.message, 'error');
-			} else {
-				showAlert('Error desconocido', 'error');
-			}
+			showAlert(errorHandler(error), 'error');
 		}
 	};
 

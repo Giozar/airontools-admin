@@ -4,7 +4,7 @@ import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { getFamiliesService } from '@services/families/getFamilies.service';
 import { useEffect, useState } from 'react';
 
-function useFetchFamilies(updateListFlag?: boolean) {
+function useFetchFamilies() {
 	const { showAlert } = useAlert();
 	const [families, setFamilies] = useState<FamilyDataFrontend[]>([]);
 	const [filteredFamilies, setFilteredFamilies] = useState<
@@ -12,6 +12,7 @@ function useFetchFamilies(updateListFlag?: boolean) {
 	>([]);
 	const [, setSearchTerm] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(true);
+	const [updateListFlag, setupdateListFlag] = useState(false);
 
 	useEffect(() => {
 		const loadFamilies = async () => {
@@ -28,8 +29,7 @@ function useFetchFamilies(updateListFlag?: boolean) {
 		};
 
 		loadFamilies();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [updateListFlag]); // Empty dependency array ensures this effect runs only once
+	}, [updateListFlag]);
 
 	const handleSearch = (searchTerm: string) => {
 		const term = searchTerm.toLowerCase();
@@ -47,6 +47,7 @@ function useFetchFamilies(updateListFlag?: boolean) {
 		filteredFamilies,
 		setFilteredFamilies,
 		handleSearch,
+		setupdateListFlag,
 	};
 }
 

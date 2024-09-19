@@ -1,13 +1,14 @@
 import ActionCard from '@components/commons/ActionCard';
-import DeletionModal from '@components/commons/DeletionModal';
 import TableComponent from '@components/commons/DynamicTable';
 import RoleChangeModal from '@components/roles/RoleChangeModal';
 import EditRoleIcon from '@components/svg/EditRoleIcon';
 import EditUserIcon from '@components/svg/EditUserIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { useModal } from '@contexts/Modal/ModalContext';
 import useUserManagement from '@hooks/users/useUserManagement';
 import useUsers from '@hooks/users/useUsers';
+import { UserDataFrontend } from '@interfaces/User.interface';
 import '@pages/css/UserOptions.css';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -16,29 +17,21 @@ import { useLocation } from 'react-router-dom';
 function ReturnUsers() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const { user: loggedUser } = useAuthContext();
-	const {
-		showDeletionModalFor,
-		setShowDeletionModalFor,
-		showModalFor,
-		setShowModalFor,
-		deletionMessage,
-		handleEdit,
-		handleCloseModal,
-		handleDelete,
-		handleUpdateList,
-		updateListFlag,
-	} = useUserManagement();
-	const {
-		usersList,
-		setUsersList,
-		filteredUsers,
-		setFilteredUsers,
-		handleSearch,
-	} = useUsers(updateListFlag);
+	const { handleEdit, handleDelete } = useUserManagement();
+	const { filteredUsers, handleSearch, setupdateListFlag } = useUsers();
+	const { openModal } = useModal();
 
-	const handleCloseModalDeletion = (userid: string) => {
-		setUsersList(usersList.filter(user => user.id !== userid));
-		setFilteredUsers(filteredUsers.filter(user => user.id !== userid));
+	const [showModalFor, setShowModalFor] = useState<string | null>(null);
+	const handleOpenModal = (userToDelete: UserDataFrontend) => {
+		openModal(
+			'Eliminar Usuario',
+			`Vas a eliminar el usuario ${userToDelete.name}. ¿Estás seguro de que quieres continuar? `,
+			() => {
+				handleDelete(userToDelete), setupdateListFlag(prev => !prev);
+			},
+			true,
+			false,
+		);
 	};
 	const tableData = {
 		headers: ['ID', 'Nombre', 'Foto', 'Rol', 'Cambiar Rol', 'Editar', 'Borrar'],
@@ -72,7 +65,7 @@ function ReturnUsers() {
 				<button
 					key={user.id + 'delete'}
 					className={`table__button table__button--delete ${user.role?.name === 'Administrador' && !(loggedUser?.name === 'root' && loggedUser?.role?.name === 'Administrador') ? 'table__button--disabled' : ''}`}
-					onClick={() => setShowDeletionModalFor(user.id || '')}
+					onClick={() => handleOpenModal(user)}
 					disabled={
 						user.role?.name === 'Administrador' &&
 						!(
@@ -100,32 +93,11 @@ function ReturnUsers() {
 				className='search'
 			/>
 			<TableComponent data={tableData} />
-			{showDeletionModalFor && (
-				<DeletionModal
-					id={showDeletionModalFor}
-					image={
-						filteredUsers.find(p => p.id === showDeletionModalFor)?.imageUrl ||
-						''
-					}
-					name={
-						filteredUsers.find(p => p.id === showDeletionModalFor)?.name || ''
-					}
-					onClose={() => handleCloseModal()}
-					onCloseDelete={() => handleCloseModalDeletion(showDeletionModalFor)}
-					onDelete={() =>
-						handleDelete(
-							filteredUsers.find(p => p.id === showDeletionModalFor) || null,
-						)
-					}
-					message={deletionMessage}
-				/>
-			)}
-
 			{showModalFor && (
 				<RoleChangeModal
 					userToEdit={filteredUsers.find(p => p.id === showModalFor) || null}
 					onCloseModal={() => setShowModalFor(null)}
-					onUpdateList={handleUpdateList}
+					onUpdateList={() => setupdateListFlag(prev => !prev)}
 				/>
 			)}
 		</div>
