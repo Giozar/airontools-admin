@@ -5,9 +5,17 @@ interface UseFilesInputParams {
 	setFiles: (value: File[]) => void;
 }
 
+interface UseUrlsInputParams {
+	urls: string[];
+	setUrls: (value: string[]) => void;
+	urlsRemoved: string[];
+	setUrlsRemoved: (value: string[]) => void;
+}
+
 export default function useFilesInput() {
 	const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 	const [fileNames, setFileNames] = useState<string[]>([]);
+
 	// Añade archivos seleccionados y actualiza sus previsualizaciones y nombres
 	const selectFiles = ({
 		event,
@@ -35,8 +43,26 @@ export default function useFilesInput() {
 		setPreviewUrls(previewUrls.filter((_, i) => i !== index));
 		setFileNames(fileNames.filter((_, i) => i !== index));
 	};
+
+	const removeUrls = ({
+		index,
+		urls,
+		setUrls,
+		urlsRemoved,
+		setUrlsRemoved,
+	}: UseUrlsInputParams & { index: number }) => {
+		// Obtener la URL a eliminar
+		const urlToRemove = urls[index];
+		// Actualizar el estado de URLs, eliminando la URL correspondiente
+		setUrls(urls.filter((_, i) => i !== index));
+
+		// Actualizar el estado de URLs removidas, agregando la URL eliminada
+		setUrlsRemoved([...urlsRemoved, urlToRemove]);
+	};
+
 	return {
 		selectFiles,
 		removeFiles,
+		removeUrls,
 	};
 }

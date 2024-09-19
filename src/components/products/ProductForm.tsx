@@ -1,4 +1,4 @@
-import { DynamicInputSection } from '@components/commons/DynamicInputSection';
+import DynamicInputs from '@components/commons/DynamicInputs';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import ImagesInput from '@components/files/ImagesInput';
@@ -27,6 +27,7 @@ interface ProductFormProps {
 
 const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 	const {
+		setId,
 		name,
 		setName,
 		model,
@@ -41,25 +42,35 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 		setManuals,
 		manualsRaw,
 		setManualsRaw,
+		characteristics,
 		setCharacteristics,
+		applications,
 		setApplications,
+		recommendations,
 		setRecommendations,
+		operationRequirements,
 		setOperationRequirements,
+		videos,
 		setVideos,
+		includedItems,
 		setIncludedItems,
+		optionalAccessories,
 		setOptionalAccessories,
-		family,
 		setFamily,
-		category,
 		setCategory,
-		subcategory,
 		setSubcategory,
 		setSpecifications,
+		setCreatedBy,
+		imagesRemoved,
+		setImagesRemoved,
+		manualsRemoved,
+		setManualsRemoved,
 	} = useProductCreateContext();
 
 	// Use initialData to prefill form values if available
 	useEffect(() => {
 		if (initialData) {
+			setId(initialData.id || '');
 			setName(initialData.name || '');
 			setModel(initialData.model || '');
 			setDescription(initialData.description || '');
@@ -81,6 +92,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			);
 			setCategory(initialData.category?._id || '');
 			setSubcategory(initialData.subcategory?._id || '');
+			setCreatedBy(initialData.createdBy?.id || '');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialData]);
@@ -101,7 +113,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 						id='productModel'
 						label='Modelo de herramienta'
 						value={model}
-						placeholder='---'
+						placeholder='H-1'
 						onChange={e => setModel(e.target.value)}
 					/>
 				</div>
@@ -119,30 +131,30 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 				<div className='form-content'>
 					<div className='left-column'>
 						<ProductCategorization />
-						<SpecificationsSection
-							familyId={family}
-							categoryId={category}
-							subcategoryId={subcategory}
-						/>
-						<DynamicInputSection
+						<SpecificationsSection />
+						<DynamicInputs
 							label='Características'
-							onValuesChange={setCharacteristics}
+							setValues={setCharacteristics}
 							placeholder='Carácteristica'
+							values={characteristics}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Aplicaciones'
-							onValuesChange={setApplications}
+							setValues={setApplications}
 							placeholder='Aplicación'
+							values={applications}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Recomendaciones'
-							onValuesChange={setRecommendations}
+							setValues={setRecommendations}
 							placeholder='Recomendación'
+							values={recommendations}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Requisitos de operación'
-							onValuesChange={setOperationRequirements}
+							setValues={setOperationRequirements}
 							placeholder='Requisito'
+							values={operationRequirements}
 						/>
 					</div>
 
@@ -153,6 +165,8 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 							setFiles={setImagesRaw}
 							urls={images}
 							setUrls={setImages}
+							urlsRemoved={imagesRemoved}
+							setUrlsRemoved={setImagesRemoved}
 						/>
 						<ManualsInput
 							title='Manuales de herramienta'
@@ -160,21 +174,26 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 							setFiles={setManualsRaw}
 							urls={manuals}
 							setUrls={setManuals}
+							urlsRemoved={manualsRemoved}
+							setUrlsRemoved={setManualsRemoved}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Videos'
-							onValuesChange={setVideos}
+							setValues={setVideos}
 							placeholder='URL de video'
+							values={videos}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Extras'
-							onValuesChange={setIncludedItems}
+							setValues={setIncludedItems}
 							placeholder='Incuye...'
+							values={includedItems}
 						/>
-						<DynamicInputSection
+						<DynamicInputs
 							label='Accesorios opcionales'
-							onValuesChange={setOptionalAccessories}
+							setValues={setOptionalAccessories}
 							placeholder='Accesorio opcional'
+							values={optionalAccessories}
 						/>
 					</div>
 				</div>

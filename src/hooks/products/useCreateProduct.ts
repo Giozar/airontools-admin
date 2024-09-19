@@ -36,25 +36,33 @@ export function useCreateProduct() {
 			productToCreate.setId(createdProduct.id);
 		}
 
-		productToCreate.imagesRaw.length > 0 &&
-			productToCreate &&
-			(await filesUpload({
+		if (
+			createdProduct?.id &&
+			productToCreate.imagesRaw &&
+			productToCreate.imagesRaw.length > 0
+		) {
+			await filesUpload({
 				type: 'images',
-				feature: `products/${productToCreate.id}`,
+				feature: `products/${createdProduct.id}`,
 				files: productToCreate.imagesRaw,
 				setFiles: productToCreate.setImagesRaw,
 				setFileUrls: productToCreate.setImages,
-			}));
+			});
+		}
 
-		productToCreate.manualsRaw.length > 0 &&
-			productToCreate &&
-			(await filesUpload({
+		if (
+			createdProduct?.id &&
+			productToCreate.manualsRaw &&
+			productToCreate.manualsRaw.length > 0
+		) {
+			await filesUpload({
 				type: 'manuals',
 				feature: `products/${productToCreate.id}`,
 				files: productToCreate.manualsRaw,
 				setFiles: productToCreate.setManualsRaw,
 				setFileUrls: productToCreate.setManuals,
-			}));
+			});
+		}
 
 		if (
 			productToCreate.imagesRaw.length === 0 &&
