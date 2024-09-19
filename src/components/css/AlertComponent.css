@@ -1,0 +1,64 @@
+/* Alert.css */
+.alert {
+	display: flex;
+	position: fixed;
+	top: 20%;
+	left: 50%;
+	align-items: center;
+	transform: translate(-50%, -50%);
+	z-index: 3000;
+	animation: slideIn 0.3s ease-out;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	padding: 12px 20px;
+	color: var(--button-text);
+}
+
+.alert--success {
+	background-color: var(--success);
+}
+
+.alert--error {
+	background-color: var(--error);
+}
+
+.alert--warning {
+	background-color: var(--warning);
+}
+
+.alert__icon {
+	margin-right: 12px;
+	font-size: 24px;
+}
+
+.alert__message {
+	margin: 0;
+	font-weight: 500;
+	font-size: 16px;
+}
+
+@keyframes slideIn {
+	from {
+		transform: translate(-50%, -100%);
+		opacity: 0;
+	}
+	to {
+		transform: translate(-50%, -50%);
+		opacity: 1;
+	}
+}
+
+.alert__close-button {
+	transition: color 0.2s ease;
+	cursor: pointer;
+	margin-left: 12px;
+	border: none;
+	background: transparent;
+	color: var(--button-text);
+	font-size: 16px;
+
+	/* Efecto hover */
+	&:hover {
+		color: var(--button-hover);
+	}
+}

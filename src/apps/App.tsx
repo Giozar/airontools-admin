@@ -7,6 +7,7 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
+import { AlertProvider } from '@contexts/Alert/AlertContext';
 import { CategoryCreateProvider } from '@contexts/categorization/CategoryContext';
 import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
 import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
@@ -83,13 +84,21 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/login/:company',
-		element: <Login />,
+		element: (
+			<AlertProvider>
+				<Login />
+			</AlertProvider>
+		),
 	},
 	{
 		element: <PrivateRoute />,
 		children: [
 			{
-				element: <BasePage />,
+				element: (
+					<AlertProvider>
+						<BasePage />
+					</AlertProvider>
+				),
 				children: [
 					{
 						path: 'home',
