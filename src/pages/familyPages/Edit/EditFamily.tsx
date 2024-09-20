@@ -5,6 +5,7 @@ import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import './EditFamily.css';
+import { handleOpenModal } from './handleOpenModal';
 /**
  * Permite la edición y eliminación de una familia existente.
  *
@@ -20,15 +21,6 @@ export default function EditFamily() {
 	const { ...familyToCreate } = useFamilyCreateContext();
 	const { handleUpdateFamily, handleDeleteFamily } = useEditCategorization();
 	const { openModal } = useModal();
-
-	const handleOpenModal = (id: string) => {
-		openModal(
-			'Eliminar Familia',
-			'Vas a eliminar esta Familia. ¿Estás seguro de que quieres continuar?',
-			() => handleDeleteFamily(id),
-			true,
-		);
-	};
 	return (
 		<div className='family__container'>
 			<div className='family__container__header'>
@@ -38,7 +30,18 @@ export default function EditFamily() {
 				<button
 					type='button'
 					className='family__container__delete-button'
-					onClick={() => handleOpenModal(familyToCreate.id || '')}
+					onClick={() =>
+						handleOpenModal(
+							familyToCreate.id || '',
+							'Familia',
+							() => handleDeleteFamily(familyToCreate.id || ''),
+							openModal,
+							true,
+							true,
+							true,
+							true,
+						)
+					}
 				>
 					Eliminar familia
 				</button>
