@@ -184,7 +184,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 							values={videos}
 						/>
 						<DynamicInputs
-							label='Extras'
+							label='Artículos incluidos'
 							setValues={setIncludedItems}
 							placeholder='Incuye...'
 							values={includedItems}
