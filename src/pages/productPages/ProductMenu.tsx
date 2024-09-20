@@ -1,7 +1,7 @@
 import { transformProductDataToFrontend } from '@adapters/products.adapter';
 import ActionCard from '@components/commons/ActionCard';
 import TableComponent from '@components/commons/DynamicTable';
-import ToolInfoModal from '@components/products/ToolInfoModal';
+import ProductInfoModal from '@components/products/ProductInfoModal';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
@@ -117,7 +117,7 @@ function ListOfTools() {
 				// }}
 				className='search'
 			/>
-			<ToolInfoModal
+			<ProductInfoModal
 				isOpen={modalOpen}
 				onClose={() => setModalOpen(false)}
 				product={selectedProduct}

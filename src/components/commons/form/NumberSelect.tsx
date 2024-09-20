@@ -19,7 +19,9 @@ function NumberSelect({ title, size, onSelect }: SelectProps) {
 	};
 
 	return (
-		<div style={{ display: 'flex', flexDirection: 'column' }}>
+		<div
+			style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column' }}
+		>
 			<label htmlFor='numbers' style={{ fontSize: 'small' }}>
 				{title}
 			</label>

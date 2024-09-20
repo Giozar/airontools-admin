@@ -27,6 +27,7 @@ export const transformProductDataToFrontend = (
 		category: Product.category,
 		subcategory: Product.subcategory,
 		createdBy: transformUserDataFront(Product.createdBy),
+		technicalDatasheet: Product.technicalDatasheet,
 	};
 };
 
@@ -56,5 +57,6 @@ export const transformProductDataToBackend = (
 		manuals: Product.manuals,
 		videos: Product.videos,
 		createdBy: Product.createdBy.id, // Solo el id del creador
+		technicalDatasheet: Product.technicalDatasheet,
 	};
 };
