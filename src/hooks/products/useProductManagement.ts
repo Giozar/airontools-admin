@@ -8,7 +8,7 @@ const useProductManagement = () => {
 	const location = useLocation();
 	const { showAlert } = useAlert();
 	const handleEdit = (product: ProductDataFrontend) => {
-		localStorage.setItem('ProductToEdit', JSON.stringify(product));
+		localStorage.setItem('ProductToEdit', product.id);
 		navigate(`${location.pathname}/editar-herramienta`);
 	};
 

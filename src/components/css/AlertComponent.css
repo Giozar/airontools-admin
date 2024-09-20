@@ -1,16 +1,18 @@
-/* Alert.css */
-.alert {
-	display: flex;
+.alert-container {
 	position: fixed;
 	top: 20%;
-	left: 50%;
+	width: 100%;
+}
+.alert {
+	display: flex;
 	align-items: center;
-	transform: translate(-50%, -50%);
 	z-index: 3000;
 	animation: slideIn 0.3s ease-out;
+	margin: 0 auto;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 	padding: 12px 20px;
+	width: fit-content;
 	color: var(--button-text);
 }
 
@@ -39,11 +41,9 @@
 
 @keyframes slideIn {
 	from {
-		transform: translate(-50%, -100%);
 		opacity: 0;
 	}
 	to {
-		transform: translate(-50%, -50%);
 		opacity: 1;
 	}
 }

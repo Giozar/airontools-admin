@@ -4,77 +4,19 @@ import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useModal } from '@contexts/Modal/ModalContext';
 
-import useFetchCategories from '@hooks/categories/useFetchCategories';
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
-import useFetchFamilies from '@hooks/families/useFetchFamilies';
-import useFetchProducts from '@hooks/products/useFetchProducts';
-import useFetchSpecifications from '@hooks/specifications/useFetchSpecifications';
-import useFetchSubcategories from '@hooks/subcategories/useFetchSubcategories';
+import useFetchCategorization from '@hooks/families/useFetchCategorization';
 import '@pages/css/familyList.css';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { handleOpenModal } from './Edit/handleOpenModal';
 
 function ListOfFamilies() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const { handleEdit, handleDelete } = useFamilyManagement();
 	const { loading, filteredFamilies, handleSearch, setupdateListFlag } =
-		useFetchFamilies();
-
-	const { filteredCategories } = useFetchCategories();
-	const { filteredSubcategories } = useFetchSubcategories();
-	const { filteredSpecifications } = useFetchSpecifications();
-	const { filteredProducts } = useFetchProducts();
+		useFetchCategorization();
 	const { openModal } = useModal();
-
-	const calcFamilyStats = useMemo(() => {
-		return (familyId: string | undefined) => {
-			const categories = filteredCategories.filter(
-				category => category.family.id === familyId,
-			);
-			const subcategories = filteredSubcategories.filter(subcategory =>
-				categories.some(category => category.id === subcategory.category._id),
-			);
-			const specifications = filteredSpecifications.filter(spec =>
-				spec.families.some(fam => fam._id === familyId),
-			);
-			const products = filteredProducts.filter(
-				product => product.family._id === familyId,
-			);
-
-			return {
-				categoriesLength: categories.length,
-				subcategoriesLength: subcategories.length,
-				specificationLength: specifications.length,
-				productsLength: products.length,
-			};
-		};
-	}, [filteredCategories, filteredSubcategories, filteredSpecifications]);
-
-	const handleOpenModal = (id: string, name: string) => {
-		const {
-			categoriesLength,
-			subcategoriesLength,
-			specificationLength,
-			productsLength,
-		} = calcFamilyStats(id || '');
-		const suma =
-			categoriesLength +
-			subcategoriesLength +
-			specificationLength +
-			productsLength;
-		openModal(
-			'Eliminar la familia',
-			`Vas a eliminar la familia ${name}. 
-			Afectará a ${categoriesLength} categorias, ${subcategoriesLength} subcategorias,
-			${specificationLength} especificaciones y ${productsLength} productos
-			¿Estás seguro de que quieres continuar? `,
-			() => {
-				handleDelete(id, name), setupdateListFlag(prev => !prev);
-			},
-			suma !== 0,
-			suma !== 0,
-		);
-	};
 
 	if (loading) return <p>Cargando...</p>;
 
@@ -105,7 +47,19 @@ function ListOfFamilies() {
 									<button
 										className='delete'
 										onClick={() =>
-											handleOpenModal(family.id || '', family.name)
+											handleOpenModal(
+												family.id,
+												family.name,
+												() => {
+													handleDelete(family.id || '', family.name);
+													setupdateListFlag(prev => !prev);
+												},
+												openModal,
+												true,
+												true,
+												true,
+												true,
+											)
 										}
 									>
 										<TrashIcon />
@@ -121,12 +75,13 @@ function ListOfFamilies() {
 								)}
 								<p>{family.description}</p>
 								<hr></hr>
-								<DropdownMenu
-									filteredCategories={filteredCategories}
-									filteredSubcategories={filteredSubcategories}
-									filteredSpecifications={filteredSpecifications}
-									family={family}
-								/>
+								{family.categories && (
+									<DropdownMenu
+										filteredCategories={family.categories}
+										filteredSubcategories={family.subcategories}
+										family={family}
+									/>
+								)}
 							</div>
 						</div>
 					);

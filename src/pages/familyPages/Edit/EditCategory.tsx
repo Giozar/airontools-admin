@@ -11,6 +11,7 @@ import { useState } from 'react';
 import CreateSubcategoriesWithCategory from '../Create/CreateSubcategory';
 import './EditCategory.css';
 import EditSubcategories from './EditSubcategory';
+import { handleOpenModal } from './handleOpenModal';
 /**
  * Muestra y permite la edición de categorías existentes en modo 'edit'.
  *
@@ -38,14 +39,6 @@ export default function EditCategories() {
 		handleDeleteCategory(id);
 		removeCategoryInstance(key);
 	};
-	const handleOpenModal = (id: string, key: string) => {
-		openModal(
-			'Eliminar Categoria',
-			'Vas a eliminar esta Categoria. ¿Estás seguro de que quieres continuar?',
-			() => handleConfirm(id, key),
-		);
-	};
-
 	const [openSubcategories, setOpenSubcategories] = useState<{
 		open: boolean;
 		id: string;
@@ -68,7 +61,17 @@ export default function EditCategories() {
 								<button
 									type='button'
 									onClick={() => {
-										handleOpenModal(category.id, key);
+										handleOpenModal(
+											category.id || '',
+											'Categoría',
+											() => handleConfirm(category.id, key),
+											openModal,
+											false,
+											true,
+											true,
+											true,
+											'byCategory',
+										);
 									}}
 									className='category-item__delete-button'
 								>

@@ -5,6 +5,7 @@ import { useSubcategoryCreateContext } from '@contexts/categorization/Subcategor
 import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import './EditSubcategory.css';
+import { handleOpenModal } from './handleOpenModal';
 /**
  * Filtra y muestra las subcategorías del contexto que tienen el modo de edición y pertenecen a la categoría deseada.
  *
@@ -39,14 +40,6 @@ export default function EditSubcategories({
 		handleDeleteSubcategory(id);
 		removeSubcategoryInstance(key);
 	};
-	const handleOpenModal = (id: string, key: string) => {
-		openModal(
-			'Eliminar Subcategoria',
-			'Vas a eliminar esta Subcategoria. ¿Estás seguro de que quieres continuar?',
-			() => handleConfirm(id, key),
-			true,
-		);
-	};
 
 	return (
 		<>
@@ -65,7 +58,19 @@ export default function EditSubcategories({
 								<h2 className='subcategory-item__title'>{Subcategory.name}</h2>
 								<button
 									type='button'
-									onClick={() => handleOpenModal(Subcategory.id, key)}
+									onClick={() =>
+										handleOpenModal(
+											Subcategory.id || '',
+											'Subcategoría',
+											() => handleConfirm(Subcategory.id, key),
+											openModal,
+											false,
+											false,
+											true,
+											true,
+											'bySubcategory',
+										)
+									}
 									className='subcategory-item__delete-button'
 								>
 									Eliminar subcategoria

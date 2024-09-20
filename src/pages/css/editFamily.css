@@ -130,28 +130,7 @@ h3 {
 	height: 100%;
 	overflow: auto;
 }
-.modal-content {
-	position: relative;
-	margin: 15% auto;
-	border-radius: 10px;
-	background-color: var(--bg-secondary);
-	padding: 20px;
-	width: 80%;
-}
-.modal-content #subcategoriesList {
-	padding: 10px;
-}
-.close {
-	color: var(--text-primary);
-	font-weight: bold;
-	font-size: 28px;
-}
-.modal-content > .close {
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	z-index: 50;
-}
+
 .close:hover,
 .close:focus {
 	cursor: pointer;
