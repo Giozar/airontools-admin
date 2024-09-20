@@ -30,12 +30,14 @@ const Alert = ({ message, type, onClose }: AlertProps) => {
 	}
 
 	return (
-		<div className={`alert alert--${type}`}>
-			<div className='alert__icon'>{icon}</div>
-			<p className='alert__message'>{message}</p>
-			<button className='alert__close-button' onClick={onClose}>
-				Cerrar
-			</button>
+		<div className='alert-container'>
+			<div className={`alert alert--${type}`}>
+				<div className='alert__icon'>{icon}</div>
+				<p className='alert__message'>{message}</p>
+				<button className='alert__close-button' onClick={onClose}>
+					Cerrar
+				</button>
+			</div>
 		</div>
 	);
 };

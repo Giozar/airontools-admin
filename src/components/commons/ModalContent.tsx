@@ -10,22 +10,18 @@ interface ModalProps {
 
 const ModalContent = ({ isOpen, onClose, title, children }: ModalProps) => {
 	if (!isOpen) return null;
+
 	return (
 		<div className='modal-overlay'>
-			<div className='modal-content'>
-				<div className='modal-header'>
-					<h2>{title}</h2>
-					<button className='modal-close' onClick={onClose}>
+			<div className='modal-overlay__content'>
+				<div className='modal-overlay__header'>
+					<h2 className='modal-overlay__title'>{title}</h2>
+					<button className='modal-overlay__close' onClick={onClose}>
 						×
 					</button>
 				</div>
-				<div
-					className='modal-body'
-					style={{ overflowY: 'auto', maxHeight: '80vh' }}
-				>
-					{children}
-				</div>
-				<footer className='modal-footer'></footer>
+				<div className='modal-overlay__body'>{children}</div>
+				<footer className='modal-overlay__footer'></footer>
 			</div>
 		</div>
 	);

@@ -175,6 +175,7 @@ export function useEditCategorization() {
 			if (!user) return;
 			// Crear la familia
 			let img = familyToEdit.image;
+			if (!img) img = '';
 			if (familyToEdit.imageToDelete) {
 				await handleDeleteFile(familyToEdit.image);
 				img = '';
@@ -194,7 +195,7 @@ export function useEditCategorization() {
 			});
 			showAlert('Familia actualizada', 'success');
 		} catch (error) {
-			showAlert('no se pudo actualizar familia', 'error');
+			showAlert('no se pudo actualizar familia' + errorHandler(error), 'error');
 		}
 	};
 

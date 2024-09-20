@@ -15,6 +15,7 @@ interface ModalContextType {
 		onConfirm: () => void,
 		withConfirmation?: boolean,
 		withSecondConfirmation?: boolean,
+		markdown?: boolean,
 	) => void;
 	closeModal: () => void;
 	modalState: {
@@ -24,6 +25,7 @@ interface ModalContextType {
 		onConfirm: () => void;
 		withConfirmation: boolean;
 		withSecondConfirmation: boolean;
+		markdown: boolean;
 	};
 }
 
@@ -39,6 +41,7 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
 		onConfirm: () => {},
 		withConfirmation: true,
 		withSecondConfirmation: true,
+		markdown: false,
 	});
 
 	const openModal = useCallback(
@@ -48,6 +51,7 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
 			onConfirm: () => void,
 			withConfirmation = true,
 			withSecondConfirmation = true,
+			markdown = false,
 		) => {
 			setModalState({
 				isOpen: true,
@@ -56,6 +60,7 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
 				onConfirm,
 				withConfirmation,
 				withSecondConfirmation,
+				markdown,
 			});
 		},
 		[],
@@ -76,6 +81,7 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({
 					onClose={closeModal}
 					withConfirmation={modalState.withConfirmation}
 					withSecondConfirmation={modalState.withSecondConfirmation}
+					markdown={modalState.markdown}
 					isOpen={true}
 				/>
 			)}

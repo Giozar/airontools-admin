@@ -1,3 +1,5 @@
+import { CategoryDataFrontend } from './Category.interface';
+import { SubcategoryDataFrontend } from './subcategory.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
 
 // Datos para enviar al backend - PATCH, POST, PUT
@@ -26,6 +28,8 @@ export interface FamilyDataFrontend {
 	description?: string;
 	images: string[];
 	createdBy: UserDataFrontend;
+	categories: CategoryDataFrontend[];
+	subcategories: SubcategoryDataFrontend[];
 }
 // DELETE se hace directo con ids
 
