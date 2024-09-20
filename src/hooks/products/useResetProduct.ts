@@ -11,8 +11,10 @@ export default function useResetProduct() {
 			product.setDescription('');
 			product.setImages([]);
 			product.setImagesRaw([]);
+			product.setImagesRemoved([]);
 			product.setManuals([]);
 			product.setManualsRaw([]);
+			product.setManualsRemoved([]);
 			product.setCharacteristics([]);
 			product.setSpecifications([]);
 			product.setApplications([]);
@@ -24,6 +26,7 @@ export default function useResetProduct() {
 			product.setFamily('');
 			product.setCategory('');
 			product.setSubcategory('');
+			product.setCreatedBy('');
 		}
 	};
 

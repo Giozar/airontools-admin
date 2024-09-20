@@ -64,12 +64,7 @@ export function useCreateProduct() {
 			});
 		}
 
-		if (
-			productToCreate.imagesRaw.length === 0 &&
-			productToCreate.manualsRaw.length === 0
-		) {
-			resetProduct();
-		}
+		resetProduct();
 
 		return createdProduct;
 	};
