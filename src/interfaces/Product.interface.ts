@@ -7,6 +7,11 @@ import {
 import { SubcategoryDataToSend } from './subcategory.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
 
+interface TechnicalDatasheet {
+	url: string;
+	date: string;
+}
+
 // Datos para enviar al backend - PATCH, POST, PUT
 export interface ProductDataToSend {
 	_id?: string;
@@ -28,6 +33,7 @@ export interface ProductDataToSend {
 	videos?: string[];
 	createdBy: string;
 	updatedBy?: string;
+	technicalDatasheet?: TechnicalDatasheet;
 }
 
 export interface ProductCreateContextProps {
@@ -77,6 +83,8 @@ export interface ProductCreateContextProps {
 	setCreatedBy: (value: string) => void;
 	updatedBy?: string;
 	setUpdatedBy?: (value: string) => void;
+	technicalDatasheet?: TechnicalDatasheet;
+	setTechnicalDatasheet: (value: TechnicalDatasheet) => void;
 }
 // Datos que vienen del backend - GET
 export interface ProductDataBackend {
@@ -98,6 +106,7 @@ export interface ProductDataBackend {
 	manuals?: string[];
 	videos?: string[];
 	createdBy: UserDataBackend;
+	technicalDatasheet?: TechnicalDatasheet;
 }
 // Datos que se usan en el frontend - Visualización (solo frontend)
 export interface ProductDataFrontend {
@@ -119,4 +128,5 @@ export interface ProductDataFrontend {
 	manuals?: string[];
 	videos?: string[];
 	createdBy: UserDataFrontend;
+	technicalDatasheet?: TechnicalDatasheet;
 }
