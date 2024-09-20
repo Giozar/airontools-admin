@@ -14,6 +14,8 @@ export const transformFamilyDataToFrontend = (
 		path: Family.path,
 		description: Family.description,
 		images: Family.images,
+		categories: Family.categories,
+		subcategories: Family.subcategories,
 		createdBy: transformUserDataFront(Family.createdBy),
 	};
 };

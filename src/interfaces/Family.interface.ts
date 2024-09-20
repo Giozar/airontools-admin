@@ -19,6 +19,8 @@ export interface FamilyDataBackend {
 	description?: string;
 	images: string[];
 	createdBy: UserDataBackend;
+	categories: CategoryDataFrontend[];
+	subcategories: SubcategoryDataFrontend[];
 }
 // Datos que se usan en el frontend - Visualización (solo frontend)
 export interface FamilyDataFrontend {
