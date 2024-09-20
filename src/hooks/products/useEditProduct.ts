@@ -58,7 +58,9 @@ export default function useEditProduct() {
 				productToEdit.imagesRemoved.map(imageRemoved =>
 					deleteFileService(imageRemoved),
 				),
-			);
+			).finally(() => {
+				productToEdit.setImagesRemoved([]);
+			});
 		}
 
 		if (
@@ -70,7 +72,9 @@ export default function useEditProduct() {
 				productToEdit.manualsRemoved.map(manualRemoved =>
 					deleteFileService(manualRemoved),
 				),
-			);
+			).finally(() => {
+				productToEdit.setManualsRemoved([]);
+			});
 		}
 
 		return updatedProduct;
