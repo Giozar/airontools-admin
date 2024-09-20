@@ -25,12 +25,12 @@
 }
 
 .table__body .table__row:hover {
-	background-color: var(--accent-primary);
+	background-color: var(--input-bg);
 }
 
 .table__cell {
-	border-top: 1px solid var(--bg-secondary);
-	border-right: 1px solid var(--bg-secondary);
+	border-top: 1px solid var(--bg-primary);
+	border-right: 1px solid var(--bg-primary);
 	padding: 10px;
 	text-align: left;
 }

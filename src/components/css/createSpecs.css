@@ -1,7 +1,6 @@
 /* Estilos para el contenedor de especificaciones */
 #specifications {
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	background-color: var(--input-bg);
 	padding: 20px;
 }
 
@@ -36,7 +35,7 @@
 
 .form-group input,
 .form-group textarea {
-	border: 1px solid var(--bg-primary);
+	border: 1px solid var(--input-bg);
 	border-radius: 4px;
 	padding: 10px;
 	font-size: 14px;
@@ -51,7 +50,7 @@
 .form-group textarea:focus {
 	outline: none;
 	box-shadow: 0 0 0 2px rgba(52, 73, 94, 0.2);
-	border-color: var(--neutral);
+	border-color: var(--accent-primary);
 }
 
 .form-group textarea {

@@ -34,7 +34,7 @@
 .family__container__text-input input,
 .family__container__text-area-input textarea {
 	box-sizing: border-box;
-	border: 1px solid #ccc;
+	border: 1px solid var(--input-bg);
 	border-radius: 4px;
 	padding: 0.5rem;
 	width: 100%;
@@ -63,7 +63,7 @@
 	flex-direction: column;
 	margin-bottom: 1rem;
 	border-radius: 8px;
-	background-color: var(--bg-secondary);
+	background-color: var(--card-bg);
 	padding: 1rem;
 	width: 100%;
 }

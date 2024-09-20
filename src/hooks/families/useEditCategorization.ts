@@ -13,6 +13,7 @@ import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFileService from '@services/files/fileUpload.service';
 import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
 import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -38,13 +39,21 @@ export function useEditCategorization() {
 	//Obten los valores de para editar xdxdxd
 
 	useEffect(() => {
+		if (!family) return;
 		const getFamilyData = async () => {
-			const response = await axios.get(`${airontoolsAPI}/families/${family}`);
-			const imageUrl = response.data.images ? response.data.images[0] : '';
-			familyToEdit.setId(response.data._id);
-			familyToEdit.setName(response.data.name);
-			familyToEdit.setDescription(response.data.description);
-			familyToEdit.setImage(imageUrl);
+			try {
+				const response = await axios.get(`${airontoolsAPI}/families/${family}`);
+				const imageUrl = response.data.images ? response.data.images[0] : '';
+				familyToEdit.setId(response.data._id);
+				familyToEdit.setName(response.data.name);
+				familyToEdit.setDescription(response.data.description);
+				familyToEdit.setImage(imageUrl);
+			} catch (error) {
+				showAlert(
+					'No se pudo obtener las familias' + errorHandler(error),
+					'error',
+				);
+			}
 		};
 
 		const getCategoryData = async () => {
@@ -66,29 +75,39 @@ export function useEditCategorization() {
 					});
 				}
 			} catch (error) {
-				console.error('Error al obtener los datos de la categoría:', error);
+				showAlert(
+					'No se pudo obtener las categorias' + errorHandler(error),
+					'error',
+				);
 			}
 		};
 
 		const getSubcategoryData = async () => {
-			const response = await getSubcategoryByFamilyId(family);
-			if (response.length === 0) return;
-			response.forEach((subcategory, index) => {
-				const instanceId = 'cat' + index;
-				addSubcategoryInstance(instanceId, {
-					id: subcategory.id,
-					name: subcategory.name,
-					description: subcategory.description,
-					family: subcategory.family.id,
-					category: subcategory.category._id,
-					image: subcategory.images ? subcategory.images[0] : '',
-					mode: 'edit',
+			try {
+				const response = await getSubcategoryByFamilyId(family);
+				if (response.length === 0) return;
+				response.forEach((subcategory, index) => {
+					const instanceId = 'cat' + index;
+					addSubcategoryInstance(instanceId, {
+						id: subcategory.id,
+						name: subcategory.name,
+						description: subcategory.description,
+						family: subcategory.family.id,
+						category: subcategory.category._id,
+						image: subcategory.images ? subcategory.images[0] : '',
+						mode: 'edit',
+					});
 				});
-			});
+			} catch (error) {
+				showAlert(
+					'No se pudo obtener las subcategorias' + errorHandler(error),
+					'error',
+				);
+			}
 		};
-		getSubcategoryData();
 		getFamilyData();
 		getCategoryData();
+		getSubcategoryData();
 	}, [family]);
 
 	const handleRawImageUpload = async (rawImage: File, id: string) => {

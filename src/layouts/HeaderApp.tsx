@@ -21,6 +21,8 @@ function HeaderApp({ toggleSidebar, isSidebarVisible }: HeaderAppProps) {
 				>
 					{isSidebarVisible ? <CircleLeftIcon /> : <MenuIcon />}
 				</button>
+				<Breadcrumb />
+
 				<div className='userinfo'>
 					<div
 						className='userpic'
@@ -31,9 +33,6 @@ function HeaderApp({ toggleSidebar, isSidebarVisible }: HeaderAppProps) {
 					</p>
 					<ThemeToggleButton />
 				</div>
-			</div>
-			<div className='header__group'>
-				<Breadcrumb />
 			</div>
 		</header>
 	);

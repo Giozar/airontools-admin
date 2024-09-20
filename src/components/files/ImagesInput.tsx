@@ -25,42 +25,31 @@ export default function ImagesInput({
 }: FilesInputProps) {
 	const { selectFiles, removeFiles, removeUrls } = useFilesInput();
 	const [filePreviews, setFilePreviews] = useState<string[]>([]);
-
-	// Referencia al input file
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-	// Maneja la selección de archivos
 	const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
 		selectFiles({
 			event,
 			files,
 			setFiles,
 		});
-
-		// Resetea el input después de seleccionar archivos
 		if (fileInputRef.current) {
 			fileInputRef.current.value = '';
 		}
 	};
 
-	// Maneja la eliminación de archivos
 	const handleRemoveFile = (index: number) => {
-		// console.log('Elimino el archivo');
 		removeFiles({
 			index,
 			files,
 			setFiles,
 		});
-
-		// Resetea el input después de eliminar un archivo
 		if (fileInputRef.current) {
 			fileInputRef.current.value = '';
 		}
 	};
 
-	// Maneja la eliminación de las URLs de las imágenes
 	const handleRemoveUrl = (index: number) => {
-		// console.log('Elimino la url');
 		removeUrls({
 			index,
 			urls,
@@ -75,50 +64,76 @@ export default function ImagesInput({
 	}, [files, urls]);
 
 	return (
-		<div className='image-uploader-container'>
-			<label className='image-uploader-label'>{title}</label>
-			<div className='image-upload'>
-				<div className='image-placeholder add-image'>
-					<label htmlFor='file-input'>{title}</label>
+		<div className='images-input'>
+			<label className='images-input__label'>{title}</label>
+			<div className='images-input__upload'>
+				<div className='images-input__placeholder'>
+					<label
+						htmlFor='file-input'
+						className='images-input__placeholder-label'
+					>
+						{title} +
+					</label>
 					<input
 						type='file'
 						id='file-input'
 						multiple
 						accept='image/*'
 						onChange={handleFileSelect}
-						ref={fileInputRef} // Asignamos la referencia al input
+						ref={fileInputRef}
+						className='images-input__file-input'
 					/>
 				</div>
 
-				{urls.length > 0 &&
-					urls.map((url, index) => (
-						<div key={index} className='image-preview'>
-							<h4>Imágenes cargadas</h4>
-							<img src={url} alt={`preview-${index}`} />
-							<button
-								onClick={() => handleRemoveUrl(index)}
-								className='delete'
-								type='button'
-							>
-								<TrashIcon />
-							</button>
-						</div>
-					))}
+				<div className='images-input__upload'>
+					{urls.length > 0 && (
+						<>
+							<h4 className='images-input__loaded-title'>Imágenes subidas</h4>
+							<div className='images-input__loaded'>
+								{urls.map((url, index) => (
+									<div key={index} className='images-input__preview'>
+										<img
+											src={url}
+											alt={`preview-${index}`}
+											className='images-input__image'
+										/>
+										<button
+											onClick={() => handleRemoveUrl(index)}
+											className='images-input__delete-button'
+											type='button'
+										>
+											<TrashIcon />
+										</button>
+									</div>
+								))}
+							</div>
+						</>
+					)}
 
-				{filePreviews.length > 0 &&
-					filePreviews.map((filePreview, index) => (
-						<div key={index} className='image-preview'>
-							<h4>Imágenes previas</h4>
-							<img src={filePreview} alt={`preview-${index}`} />
-							<button
-								onClick={() => handleRemoveFile(index)}
-								className='delete'
-								type='button'
-							>
-								<TrashIcon />
-							</button>
-						</div>
-					))}
+					{filePreviews.length > 0 && (
+						<>
+							<h4 className='images-input__preview-title'>Imágenes a subir</h4>
+							<div className='images-input__loaded'>
+								{filePreviews.map((filePreview, index) => (
+									<div key={index} className='images-input__preview'>
+										<img
+											src={filePreview}
+											alt={`preview-${index}`}
+											className='images-input__image'
+										/>
+										<button
+											onClick={() => handleRemoveFile(index)}
+											className='images-input__delete-button'
+											type='button'
+										>
+											<TrashIcon />
+										</button>
+									</div>
+								))}
+							</div>
+						</>
+					)}
+				</div>
 			</div>
 		</div>
 	);

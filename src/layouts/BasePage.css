@@ -5,11 +5,13 @@
 }
 
 /* Estilos de la barra lateral */
+<<<<<<< HEAD
+=======
 .sidebar {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	background-color: var(--menu-bg);
+	background-color: #000000;
 	padding: 1.5rem;
 	width: 16rem;
 	font-size: medium;
@@ -54,6 +56,7 @@
 	color: var(--text-primary);
 	font-size: 1rem;
 }
+>>>>>>> 529e7a899dbdb72a732a34e2bb7fb3e84e9c6131
 
 /* Estilos del combo box */
 .combobox {
@@ -107,6 +110,7 @@ header {
 	top: 0;
 	z-index: 100;
 	background-color: var(--menu-bg);
+	min-height: 60px;
 	color: var(--text-primary);
 }
 

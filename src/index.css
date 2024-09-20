@@ -39,7 +39,8 @@
 
 	--add: #115a37;
 }
-.dark-theme {
+<<<<<<< HEAD
+.old-theme {
 	/* Colores principales */
 	--bg-primary: #092b48;
 	--bg-secondary: #010c18;
@@ -80,6 +81,131 @@
 
 	--add: #115a37;
 }
+=======
+
+>>>>>>> 529e7a899dbdb72a732a34e2bb7fb3e84e9c6131
+.dark-theme {
+	/* Colores principales */
+	--bg-primary: #001f3f; /* Azul oscuro */
+	--bg-secondary: #003366; /* Azul medianoche */
+	--bg-tertiary: #004080; /* Azul profundo */
+
+	--text-primary: #ffffff; /* Texto blanco */
+	--text-secondary: #aaccff; /* Texto azul claro */
+
+	/* Colores de acento y enlaces */
+	--link: #00bfff; /* Azul brillante para enlaces */
+	--accent-primary: #1e90ff; /* Azul dodger */
+	--accent-secondary: #87ceeb; /* Azul cielo claro */
+
+	/* Colores para bordes y divisores */
+	--border: #00509e; /* Bordes azul oscuro */
+	--divider: #006699; /* Divisores más claros */
+
+	/* Colores de estado */
+	--success: #32cd32; /* Verde brillante para éxito */
+	--error: #ff4500; /* Rojo brillante para error */
+	--warning: #ffd700; /* Amarillo brillante para advertencias */
+	--info: #1e90ff; /* Azul para información */
+
+	/* Colores de interacción */
+	--hover: #003d66; /* Fondo más oscuro para hover */
+	--focus: #005c99; /* Color más claro para focus */
+	--active: #0073e6; /* Azul claro para estado activo */
+
+	/* Colores adicionales */
+	--menu-bg: #002244; /* Fondo del menú */
+	--card-bg: #003366; /* Fondo de las tarjetas */
+	--input-bg: #004466; /* Fondo de inputs */
+	--input-text: #ffffff; /* Texto de los inputs */
+	--button-text: #ffffff; /* Texto de los botones */
+	--disabled: #7f9dbb; /* Color para elementos deshabilitados */
+	--placeholder: #cce0ff; /* Color del placeholder */
+	--neutral: #00509e; /* Color neutro */
+
+	--add: #009900; /* Verde brillante para añadir */
+}
+.dark-theme {
+	/* Colores principales */
+	--bg-primary: #001f3f; /* Azul oscuro */
+	--bg-secondary: #003366; /* Azul medianoche */
+	--bg-tertiary: #004080; /* Azul profundo */
+
+	--text-primary: #ffffff;
+	--text-secondary: #aaccff; /* Texto azul claro */
+
+	/* Colores de acento y enlaces */
+	--link: #ffffff;
+	--accent-primary: #056db4;
+	--accent-secondary: #00497a;
+
+	/* Colores para bordes y divisores */
+	--border: #2a3f5f;
+	--divider: #34495e;
+
+	/* Colores de estado */
+	--success: #1d794c;
+	--error: #d12e2ea6;
+	--warning: #f39c12;
+	--info: #3498db;
+
+	/* Colores de interacción */
+	--hover: #0c3d66;
+	--focus: #1a5f8d;
+	--active: #0e4a7c;
+	/*var(--menu-bg)*/
+	/* Colores adicionales */
+	--menu-bg: #002244; /* Fondo del menú */
+	--card-bg: #003366; /* Fondo de las tarjetas */
+	--input-bg: #00071d; /* Fondo de inputs */
+	--input-text: #ffffff; /* Texto de los inputs */
+	--button-text: #ffffff;
+	--disabled: #5a6d7e;
+	--placeholder: #6c7a89;
+	--neutral: #025bb4; /* Color neutro */
+
+	--add: #115a37;
+}
+.dark-theme {
+	/* Colores principales */
+	--bg-primary: #0a2239; /* Fondo oscuro */
+	--bg-secondary: #008bd0; /* Azul medianoche */
+	--bg-tertiary: #212d40; /* Azul profundo */
+	--text-primary: #ffffff; /* Texto blanco */
+	--text-secondary: #80cbf2; /* Texto azul claro */
+
+	/* Colores de acento y enlaces */
+	--link: #55c4ef; /* Vivid skyblue para enlaces */
+	--accent-primary: #008bd0; /* Baby blue para acentos */
+	--accent-secondary: #212d40; /* Azul profundo para acentos secundarios */
+	/* Colores para bordes y divisores */
+	--border: #003366; /* Bordes azul oscuro */
+	--divider: #004080; /* Divisores más claros */
+
+	/* Colores de estado */
+	--success: #048b1b; /* Verde brillante para éxito */
+	--error: #c73006; /* Rojo brillante para error */
+	--warning: #c79005; /* Amarillo brillante para advertencias */
+	--info: #06adc7; /* Azul para información */
+
+	/* Colores de interacción */
+	--hover: #55c4ef; /* Fondo más claro para hover */
+	--focus: #80cbf2; /* Color más claro para focus */
+	--active: #008bd0; /* Azul profundo para estado activo */
+
+	/* Colores adicionales */
+	--menu-bg: #11151c; /* Fondo del menú */
+	--card-bg: #11151c; /* Fondo de las tarjetas */
+	--input-bg: #003366; /* Fondo de inputs */
+	--input-text: #ffffff; /* Texto de los inputs */
+	--button-text: #ffffff; /* Texto de los botones */
+	--disabled: #7f9dbb; /* Color para elementos deshabilitados */
+	--placeholder: #cce0ff; /* Color del placeholder */
+	--neutral: #00509e; /* Color neutro */
+
+	--add: rgb(0, 122, 0); /* Verde brillante para añadir */
+}
+
 /* Light Theme */
 .light-theme {
 	--bg-primary: #dadada; /* Very light grey */
@@ -98,7 +224,7 @@
 
 	--success: #4caf50; /* Green, unchanged */
 	--error: #f44336; /* Red, unchanged */
-	--warning: #ff9800; /* Orange, unchanged */
+	--warning: #f9b710; /* Orange, unchanged */
 	--info: #2196f3; /* Blue, unchanged */
 
 	--hover: #f0f0f0; /* Slightly darker background on hover */

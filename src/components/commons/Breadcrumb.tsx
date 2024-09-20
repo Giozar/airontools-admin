@@ -21,15 +21,24 @@ function Breadcrumb({
 					const displayName = part.includes('-')
 						? part.split('-').join(' ')
 						: part;
-					// Para que el ultimo no sea un link
+
 					if (isLast) {
-						return <span key={part}>{displayName}</span>;
+						return (
+							<span
+								key={part}
+								className='breadcrumb__item breadcrumb__item--current'
+							>
+								{displayName}
+							</span>
+						);
 					}
 
 					return (
-						<span key={part}>
-							<Link to={fullPath}>{displayName}</Link>
-							<span className='separator'>{separator}</span>
+						<span key={part} className='breadcrumb__item'>
+							<Link to={fullPath} className='breadcrumb__link'>
+								{displayName}
+							</Link>
+							<span className='breadcrumb__separator'>{separator}</span>
 						</span>
 					);
 				})}
@@ -37,12 +46,7 @@ function Breadcrumb({
 		);
 	};
 
-	return (
-		<div className='breadcrumb'>
-			{pathnames.length > 0 && <span className='separator'>{separator}</span>}
-			{renderBreadcrumbs()}
-		</div>
-	);
+	return <div className='breadcrumb'>{renderBreadcrumbs()}</div>;
 }
 
 export default Breadcrumb;
