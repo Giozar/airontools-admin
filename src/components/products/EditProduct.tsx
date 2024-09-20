@@ -16,7 +16,7 @@ export default function EditProduct() {
 		spec: { _id: 'N/A', name: 'Desconocido' },
 	};
 
-	const [state] = useState(() => {
+	const [state, setState] = useState(() => {
 		const savedState = localStorage.getItem('ProductToEdit');
 		return savedState ? JSON.parse(savedState) : initialState;
 	});
@@ -24,6 +24,15 @@ export default function EditProduct() {
 	const edit = async (e: Event) => {
 		try {
 			const updatedProduct = await editProduct(e);
+
+			// Actualizar el estado después de la edición
+			const newState = {
+				...state,
+				...updatedProduct,
+			};
+
+			setState(newState);
+			localStorage.setItem('ProductToEdit', JSON.stringify(newState)); // Actualizar localStorage con los cambios
 			showSuccess(`Herramienta ${updatedProduct?.name} actualizada con éxito`);
 		} catch (err) {
 			const error = err as ErrorResponse;
@@ -31,9 +40,11 @@ export default function EditProduct() {
 		}
 	};
 
+	// Actualizar el localStorage cada vez que el estado cambie
 	useEffect(() => {
 		localStorage.setItem('ProductToEdit', JSON.stringify(state));
 	}, [state]);
+
 	return (
 		<>
 			{successLog.isSuccess && <SuccessMessage message={successLog.message} />}
