@@ -77,7 +77,9 @@ const Modal: React.FC<ModalProps> = ({
 				</button>
 				<h2 className='modal__title'>{title}</h2>
 				<p className='modal__content'>{content}</p>
-				{image && <img src={image} alt='elemento a eliminar' />}
+				{image && (
+					<img className='modal__image' src={image} alt='elemento a eliminar' />
+				)}
 				<div className='modal__button-container'>
 					<button
 						type='button'
@@ -99,11 +101,15 @@ const Modal: React.FC<ModalProps> = ({
 					<div className='modal__confirmation-modal'>
 						<h3 className='modal__confirmation-title'>¿Estás seguro?</h3>
 						<p className='modal__confirmation-content'>
-							Esta acción no se puede deshacer. Si estas seguro escribe:
-							<span data-text=' Estoy Muy Muy Seguro'></span>
+							Esta acción no se puede deshacer. Si estás seguro escribe:
+							<span className='modal__confirmation-highlight'>
+								{' '}
+								Estoy Muy Muy Seguro
+							</span>
 						</p>
 						<input
 							type='text'
+							className='modal__input'
 							value={inputValue}
 							onChange={handleInputChange}
 							placeholder='Escribe aquí'
@@ -136,11 +142,15 @@ const Modal: React.FC<ModalProps> = ({
 					<div className='modal__confirmation-modal'>
 						<h3 className='modal__confirmation-title'>¿Estás seguro?</h3>
 						<p className='modal__confirmation-content'>
-							Esta acción no se puede deshacer, enserio. Si es enserio escribe:
-							<span data-text='Es Enserio, Estoy Muy Seguro'></span>
+							Esta acción no se puede deshacer, en serio. Si es en serio
+							escribe:
+							<span className='modal__confirmation-highlight'>
+								Es Enserio, Estoy Muy Seguro
+							</span>
 						</p>
 						<input
 							type='text'
+							className='modal__input'
 							value={inputValue}
 							onChange={handleInputChange}
 							placeholder='Escribe aquí'
