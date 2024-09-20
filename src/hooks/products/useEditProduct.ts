@@ -36,6 +36,9 @@ export default function useEditProduct() {
 				productId: productToEdit.id,
 				images: [...productToEdit.images, ...newImageUrls],
 			});
+
+			productToEdit.setImages([...productToEdit.images, ...newImageUrls]);
+			productToEdit.setImagesRaw([]);
 		}
 
 		if (productToEdit.manualsRaw && productToEdit.manualsRaw.length > 0) {
@@ -50,6 +53,8 @@ export default function useEditProduct() {
 				productId: productToEdit.id,
 				manuals: [...productToEdit.manuals, ...newManualUrls],
 			});
+			productToEdit.setManuals([...productToEdit.manuals, ...newManualUrls]);
+			productToEdit.setManualsRaw([]);
 		}
 
 		if (productToEdit.imagesRemoved && productToEdit.imagesRemoved.length > 0) {
