@@ -45,12 +45,11 @@
 .category-item__text-input input,
 .category-item__text-area-input textarea {
 	box-sizing: border-box;
-	border: 1px solid #ccc;
+	border: 1px solid var(--input-bg);
 	border-radius: 4px;
 	padding: 0.5rem;
 	width: 100%;
 }
-
 .category-item__text-area-input textarea {
 	resize: vertical; /* Permite ajustar la altura */
 }

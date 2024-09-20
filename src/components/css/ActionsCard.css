@@ -14,7 +14,8 @@
 }
 
 .options__card:hover {
-	background-color: var(--bg-secondary);
+	background-color: var(--accent-secondary);
+	color: var(--text-secondary);
 }
 
 .options__card-text {

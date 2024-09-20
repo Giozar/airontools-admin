@@ -8,7 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import BotIcon from '@components/svg/BotIcon';
 import { useAuthContext } from '@contexts/auth/AuthContext';
-import aironLogo from '/Logo-Blanco.png';
+import logoAiron from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
+import './Sidebar.css';
 
 const routeMap: {
 	'Ver herramientas': string;
@@ -32,7 +33,7 @@ const routeMap: {
 	'Crear especificaciones':
 		'/home/categorizacion/especificaciones/crear-especificaciones',
 };
-const Sidebar = () => {
+export default function Sidebar() {
 	const { user, setUser, setAuth } = useAuthContext();
 	const navigate = useNavigate();
 	const handleOptionSelected = (selectedOption: string) => {
@@ -53,70 +54,67 @@ const Sidebar = () => {
 
 	return (
 		<div className='sidebar'>
-			<div className='top'>
-				<div className='title'>
-					<Link to='/home'>
-						<img src={aironLogo} alt='AironTools Logo' />
+			<div className='sidebar__content'>
+				<div className='sidebar__top'>
+					<div className='sidebar__title'>
+						<Link to='/home'>
+							<img src={logoAiron} alt='AironTools Logo' />
+						</Link>
 						<h1>Sistema de gestión de AironTools</h1>
+					</div>
+					<Link to='/notificaciones' className='sidebar__link'>
+						<BellIcon />
+						Notificaciones
 					</Link>
-				</div>
-				<Link to='/notificaciones'>
-					<BellIcon />
-					Notificaciones
-				</Link>
-				{user && user.role?.name === 'Administrador' && (
-					<Link to='/chat-con-asistente'>
-						<BotIcon />
-						Asistente AironTools
-					</Link>
-				)}
-				<ComboBox
-					option='Herramientas'
-					options={['Ver', 'Crear'].map(val => val + ' herramientas')}
-					onOptionSelected={handleOptionSelected}
-				/>
-				{user && user.role?.name === 'Administrador' && (
-					<ComboBox
-						option='Usuarios'
-						options={['Ver', 'Crear', 'Crear rol de'].map(
-							val => val + ' usuarios',
-						)}
-						onOptionSelected={handleOptionSelected}
-					/>
-				)}
-				{user && user.role?.name === 'Administrador' && (
-					<ComboBox
-						option='Categorizaciones'
-						options={['Ver', 'Crear'].map(val => val + ' categorizaciones')}
-						onOptionSelected={handleOptionSelected}
-					/>
-				)}
-				{user && user.role?.name === 'Administrador' && (
-					<ComboBox
-						option='Especificaciones'
-						options={['Ver', 'Crear'].map(val => val + ' especificaciones')}
-						onOptionSelected={handleOptionSelected}
-					/>
-				)}
-				{/* <ComboBox
-					option='Roles'
-					options={['Ver', 'Crear', 'Actualizar', 'Eliminar'].map(
-						val => val + ' roles',
+					{user && user.role?.name === 'Administrador' && (
+						<Link to='/chat-con-asistente' className='sidebar__link'>
+							<BotIcon />
+							Asistente AironTools
+						</Link>
 					)}
-					onOptionSelected={handleOptionSelected}
-				/> */}
-			</div>
-			<div className='bottom'>
-				<nav>
-					<Link to='/informacion-personal'>Información personal</Link>
-					<Link to='/seguridad'>Seguridad</Link>
-					<Link to='/' onClick={handleClose}>
-						Cerrar sesión
-					</Link>
-				</nav>
+					<ComboBox
+						option='Herramientas'
+						options={['Ver', 'Crear'].map(val => val + ' herramientas')}
+						onOptionSelected={handleOptionSelected}
+					/>
+					{user && user.role?.name === 'Administrador' && (
+						<ComboBox
+							option='Usuarios'
+							options={['Ver', 'Crear', 'Crear rol de'].map(
+								val => val + ' usuarios',
+							)}
+							onOptionSelected={handleOptionSelected}
+						/>
+					)}
+					{user && user.role?.name === 'Administrador' && (
+						<ComboBox
+							option='Categorizaciones'
+							options={['Ver', 'Crear'].map(val => val + ' categorizaciones')}
+							onOptionSelected={handleOptionSelected}
+						/>
+					)}
+					{user && user.role?.name === 'Administrador' && (
+						<ComboBox
+							option='Especificaciones'
+							options={['Ver', 'Crear'].map(val => val + ' especificaciones')}
+							onOptionSelected={handleOptionSelected}
+						/>
+					)}
+				</div>
+				<div className='sidebar__bottom'>
+					<nav className='sidebar__nav'>
+						<Link to='/informacion-personal' className='sidebar__nav-link'>
+							Información personal
+						</Link>
+						<Link to='/seguridad' className='sidebar__nav-link'>
+							Seguridad
+						</Link>
+						<Link to='/' onClick={handleClose} className='sidebar__nav-link'>
+							Cerrar sesión
+						</Link>
+					</nav>
+				</div>
 			</div>
 		</div>
 	);
-};
-
-export default Sidebar;
+}
