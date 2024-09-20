@@ -1,4 +1,5 @@
 import '@components/css/Modal.css';
+import Markdown from 'markdown-to-jsx';
 import React, { SetStateAction, useCallback, useState } from 'react';
 
 interface ModalProps {
@@ -12,6 +13,7 @@ interface ModalProps {
 	cancelText?: string;
 	confirmText?: string;
 	withSecondConfirmation?: boolean;
+	markdown: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -23,6 +25,7 @@ const Modal: React.FC<ModalProps> = ({
 	image,
 	withConfirmation = true,
 	withSecondConfirmation = false,
+	markdown = false,
 	cancelText = 'Cancelar',
 	confirmText = 'Continuar',
 }) => {
@@ -76,7 +79,10 @@ const Modal: React.FC<ModalProps> = ({
 					×
 				</button>
 				<h2 className='modal__title'>{title}</h2>
-				<p className='modal__content'>{content}</p>
+
+				<p className='modal__content'>
+					{markdown ? <Markdown>{content}</Markdown> : content}
+				</p>
 				{image && (
 					<img className='modal__image' src={image} alt='elemento a eliminar' />
 				)}
@@ -103,7 +109,6 @@ const Modal: React.FC<ModalProps> = ({
 						<p className='modal__confirmation-content'>
 							Esta acción no se puede deshacer. Si estás seguro escribe:
 							<span className='modal__confirmation-highlight'>
-								{' '}
 								Estoy Muy Muy Seguro
 							</span>
 						</p>

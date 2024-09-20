@@ -28,13 +28,15 @@ export const handleOpenModal = async (
 		if (hasAssociatedItems) {
 			openModal(
 				'Advertencia',
-				`Esta ${name} tiene elementos asociados. La eliminación afectará a
-                ${counts.categories && counts.categories > 0 ? `${counts.categories} categorías.` : ''}
-                ${counts.subcategories && counts.subcategories > 0 ? `${counts.subcategories} subcategorías.` : ''}
-                ${counts.specifications && counts.specifications > 0 ? `${counts.specifications} especificaciones.` : ''}
-                ${counts.products && counts.products > 0 ? `${counts.products} productos.` : ''}
-				¿Estás seguro de que quieres continuar?`,
+				`Esta **${name}** tiene elementos asociados. La eliminación afectará a: 
+${counts.categories && counts.categories > 0 ? `- ${counts.categories} categorías.` : ''}
+${counts.subcategories && counts.subcategories > 0 ? `- ${counts.subcategories} subcategorías.` : ''}
+${counts.specifications && counts.specifications > 0 ? `- ${counts.specifications} especificaciones.` : ''}
+${counts.products && counts.products > 0 ? `- ${counts.products} productos.` : ''}
+
+¿Estás seguro de que quieres continuar?`,
 				handleDelete,
+				true,
 				true,
 				true,
 			);
