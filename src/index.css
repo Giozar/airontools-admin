@@ -39,6 +39,7 @@
 
 	--add: #115a37;
 }
+<<<<<<< HEAD
 .old-theme {
 	/* Colores principales */
 	--bg-primary: #092b48;
@@ -80,6 +81,9 @@
 
 	--add: #115a37;
 }
+=======
+
+>>>>>>> 529e7a899dbdb72a732a34e2bb7fb3e84e9c6131
 .dark-theme {
 	/* Colores principales */
 	--bg-primary: #001f3f; /* Azul oscuro */

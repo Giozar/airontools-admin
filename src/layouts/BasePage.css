@@ -5,6 +5,58 @@
 }
 
 /* Estilos de la barra lateral */
+<<<<<<< HEAD
+=======
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: #000000;
+	padding: 1.5rem;
+	width: 16rem;
+	font-size: medium;
+}
+
+.sidebar .title {
+	display: flex;
+	align-items: center;
+	margin-bottom: 2rem;
+}
+
+.sidebar .title img {
+	margin-left: 0.5rem;
+	width: 5rem;
+}
+
+.sidebar .title h1 {
+	color: var(--accent-primary);
+	font-weight: bold;
+	font-size: 1.25rem;
+}
+
+.sidebar a,
+.sidebar .comboboxOptions li span {
+	display: flex;
+	align-items: center;
+	border-radius: 0.25rem;
+	padding: 0.5rem;
+	color: var(--text-primary);
+	text-decoration: none;
+}
+.sidebar a svg {
+	margin-right: 1rem;
+}
+.sidebar a:hover,
+.sidebar .comboboxOptions li span:hover {
+	opacity: 0.8;
+	color: var(--text-secondary);
+}
+
+.sidebar .combobox {
+	color: var(--text-primary);
+	font-size: 1rem;
+}
+>>>>>>> 529e7a899dbdb72a732a34e2bb7fb3e84e9c6131
 
 /* Estilos del combo box */
 .combobox {
