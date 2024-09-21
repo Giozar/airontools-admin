@@ -1,10 +1,10 @@
 import '@components/css/createSpecs.css';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
-import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect, useState } from 'react';
 
 function SpecificationForm({
@@ -78,7 +78,8 @@ function SpecificationForm({
 				});
 				showAlert('Especificación creada con éxito', 'success');
 			} catch (error) {
-				showAlert(errorHandler(error), 'error');
+				const err = error as ErrorResponse;
+				showAlert(err.message, 'error');
 			}
 		}
 	};

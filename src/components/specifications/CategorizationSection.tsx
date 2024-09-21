@@ -1,22 +1,41 @@
 import CheckboxInputList from '@components/commons/CheckboxInputList';
 import SelectInput from '@components/commons/SelectInput';
+import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
 import { useMultipleFamilySpecifications } from '@hooks/families/useMultipleFamilySpecifications';
 import React, { useEffect } from 'react';
+import { Categorization } from './types';
 
 interface CategorizationSectionProps {
 	index: number;
-	onChange: (
-		index: number,
-		selectedFamily: string,
-		selectedCategories: string[],
-		selectedSubcategories: string[],
-	) => void;
 }
+
+const handleCategorizationChange = (
+	categorizations: Categorization[],
+	setCategorizations: (value: Categorization[]) => void,
+	index: number,
+	selectedFamily: string,
+	selectedCategories: string[],
+	selectedSubcategories: string[],
+) => {
+	const updatedCategorizations = categorizations.map((cat, i) => {
+		if (i === index) {
+			return {
+				selectedFamily: selectedFamily || cat.selectedFamily,
+				selectedCategories: selectedCategories || cat.selectedCategories,
+				selectedSubcategories:
+					selectedSubcategories || cat.selectedSubcategories,
+			};
+		}
+		return cat;
+	});
+
+	setCategorizations(updatedCategorizations);
+};
 
 const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 	index,
-	onChange,
 }) => {
+	const { categorizations, setCategorizations } = useSpecificationContext();
 	const {
 		families,
 		categories,
@@ -40,7 +59,9 @@ const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 		// 	`Subcategoría seleccionada en sección ${index}:`,
 		// 	selectedSubcategory,
 		// );
-		onChange(
+		handleCategorizationChange(
+			categorizations,
+			setCategorizations,
 			index,
 			selectedFamily || '',
 			selectedCategory,
