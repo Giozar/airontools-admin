@@ -7,7 +7,7 @@ import {
 import { SubcategoryDataToSend } from './subcategory.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
 
-interface TechnicalDatasheet {
+export interface TechnicalDatasheet {
 	url: string;
 	date: string;
 }
