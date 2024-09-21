@@ -11,5 +11,6 @@ export const transformUserDataFront = (
 		password: user.password,
 		name: user.name,
 		role: user.role ? transformRoleDataFront(user.role) : null,
+		createdBy: user.createdBy ? transformUserDataFront(user.createdBy) : null,
 	};
 };
