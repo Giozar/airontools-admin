@@ -13,6 +13,7 @@ import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
 import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
 import { ModalProvider } from '@contexts/Modal/ModalContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
+import { SpecificationProvider } from '@contexts/specification/SpecificationContext';
 import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
@@ -182,11 +183,19 @@ const router = createBrowserRouter([
 										children: [
 											{
 												path: 'crear-especificaciones',
-												element: <CreateSpecification />,
+												element: (
+													<SpecificationProvider>
+														<CreateSpecification />
+													</SpecificationProvider>
+												),
 											},
 											{
 												path: 'editar-especificacion',
-												element: <EditSpecification />,
+												element: (
+													<SpecificationProvider>
+														<EditSpecification />
+													</SpecificationProvider>
+												),
 											},
 										],
 									},

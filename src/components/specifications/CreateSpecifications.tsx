@@ -1,10 +1,10 @@
 import SpecificationForm from '@components/specifications/SpecificationForm';
-import { useEffect, useState } from 'react';
+import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
+import { useEffect } from 'react';
 import CategorizationSection from './CategorizationSection';
-import { Categorization } from './types';
 
 export default function CreateSpecifications() {
-	const [categorizations, setCategorizations] = useState<Categorization[]>([]);
+	const { categorizations, setCategorizations } = useSpecificationContext();
 
 	const addCategorization = () => {
 		setCategorizations([
@@ -13,36 +13,11 @@ export default function CreateSpecifications() {
 		]);
 	};
 
-	const handleCategorizationChange = (
-		index: number,
-		selectedFamily: string,
-		selectedCategories: string[],
-		selectedSubcategories: string[],
-	) => {
-		const updatedCategorizations = categorizations.map((cat, i) => {
-			if (i === index) {
-				return {
-					selectedFamily: selectedFamily || cat.selectedFamily,
-					selectedCategories: selectedCategories || cat.selectedCategories,
-					selectedSubcategories:
-						selectedSubcategories || cat.selectedSubcategories,
-				};
-			}
-			return cat;
-		});
-
-		setCategorizations(updatedCategorizations);
-	};
-
 	useEffect(() => {}, [categorizations]);
 	return (
 		<div>
 			{categorizations.map((_, index) => (
-				<CategorizationSection
-					key={index}
-					index={index}
-					onChange={handleCategorizationChange}
-				/>
+				<CategorizationSection key={index} index={index} />
 			))}
 
 			<button onClick={addCategorization}>Añadir otra categorización</button>
