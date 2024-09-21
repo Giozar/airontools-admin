@@ -11,17 +11,7 @@ export default function CreateSpecifications() {
 		<div>
 			<CategorizationSections />
 
-			{categorizations.some(cat => cat.selectedFamily) && (
-				<SpecificationForm
-					familiesId={categorizations.map(cat => cat.selectedFamily)}
-					categoriesId={categorizations
-						.map(cat => cat.selectedCategories)
-						.flat()}
-					subcategoriesId={categorizations
-						.map(cat => cat.selectedSubcategories)
-						.flat()}
-				/>
-			)}
+			{categorizations.some(cat => cat.selectedFamily) && <SpecificationForm />}
 		</div>
 	);
 }
