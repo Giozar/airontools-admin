@@ -2,12 +2,8 @@ import CheckboxInputList from '@components/commons/CheckboxInputList';
 import SelectInput from '@components/commons/SelectInput';
 import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
 import { useMultipleFamilySpecifications } from '@hooks/families/useMultipleFamilySpecifications';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Categorization } from './types';
-
-interface CategorizationSectionProps {
-	index: number;
-}
 
 const handleCategorizationChange = (
 	categorizations: Categorization[],
@@ -32,9 +28,7 @@ const handleCategorizationChange = (
 	setCategorizations(updatedCategorizations);
 };
 
-const CategorizationSection: React.FC<CategorizationSectionProps> = ({
-	index,
-}) => {
+export default function Categorizations({ index }: { index: number }) {
 	const { categorizations, setCategorizations } = useSpecificationContext();
 	const {
 		families,
@@ -111,6 +105,4 @@ const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 			<hr />
 		</div>
 	);
-};
-
-export default CategorizationSection;
+}
