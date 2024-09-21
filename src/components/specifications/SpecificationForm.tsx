@@ -74,10 +74,10 @@ function SpecificationForm() {
 					specification,
 				});
 				showAlert('Especificación creada con éxito', 'success');
-			} catch (err) {
-				const error = err as ErrorResponse;
+			} catch (error) {
+				const err = error as ErrorResponse;
 				showAlert(
-					`No se pudo crear la especificación ${error.message}`,
+					`Ocurrió un error al crear la especificación ${err.message}`,
 					'error',
 				);
 			}
