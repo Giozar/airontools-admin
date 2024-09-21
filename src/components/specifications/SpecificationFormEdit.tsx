@@ -1,29 +1,25 @@
 import '@components/css/createSpecs.css';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
-import { SpecificationFormEditProps } from '@interfaces/SpecificationFormProps.interface';
+import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
+import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import editSpecification from '@services/specifications/editSpecification.service';
-import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect, useState } from 'react';
 
-function SpecificationFormEdit({
-	specToEdit,
-	familiesId,
-	categoriesId,
-	subcategoriesId,
-}: SpecificationFormEditProps) {
+function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
+	const { families, categories, subcategories } = useSpecificationContext();
 	const id = specToEdit?._id as string;
 	const [specification, setSpecification] = useState<SpecDataToSend>({
 		name: specToEdit?.name || '',
 		description: specToEdit?.description || '',
 		unit: specToEdit?.unit || '',
 		createdBy: '',
-		families: familiesId,
-		categories: categoriesId,
-		subcategories: subcategoriesId || [],
+		families,
+		categories,
+		subcategories: subcategories || [],
 	});
-	console.log(categoriesId);
+	console.log(categories);
 
 	const { user } = useAuthContext();
 	const { showAlert } = useAlert();
@@ -34,11 +30,11 @@ function SpecificationFormEdit({
 		setSpecification(prevSpec => ({
 			...prevSpec,
 			createdBy,
-			families: familiesId,
-			categories: categoriesId,
-			subcategories: subcategoriesId || [],
+			families,
+			categories,
+			subcategories: subcategories || [],
 		}));
-	}, [familiesId, categoriesId, subcategoriesId, createdBy]);
+	}, [families, categories, subcategories, createdBy]);
 
 	// Maneja cambios en los campos de la especificación
 	const handleInputChange = (field: keyof SpecDataToSend, value: string) => {
@@ -54,7 +50,11 @@ function SpecificationFormEdit({
 			await editSpecification({ specification, id });
 			showAlert('Especificación creada con éxito', 'success');
 		} catch (error) {
-			showAlert(errorHandler(error), 'error');
+			const err = error as ErrorResponse;
+			showAlert(
+				`Ocurrió un error al editar especificación ${err.message}`,
+				'error',
+			);
 		}
 	};
 

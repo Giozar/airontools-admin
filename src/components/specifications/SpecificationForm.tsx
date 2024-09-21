@@ -22,8 +22,8 @@ function SpecificationForm() {
 				description: '',
 				unit: '',
 				createdBy,
-				families: families,
-				categories: categories,
+				families,
+				categories,
 				subcategories: subcategories || '',
 			},
 		]);
@@ -38,8 +38,8 @@ function SpecificationForm() {
 				description: '',
 				unit: '',
 				createdBy,
-				families: families,
-				categories: categories,
+				families,
+				categories,
 				subcategories: subcategories || '',
 			},
 		]);
@@ -76,7 +76,10 @@ function SpecificationForm() {
 				showAlert('Especificación creada con éxito', 'success');
 			} catch (error) {
 				const err = error as ErrorResponse;
-				showAlert(err.message, 'error');
+				showAlert(
+					`Ocurrió un error al crear la especificación ${err.message}`,
+					'error',
+				);
 			}
 		}
 	};
