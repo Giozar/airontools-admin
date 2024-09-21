@@ -1,26 +1,15 @@
 import SpecificationForm from '@components/specifications/SpecificationForm';
 import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
 import { useEffect } from 'react';
-import CategorizationSection from './CategorizationSection';
+import CategorizationSections from './CategorizationsSection';
 
 export default function CreateSpecifications() {
-	const { categorizations, setCategorizations } = useSpecificationContext();
-
-	const addCategorization = () => {
-		setCategorizations([
-			...categorizations,
-			{ selectedFamily: '', selectedCategories: [], selectedSubcategories: [] },
-		]);
-	};
+	const { categorizations } = useSpecificationContext();
 
 	useEffect(() => {}, [categorizations]);
 	return (
 		<div>
-			{categorizations.map((_, index) => (
-				<CategorizationSection key={index} index={index} />
-			))}
-
-			<button onClick={addCategorization}>Añadir otra categorización</button>
+			<CategorizationSections />
 
 			{categorizations.some(cat => cat.selectedFamily) && (
 				<SpecificationForm
