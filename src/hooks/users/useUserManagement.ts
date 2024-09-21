@@ -10,7 +10,7 @@ const useUserManagement = () => {
 	const { showAlert } = useAlert();
 
 	const handleEdit = (user: UserDataFrontend) => {
-		localStorage.setItem('userToEdit', JSON.stringify(user));
+		localStorage.setItem('userToEdit', JSON.stringify({ id: user.id }));
 		navigate(location.pathname + `/editar-usuario`);
 	};
 
