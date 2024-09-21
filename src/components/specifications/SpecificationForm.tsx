@@ -1,17 +1,14 @@
 import '@components/css/createSpecs.css';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
-import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { useEffect, useState } from 'react';
 
-function SpecificationForm({
-	familiesId,
-	categoriesId,
-	subcategoriesId,
-}: SpecificationFormProps) {
+function SpecificationForm() {
+	const { families, categories, subcategories } = useSpecificationContext();
 	const { user } = useAuthContext();
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const createdBy = user?.id || 'user';
@@ -25,12 +22,12 @@ function SpecificationForm({
 				description: '',
 				unit: '',
 				createdBy,
-				families: familiesId,
-				categories: categoriesId,
-				subcategories: subcategoriesId || '',
+				families: families,
+				categories: categories,
+				subcategories: subcategories || '',
 			},
 		]);
-	}, [familiesId, categoriesId, subcategoriesId, createdBy]);
+	}, [families, categories, subcategories, createdBy]);
 
 	// Añade una nueva especificación
 	const addSpecifications = () => {
@@ -41,9 +38,9 @@ function SpecificationForm({
 				description: '',
 				unit: '',
 				createdBy,
-				families: familiesId,
-				categories: categoriesId,
-				subcategories: subcategoriesId || '',
+				families: families,
+				categories: categories,
+				subcategories: subcategories || '',
 			},
 		]);
 	};
