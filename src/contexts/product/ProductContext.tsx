@@ -1,4 +1,7 @@
-import { ProductCreateContextProps } from '@interfaces/Product.interface';
+import {
+	ProductCreateContextProps,
+	TechnicalDatasheet,
+} from '@interfaces/Product.interface';
 import { ProductSpecification } from '@interfaces/Specifications.interface';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
@@ -38,6 +41,8 @@ export const ProductCreateProvider = ({
 	const [manualsRaw, setManualsRaw] = useState<File[]>([]);
 	const [videos, setVideos] = useState<string[]>([]);
 	const [createdBy, setCreatedBy] = useState<string>('');
+	const [technicalDatasheet, setTechnicalDatasheet] =
+		useState<TechnicalDatasheet>();
 
 	return (
 		<ProductCreateContext.Provider
@@ -86,6 +91,8 @@ export const ProductCreateProvider = ({
 				setImagesRemoved,
 				manualsRemoved,
 				setManualsRemoved,
+				technicalDatasheet,
+				setTechnicalDatasheet,
 			}}
 		>
 			{children}
