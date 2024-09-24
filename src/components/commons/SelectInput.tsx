@@ -5,7 +5,7 @@ interface SelectInputProps {
 	name: string;
 	options: { value: string; label: string }[];
 	value?: string;
-	onChange: (value: string) => void;
+	setValue: (value: string) => void;
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({
@@ -13,10 +13,10 @@ const SelectInput: React.FC<SelectInputProps> = ({
 	name,
 	options,
 	value,
-	onChange,
+	setValue,
 }) => {
 	const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		onChange(e.target.value);
+		setValue(e.target.value);
 	};
 
 	return (
