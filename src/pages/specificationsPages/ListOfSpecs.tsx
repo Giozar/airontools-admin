@@ -35,7 +35,10 @@ function SpecificationsGrid() {
 				setSpecifications(specs);
 			} catch (err) {
 				const error = err as ErrorResponse;
-				showAlert(`Error al cargar las especificaciones ${error}`, 'error');
+				showAlert(
+					`Error al cargar las especificaciones ${error.message}`,
+					'error',
+				);
 			}
 		};
 		fetchSpecifications();

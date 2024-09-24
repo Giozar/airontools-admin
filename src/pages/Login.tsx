@@ -68,7 +68,7 @@ function Login() {
 			navigate('/home');
 		} catch (err) {
 			const error = err as ErrorResponse;
-			showAlert(`No se pudo iniciar sesión ${error}`, 'error');
+			showAlert(`No se pudo iniciar sesión ${error.message}`, 'error');
 		}
 	};
 	/*

@@ -55,7 +55,10 @@ function SpecificationFormEdit({
 			showAlert('Especificación creada con éxito', 'success');
 		} catch (err) {
 			const error = err as ErrorResponse;
-			showAlert(`No se pudo editar la especificación ${error}`, 'error');
+			showAlert(
+				`No se pudo editar la especificación ${error.message}`,
+				'error',
+			);
 		}
 	};
 
