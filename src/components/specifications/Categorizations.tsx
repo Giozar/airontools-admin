@@ -84,6 +84,7 @@ export default function Categorizations({ index }: { index: number }) {
 				id={`familiaselect-${index}`}
 				name='Selecciona una familia'
 				options={families}
+				value={categorizations[index].selectedFamily}
 				setValue={handleFamilyChange}
 			/>
 			{selectedFamily && selectedFamily.length > 0 && (
