@@ -86,7 +86,7 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 			}, 500);
 		} catch (err) {
 			const error = err as ErrorResponse;
-			showAlert(`Error al crear usuario ${error}`, 'error');
+			showAlert(`Error al crear usuario ${error.message}`, 'error');
 		}
 	};
 

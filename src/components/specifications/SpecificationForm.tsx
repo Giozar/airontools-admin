@@ -1,12 +1,11 @@
 import '@components/css/createSpecs.css';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { useEffect, useState } from 'react';
-import { ErrorResponse } from 'react-router-dom';
-
 function SpecificationForm({
 	familiesId,
 	categoriesId,
@@ -79,7 +78,10 @@ function SpecificationForm({
 				showAlert('Especificación creada con éxito', 'success');
 			} catch (err) {
 				const error = err as ErrorResponse;
-				showAlert(`No se pudo crear la especificación ${error}`, 'error');
+				showAlert(
+					`No se pudo crear la especificación ${error.message}`,
+					'error',
+				);
 			}
 		}
 	};
