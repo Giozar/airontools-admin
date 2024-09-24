@@ -55,7 +55,7 @@ export default function CreateSubcategoriesWithSelect() {
 									value: category.name,
 									label: category.name,
 								}))}
-								onChange={value => Subcategory.setCategory(value)}
+								setValue={value => Subcategory.setCategory(value)}
 							/>
 							<TextInput
 								className='item-name'

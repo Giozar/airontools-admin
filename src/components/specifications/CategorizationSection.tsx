@@ -69,7 +69,7 @@ const CategorizationSection: React.FC<CategorizationSectionProps> = ({
 				id={`familiaselect-${index}`}
 				name='Selecciona una familia'
 				options={families}
-				onChange={handleFamilyChange}
+				setValue={handleFamilyChange}
 			/>
 			{selectedFamily && selectedFamily.length > 0 && (
 				<CheckboxInputList

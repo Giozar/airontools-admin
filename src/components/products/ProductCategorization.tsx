@@ -19,21 +19,6 @@ export function ProductCategorization() {
 	const { categories } = useFetchCategoriesByFamily(family);
 	const { subcategories } = useFetchSubcategoriesByFamily(category);
 
-	// Handle changes when family changes
-	const handleFamilyChange = (newFamily: string) => {
-		setFamily(newFamily);
-		// Reset category and subcategory when family changes
-		setCategory('');
-		setSubcategory('');
-	};
-
-	// Handle changes when category changes
-	const handleCategoryChange = (newCategory: string) => {
-		setCategory(newCategory);
-		// Reset subcategory when category changes
-		setSubcategory('');
-	};
-
 	return (
 		<div>
 			<SelectInput
@@ -44,7 +29,7 @@ export function ProductCategorization() {
 					label: f.name,
 				}))}
 				value={family || ''} // Preselect the current family, fallback to an empty string
-				onChange={handleFamilyChange} // Handle family change
+				setValue={setFamily} // Handle family change
 			/>
 			{family && (
 				<SelectInput
@@ -55,7 +40,7 @@ export function ProductCategorization() {
 						label: cat.name,
 					}))}
 					value={category || ''} // Preselect the current category, fallback to an empty string
-					onChange={handleCategoryChange} // Handle category change
+					setValue={setCategory} // Handle category change
 				/>
 			)}
 			{category && (
@@ -67,7 +52,7 @@ export function ProductCategorization() {
 						label: subcat.name,
 					}))}
 					value={subcategory || ''} // Preselect the current subcategory, fallback to an empty string
-					onChange={setSubcategory} // Directly set subcategory
+					setValue={setSubcategory} // Directly set subcategory
 				/>
 			)}
 		</div>
