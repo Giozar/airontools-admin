@@ -4,10 +4,10 @@ import TrashIcon from '@components/svg/TrashIcon';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import useSpecificationsManagement from '@hooks/specifications/useSpecificationsDelete';
+import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import '@pages/css/listofspecs.css';
 import { getSpecifications } from '@services/specifications/getSpecifications.service';
-import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -33,8 +33,9 @@ function SpecificationsGrid() {
 			try {
 				const specs = await getSpecifications();
 				setSpecifications(specs);
-			} catch (error) {
-				showAlert(errorHandler(error), 'error');
+			} catch (err) {
+				const error = err as ErrorResponse;
+				showAlert(`Error al cargar las especificaciones ${error}`, 'error');
 			}
 		};
 		fetchSpecifications();

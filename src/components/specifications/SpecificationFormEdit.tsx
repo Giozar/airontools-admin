@@ -1,10 +1,10 @@
 import '@components/css/createSpecs.css';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { SpecificationFormEditProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import editSpecification from '@services/specifications/editSpecification.service';
-import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect, useState } from 'react';
 
 function SpecificationFormEdit({
@@ -53,8 +53,9 @@ function SpecificationFormEdit({
 		try {
 			await editSpecification({ specification, id });
 			showAlert('Especificación creada con éxito', 'success');
-		} catch (error) {
-			showAlert(errorHandler(error), 'error');
+		} catch (err) {
+			const error = err as ErrorResponse;
+			showAlert(`No se pudo editar la especificación ${error}`, 'error');
 		}
 	};
 

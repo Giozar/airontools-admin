@@ -12,7 +12,6 @@ import logoAiron from '@pages/generalPages/logos/Logo-AIRON-TOOLS-perfil.png';
 import logoCoirmex from '@pages/generalPages/logos/coirmex logo-u2754.png';
 import logoDesumex from '@pages/generalPages/logos/logo-desumex.png';
 import { loginUserService } from '@services/users/loginUser.service';
-import { errorHandler } from '@utils/errorHandler.util';
 import aironLogo from './Logo-Blanco.png'; // cambiar por otro el general
 
 function HeaderLogin({ title }: { title: string }) {
@@ -69,7 +68,7 @@ function Login() {
 			navigate('/home');
 		} catch (err) {
 			const error = err as ErrorResponse;
-			showAlert(errorHandler(error), 'error');
+			showAlert(`No se pudo iniciar sesión ${error}`, 'error');
 		}
 	};
 	/*

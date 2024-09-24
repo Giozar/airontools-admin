@@ -10,9 +10,9 @@ import FileUpload from '@components/files/FileUpload';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import useFileUpload from '@hooks/files/useFileUpload';
 import useUserUpdate from '@hooks/users/useUserUpdate';
+import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { UserDataFrontend } from '@interfaces/User.interface';
 import { copyPassword } from '@utils/copyPassword.util';
-import { errorHandler } from '@utils/errorHandler.util';
 
 export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 	const {
@@ -84,8 +84,9 @@ export default function UserForm({ user }: { user: UserDataFrontend | null }) {
 			setTimeout(() => {
 				window.location.reload();
 			}, 500);
-		} catch (error) {
-			showAlert(errorHandler(error), 'error');
+		} catch (err) {
+			const error = err as ErrorResponse;
+			showAlert(`Error al crear usuario ${error}`, 'error');
 		}
 	};
 

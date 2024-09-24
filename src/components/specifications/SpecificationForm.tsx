@@ -4,8 +4,8 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
-import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect, useState } from 'react';
+import { ErrorResponse } from 'react-router-dom';
 
 function SpecificationForm({
 	familiesId,
@@ -77,8 +77,9 @@ function SpecificationForm({
 					specification,
 				});
 				showAlert('Especificación creada con éxito', 'success');
-			} catch (error) {
-				showAlert(errorHandler(error), 'error');
+			} catch (err) {
+				const error = err as ErrorResponse;
+				showAlert(`No se pudo crear la especificación ${error}`, 'error');
 			}
 		}
 	};
