@@ -1,31 +1,7 @@
-import { Categorization } from '@components/specifications/types';
 import { CategoryDataToSend } from './Category.interface';
 import { FamilyDataToSend } from './Family.interface';
 import { SubcategoryDataToSend } from './subcategory.interface';
 import { UserDataBackend, UserDataFrontend } from './User.interface';
-
-export interface SpecificationContextProps {
-	id?: string;
-	name: string;
-	description?: string;
-	unit?: string;
-	families: string[];
-	categories: string[];
-	subcategories: string[];
-	createdBy: string;
-	categorizations: Categorization[];
-
-	// Setters
-	setId?: (value: string) => void;
-	setName: (value: string) => void;
-	setDescription?: (value: string) => void;
-	setUnit?: (value: string) => void;
-	setFamilies: (value: string[]) => void;
-	setCategories: (value: string[]) => void;
-	setSubcategories: (value: string[]) => void;
-	setCreatedBy: (value: string) => void;
-	setCategorizations: (value: Categorization[]) => void;
-}
 
 // Datos para enviar al backend - PATCH, POST, PUT
 export interface SpecDataToSend {
@@ -37,6 +13,31 @@ export interface SpecDataToSend {
 	categories: string[];
 	subcategories: string[];
 	createdBy: string;
+	updatedBy?: string;
+}
+
+export interface Categorization {
+	selectedFamily: string;
+	selectedCategories: string[];
+	selectedSubcategories: string[];
+}
+
+export interface SpecificationContextProps {
+	specifications: SpecDataToSend[];
+	categorizations: Categorization[];
+	families: string[];
+	categories: string[];
+	subcategories: string[];
+	createdBy: string;
+	updatedBy: string;
+
+	setSpecifications: (value: SpecDataToSend[]) => void;
+	setCategorizations: (value: Categorization[]) => void;
+	setFamilies: (value: string[]) => void;
+	setCategories: (value: string[]) => void;
+	setSubcategories: (value: string[]) => void;
+	setCreatedBy: (value: string) => void;
+	setUpdatedBy: (value: string) => void;
 }
 // Datos que vienen del backend - GET
 export interface SpecDataBackend {
@@ -48,6 +49,7 @@ export interface SpecDataBackend {
 	categories: CategoryDataToSend[];
 	subcategories: SubcategoryDataToSend[];
 	createdBy: UserDataBackend;
+	updatedBy?: UserDataBackend;
 }
 // Datos que se usan en el frontend - Visualización (solo frontend)
 export interface SpecDataFrontend {
@@ -59,6 +61,7 @@ export interface SpecDataFrontend {
 	categories: CategoryDataToSend[];
 	subcategories: SubcategoryDataToSend[];
 	createdBy: UserDataFrontend;
+	updatedBy?: UserDataFrontend;
 }
 
 export interface ProductSpecification {

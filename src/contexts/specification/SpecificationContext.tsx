@@ -1,5 +1,8 @@
-import { Categorization } from '@components/specifications/types';
-import { SpecificationContextProps } from '@interfaces/Specifications.interface';
+import {
+	Categorization,
+	SpecDataToSend,
+	SpecificationContextProps,
+} from '@interfaces/Specifications.interface';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 // Creamos el contexto
@@ -13,38 +16,32 @@ export const SpecificationProvider = ({
 	children: ReactNode;
 }) => {
 	// Estados para cada una de las propiedades del contexto
-	const [id, setId] = useState<string | undefined>(undefined);
-	const [name, setName] = useState<string>('');
-	const [description, setDescription] = useState<string | undefined>(undefined);
-	const [unit, setUnit] = useState<string | undefined>(undefined);
+	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
+	const [categorizations, setCategorizations] = useState<Categorization[]>([]);
 	const [families, setFamilies] = useState<string[]>([]);
 	const [categories, setCategories] = useState<string[]>([]);
 	const [subcategories, setSubcategories] = useState<string[]>([]);
 	const [createdBy, setCreatedBy] = useState<string>('');
-	const [categorizations, setCategorizations] = useState<Categorization[]>([]);
+	const [updatedBy, setUpdatedBy] = useState<string>('');
 
 	// Proveemos los valores actuales y sus setters
 	return (
 		<SpecificationContext.Provider
 			value={{
-				id,
-				name,
-				description,
-				unit,
+				specifications,
+				categorizations,
 				families,
 				categories,
 				subcategories,
 				createdBy,
-				categorizations,
-				setId,
-				setName,
-				setDescription,
-				setUnit,
+				updatedBy,
+				setSpecifications,
+				setCategorizations,
 				setFamilies,
 				setCategories,
 				setSubcategories,
 				setCreatedBy,
-				setCategorizations,
+				setUpdatedBy,
 			}}
 		>
 			{children}
