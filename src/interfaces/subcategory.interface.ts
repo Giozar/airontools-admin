@@ -44,7 +44,7 @@ export interface SubcategoryCategorization {
 	category: string;
 	createdBy: string;
 }
-//de aqui me hice bolas xd
+// de aqui me hice bolas xd
 export interface SubcategoryClass {
 	id?: string;
 	family?: string;
