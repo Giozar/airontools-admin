@@ -29,10 +29,9 @@ export default function EditSpecifications({
 			console.log('hay familia');
 		}
 		console.log(specToEdit);
-	}, [specToEdit]);
+	}, [families]);
 	return (
 		<div>
-			<CategorizationsSection />
 			<CategorizationsSection />
 			{categorizations.some(cat => cat.selectedFamily) && (
 				<SpecificationFormEdit specToEdit={specToEdit} />
