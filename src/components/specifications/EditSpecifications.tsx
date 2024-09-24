@@ -33,6 +33,7 @@ export default function EditSpecifications({
 	return (
 		<div>
 			<CategorizationsSection />
+			<CategorizationsSection />
 			{categorizations.some(cat => cat.selectedFamily) && (
 				<SpecificationFormEdit specToEdit={specToEdit} />
 			)}
