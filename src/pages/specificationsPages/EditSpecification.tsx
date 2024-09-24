@@ -1,19 +1,25 @@
+import { transformSpecDataToBackend } from '@adapters/specifications.adapter';
 import EditSpecifications from '@components/specifications/EditSpecifications';
+import useFetchSpecification from '@hooks/specifications/useFetchSpecification';
 import { useEffect, useState } from 'react';
 
 export default function EditSpecification() {
-	const initialState = {
-		spec: { id: 'N/A', name: 'Desconocido' },
-	};
-
-	const [state] = useState(() => {
-		const savedState = localStorage.getItem('specToEdit');
-		return savedState ? JSON.parse(savedState) : initialState;
+	const [id] = useState(() => {
+		const savedId = localStorage.getItem('specToEdit');
+		return savedId || '';
 	});
 
-	useEffect(() => {
-		localStorage.setItem('specToEdit', JSON.stringify(state));
-	}, [state]);
+	const { specification } = useFetchSpecification({ id });
 
-	return <EditSpecifications specToEdit={state} />;
+	useEffect(() => {
+		console.log(id);
+	}, []);
+
+	return (
+		specification && (
+			<EditSpecifications
+				specToEdit={transformSpecDataToBackend(specification)}
+			/>
+		)
+	);
 }

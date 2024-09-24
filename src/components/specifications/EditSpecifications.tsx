@@ -9,11 +9,27 @@ export default function EditSpecifications({
 }: {
 	specToEdit: SpecDataToSend;
 }) {
-	const { categorizations } = useSpecificationContext();
+	const {
+		categorizations,
+		setFamilies,
+		families,
+		setCategories,
+		setSubcategories,
+	} = useSpecificationContext();
 
 	useEffect(() => {
-		console.log(categorizations);
-	}, [categorizations]);
+		if (specToEdit.families.length > 0) setFamilies(specToEdit.families);
+		if (specToEdit.categories.length > 0) setCategories(specToEdit.categories);
+		if (specToEdit.subcategories.length > 0)
+			setSubcategories(specToEdit.subcategories);
+	}, [specToEdit]);
+
+	useEffect(() => {
+		if (families.length > 0) {
+			console.log('hay familia');
+		}
+		console.log(specToEdit);
+	}, [specToEdit]);
 	return (
 		<div>
 			<CategorizationsSection />
