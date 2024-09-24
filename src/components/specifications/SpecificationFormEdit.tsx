@@ -19,7 +19,6 @@ function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
 		categories,
 		subcategories: subcategories || [],
 	});
-	console.log(categories);
 
 	const { user } = useAuthContext();
 	const { showAlert } = useAlert();

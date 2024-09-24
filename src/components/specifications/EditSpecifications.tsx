@@ -11,8 +11,8 @@ export default function EditSpecifications({
 }) {
 	const {
 		categorizations,
+		setCategorizations,
 		setFamilies,
-		families,
 		setCategories,
 		setSubcategories,
 	} = useSpecificationContext();
@@ -22,14 +22,19 @@ export default function EditSpecifications({
 		if (specToEdit.categories.length > 0) setCategories(specToEdit.categories);
 		if (specToEdit.subcategories.length > 0)
 			setSubcategories(specToEdit.subcategories);
-	}, [specToEdit]);
 
-	useEffect(() => {
-		if (families.length > 0) {
+		if (specToEdit.families.length > 0) {
 			console.log('hay familia');
+			setCategorizations(
+				specToEdit.families.map(fam => ({
+					selectedFamily: fam,
+					selectedCategories: [],
+					selectedSubcategories: [],
+				})),
+			);
 		}
-		console.log(specToEdit);
-	}, [families]);
+		// console.log(specToEdit);
+	}, [specToEdit]);
 	return (
 		<div>
 			<CategorizationsSection />
