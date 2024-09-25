@@ -24,6 +24,11 @@ export default function Categorizations({ index }: { index: number }) {
 	>([]);
 
 	useEffect(() => {
+		updateCategories(index, []);
+		updateSubcategories(index, []);
+	}, [categorizations[index].selectedFamily]);
+
+	useEffect(() => {
 		if (families.length > 0) {
 			setFamilyList(
 				families.map(fam => ({
