@@ -32,7 +32,7 @@ function SpecificationForm() {
 				subcategories: subcategories || '',
 			},
 		]);
-	}, [createdBy]);
+	}, [categorizations, createdBy]);
 
 	// Añade una nueva especificación
 	const addSpecifications = () => {
