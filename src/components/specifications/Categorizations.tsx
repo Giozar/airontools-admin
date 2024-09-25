@@ -72,6 +72,11 @@ export default function Categorizations({ index }: { index: number }) {
 							fam =>
 								!categorizations.some(cat => cat.selectedFamily === fam.value),
 						)}
+						label={
+							familyList.find(
+								fam => fam.value === categorizations[index].selectedFamily,
+							)?.label
+						}
 						value={categorizations[index].selectedFamily}
 						setValue={selectedValues => updateFamily(index, selectedValues)}
 					/>
