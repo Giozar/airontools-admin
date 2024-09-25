@@ -1,7 +1,7 @@
 import { transformSpecDataToBackend } from '@adapters/specifications.adapter';
 import EditSpecifications from '@components/specifications/EditSpecifications';
 import useFetchSpecification from '@hooks/specifications/useFetchSpecification';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function EditSpecification() {
 	const [id] = useState(() => {
@@ -10,10 +10,6 @@ export default function EditSpecification() {
 	});
 
 	const { specification } = useFetchSpecification({ id });
-
-	useEffect(() => {
-		console.log(id);
-	}, []);
 
 	return (
 		specification && (

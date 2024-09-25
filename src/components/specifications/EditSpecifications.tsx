@@ -18,23 +18,26 @@ export default function EditSpecifications({
 	const { showAlert } = useAlert();
 
 	useEffect(() => {
-		//pedir las subcategorias de la lista, con ello clasificar
-		//pedir las categorias de la lista, con ello clasificar
-		//Que es eso???
+		// pedir las subcategorias de la lista, con ello clasificar
+		// pedir las categorias de la lista, con ello clasificar
+		// Que es eso???
 		const getCategorization = async () => {
-			const subcategoriesList: SubcategoryDataFrontend[] = [];
+			// const familiesList: FamilyDataFrontend[] = [];
 			const categoriesList: CategoryDataFrontend[] = [];
-			// Obtener subcategorías
-			if (Array.isArray(specToEdit.subcategories)) {
-				try {
-					for (const subcategoryId of specToEdit.subcategories) {
-						const subcategory = await getSubcategoryService(subcategoryId);
-						if (subcategory) subcategoriesList.push(subcategory);
-					}
-				} catch (error) {
-					showAlert('Error al obtener subcategorías: ' + error, 'error');
-				}
-			}
+			const subcategoriesList: SubcategoryDataFrontend[] = [];
+
+			// Obtener familias
+			// if (Array.isArray(specToEdit.families)) {
+			// 	try {
+			// 		for (const familyId of specToEdit.families) {
+			// 			const family = await getFamilyService(familyId);
+			// 			if (family) familiesList.push(family);
+			// 		}
+			// 	} catch (error) {
+			// 		showAlert('Error al obtener familias: ' + error, 'error');
+			// 	}
+			// }
+
 			// Obtener categorías
 			if (Array.isArray(specToEdit.categories)) {
 				try {
@@ -47,9 +50,21 @@ export default function EditSpecifications({
 				}
 			}
 
+			// Obtener subcategorías
+			if (Array.isArray(specToEdit.subcategories)) {
+				try {
+					for (const subcategoryId of specToEdit.subcategories) {
+						const subcategory = await getSubcategoryService(subcategoryId);
+						if (subcategory) subcategoriesList.push(subcategory);
+					}
+				} catch (error) {
+					showAlert('Error al obtener subcategorías: ' + error, 'error');
+				}
+			}
+
 			if (
-				specToEdit.families.length > 0 &&
-				categoriesList.length > 0 &&
+				specToEdit.families.length > 0 ||
+				categoriesList.length > 0 ||
 				subcategoriesList.length > 0
 			) {
 				const newCategorizations = specToEdit.families.map(fam => ({

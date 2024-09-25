@@ -12,7 +12,7 @@ export default function Categorizations({ index }: { index: number }) {
 		updateSubcategories,
 	} = useSpecificationContext();
 	const { families, loading } = useFetchCategorization();
-	//Malabares pero funciona
+	// Malabares pero funciona
 	const [familyList, setFamilyList] = useState<
 		{ value: string; label: string }[]
 	>([]);
@@ -68,7 +68,10 @@ export default function Categorizations({ index }: { index: number }) {
 					<SelectInput
 						id={`familiaselect-${index}`}
 						name='Selecciona una familia'
-						options={familyList}
+						options={familyList.filter(
+							fam =>
+								!categorizations.some(cat => cat.selectedFamily === fam.value),
+						)}
 						value={categorizations[index].selectedFamily}
 						setValue={selectedValues => updateFamily(index, selectedValues)}
 					/>
