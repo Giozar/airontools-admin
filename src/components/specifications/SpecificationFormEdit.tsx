@@ -8,16 +8,17 @@ import editSpecification from '@services/specifications/editSpecification.servic
 import { useEffect, useState } from 'react';
 
 function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
-	const { families, categories, subcategories } = useSpecificationContext();
+	const { categorizations } = useSpecificationContext();
 	const id = specToEdit?._id as string;
 	const [specification, setSpecification] = useState<SpecDataToSend>({
 		name: specToEdit?.name || '',
 		description: specToEdit?.description || '',
 		unit: specToEdit?.unit || '',
 		createdBy: '',
-		families,
-		categories,
-		subcategories: subcategories || [],
+		families: categorizations.map(cat => cat.selectedFamily),
+		categories: categorizations.flatMap(cat => cat.selectedCategories),
+		subcategories:
+			categorizations.flatMap(cat => cat.selectedSubcategories) || [],
 	});
 
 	const { user } = useAuthContext();
@@ -25,6 +26,11 @@ function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
 	const createdBy = user?.id || 'user';
 
 	useEffect(() => {
+		const families = categorizations.map(cat => cat.selectedFamily);
+		const categories = categorizations.flatMap(cat => cat.selectedCategories);
+		const subcategories = categorizations.flatMap(
+			cat => cat.selectedSubcategories,
+		);
 		// Actualiza el estado de la especificación cuando cambian las IDs o el usuario autenticado
 		setSpecification(prevSpec => ({
 			...prevSpec,
@@ -33,7 +39,7 @@ function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
 			categories,
 			subcategories: subcategories || [],
 		}));
-	}, [families, categories, subcategories, createdBy]);
+	}, [categorizations, createdBy]);
 
 	// Maneja cambios en los campos de la especificación
 	const handleInputChange = (field: keyof SpecDataToSend, value: string) => {
@@ -46,8 +52,9 @@ function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
 	// Guarda la especificación
 	const saveSpecification = async () => {
 		try {
+			console.log(specification);
 			await editSpecification({ specification, id });
-			showAlert('Especificación creada con éxito', 'success');
+			showAlert('Especificación guardada con éxito', 'success');
 		} catch (error) {
 			const err = error as ErrorResponse;
 			showAlert(

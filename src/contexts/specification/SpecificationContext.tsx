@@ -18,11 +18,32 @@ export const SpecificationProvider = ({
 	// Estados para cada una de las propiedades del contexto
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const [categorizations, setCategorizations] = useState<Categorization[]>([]);
-	const [families, setFamilies] = useState<string[]>([]);
-	const [categories, setCategories] = useState<string[]>([]);
-	const [subcategories, setSubcategories] = useState<string[]>([]);
 	const [createdBy, setCreatedBy] = useState<string>('');
 	const [updatedBy, setUpdatedBy] = useState<string>('');
+	// Funciones Helper
+	const updateFamily = (index: number, newFamilyId: string) => {
+		setCategorizations(prev => {
+			const updatedCategorizations = [...prev];
+			updatedCategorizations[index].selectedFamily = newFamilyId;
+			return updatedCategorizations;
+		});
+	};
+
+	const updateCategories = (index: number, newCategoryIds: string[]) => {
+		setCategorizations(prev => {
+			const updatedCategorizations = [...prev];
+			updatedCategorizations[index].selectedCategories = newCategoryIds;
+			return updatedCategorizations;
+		});
+	};
+
+	const updateSubcategories = (index: number, newSubcategoryIds: string[]) => {
+		setCategorizations(prev => {
+			const updatedCategorizations = [...prev];
+			updatedCategorizations[index].selectedSubcategories = newSubcategoryIds;
+			return updatedCategorizations;
+		});
+	};
 
 	// Proveemos los valores actuales y sus setters
 	return (
@@ -30,18 +51,15 @@ export const SpecificationProvider = ({
 			value={{
 				specifications,
 				categorizations,
-				families,
-				categories,
-				subcategories,
 				createdBy,
 				updatedBy,
 				setSpecifications,
 				setCategorizations,
-				setFamilies,
-				setCategories,
-				setSubcategories,
 				setCreatedBy,
 				setUpdatedBy,
+				updateFamily,
+				updateCategories,
+				updateSubcategories,
 			}}
 		>
 			{children}

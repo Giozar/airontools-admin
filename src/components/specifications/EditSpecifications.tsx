@@ -1,5 +1,10 @@
+import { useAlert } from '@contexts/Alert/AlertContext';
 import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
+import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
+import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
+import { getCategoryService } from '@services/categories/getCategory.service';
+import { getSubcategoryService } from '@services/subcategories/getSubcategory.service';
 import { useEffect } from 'react';
 import CategorizationsSection from './CategorizationsSection';
 import SpecificationFormEdit from './SpecificationFormEdit';
@@ -9,32 +14,60 @@ export default function EditSpecifications({
 }: {
 	specToEdit: SpecDataToSend;
 }) {
-	const {
-		categorizations,
-		setCategorizations,
-		setFamilies,
-		setCategories,
-		setSubcategories,
-	} = useSpecificationContext();
+	const { categorizations, setCategorizations } = useSpecificationContext();
+	const { showAlert } = useAlert();
 
 	useEffect(() => {
-		if (specToEdit.families.length > 0) setFamilies(specToEdit.families);
-		if (specToEdit.categories.length > 0) setCategories(specToEdit.categories);
-		if (specToEdit.subcategories.length > 0)
-			setSubcategories(specToEdit.subcategories);
+		//pedir las subcategorias de la lista, con ello clasificar
+		//pedir las categorias de la lista, con ello clasificar
+		//Que es eso???
+		const getCategorization = async () => {
+			const subcategoriesList: SubcategoryDataFrontend[] = [];
+			const categoriesList: CategoryDataFrontend[] = [];
+			// Obtener subcategorías
+			if (Array.isArray(specToEdit.subcategories)) {
+				try {
+					for (const subcategoryId of specToEdit.subcategories) {
+						const subcategory = await getSubcategoryService(subcategoryId);
+						if (subcategory) subcategoriesList.push(subcategory);
+					}
+				} catch (error) {
+					showAlert('Error al obtener subcategorías: ' + error, 'error');
+				}
+			}
+			// Obtener categorías
+			if (Array.isArray(specToEdit.categories)) {
+				try {
+					for (const categoryId of specToEdit.categories) {
+						const category = await getCategoryService(categoryId);
+						if (category) categoriesList.push(category);
+					}
+				} catch (error) {
+					showAlert('Error al obtener categorías: ' + error, 'error');
+				}
+			}
 
-		if (specToEdit.families.length > 0) {
-			console.log('hay familia');
-			setCategorizations(
-				specToEdit.families.map(fam => ({
+			if (
+				specToEdit.families.length > 0 &&
+				categoriesList.length > 0 &&
+				subcategoriesList.length > 0
+			) {
+				const newCategorizations = specToEdit.families.map(fam => ({
 					selectedFamily: fam,
-					selectedCategories: [],
-					selectedSubcategories: [],
-				})),
-			);
-		}
-		// console.log(specToEdit);
+					selectedCategories: categoriesList
+						.filter(cat => cat.family.id === fam)
+						.map(cat => cat.id),
+					selectedSubcategories: subcategoriesList
+						.filter(cat => cat.family.id === fam)
+						.map(cat => cat.id),
+				}));
+				setCategorizations(newCategorizations);
+			}
+		};
+
+		getCategorization();
 	}, [specToEdit]);
+
 	return (
 		<div>
 			<CategorizationsSection />

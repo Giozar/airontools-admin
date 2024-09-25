@@ -5,6 +5,7 @@ interface CheckboxInputListProps {
 	id: string;
 	name: string;
 	options: { value: string; label: string }[];
+	preselectedValues?: string[];
 	onChange: (selectedValues: string[]) => void;
 }
 
@@ -12,23 +13,31 @@ const CheckboxInputList: React.FC<CheckboxInputListProps> = ({
 	id,
 	name,
 	options,
+	preselectedValues,
 	onChange,
 }) => {
-	const [selectedValues, setSelectedValues] = useState<string[]>([]);
+	const [selectedValues, setSelectedValues] = useState<string[]>(
+		preselectedValues || [],
+	);
+
 	const prevOptionsRef = useRef<{ value: string; label: string }[]>(options);
 
 	useEffect(() => {
 		const prevOptions = prevOptionsRef.current;
 		prevOptionsRef.current = options;
+
 		if (JSON.stringify(prevOptions) !== JSON.stringify(options)) {
 			setSelectedValues([]);
 		}
-	}, [options]);
+		if (preselectedValues) {
+			setSelectedValues(preselectedValues);
+		}
+	}, [options, preselectedValues]);
 
 	const handleCheckboxChange = (value: string) => {
 		const newSelectedValues = selectedValues.includes(value)
-			? selectedValues.filter(v => v !== value) // Desmarcar
-			: [...selectedValues, value]; // Marcar
+			? selectedValues.filter(v => v !== value)
+			: [...selectedValues, value];
 
 		setSelectedValues(newSelectedValues);
 		onChange(newSelectedValues);

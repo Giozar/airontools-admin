@@ -25,19 +25,16 @@ export interface Categorization {
 export interface SpecificationContextProps {
 	specifications: SpecDataToSend[];
 	categorizations: Categorization[];
-	families: string[];
-	categories: string[];
-	subcategories: string[];
 	createdBy: string;
 	updatedBy: string;
 
 	setSpecifications: (value: SpecDataToSend[]) => void;
 	setCategorizations: (value: Categorization[]) => void;
-	setFamilies: (value: string[]) => void;
-	setCategories: (value: string[]) => void;
-	setSubcategories: (value: string[]) => void;
 	setCreatedBy: (value: string) => void;
 	setUpdatedBy: (value: string) => void;
+	updateFamily: (index: number, newFamilyId: string) => void;
+	updateCategories: (index: number, newFamilyId: string[]) => void;
+	updateSubcategories: (index: number, newFamilyId: string[]) => void;
 }
 // Datos que vienen del backend - GET
 export interface SpecDataBackend {

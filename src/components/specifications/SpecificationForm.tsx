@@ -8,7 +8,7 @@ import createSpecification from '@services/specifications/createSpecification.se
 import { useEffect, useState } from 'react';
 
 function SpecificationForm() {
-	const { families, categories, subcategories } = useSpecificationContext();
+	const { categorizations } = useSpecificationContext();
 	const { user } = useAuthContext();
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const createdBy = user?.id || 'user';
@@ -16,6 +16,11 @@ function SpecificationForm() {
 
 	// Inicializa el estado de especificaciones cada vez que cambian las IDs
 	useEffect(() => {
+		const families = categorizations.map(cat => cat.selectedFamily);
+		const categories = categorizations.flatMap(cat => cat.selectedCategories);
+		const subcategories = categorizations.flatMap(
+			cat => cat.selectedSubcategories,
+		);
 		setSpecifications([
 			{
 				name: '',
@@ -27,10 +32,15 @@ function SpecificationForm() {
 				subcategories: subcategories || '',
 			},
 		]);
-	}, [families, categories, subcategories, createdBy]);
+	}, [createdBy]);
 
 	// Añade una nueva especificación
 	const addSpecifications = () => {
+		const families = categorizations.map(cat => cat.selectedFamily);
+		const categories = categorizations.flatMap(cat => cat.selectedCategories);
+		const subcategories = categorizations.flatMap(
+			cat => cat.selectedSubcategories,
+		);
 		setSpecifications(prevSpecs => [
 			...prevSpecs,
 			{

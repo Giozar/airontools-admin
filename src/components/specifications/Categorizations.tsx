@@ -1,109 +1,113 @@
 import CheckboxInputList from '@components/commons/CheckboxInputList';
 import SelectInput from '@components/commons/SelectInput';
 import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
-import { useMultipleFamilySpecifications } from '@hooks/families/useMultipleFamilySpecifications';
-import { useEffect } from 'react';
-import { Categorization } from './types';
-
-const handleCategorizationChange = (
-	categorizations: Categorization[],
-	setCategorizations: (value: Categorization[]) => void,
-	index: number,
-	selectedFamily: string,
-	selectedCategories: string[],
-	selectedSubcategories: string[],
-) => {
-	const updatedCategorizations = categorizations.map((cat, i) => {
-		if (i === index) {
-			return {
-				selectedFamily: selectedFamily || cat.selectedFamily,
-				selectedCategories: selectedCategories || cat.selectedCategories,
-				selectedSubcategories:
-					selectedSubcategories || cat.selectedSubcategories,
-			};
-		}
-		return cat;
-	});
-
-	setCategorizations(updatedCategorizations);
-};
+import useFetchCategorization from '@hooks/families/useFetchCategorization';
+import { useEffect, useState } from 'react';
 
 export default function Categorizations({ index }: { index: number }) {
-	const { categorizations, setCategorizations } = useSpecificationContext();
 	const {
-		families,
-		categories,
-		subcategories,
-		selectedFamily,
-		selectedCategory,
-		selectedSubcategory,
-		handleSelectFamily,
-		handleSelectCategory,
-		handleSelectSubcategory,
-	} = useMultipleFamilySpecifications();
+		categorizations,
+		updateFamily,
+		updateCategories,
+		updateSubcategories,
+	} = useSpecificationContext();
+	const { families, loading } = useFetchCategorization();
+	//Malabares pero funciona
+	const [familyList, setFamilyList] = useState<
+		{ value: string; label: string }[]
+	>([]);
+	const [categoryList, setCategoryList] = useState<
+		{ family: string; options: { value: string; label: string } }[]
+	>([]);
+	const [subcategoryList, setSubcategoryList] = useState<
+		{ category: string; options: { value: string; label: string } }[]
+	>([]);
 
-	// Usar useEffect para manejar los cambios de selección en tiempo real
 	useEffect(() => {
-		// console.log(`Familia seleccionada en sección ${index}:`, selectedFamily);
-		// console.log(
-		// 	`Categoría seleccionada en sección ${index}:`,
-		// 	selectedCategory,
-		// );
-		// console.log(
-		// 	`Subcategoría seleccionada en sección ${index}:`,
-		// 	selectedSubcategory,
-		// );
-		handleCategorizationChange(
-			categorizations,
-			setCategorizations,
-			index,
-			selectedFamily || '',
-			selectedCategory,
-			selectedSubcategory,
-		);
-	}, [selectedFamily, selectedCategory, selectedSubcategory, index]);
+		if (families.length > 0) {
+			setFamilyList(
+				families.map(fam => ({
+					value: fam.id,
+					label: fam.name,
+				})),
+			);
+			setCategoryList(
+				families.flatMap(fam =>
+					fam.categories
+						? fam.categories.map(cat => ({
+								family: cat.family.id || '',
+								options: {
+									value: cat.id,
+									label: cat.name,
+								},
+							}))
+						: [],
+				),
+			);
 
-	const handleFamilyChange = (value: string) => {
-		handleSelectFamily(value);
-		// console.log(`Cambio de familia a: ${value}`);
-	};
-
-	const handleCategoryChange = (value: string[]) => {
-		handleSelectCategory(value);
-		// console.log(`Cambio de categoría a: ${value}`);
-	};
-
-	const handleSubcategoryChange = (value: string[]) => {
-		handleSelectSubcategory(value);
-		// console.log(`Cambio de subcategoría a: ${value}`);
-	};
+			setSubcategoryList(
+				families.flatMap(fam =>
+					fam.subcategories
+						? fam.subcategories.map(subcat => ({
+								category: subcat.category._id || '',
+								options: {
+									value: subcat.id,
+									label: subcat.name,
+								},
+							}))
+						: [],
+				),
+			);
+		}
+	}, [families]);
 
 	return (
 		<div style={{ width: '50%' }}>
-			<SelectInput
-				id={`familiaselect-${index}`}
-				name='Selecciona una familia'
-				options={families}
-				value={categorizations[index].selectedFamily}
-				setValue={handleFamilyChange}
-			/>
-			{selectedFamily && selectedFamily.length > 0 && (
-				<CheckboxInputList
-					id={`catselect-${index}`}
-					name='Selecciona las categorías'
-					options={categories}
-					onChange={handleCategoryChange}
-				/>
+			{!loading && (
+				<>
+					<SelectInput
+						id={`familiaselect-${index}`}
+						name='Selecciona una familia'
+						options={familyList}
+						value={categorizations[index].selectedFamily}
+						setValue={selectedValues => updateFamily(index, selectedValues)}
+					/>
+					{categorizations[index].selectedFamily && (
+						<CheckboxInputList
+							id={`catselect-${index}`}
+							name='Selecciona las categorías'
+							options={categoryList
+								.filter(
+									cat => cat.family === categorizations[index].selectedFamily,
+								)
+								.map(cat => cat.options)}
+							preselectedValues={categorizations[index].selectedCategories}
+							onChange={selectedValues =>
+								updateCategories(index, selectedValues)
+							}
+						/>
+					)}
+					{categorizations[index].selectedFamily &&
+						categorizations[index].selectedCategories && (
+							<CheckboxInputList
+								id={`subcatselect-${index}`}
+								name='Selecciona una subcategoría'
+								options={subcategoryList
+									.filter(subcat =>
+										categorizations[index].selectedCategories.includes(
+											subcat.category,
+										),
+									)
+									.map(cat => cat.options)}
+								preselectedValues={categorizations[index].selectedSubcategories}
+								onChange={selectedValues =>
+									updateSubcategories(index, selectedValues)
+								}
+							/>
+						)}
+					<hr />
+				</>
 			)}
-			{selectedCategory && selectedCategory.length > 0 && (
-				<CheckboxInputList
-					id={`subcatselect-${index}`}
-					name='Selecciona una subcategoría'
-					options={subcategories}
-					onChange={handleSubcategoryChange}
-				/>
-			)}
-			<hr />
 		</div>
 	);
 }
