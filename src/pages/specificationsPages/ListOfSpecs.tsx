@@ -42,7 +42,7 @@ function SpecificationsGrid() {
 			}
 		};
 		fetchSpecifications();
-	}, []);
+	}, [specifications]);
 
 	const filteredSpecifications = specifications.filter(spec =>
 		spec.name.toLowerCase().includes(searchTerm.toLowerCase()),

@@ -8,7 +8,7 @@ import createSpecification from '@services/specifications/createSpecification.se
 import { useEffect, useState } from 'react';
 
 function SpecificationForm() {
-	const { categorizations } = useSpecificationContext();
+	const { categorizations, setCategorizations } = useSpecificationContext();
 	const { user } = useAuthContext();
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const createdBy = user?.id || 'user';
@@ -84,6 +84,8 @@ function SpecificationForm() {
 					specification,
 				});
 				showAlert('Especificación creada con éxito', 'success');
+				setSpecifications([]);
+				setCategorizations([]);
 			} catch (error) {
 				const err = error as ErrorResponse;
 				showAlert(
