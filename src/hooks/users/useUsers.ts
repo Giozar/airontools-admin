@@ -150,6 +150,7 @@ export default function useUsers(userToEdit: string | null) {
 					createdBy,
 				});
 			}
+			showAlert('Usuario actualizado con exito', 'success');
 		} catch (error) {
 			console.log({
 				id: id || '',
@@ -160,11 +161,7 @@ export default function useUsers(userToEdit: string | null) {
 				createdBy,
 			});
 			console.error('Error al subir datos del usuario:', error);
-			if (error instanceof Error) {
-				showAlert(error.message, 'error');
-			} else {
-				showAlert('Error desconocido', 'error');
-			}
+			showAlert(error as string, 'error');
 		}
 	};
 	return {
