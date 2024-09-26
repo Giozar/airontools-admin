@@ -7,7 +7,7 @@ import '@components/css/roleChangeModal.css';
 import CloseIcon from '@components/svg/CloseIcon';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
-import { updateRoleService } from '@services/roles/updateRole.service';
+import { updateUserRoleService } from '@services/roles/updateRole.service';
 
 interface RoleChangeModalProps {
 	userToEdit: UserDataFrontend | null;
@@ -35,7 +35,7 @@ function RoleChangeModal({
 		try {
 			if (!userToEdit) throw new Error('No hay usuario que editar');
 			if (!role) throw new Error('Rol invalido');
-			await updateRoleService(userToEdit.id, role);
+			await updateUserRoleService(userToEdit.id, role);
 			onUpdateList();
 			onCloseModal();
 			showAlert('Se cambió el rol con éxito', 'success');

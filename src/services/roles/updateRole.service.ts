@@ -3,7 +3,7 @@ import { RegisterResponse } from '@interfaces/User.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-export async function updateRoleService(id: string, role: string) {
+export async function updateUserRoleService(id: string, role: string) {
 	try {
 		const response = await axios.patch<RegisterResponse>(
 			airontoolsAPI + `/auth/${id}`,
