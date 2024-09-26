@@ -10,7 +10,7 @@ import { errorHandler } from '@utils/errorHandler.util';
 import { FormEvent, useEffect } from 'react';
 import useUserUpdate from './useUserUpdate';
 
-export function useUsers(userToEdit: string | null) {
+export default function useUsers(userToEdit: string | null) {
 	const {
 		id,
 		setId,
