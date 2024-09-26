@@ -4,7 +4,7 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
-import createSpecification from '@services/specifications/createSpecification.service';
+import createSpecificationService from '@services/specifications/createSpecification.service';
 import { useEffect, useState } from 'react';
 
 function SpecificationForm() {
@@ -56,7 +56,7 @@ function SpecificationForm() {
 	};
 
 	// Elimina una especificación por su índice
-	const deleteSpecification = (index: number) => {
+	const deleteSpecificationService = (index: number) => {
 		setSpecifications(prevSpecs => prevSpecs.filter((_, i) => i !== index));
 	};
 
@@ -80,7 +80,7 @@ function SpecificationForm() {
 	const saveSpecifications = async () => {
 		for (const specification of specifications) {
 			try {
-				await createSpecification({
+				await createSpecificationService({
 					specification,
 				});
 				showAlert('Especificación creada con éxito', 'success');
@@ -107,7 +107,7 @@ function SpecificationForm() {
 					<p>
 						Especificación {index + 1}{' '}
 						<button
-							onClick={() => deleteSpecification(index)}
+							onClick={() => deleteSpecificationService(index)}
 							className='delete'
 						>
 							Borrar

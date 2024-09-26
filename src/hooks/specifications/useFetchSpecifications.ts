@@ -1,7 +1,7 @@
 // hooks/useFetchFamilies.ts
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
-import { getSpecifications } from '@services/specifications/getSpecifications.service';
+import { getSpecificationsService } from '@services/specifications/getSpecifications.service';
 import { useEffect, useState } from 'react';
 
 function useFetchSpecifications() {
@@ -15,7 +15,7 @@ function useFetchSpecifications() {
 	useEffect(() => {
 		const fetchSpecifications = async () => {
 			try {
-				const specsResponse = await getSpecifications();
+				const specsResponse = await getSpecificationsService();
 				specsResponse && setSpecifications(specsResponse);
 				specsResponse && setFilteredSpecifications(specsResponse);
 				setLoading(false);

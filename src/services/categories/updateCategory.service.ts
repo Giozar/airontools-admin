@@ -4,7 +4,7 @@ import { errorHandler } from '@utils/errorHandler.util';
 import { formatPathName } from '@utils/formatPathName.utils';
 import axios from 'axios';
 
-export async function updateCategoryRequest(
+export async function updateCategoryService(
 	id: string,
 	categoryData: CategoryDataToSend,
 ) {

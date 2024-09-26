@@ -3,7 +3,7 @@ import { CategoryDataBackend } from '@interfaces/Category.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-export async function getCategories() {
+export async function getCategoriesService() {
 	try {
 		const response = await axios.get<CategoryDataBackend[]>(
 			airontoolsAPI + '/categories',

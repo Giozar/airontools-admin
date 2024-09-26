@@ -20,7 +20,6 @@ export const getProductService = async ({
 		);
 		return transformProductDataToFrontend(response.data);
 	} catch (error) {
-		errorHandler(error);
-		throw new Error('Error al cargar el producto: ' + error);
+		throw errorHandler(error);
 	}
 };

@@ -8,7 +8,7 @@ import { errorHandler } from '@utils/errorHandler.util';
 
 import axios from 'axios';
 
-export const getcategoryByFamilyId = async (
+export const getcategoryByFamilyIdService = async (
 	familyId: string,
 ): Promise<CategoryDataFrontend[]> => {
 	try {

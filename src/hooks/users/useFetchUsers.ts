@@ -1,5 +1,5 @@
 import { UserDataFrontend } from '@interfaces/User.interface';
-import { getUsers } from '@services/users';
+import { getUsersService } from '@services/users';
 import { useCallback, useEffect, useState } from 'react';
 
 const useFetchUsers = () => {
@@ -11,7 +11,7 @@ const useFetchUsers = () => {
 	useEffect(() => {
 		const fetchUsers = async () => {
 			try {
-				const users = await getUsers();
+				const users = await getUsersService();
 				setUsersList(users);
 				setFilteredUsers(users); // Inicialmente, no hay filtro
 			} catch (error) {

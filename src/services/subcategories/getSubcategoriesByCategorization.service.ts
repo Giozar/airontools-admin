@@ -4,10 +4,11 @@ import {
 	SubcategoryDataBackend,
 	SubcategoryDataFrontend,
 } from '@interfaces/subcategory.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 
 import axios from 'axios';
 
-export const getSubcategoryByFamilyId = async (
+export const getSubcategoryByFamilyIdService = async (
 	familyId: string,
 ): Promise<SubcategoryDataFrontend[]> => {
 	try {
@@ -20,11 +21,11 @@ export const getSubcategoryByFamilyId = async (
 		);
 	} catch (error) {
 		console.error('Error al buscar subcategoria por familia', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };
 
-export const getSubcategoryBySubcategoryId = async (
+export const getSubcategoryBySubcategoryIdService = async (
 	SubcategoryId: string,
 ): Promise<SubcategoryDataFrontend[]> => {
 	try {
@@ -37,6 +38,6 @@ export const getSubcategoryBySubcategoryId = async (
 		);
 	} catch (error) {
 		console.error('Error al buscar subcategoria por categoría', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };

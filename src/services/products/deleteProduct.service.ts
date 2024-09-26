@@ -1,10 +1,11 @@
 import { airontoolsAPI } from '@configs/api.config';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 const API_URL = airontoolsAPI;
 
-export const deleteProduct = async (product: ProductDataFrontend) => {
+export const deleteProductService = async (product: ProductDataFrontend) => {
 	try {
 		const deleteImageAndManuals = async () => {
 			const items = (product.images || []).concat(product.manuals || []);
@@ -15,6 +16,6 @@ export const deleteProduct = async (product: ProductDataFrontend) => {
 		await axios.delete(`${API_URL}/products/${product.id}`);
 		return `El producto ${product.name} (${product.id}) ha sido eliminado correctamente.`;
 	} catch (error) {
-		throw new Error(`No se ha podido eliminar al producto ${product.id}.`);
+		throw errorHandler(error);
 	}
 };

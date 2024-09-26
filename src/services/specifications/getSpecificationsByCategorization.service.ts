@@ -4,9 +4,10 @@ import {
 	SpecDataBackend,
 	SpecDataFrontend,
 } from '@interfaces/Specifications.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-export const getSpecificationsByFamilyId = async (
+export const getSpecificationsByFamilyIdService = async (
 	familyId: string,
 ): Promise<SpecDataFrontend[]> => {
 	try {
@@ -19,11 +20,11 @@ export const getSpecificationsByFamilyId = async (
 		);
 	} catch (error) {
 		console.error('Error al buscar especificaciones por familia', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };
 
-export const getSpecificationsByCategoryId = async (
+export const getSpecificationsByCategoryIdService = async (
 	categoryId: string,
 ): Promise<SpecDataFrontend[]> => {
 	try {
@@ -36,11 +37,11 @@ export const getSpecificationsByCategoryId = async (
 		);
 	} catch (error) {
 		console.error('Error al buscar especificaciones por categoría', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };
 
-export const getSpecificationsBySubcategoryId = async (
+export const getSpecificationsBySubcategoryIdService = async (
 	subcategoryId: string,
 ): Promise<SpecDataFrontend[]> => {
 	try {
@@ -53,6 +54,6 @@ export const getSpecificationsBySubcategoryId = async (
 		);
 	} catch (error) {
 		console.error('Error al buscar especificaciones por subcategoría', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };

@@ -38,6 +38,6 @@ export async function uploadProductUrlManualService({
 		);
 		return productUpdated;
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

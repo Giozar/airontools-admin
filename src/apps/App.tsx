@@ -31,8 +31,6 @@ import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
 import CreateProductPage from '@pages/productPages/CreateProductPage';
 import EditProductPage from '@pages/productPages/EditProductPage';
 import ToolMenu from '@pages/productPages/ProductMenu';
-import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
-import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
 import UserOptionCreate from '@pages/userPages/UserOptionCreate';
 import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
@@ -194,7 +192,7 @@ const router = createBrowserRouter([
 												path: 'crear-especificaciones',
 												element: (
 													<SpecificationProvider>
-														<CreateSpecification />
+														<createSpecificationService />
 													</SpecificationProvider>
 												),
 											},
@@ -202,7 +200,7 @@ const router = createBrowserRouter([
 												path: 'editar-especificacion',
 												element: (
 													<SpecificationProvider>
-														<EditSpecification />
+														<editSpecificationService />
 													</SpecificationProvider>
 												),
 											},

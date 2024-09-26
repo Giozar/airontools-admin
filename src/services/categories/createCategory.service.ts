@@ -4,7 +4,7 @@ import { errorHandler } from '@utils/errorHandler.util';
 import { formatPathName } from '@utils/formatPathName.utils';
 import axios from 'axios';
 
-export async function createCategoryRequest(categoryData: CategoryDataToSend) {
+export async function createCategoryService(categoryData: CategoryDataToSend) {
 	try {
 		const response = await axios.post(airontoolsAPI + '/categories', {
 			...categoryData,

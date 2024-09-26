@@ -1,7 +1,7 @@
 import { transformCategoryDataToFrontend } from '@adapters/category.adapter';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
-import { getCategories } from '@services/categories/getCategories.service';
+import { getCategoriesService } from '@services/categories/getCategories.service';
 import { useEffect, useState } from 'react';
 
 function useFetchCategories() {
@@ -16,7 +16,7 @@ function useFetchCategories() {
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
-				const categoriesResponse = await getCategories();
+				const categoriesResponse = await getCategoriesService();
 				categoriesResponse &&
 					setCategories(
 						categoriesResponse.map(transformCategoryDataToFrontend),

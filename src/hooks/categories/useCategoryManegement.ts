@@ -1,4 +1,4 @@
-import { deleteCategory } from '@services/categories/deleteCategory.service';
+import { deleteCategoryService } from '@services/categories/deleteCategory.service';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import { useState } from 'react';
 
@@ -26,7 +26,7 @@ const useCategoryManagement = () => {
 			if (categoryImg.length > 0) {
 				await Promise.all(categoryImg.map(img => deleteFileService(img)));
 			}
-			await deleteCategory(categoryid);
+			await deleteCategoryService(categoryid);
 			setDeletionMessage(
 				`${categoryname} (${categoryid}) ha sido eliminado correctamente.`,
 			);

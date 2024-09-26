@@ -10,9 +10,6 @@ export const deleteSubcategoryService = async (subcategoryId: string) => {
 	try {
 		await axios.delete(`${API_URL}/subcategories/${subcategoryId}`);
 	} catch (error) {
-		errorHandler(error);
-		throw new Error(
-			`Error al eliminar la subcategoría ${subcategoryId}: ${error}`,
-		);
+		throw errorHandler(error);
 	}
 };

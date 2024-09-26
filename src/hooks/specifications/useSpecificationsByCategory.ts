@@ -1,6 +1,6 @@
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
-import { getSpecificationsByCategoryId } from '@services/specifications/getSpecificationsByCategorization.service';
+import { getSpecificationsByCategoryIdService } from '@services/specifications/getSpecificationsByCategorization.service';
 import { useEffect, useState } from 'react';
 
 export function useSpecificationsByCategory(id: string) {
@@ -13,7 +13,8 @@ export function useSpecificationsByCategory(id: string) {
 	const fetchSpecificationsByCategoryId = async (id: string) => {
 		try {
 			setLoading(true);
-			const specsCategoryIdResponse = await getSpecificationsByCategoryId(id);
+			const specsCategoryIdResponse =
+				await getSpecificationsByCategoryIdService(id);
 			if (specsCategoryIdResponse) {
 				setSpecificationsByCategoryId(specsCategoryIdResponse);
 			}

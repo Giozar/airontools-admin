@@ -6,13 +6,13 @@ import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import useCategoryCreate from '@hooks/categories/useCategoryCreate';
 import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
-import { deleteCategory } from '@services/categories/deleteCategory.service';
-import { getcategoryByFamilyId } from '@services/categories/getCategoriesByCategorization.service';
+import { deleteCategoryService } from '@services/categories/deleteCategory.service';
+import { getcategoryByFamilyIdService } from '@services/categories/getCategoriesByCategorization.service';
 import { deleteFamilyService } from '@services/families/deleteFamily.service';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFileService from '@services/files/fileUpload.service';
 import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
-import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
+import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubcategoriesByCategorization.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -58,7 +58,7 @@ export function useEditCategorization() {
 
 		const getCategoryData = async () => {
 			try {
-				const response = await getcategoryByFamilyId(family);
+				const response = await getcategoryByFamilyIdService(family);
 				if (response.length === 0) return;
 
 				for (const [index, category] of response.entries()) {
@@ -84,7 +84,7 @@ export function useEditCategorization() {
 
 		const getSubcategoryData = async () => {
 			try {
-				const response = await getSubcategoryByFamilyId(family);
+				const response = await getSubcategoryByFamilyIdService(family);
 				if (response.length === 0) return;
 				response.forEach((subcategory, index) => {
 					const instanceId = 'cat' + index;
@@ -144,7 +144,7 @@ export function useEditCategorization() {
 
 	const handleDeleteCategory = async (id: string) => {
 		try {
-			await deleteCategory(id);
+			await deleteCategoryService(id);
 			console.log('borrefamailia');
 			showAlert('Categoría borrada', 'success');
 			setTimeout(() => {
