@@ -16,6 +16,7 @@ const useCategoryCreate = () => {
 			errorHandler(error);
 		}
 	};
+
 	return { createCategory };
 };
 

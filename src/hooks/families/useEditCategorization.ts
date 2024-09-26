@@ -4,15 +4,18 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
-import useCategoryCreate from '@hooks/categories/useCategoryCreate';
-import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
+import { createCategoryService } from '@services/categories/createCategory.service';
 import { deleteCategoryService } from '@services/categories/deleteCategory.service';
 import { getcategoryByFamilyIdService } from '@services/categories/getCategoriesByCategorization.service';
+import { updateCategoryService } from '@services/categories/updateCategory.service';
 import { deleteFamilyService } from '@services/families/deleteFamily.service';
+import { updateFamilyService } from '@services/families/updateFamily.service';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFileService from '@services/files/fileUpload.service';
+import { createSubcategoryService } from '@services/subcategories/createSubcategory.service';
 import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
 import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubcategoriesByCategorization.service';
+import { updateSubcategoryService } from '@services/subcategories/updateSubcategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -31,8 +34,6 @@ export function useEditCategorization() {
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
-	const { createSubcategory } = useSubcategoryCreate();
-	const { createCategory } = useCategoryCreate();
 	const navigate = useNavigate();
 	const location = useLocation();
 	const family = location.state?.familyId;
@@ -188,11 +189,12 @@ export function useEditCategorization() {
 						familyToEdit.id,
 					)) || '';
 			}
-			await axios.patch(`${airontoolsAPI}/families/${familyToEdit.id}`, {
+			await updateFamilyService(familyToEdit.id, {
 				name: familyToEdit.name,
 				description: familyToEdit.description,
 				images: [img],
 			});
+
 			showAlert('Familia actualizada', 'success');
 		} catch (error) {
 			showAlert('no se pudo actualizar familia' + errorHandler(error), 'error');
@@ -213,7 +215,7 @@ export function useEditCategorization() {
 					img =
 						(await handleRawImageUpload(category.rawImage, category.id)) || '';
 				}
-				await axios.patch(`${airontoolsAPI}/categories/${category.id}`, {
+				await updateCategoryService(category.id, {
 					name: category.name,
 					description: category.description,
 					images: [img],
@@ -242,7 +244,7 @@ export function useEditCategorization() {
 							subcategory.id,
 						)) || '';
 				}
-				await axios.patch(`${airontoolsAPI}/subcategories/${subcategory.id}`, {
+				await updateSubcategoryService(subcategory.id, {
 					name: subcategory.name,
 					description: subcategory.description,
 					images: [img],
@@ -268,7 +270,7 @@ export function useEditCategorization() {
 			for (const subcategory of subcategoryInstances) {
 				if (subcategory.mode !== 'create') continue;
 
-				const subcategoryId = await createSubcategory({
+				const subcategoryId = await createSubcategoryService({
 					name: subcategory.name,
 					description: subcategory.description,
 					createdBy: user.id,
@@ -283,17 +285,11 @@ export function useEditCategorization() {
 				const uploadedSubcategoryImageUrl = subcategory.rawImage
 					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
 					: '';
-				console.log(
-					'Imagen subida para la subcategoría:',
-					uploadedSubcategoryImageUrl,
-				);
-
-				await axios.patch(
-					`${airontoolsAPI}/subcategories/${subcategoryId._id}`,
-					{
+				if (uploadedSubcategoryImageUrl) {
+					await updateSubcategoryService(subcategoryId._id, {
 						images: [uploadedSubcategoryImageUrl],
-					},
-				);
+					});
+				}
 			}
 			showAlert('Proceso completado exitosamente', 'success');
 			setTimeout(() => {
@@ -314,7 +310,7 @@ export function useEditCategorization() {
 			for (const category of categoryInstances) {
 				if (category.mode !== 'create') continue;
 
-				const categoryId = await createCategory({
+				const categoryId = await createCategoryService({
 					name: category.name,
 					description: category.description,
 					createdBy: user.id,
@@ -324,18 +320,14 @@ export function useEditCategorization() {
 				console.log('ID de la categoría:', categoryId._id);
 
 				// Actualizar categoría con imagen
-
 				const uploadedCategoryImageUrl = category.rawImage
 					? await handleRawImageUpload(category.rawImage, categoryId._id)
 					: '';
-				console.log(
-					'Imagen subida para la categoría:',
-					uploadedCategoryImageUrl,
-				);
-
-				await axios.patch(`${airontoolsAPI}/categories/${categoryId._id}`, {
-					images: [uploadedCategoryImageUrl],
-				});
+				if (uploadedCategoryImageUrl) {
+					await updateCategoryService(categoryId._id, {
+						images: [uploadedCategoryImageUrl],
+					});
+				}
 			}
 			showAlert('Proceso completado exitosamente', 'success');
 			setTimeout(() => {

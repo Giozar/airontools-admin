@@ -1,15 +1,17 @@
 // hooks/useSubcategoryUpdate.ts
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { SubcategoryDataToSend } from '@interfaces/subcategory.interface';
-import { updateSubcategory } from '@services/subcategories/updateSubcategory.service';
+import { updateSubcategoryService } from '@services/subcategories/updateSubcategory.service';
 
 const useSubcategoryUpdate = () => {
 	const { showAlert } = useAlert();
-	const handleUpdateSubcategory = async (
-		subcategoryData: SubcategoryDataToSend,
-	) => {
+	const updateSubcategory = async (subcategoryData: SubcategoryDataToSend) => {
 		try {
-			const data = await updateSubcategory(subcategoryData);
+			if (!subcategoryData._id) throw new Error('Id de subcategoría no válido');
+			const data = await updateSubcategoryService(
+				subcategoryData._id,
+				subcategoryData,
+			);
 			showAlert('Subcategoría actualizada con éxito', 'success');
 			return data;
 		} catch (error) {
@@ -18,7 +20,7 @@ const useSubcategoryUpdate = () => {
 	};
 
 	return {
-		updateSubcategory: handleUpdateSubcategory,
+		updateSubcategory,
 	};
 };
 
