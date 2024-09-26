@@ -87,6 +87,8 @@ export default function useUsers(userToEdit: string | null) {
 	const handleSubmitCreate = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
+			if (!role) throw 'Elige un rol válido';
+
 			const userCreated = await createUser({
 				password,
 				imageUrl,
@@ -125,7 +127,8 @@ export default function useUsers(userToEdit: string | null) {
 	const handleSubmitUpdate = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			if (!userToEdit) return;
+			if (!userToEdit) throw 'No hay usuario para editar';
+			if (!role) throw ' Elige un rol válido';
 
 			let uploadedUrlImage = null;
 			if (rawImage && id) {
