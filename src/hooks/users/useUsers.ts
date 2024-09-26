@@ -1,46 +1,174 @@
-import { UserDataFrontend } from '@interfaces/User.interface';
-import { getUsers } from '@services/users';
-import { useCallback, useEffect, useState } from 'react';
+import { useAlert } from '@contexts/Alert/AlertContext';
+import { useAuthContext } from '@contexts/auth/AuthContext';
+import { useUserContext } from '@contexts/User/UserContext';
+import { deleteFileService } from '@services/files/deleteFile.service';
+import uploadFileService from '@services/files/fileUpload.service';
+import createUser from '@services/users/createUser.service';
+import { getUser } from '@services/users/getUser.service';
+import { updateUserService } from '@services/users/updateUser.service';
+import { errorHandler } from '@utils/errorHandler.util';
+import { FormEvent, useEffect } from 'react';
+import useUserUpdate from './useUserUpdate';
 
-const useFetchUsers = () => {
-	const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
-	const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
-	const [searchTerm, setSearchTerm] = useState<string>('');
-	const [updateListFlag, setupdateListFlag] = useState(false);
+export function useUsers(userToEdit: string | null) {
+	const {
+		id,
+		setId,
+		name,
+		setName,
+		email,
+		setEmail,
+		imageUrl,
+		setImageUrl,
+		rawImage,
+		setRawImage,
+		role,
+		setRole,
+		createdBy,
+		setCreatedBy,
+		password,
+	} = useUserContext();
+	const { showAlert } = useAlert();
+	const { user } = useAuthContext();
+	const { updateUser } = useUserUpdate();
 
 	useEffect(() => {
-		const fetchUsers = async () => {
-			try {
-				const users = await getUsers();
-				setUsersList(users);
-				setFilteredUsers(users); // Inicialmente, no hay filtro
-			} catch (error) {
-				console.error('Failed to fetch users:', error);
+		if (user) {
+			setCreatedBy(user.id);
+		}
+	}, [user]);
+
+	useEffect(() => {
+		const getUserData = async () => {
+			if (userToEdit) {
+				try {
+					const userData = await getUser(userToEdit);
+					if (userData) {
+						setId(userData.id);
+						setName(userData.name);
+						setEmail(userData.email);
+						setImageUrl(userData.imageUrl);
+						setRawImage(null);
+						setRole(userData.role?.id || '');
+						setCreatedBy(userData.createdBy?.id || '');
+					}
+				} catch (error) {
+					showAlert(
+						('No se pudo recuperar los datos del usuario' + error) as string,
+						'error',
+					);
+				}
 			}
 		};
+		if (userToEdit) getUserData();
+	}, [userToEdit]);
 
-		fetchUsers();
-	}, [updateListFlag]);
-
-	const handleSearch = useCallback((term: string) => {
-		setSearchTerm(term.toLowerCase());
-	}, []);
-
-	useEffect(() => {
-		const filtered = usersList.filter(user =>
-			user.name.toLowerCase().includes(searchTerm),
-		);
-		setFilteredUsers(filtered);
-	}, [searchTerm, usersList]);
-
-	return {
-		usersList,
-		setUsersList,
-		filteredUsers,
-		setFilteredUsers,
-		handleSearch,
-		setupdateListFlag,
+	const handleRawImageUpload = async (rawImage: File, id: string) => {
+		try {
+			if (rawImage === null) return;
+			const url = await uploadFileService(rawImage, 'image', id);
+			console.log('Imagen subida ', url);
+			return url;
+		} catch (error) {
+			console.error('No se pudo subir archivos:', rawImage, error);
+			errorHandler(error);
+		}
 	};
-};
 
-export default useFetchUsers;
+	const handleDeleteFile = async (fileId: string) => {
+		try {
+			await deleteFileService(fileId);
+		} catch (error) {
+			console.error(`Error al eliminar archivo ${fileId}:`, error);
+			showAlert('no se pudo borrar el archivo', 'error');
+		}
+	};
+
+	const handleSubmitCreate = async (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			const userCreated = await createUser({
+				password,
+				imageUrl,
+				email,
+				name,
+				role,
+				createdBy,
+			});
+			showAlert(`Usuario ${userCreated.name} creado con éxito`, 'success');
+			if (rawImage) {
+				const uploadedUrlImage = await handleRawImageUpload(
+					rawImage,
+					userCreated.id,
+				);
+				if (uploadedUrlImage) {
+					const updatedUser = await updateUser(userCreated.id || '', {
+						imageUrl: uploadedUrlImage,
+						name: userCreated.name,
+						email: userCreated.email,
+					});
+					console.log(updatedUser);
+					showAlert(
+						`Imagen y usuario ${userCreated.name} creados con éxito`,
+						'success',
+					);
+				}
+			}
+			setTimeout(() => {
+				window.location.reload();
+			}, 500);
+		} catch (error) {
+			showAlert('error con el usuario' + error, 'error');
+		}
+	};
+
+	const handleSubmitUpdate = async (e: FormEvent) => {
+		e.preventDefault();
+		try {
+			if (!userToEdit) return;
+
+			let uploadedUrlImage = null;
+			if (rawImage && id) {
+				uploadedUrlImage = await handleRawImageUpload(rawImage, id);
+				if (imageUrl) await handleDeleteFile(imageUrl);
+			}
+			if (password) {
+				await updateUserService(id || '', {
+					password,
+					imageUrl: uploadedUrlImage || imageUrl,
+					email,
+					name,
+					role,
+					createdBy,
+				});
+			} else {
+				await updateUserService(id || '', {
+					imageUrl: uploadedUrlImage || imageUrl,
+					email,
+					name,
+					role,
+					createdBy,
+				});
+			}
+		} catch (error) {
+			console.log({
+				id: id || '',
+				imageUrl: imageUrl || '',
+				email,
+				name,
+				role,
+				createdBy,
+			});
+			console.error('Error al subir datos del usuario:', error);
+			if (error instanceof Error) {
+				showAlert(error.message, 'error');
+			} else {
+				showAlert('Error desconocido', 'error');
+			}
+		}
+	};
+	return {
+		handleSubmitCreate,
+		handleSubmitUpdate,
+	};
+}

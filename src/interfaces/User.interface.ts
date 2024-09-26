@@ -28,7 +28,7 @@ export interface UserDataFrontend {
 	imageUrl: string;
 	password?: string;
 	role?: RoleDataFront | null;
-	createdBy?: UserDataFrontend;
+	createdBy?: UserDataFrontend | null;
 	updatedBy?: UserDataFrontend;
 	createdAt?: string;
 	updatedAt?: string;

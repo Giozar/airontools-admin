@@ -2,6 +2,7 @@
 
 import { airontoolsAPI } from '@configs/api.config';
 import { UserDataSend } from '@interfaces/User.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 const API_URL = airontoolsAPI;
@@ -14,6 +15,6 @@ export const updateUserService = async (
 		const response = await axios.patch(`${API_URL}/auth/${userId}`, userData);
 		return response.data;
 	} catch (error) {
-		throw new Error('Error al actualizar el usuario: ' + error);
+		errorHandler(error);
 	}
 };

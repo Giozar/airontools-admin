@@ -14,6 +14,7 @@ import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryC
 import { ModalProvider } from '@contexts/Modal/ModalContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
 import { SpecificationProvider } from '@contexts/specification/SpecificationContext';
+import { UserProvider } from '@contexts/User/UserContext';
 import BasePage from '@layouts/BasePage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
@@ -131,11 +132,19 @@ const router = createBrowserRouter([
 								children: [
 									{
 										path: 'crear-usuario',
-										element: <UserOptionCreate />,
+										element: (
+											<UserProvider>
+												<UserOptionCreate />
+											</UserProvider>
+										),
 									},
 									{
 										path: 'editar-usuario',
-										element: <UserOptionEdit />,
+										element: (
+											<UserProvider>
+												<UserOptionEdit />
+											</UserProvider>
+										),
 									},
 									{
 										path: 'crear-rol',
