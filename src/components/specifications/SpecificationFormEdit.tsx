@@ -1,44 +1,45 @@
 import '@components/css/createSpecs.css';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
-import { SpecificationFormEditProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import editSpecification from '@services/specifications/editSpecification.service';
 import { useEffect, useState } from 'react';
 
-function SpecificationFormEdit({
-	specToEdit,
-	familiesId,
-	categoriesId,
-	subcategoriesId,
-}: SpecificationFormEditProps) {
+function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
+	const { categorizations } = useSpecificationContext();
 	const id = specToEdit?._id as string;
 	const [specification, setSpecification] = useState<SpecDataToSend>({
 		name: specToEdit?.name || '',
 		description: specToEdit?.description || '',
 		unit: specToEdit?.unit || '',
 		createdBy: '',
-		families: familiesId,
-		categories: categoriesId,
-		subcategories: subcategoriesId || [],
+		families: categorizations.map(cat => cat.selectedFamily),
+		categories: categorizations.flatMap(cat => cat.selectedCategories),
+		subcategories:
+			categorizations.flatMap(cat => cat.selectedSubcategories) || [],
 	});
-	console.log(categoriesId);
 
 	const { user } = useAuthContext();
 	const { showAlert } = useAlert();
 	const createdBy = user?.id || 'user';
 
 	useEffect(() => {
+		const families = categorizations.map(cat => cat.selectedFamily);
+		const categories = categorizations.flatMap(cat => cat.selectedCategories);
+		const subcategories = categorizations.flatMap(
+			cat => cat.selectedSubcategories,
+		);
 		// Actualiza el estado de la especificación cuando cambian las IDs o el usuario autenticado
 		setSpecification(prevSpec => ({
 			...prevSpec,
 			createdBy,
-			families: familiesId,
-			categories: categoriesId,
-			subcategories: subcategoriesId || [],
+			families,
+			categories,
+			subcategories: subcategories || [],
 		}));
-	}, [familiesId, categoriesId, subcategoriesId, createdBy]);
+	}, [categorizations, createdBy]);
 
 	// Maneja cambios en los campos de la especificación
 	const handleInputChange = (field: keyof SpecDataToSend, value: string) => {
@@ -51,12 +52,13 @@ function SpecificationFormEdit({
 	// Guarda la especificación
 	const saveSpecification = async () => {
 		try {
+			console.log(specification);
 			await editSpecification({ specification, id });
-			showAlert('Especificación creada con éxito', 'success');
-		} catch (err) {
-			const error = err as ErrorResponse;
+			showAlert('Especificación guardada con éxito', 'success');
+		} catch (error) {
+			const err = error as ErrorResponse;
 			showAlert(
-				`No se pudo editar la especificación ${error.message}`,
+				`Ocurrió un error al editar especificación ${err.message}`,
 				'error',
 			);
 		}

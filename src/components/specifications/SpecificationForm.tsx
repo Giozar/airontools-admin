@@ -1,16 +1,14 @@
 import '@components/css/createSpecs.css';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useAuthContext } from '@contexts/auth/AuthContext';
+import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
-import { SpecificationFormProps } from '@interfaces/SpecificationFormProps.interface';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import createSpecification from '@services/specifications/createSpecification.service';
 import { useEffect, useState } from 'react';
-function SpecificationForm({
-	familiesId,
-	categoriesId,
-	subcategoriesId,
-}: SpecificationFormProps) {
+
+function SpecificationForm() {
+	const { categorizations, setCategorizations } = useSpecificationContext();
 	const { user } = useAuthContext();
 	const [specifications, setSpecifications] = useState<SpecDataToSend[]>([]);
 	const createdBy = user?.id || 'user';
@@ -18,21 +16,31 @@ function SpecificationForm({
 
 	// Inicializa el estado de especificaciones cada vez que cambian las IDs
 	useEffect(() => {
+		const families = categorizations.map(cat => cat.selectedFamily);
+		const categories = categorizations.flatMap(cat => cat.selectedCategories);
+		const subcategories = categorizations.flatMap(
+			cat => cat.selectedSubcategories,
+		);
 		setSpecifications([
 			{
 				name: '',
 				description: '',
 				unit: '',
 				createdBy,
-				families: familiesId,
-				categories: categoriesId,
-				subcategories: subcategoriesId || '',
+				families,
+				categories,
+				subcategories: subcategories || '',
 			},
 		]);
-	}, [familiesId, categoriesId, subcategoriesId, createdBy]);
+	}, [categorizations, createdBy]);
 
 	// Añade una nueva especificación
 	const addSpecifications = () => {
+		const families = categorizations.map(cat => cat.selectedFamily);
+		const categories = categorizations.flatMap(cat => cat.selectedCategories);
+		const subcategories = categorizations.flatMap(
+			cat => cat.selectedSubcategories,
+		);
 		setSpecifications(prevSpecs => [
 			...prevSpecs,
 			{
@@ -40,9 +48,9 @@ function SpecificationForm({
 				description: '',
 				unit: '',
 				createdBy,
-				families: familiesId,
-				categories: categoriesId,
-				subcategories: subcategoriesId || '',
+				families,
+				categories,
+				subcategories: subcategories || '',
 			},
 		]);
 	};
@@ -76,10 +84,12 @@ function SpecificationForm({
 					specification,
 				});
 				showAlert('Especificación creada con éxito', 'success');
-			} catch (err) {
-				const error = err as ErrorResponse;
+				setSpecifications([]);
+				setCategorizations([]);
+			} catch (error) {
+				const err = error as ErrorResponse;
 				showAlert(
-					`No se pudo crear la especificación ${error.message}`,
+					`Ocurrió un error al crear la especificación ${err.message}`,
 					'error',
 				);
 			}

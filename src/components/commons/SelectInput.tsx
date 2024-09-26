@@ -5,6 +5,7 @@ interface SelectInputProps {
 	name: string;
 	options: { value: string; label: string }[];
 	value?: string;
+	label?: string;
 	setValue: (value: string) => void;
 }
 
@@ -13,6 +14,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 	name,
 	options,
 	value,
+	label,
 	setValue,
 }) => {
 	const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -30,7 +32,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 				onChange={handleChange}
 				className='select-input__select'
 			>
-				<option value=''>Selecciona una opción</option>
+				<option value=''>{label || 'Selecciona una opción'}</option>
 				{options.map(option => (
 					<option
 						key={option.value}

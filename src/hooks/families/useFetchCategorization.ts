@@ -37,7 +37,6 @@ function useFetchCategorization() {
 				);
 				setFamilies(familiesWithDetails);
 				setFilteredFamilies(familiesWithDetails);
-				console.log(familiesWithDetails);
 			} catch (error) {
 				console.error('Failed to fetch families:', error);
 				showAlert('Error al cargar las familias', 'error');

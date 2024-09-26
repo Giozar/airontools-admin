@@ -1,4 +1,3 @@
-import { transformSpecDataToBackend } from '@adapters/specifications.adapter';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import deleteSpecification from '@services/specifications/deleteSpecification.service';
 import { useState } from 'react';
@@ -15,12 +14,8 @@ const useSpecificationsManagement = () => {
 	const [updateListFlag, setUpdateListFlag] = useState<boolean>(false);
 
 	const handleEdit = (spec: SpecDataFrontend) => {
-		localStorage.setItem(
-			'specToEdit',
-			JSON.stringify(transformSpecDataToBackend(spec)),
-		);
+		localStorage.setItem('specToEdit', spec.id);
 		navigate(location.pathname + `/editar-especificacion`);
-		console.log(JSON.stringify(spec));
 	};
 
 	const handleCloseModal = () => {

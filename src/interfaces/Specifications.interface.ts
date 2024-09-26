@@ -13,6 +13,28 @@ export interface SpecDataToSend {
 	categories: string[];
 	subcategories: string[];
 	createdBy: string;
+	updatedBy?: string;
+}
+
+export interface Categorization {
+	selectedFamily: string;
+	selectedCategories: string[];
+	selectedSubcategories: string[];
+}
+
+export interface SpecificationContextProps {
+	specifications: SpecDataToSend[];
+	categorizations: Categorization[];
+	createdBy: string;
+	updatedBy: string;
+
+	setSpecifications: (value: SpecDataToSend[]) => void;
+	setCategorizations: (value: Categorization[]) => void;
+	setCreatedBy: (value: string) => void;
+	setUpdatedBy: (value: string) => void;
+	updateFamily: (index: number, newFamilyId: string) => void;
+	updateCategories: (index: number, newFamilyId: string[]) => void;
+	updateSubcategories: (index: number, newFamilyId: string[]) => void;
 }
 // Datos que vienen del backend - GET
 export interface SpecDataBackend {
@@ -24,6 +46,7 @@ export interface SpecDataBackend {
 	categories: CategoryDataToSend[];
 	subcategories: SubcategoryDataToSend[];
 	createdBy: UserDataBackend;
+	updatedBy?: UserDataBackend;
 }
 // Datos que se usan en el frontend - Visualización (solo frontend)
 export interface SpecDataFrontend {
@@ -35,6 +58,7 @@ export interface SpecDataFrontend {
 	categories: CategoryDataToSend[];
 	subcategories: SubcategoryDataToSend[];
 	createdBy: UserDataFrontend;
+	updatedBy?: UserDataFrontend;
 }
 
 export interface ProductSpecification {
