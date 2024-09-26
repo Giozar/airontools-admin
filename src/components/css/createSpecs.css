@@ -79,3 +79,15 @@
 #unit {
 	width: fit-content;
 }
+
+.remove-categorizations {
+	background-color: rgb(126, 48, 48);
+	width: 50%;
+	height: 50px;
+}
+
+.container-categorizations {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	min-height: 200px;
+}
