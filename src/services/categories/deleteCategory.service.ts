@@ -9,8 +9,7 @@ export async function deleteCategory(id: string) {
 			.then(
 				await axios.delete(airontoolsAPI + `/subcategories/category/${id}`),
 			);
-		// console.log(`${id} eliminado correctamente.`);
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

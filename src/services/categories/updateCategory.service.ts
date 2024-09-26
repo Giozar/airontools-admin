@@ -9,11 +9,12 @@ export async function updateCategoryRequest(
 	categoryData: CategoryDataToSend,
 ) {
 	try {
-		await axios.patch(airontoolsAPI + `/categories/${id}`, {
+		const response = await axios.patch(airontoolsAPI + `/categories/${id}`, {
 			...categoryData,
 			path: formatPathName(categoryData.name || ''),
 		});
+		return response.data;
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

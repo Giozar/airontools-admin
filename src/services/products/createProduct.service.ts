@@ -40,6 +40,6 @@ export default async function createProductService(product: ProductDataToSend) {
 
 		return createdProduct;
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

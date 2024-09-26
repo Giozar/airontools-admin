@@ -10,6 +10,6 @@ export async function getCategories() {
 		);
 		return response.data;
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

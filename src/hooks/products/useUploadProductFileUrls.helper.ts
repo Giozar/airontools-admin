@@ -1,6 +1,6 @@
 import {
-	uploadProductUrlImages,
-	uploadProductUrlManual,
+	uploadProductUrlImagesService,
+	uploadProductUrlManualService,
 } from '@services/products/uploadProductAssets.service';
 
 interface UploadProductFileUrlsArgs {
@@ -17,7 +17,7 @@ export function useUploadProductFileUrls() {
 		productId &&
 			imageUrls &&
 			imageUrls.length > 0 &&
-			(await uploadProductUrlImages({
+			(await uploadProductUrlImagesService({
 				productId,
 				images: imageUrls,
 			}));
@@ -25,7 +25,7 @@ export function useUploadProductFileUrls() {
 		productId &&
 			manualUrls &&
 			manualUrls.length > 0 &&
-			(await uploadProductUrlManual({
+			(await uploadProductUrlManualService({
 				productId,
 				manuals: manualUrls,
 			}));

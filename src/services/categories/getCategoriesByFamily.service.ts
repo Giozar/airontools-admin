@@ -2,6 +2,7 @@
 
 import { airontoolsAPI } from '@configs/api.config';
 import { CategoryDataBackend } from '@interfaces/Category.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 const API_URL = airontoolsAPI;
@@ -13,6 +14,6 @@ export const getCategoriesFromFamilyService = async (familyId: string) => {
 		);
 		return response.data;
 	} catch (error) {
-		throw new Error('Error al cargar las categorías: ' + error);
+		throw errorHandler(error);
 	}
 };
