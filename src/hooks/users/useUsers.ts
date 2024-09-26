@@ -57,25 +57,6 @@ export default function useUsers(userToEdit: string | null) {
 						'error',
 					);
 				}
-		const getUserData = async () => {
-			if (userToEdit) {
-				try {
-					const userData = await getUser(userToEdit);
-					if (userData) {
-						setId(userData.id);
-						setName(userData.name);
-						setEmail(userData.email);
-						setImageUrl(userData.imageUrl);
-						setRawImage(null);
-						setRole(userData.role?.id || '');
-						setCreatedBy(userData.createdBy?.id || '');
-					}
-				} catch (error) {
-					showAlert(
-						('No se pudo recuperar los datos del usuario' + error) as string,
-						'error',
-					);
-				}
 			}
 		};
 		if (userToEdit) getUserData();
@@ -188,8 +169,5 @@ export default function useUsers(userToEdit: string | null) {
 	return {
 		handleSubmitCreate,
 		handleSubmitUpdate,
-		handleSubmitCreate,
-		handleSubmitUpdate,
 	};
-}
 }
