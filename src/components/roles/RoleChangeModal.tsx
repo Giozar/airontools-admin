@@ -32,21 +32,20 @@ function RoleChangeModal({
 		setRole(e.target.value);
 	};
 
-	useEffect(() => {
-		console.log(userToEdit);
-		console.log(role);
-	}, [userToEdit, role]);
+	useEffect(() => {}, [userToEdit, role]);
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
+			if (!userToEdit) throw 'No hay usuario que editar';
+
 			await axios.patch<RegisterResponse>(
-				airontoolsAPI + `/auth/${userToEdit?.id}`,
+				airontoolsAPI + `/auth/${userToEdit.id}`,
 				{
-					...userToEdit,
 					role,
 				},
 			);
+
 			onUpdateList();
 			onCloseModal();
 			showAlert('Se cambió el rol con éxito', 'success');
