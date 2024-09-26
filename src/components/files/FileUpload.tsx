@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default function FileUpload({
 	setImageUrl,
@@ -11,7 +11,7 @@ export default function FileUpload({
 	fileName,
 	handlerFileSelect,
 }: {
-	setImageUrl?: Dispatch<SetStateAction<string>>;
+	setImageUrl?: (value: string) => void;
 	fileType?: string;
 	fileFeature?: string;
 	setfileFeature: any;

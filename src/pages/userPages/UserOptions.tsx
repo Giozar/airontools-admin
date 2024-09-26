@@ -6,8 +6,9 @@ import EditUserIcon from '@components/svg/EditUserIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useModal } from '@contexts/Modal/ModalContext';
+import useFetchUsers from '@hooks/users/useFetchUsers';
 import useUserManagement from '@hooks/users/useUserManagement';
-import useUsers from '@hooks/users/useUsers';
+
 import { UserDataFrontend } from '@interfaces/User.interface';
 import '@pages/css/UserOptions.css';
 import { useState } from 'react';
@@ -18,7 +19,7 @@ function ReturnUsers() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const { user: loggedUser } = useAuthContext();
 	const { handleEdit, handleDelete } = useUserManagement();
-	const { filteredUsers, handleSearch, setupdateListFlag } = useUsers();
+	const { filteredUsers, handleSearch, setupdateListFlag } = useFetchUsers();
 	const { openModal } = useModal();
 
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
