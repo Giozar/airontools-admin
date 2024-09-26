@@ -6,11 +6,10 @@ import uploadFileService from '@services/files/fileUpload.service';
 import createUser from '@services/users/createUser.service';
 import { getUser } from '@services/users/getUser.service';
 import { updateUserService } from '@services/users/updateUser.service';
-import { errorHandler } from '@utils/errorHandler.util';
 import { FormEvent, useEffect } from 'react';
 import useUserUpdate from './useUserUpdate';
 
-export function useUsers(userToEdit: string | null) {
+export default function useUsers(userToEdit: string | null) {
 	const {
 		id,
 		setId,
@@ -118,7 +117,7 @@ export function useUsers(userToEdit: string | null) {
 				window.location.reload();
 			}, 500);
 		} catch (error) {
-			showAlert(errorHandler(error), 'error');
+			showAlert('ocurrio un errror', 'error');
 		}
 	};
 

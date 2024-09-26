@@ -4,7 +4,7 @@ import { RoleDataFront } from '@interfaces/Role.interface';
 import TextInput from '@components/commons/TextInput';
 import SingleImageUpload from '@components/files/SingleFileUpload';
 import { useUserContext } from '@contexts/User/UserContext';
-import { useUsers } from '@hooks/users/useUsers';
+import useUsers from '@hooks/users/useUsers';
 import { copyPassword } from '@utils/copyPassword.util';
 import { generatePassword } from '@utils/generatePassword';
 

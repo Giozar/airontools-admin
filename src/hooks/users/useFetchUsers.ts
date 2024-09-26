@@ -18,7 +18,6 @@ const useFetchUsers = () => {
 				console.error('Failed to fetch users:', error);
 			}
 		};
-
 		fetchUsers();
 	}, [updateListFlag]);
 
