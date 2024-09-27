@@ -24,7 +24,6 @@ function CreateRoleForm() {
 				name,
 				description,
 				createdBy,
-				permissions: undefined,
 			});
 			showSuccess('Rol creado con éxito');
 			setUpdateRole(!updateRole);

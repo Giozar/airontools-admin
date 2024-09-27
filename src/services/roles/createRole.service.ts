@@ -6,9 +6,7 @@ import axios from 'axios';
 export async function createRoleService(role: RoleDataSend) {
 	try {
 		const response = await axios.post(airontoolsAPI + '/roles/create', {
-			name: role.name,
-			description: role.description,
-			createdBy: role.createdBy,
+			...role,
 		});
 		return response.data;
 	} catch (error) {
