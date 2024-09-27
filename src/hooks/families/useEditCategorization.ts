@@ -41,7 +41,6 @@ export function useEditCategorization() {
 	const location = useLocation();
 	const family = location.state?.familyId;
 
-	//Obten los valores de para editar xdxdxd
 	useEffect(() => {
 		if (!family) return;
 		const getFamilyData = async () => {
