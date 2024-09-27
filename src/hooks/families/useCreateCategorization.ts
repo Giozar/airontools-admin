@@ -99,9 +99,7 @@ export function useCreateCategorization() {
 				}
 			}
 			showAlert('Proceso completado exitosamente', 'success');
-			setTimeout(() => {
-				window.location.reload();
-			}, 300);
+			navigate(0);
 		} catch (error) {
 			showAlert((error as ErrorResponse).message, 'error');
 		}
@@ -132,9 +130,7 @@ export function useCreateCategorization() {
 				}
 			}
 			showAlert('Proceso completado exitosamente', 'success');
-			setTimeout(() => {
-				window.location.reload();
-			}, 300);
+			navigate(0);
 		} catch (error) {
 			showAlert((error as ErrorResponse).message, 'error');
 		}
