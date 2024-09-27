@@ -12,7 +12,7 @@ export interface Role {
 export interface RoleDataSend {
 	name: string;
 	description: string;
-	permissions: object;
+	permissions?: object;
 	createdBy?: string;
 	updatedBy?: string;
 }

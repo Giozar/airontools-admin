@@ -1,21 +1,16 @@
-import { transformProductDataToFrontend } from '@adapters/products.adapter';
 import ActionCard from '@components/commons/ActionCard';
 import TableComponent from '@components/commons/DynamicTable';
 import ProductInfoModal from '@components/products/ProductInfoModal';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import { airontoolsAPI } from '@configs/api.config';
 
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import useProductManagement from '@hooks/products/useProductManagement';
-import {
-	ProductDataBackend,
-	ProductDataFrontend,
-} from '@interfaces/Product.interface';
+import { ProductDataFrontend } from '@interfaces/Product.interface';
 import '@pages/productPages/ProductMenu.css';
-import axios from 'axios';
+import { getProductsService } from '@services/products/getProducts.service';
 import { useEffect, useState } from 'react';
 
 function ListOfTools() {
@@ -30,10 +25,8 @@ function ListOfTools() {
 	useEffect(() => {
 		const fetchProducts = async () => {
 			try {
-				const response = await axios.get<ProductDataBackend[]>(
-					`${airontoolsAPI}/products`,
-				);
-				setProducts(response.data.map(transformProductDataToFrontend));
+				const response = await getProductsService();
+				setProducts(response);
 			} catch (error) {
 				console.error('Failed to fetch tools:', error);
 			}
