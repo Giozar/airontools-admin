@@ -7,7 +7,7 @@ import { useModal } from '@contexts/Modal/ModalContext';
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
 import useFetchCategorization from '@hooks/families/useFetchCategorization';
 import '@pages/css/familyList.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { handleOpenModal } from './Edit/handleOpenModal';
 
@@ -16,6 +16,7 @@ function ListOfFamilies() {
 	const { handleEdit, handleDelete } = useFamilyManagement();
 	const { loading, filteredFamilies, handleSearch, setupdateListFlag } =
 		useFetchCategorization();
+	useEffect(() => {}, [filteredFamilies]);
 	const { openModal } = useModal();
 
 	if (loading) return <p>Cargando...</p>;

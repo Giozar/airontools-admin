@@ -19,7 +19,7 @@ function ReturnUsers() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const { user: loggedUser } = useAuthContext();
 	const { handleEdit, handleDelete } = useUserManagement();
-	const { filteredUsers, handleSearch, setupdateListFlag } = useFetchUsers();
+	const { filteredUsers, handleSearch } = useFetchUsers();
 	const { openModal } = useModal();
 
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
@@ -28,9 +28,9 @@ function ReturnUsers() {
 			'Eliminar Usuario',
 			`Vas a eliminar el usuario ${userToDelete.name}. ¿Estás seguro de que quieres continuar? `,
 			() => {
-				handleDelete(userToDelete), setupdateListFlag(prev => !prev);
+				handleDelete(userToDelete);
 			},
-			true,
+			false,
 			false,
 		);
 	};
@@ -98,7 +98,6 @@ function ReturnUsers() {
 				<RoleChangeModal
 					userToEdit={filteredUsers.find(p => p.id === showModalFor) || null}
 					onCloseModal={() => setShowModalFor(null)}
-					onUpdateList={() => setupdateListFlag(prev => !prev)}
 				/>
 			)}
 		</div>

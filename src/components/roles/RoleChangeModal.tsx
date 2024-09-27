@@ -12,14 +12,9 @@ import { updateUserRoleService } from '@services/roles/updateRole.service';
 interface RoleChangeModalProps {
 	userToEdit: UserDataFrontend | null;
 	onCloseModal: () => void;
-	onUpdateList: () => void;
 }
 
-function RoleChangeModal({
-	userToEdit,
-	onCloseModal,
-	onUpdateList,
-}: RoleChangeModalProps) {
+function RoleChangeModal({ userToEdit, onCloseModal }: RoleChangeModalProps) {
 	const [role, setRole] = useState(userToEdit?.role?.id);
 	const { roles: roleOptions } = useRoles();
 	const { showAlert } = useAlert();
@@ -36,7 +31,6 @@ function RoleChangeModal({
 			if (!userToEdit) throw new Error('No hay usuario que editar');
 			if (!role) throw new Error('Rol invalido');
 			await updateUserRoleService(userToEdit.id, role);
-			onUpdateList();
 			onCloseModal();
 			showAlert('Se cambió el rol con éxito', 'success');
 		} catch (error) {
