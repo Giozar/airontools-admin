@@ -10,7 +10,7 @@ export const createFamilyService = async (familyData: FamilyDataToSend) => {
 	try {
 		const response = await axios.post(`${airontoolsAPI}/families`, {
 			...familyData,
-			path: formatPathName(familyData.name),
+			path: formatPathName(familyData.name || ''),
 		});
 		return response.data;
 	} catch (error) {

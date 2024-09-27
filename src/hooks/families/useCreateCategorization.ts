@@ -1,9 +1,8 @@
-import { useAlert } from '@contexts/Alert/AlertContext';
+import { useAlertHelper } from '@contexts/Alert/alert.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
-import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { createCategoryService } from '@services/categories/createCategory.service';
 import { updateCategoryService } from '@services/categories/updateCategory.service';
 import { createFamilyService } from '@services/families/createFamily.service';
@@ -14,36 +13,39 @@ import { updateSubcategoryService } from '@services/subcategories/updateSubcateg
 import { errorHandler } from '@utils/errorHandler.util';
 
 export function useCreateCategorization() {
-	const { showAlert } = useAlert();
 	const { ...familyToCreate } = useFamilyCreateContext();
 	const { user } = useAuthContext();
 	const { getAllCategoryInstances } = useCategoryCreateContext();
 	const categoryInstances = getAllCategoryInstances();
 	const { getAllSubcategoryInstances } = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
+	const { showError, showSuccessAndReload } = useAlertHelper();
 
 	const handleRawImageUpload = async (rawImage: File, id: string) => {
 		try {
 			if (rawImage === null) return;
+			console.log;
 			const url = await uploadFileService(rawImage, 'image', id);
 			return url;
 		} catch (error) {
+			console.log(rawImage);
 			throw errorHandler(error);
 		}
 	};
-	//me da flojera arreglar esto xd xd xd pero ya esta separado creo
+	//mucho texto
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		try {
 			if (!user) return;
 			// Crear la familia
-			const familyId = await createFamilyService({
+			const family = await createFamilyService({
 				name: familyToCreate.name,
 				description: familyToCreate.description,
 				createdBy: familyToCreate.createdBy || user.id,
 				path: '',
 				images: [],
 			});
+			const familyId = family._id;
 			// Actualizar familia para imagen
 			const uploadedUrlImages = familyToCreate.rawImage
 				? await handleRawImageUpload(familyToCreate.rawImage, familyId)
@@ -98,10 +100,9 @@ export function useCreateCategorization() {
 					});
 				}
 			}
-			showAlert('Proceso completado exitosamente', 'success');
-			navigate(0);
+			showSuccessAndReload('Proceso completado exitosamente');
 		} catch (error) {
-			showAlert((error as ErrorResponse).message, 'error');
+			showError('error', error);
 		}
 	};
 
@@ -129,10 +130,9 @@ export function useCreateCategorization() {
 					});
 				}
 			}
-			showAlert('Proceso completado exitosamente', 'success');
-			navigate(0);
+			showSuccessAndReload('Proceso completado exitosamente');
 		} catch (error) {
-			showAlert((error as ErrorResponse).message, 'error');
+			showError('error', error);
 		}
 	};
 	return { handleSubmit, handleCreateSubcategory };

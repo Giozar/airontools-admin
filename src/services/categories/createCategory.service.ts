@@ -12,6 +12,7 @@ export async function createCategoryService(categoryData: CategoryDataToSend) {
 		});
 		return response.data;
 	} catch (error) {
+		console.log(categoryData);
 		throw errorHandler(error);
 	}
 }
