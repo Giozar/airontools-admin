@@ -49,7 +49,7 @@ h2 span {
 	border-radius: 4px;
 	padding: 10px 20px;
 }
-.editSpecificationService .familyedit {
+.editSpecification .familyedit {
 	/*display: inline-grid;
 	grid-auto-columns: 300px;
 	grid-auto-flow: row;*/
@@ -57,13 +57,13 @@ h2 span {
 	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 	max-width: 1200px;
 }
-.editSpecificationService .familyedit .titulo {
+.editSpecification .familyedit .titulo {
 	display: flex;
 	grid-column: 1 / -1;
 	justify-content: space-between;
 }
 
-.editSpecificationService .familyedit .column {
+.editSpecification .familyedit .column {
 	margin: 0.5rem;
 	border: 2px solid var(--neutral);
 	padding: 10px;
