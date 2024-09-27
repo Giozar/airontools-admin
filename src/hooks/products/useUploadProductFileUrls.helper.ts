@@ -14,6 +14,7 @@ export function useUploadProductFileUrls() {
 		imageUrls,
 		manualUrls,
 	}: UploadProductFileUrlsArgs) => {
+		console.log('Asigno URL');
 		productId &&
 			imageUrls &&
 			imageUrls.length > 0 &&

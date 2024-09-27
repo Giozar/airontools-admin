@@ -1,16 +1,16 @@
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 
 import EditCreateToggle from '@components/commons/EditCreateToggle';
-import CreateCategories from '../Create/CreateCategory';
+import CreateCategories from '@pages/familyPages/Create/CreateCategory';
 import './EditCategorization.css';
 import EditCategories from './EditCategory';
 import EditFamily from './EditFamily';
 
 export function CreateFamilyForm() {
-	const { handleUpdateCategorization } = useEditCategorization();
+	const { handleUpdateFamily } = useEditCategorization();
 
 	return (
-		<form className='create-family-form' onSubmit={handleUpdateCategorization}>
+		<form className='create-family-form' onSubmit={handleUpdateFamily}>
 			<EditFamily />
 			<EditCreateToggle
 				name={'Categorías'}

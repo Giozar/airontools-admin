@@ -6,7 +6,6 @@ const useFetchUsers = () => {
 	const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
 	const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>('');
-	const [updateListFlag, setupdateListFlag] = useState(false);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -19,7 +18,7 @@ const useFetchUsers = () => {
 			}
 		};
 		fetchUsers();
-	}, [updateListFlag]);
+	}, [usersList]);
 
 	const handleSearch = useCallback((term: string) => {
 		setSearchTerm(term.toLowerCase());
@@ -38,7 +37,6 @@ const useFetchUsers = () => {
 		filteredUsers,
 		setFilteredUsers,
 		handleSearch,
-		setupdateListFlag,
 	};
 };
 

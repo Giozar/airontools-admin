@@ -6,7 +6,6 @@ import createProductService from '@services/products/createProduct.service';
 
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
-import { useEffect } from 'react';
 import useResetProduct from './useResetProduct';
 
 export function useCreateProduct() {
@@ -16,15 +15,6 @@ export function useCreateProduct() {
 	const { resetProduct } = useResetProduct();
 
 	const { showAlert } = useAlert();
-
-	useEffect(() => {
-		productToCreate.id &&
-			uploadProductFileUrls({
-				productId: productToCreate.id,
-				imageUrls: productToCreate.images,
-				manualUrls: productToCreate.manuals,
-			});
-	}, [productToCreate.id, productToCreate.images, productToCreate.manuals]);
 
 	const createProduct = async (e: Event) => {
 		e.preventDefault();
@@ -45,12 +35,19 @@ export function useCreateProduct() {
 				productToCreate.imagesRaw &&
 				productToCreate.imagesRaw.length > 0
 			) {
-				await filesUpload({
+				console.log('Subo archivo');
+				const imageUrls = await filesUpload({
 					type: 'images',
 					feature: `products/${createdProduct.id}`,
 					files: productToCreate.imagesRaw,
 					setFiles: productToCreate.setImagesRaw,
 					setFileUrls: productToCreate.setImages,
+				});
+
+				await uploadProductFileUrls({
+					productId: createdProduct.id,
+					imageUrls,
+					manualUrls: [],
 				});
 			}
 
@@ -59,12 +56,17 @@ export function useCreateProduct() {
 				productToCreate.manualsRaw &&
 				productToCreate.manualsRaw.length > 0
 			) {
-				await filesUpload({
+				const manualUrls = await filesUpload({
 					type: 'manuals',
 					feature: `products/${productToCreate.id}`,
 					files: productToCreate.manualsRaw,
 					setFiles: productToCreate.setManualsRaw,
 					setFileUrls: productToCreate.setManuals,
+				});
+				await uploadProductFileUrls({
+					productId: createdProduct.id,
+					imageUrls: [],
+					manualUrls,
 				});
 			}
 
