@@ -12,6 +12,7 @@ import { ProductDataFrontend } from '@interfaces/Product.interface';
 import '@pages/productPages/ProductMenu.css';
 import { getProductsService } from '@services/products/getProducts.service';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function ListOfTools() {
 	const [modalOpen, setModalOpen] = useState(false);
@@ -21,6 +22,7 @@ function ListOfTools() {
 	const { handleEdit, handleDelete } = useProductManagement();
 	const { openModal } = useModal();
 	const { user } = useAuthContext();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -40,6 +42,7 @@ function ListOfTools() {
 			`Vas a eliminar el producto ${product.name}. ¿Estás seguro de que quieres continuar? `,
 			() => {
 				handleDelete(product);
+				navigate(0);
 			},
 			true,
 			false,
