@@ -1,6 +1,6 @@
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
-import { deleteProduct } from '@services/products/deleteProduct.service';
+import { deleteProductService } from '@services/products/deleteProduct.service';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const useProductManagement = () => {
@@ -15,7 +15,7 @@ const useProductManagement = () => {
 	const handleDelete = async (product: ProductDataFrontend | null) => {
 		if (!product) return;
 		try {
-			const message = await deleteProduct(product);
+			const message = await deleteProductService(product);
 			showAlert(message, 'success');
 		} catch (error) {
 			showAlert(`Error al eliminar producto ${product.id}`, 'error');

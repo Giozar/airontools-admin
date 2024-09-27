@@ -40,6 +40,6 @@ export default async function updateProductService(
 
 		return updatedProduct;
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

@@ -1,4 +1,5 @@
 import { airontoolsAPI } from '@configs/api.config';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 const uploadFileService = async (
@@ -23,8 +24,7 @@ const uploadFileService = async (
 
 		return response.data.secureUrl;
 	} catch (error) {
-		console.error('Error uploading file:', error);
-		throw new Error('File upload failed');
+		throw errorHandler(error);
 	}
 };
 

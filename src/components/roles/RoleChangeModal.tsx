@@ -1,17 +1,13 @@
 import { useRoles } from '@hooks/roles/useRoles';
 import { RoleDataFront } from '@interfaces/Role.interface';
-import { RegisterResponse, UserDataFrontend } from '@interfaces/User.interface';
-import axios from 'axios';
+import { UserDataFrontend } from '@interfaces/User.interface';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import '@components/css/roleChangeModal.css';
 import CloseIcon from '@components/svg/CloseIcon';
-import { airontoolsAPI } from '@configs/api.config';
 import { useAlert } from '@contexts/Alert/AlertContext';
-
-interface ValidationError {
-	message: string[];
-}
+import { ErrorResponse } from '@interfaces/ErrorResponse';
+import { updateUserRoleService } from '@services/roles/updateRole.service';
 
 interface RoleChangeModalProps {
 	userToEdit: UserDataFrontend | null;
@@ -37,30 +33,14 @@ function RoleChangeModal({
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			if (!userToEdit) throw 'No hay usuario que editar';
-
-			await axios.patch<RegisterResponse>(
-				airontoolsAPI + `/auth/${userToEdit.id}`,
-				{
-					role,
-				},
-			);
-
+			if (!userToEdit) throw new Error('No hay usuario que editar');
+			if (!role) throw new Error('Rol invalido');
+			await updateUserRoleService(userToEdit.id, role);
 			onUpdateList();
 			onCloseModal();
 			showAlert('Se cambió el rol con éxito', 'success');
 		} catch (error) {
-			if (!axios.isAxiosError<ValidationError>(error)) {
-				console.error('Edición fallida', error);
-				return;
-			}
-
-			if (!error.response) return;
-			const errorMessage = error.response.data.message;
-			const message = Array.isArray(errorMessage)
-				? errorMessage.join(', ')
-				: errorMessage;
-			showAlert(message, 'error');
+			showAlert((error as ErrorResponse).message, 'error');
 		}
 	};
 

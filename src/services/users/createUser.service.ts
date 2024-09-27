@@ -8,7 +8,7 @@ import {
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-export default async function createUser(
+export default async function createUserService(
 	userData: UserDataSend,
 ): Promise<UserDataFrontend> {
 	try {
@@ -19,8 +19,6 @@ export default async function createUser(
 		const userCreated = transformUserDataFront(response.data.user);
 		return userCreated;
 	} catch (error) {
-		errorHandler(error);
-		// Lanzamos un error para asegurar que la función siempre devuelve un valor.
-		throw new Error('Failed to create user');
+		throw errorHandler(error);
 	}
 }

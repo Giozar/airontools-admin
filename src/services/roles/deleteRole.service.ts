@@ -2,12 +2,13 @@ import { airontoolsAPI } from '@configs/api.config';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-const API_URL = airontoolsAPI;
-
-export const deleteUserService = async (userId: string) => {
+export async function deleteRoleService(roleId: string) {
 	try {
-		await axios.delete(`${API_URL}/auth/${userId}`);
+		const response = await axios.delete(
+			airontoolsAPI + `/roles/delete/${roleId}`,
+		);
+		return response.data;
 	} catch (error) {
 		throw errorHandler(error);
 	}
-};
+}

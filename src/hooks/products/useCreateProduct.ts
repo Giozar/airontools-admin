@@ -4,6 +4,8 @@ import { useProductCreateContext } from '@contexts/product/ProductContext';
 import { useUploadProductFileUrls } from '@hooks/products/useUploadProductFileUrls.helper';
 import createProductService from '@services/products/createProduct.service';
 
+import { useAlert } from '@contexts/Alert/AlertContext';
+import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { useEffect } from 'react';
 import useResetProduct from './useResetProduct';
 
@@ -12,6 +14,8 @@ export function useCreateProduct() {
 	const { ...productToCreate } = useProductCreateContext();
 	const { uploadProductFileUrls } = useUploadProductFileUrls();
 	const { resetProduct } = useResetProduct();
+
+	const { showAlert } = useAlert();
 
 	useEffect(() => {
 		productToCreate.id &&
@@ -24,49 +28,55 @@ export function useCreateProduct() {
 
 	const createProduct = async (e: Event) => {
 		e.preventDefault();
+		try {
+			if (!user?.id) throw new Error('No usuario para crear herramienta');
 
-		if (!user?.id) throw new Error('No usuario para crear herramienta');
-
-		const createdProduct = await createProductService({
-			...productToCreate,
-			createdBy: user?.id,
-		});
-
-		if (createdProduct?.id) {
-			productToCreate.setId(createdProduct.id);
-		}
-
-		if (
-			createdProduct?.id &&
-			productToCreate.imagesRaw &&
-			productToCreate.imagesRaw.length > 0
-		) {
-			await filesUpload({
-				type: 'images',
-				feature: `products/${createdProduct.id}`,
-				files: productToCreate.imagesRaw,
-				setFiles: productToCreate.setImagesRaw,
-				setFileUrls: productToCreate.setImages,
+			const createdProduct = await createProductService({
+				...productToCreate,
+				createdBy: user?.id,
 			});
+
+			if (createdProduct?.id) {
+				productToCreate.setId(createdProduct.id);
+			}
+
+			if (
+				createdProduct?.id &&
+				productToCreate.imagesRaw &&
+				productToCreate.imagesRaw.length > 0
+			) {
+				await filesUpload({
+					type: 'images',
+					feature: `products/${createdProduct.id}`,
+					files: productToCreate.imagesRaw,
+					setFiles: productToCreate.setImagesRaw,
+					setFileUrls: productToCreate.setImages,
+				});
+			}
+
+			if (
+				createdProduct?.id &&
+				productToCreate.manualsRaw &&
+				productToCreate.manualsRaw.length > 0
+			) {
+				await filesUpload({
+					type: 'manuals',
+					feature: `products/${productToCreate.id}`,
+					files: productToCreate.manualsRaw,
+					setFiles: productToCreate.setManualsRaw,
+					setFileUrls: productToCreate.setManuals,
+				});
+			}
+
+			resetProduct();
+
+			showAlert(
+				`Herramienta ${createdProduct?.name} creado con éxito`,
+				'success',
+			);
+		} catch (error) {
+			showAlert((error as ErrorResponse).message, 'error');
 		}
-
-		if (
-			createdProduct?.id &&
-			productToCreate.manualsRaw &&
-			productToCreate.manualsRaw.length > 0
-		) {
-			await filesUpload({
-				type: 'manuals',
-				feature: `products/${productToCreate.id}`,
-				files: productToCreate.manualsRaw,
-				setFiles: productToCreate.setManualsRaw,
-				setFileUrls: productToCreate.setManuals,
-			});
-		}
-
-		resetProduct();
-
-		return createdProduct;
 	};
 
 	return {

@@ -4,10 +4,11 @@ import {
 	ProductDataBackend,
 	ProductDataFrontend,
 } from '@interfaces/Product.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 
 import axios from 'axios';
 
-export const getproductsByFamilyId = async (
+export const getproductsByFamilyIdService = async (
 	familyId: string,
 ): Promise<ProductDataFrontend[]> => {
 	try {
@@ -18,11 +19,11 @@ export const getproductsByFamilyId = async (
 		return products.map(product => transformProductDataToFrontend(product));
 	} catch (error) {
 		console.error('Error al buscar productos por familia', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };
 
-export const getproductsByCategoryId = async (
+export const getproductsByCategoryIdService = async (
 	categoryId: string,
 ): Promise<ProductDataFrontend[]> => {
 	try {
@@ -33,11 +34,11 @@ export const getproductsByCategoryId = async (
 		return products.map(product => transformProductDataToFrontend(product));
 	} catch (error) {
 		console.error('Error al buscar productos por categoría', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };
 
-export const getproductsBySubcategoryId = async (
+export const getproductsBySubcategoryIdService = async (
 	subcategoryId: string,
 ): Promise<ProductDataFrontend[]> => {
 	try {
@@ -48,6 +49,6 @@ export const getproductsBySubcategoryId = async (
 		return products.map(product => transformProductDataToFrontend(product));
 	} catch (error) {
 		console.error('Error al buscar productos por subcategoría', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };

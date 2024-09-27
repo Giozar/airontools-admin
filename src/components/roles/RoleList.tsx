@@ -1,9 +1,9 @@
-import { transformRoleDataFront } from '@adapters/role.adapter';
-import { airontoolsAPI } from '@configs/api.config';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { useModal } from '@contexts/Modal/ModalContext';
-import { RoleDataBack, RoleDataFront } from '@interfaces/Role.interface';
-import axios from 'axios';
+import { ErrorResponse } from '@interfaces/ErrorResponse';
+import { RoleDataFront } from '@interfaces/Role.interface';
+import { getRolesService } from '@services/roles';
+import { deleteRoleService } from '@services/roles/deleteRole.service';
 import { useEffect, useState } from 'react';
 
 interface RoleListState {
@@ -67,11 +67,9 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 	useEffect(() => {
 		const fetchRoles = async () => {
 			try {
-				const response = await axios.get<RoleDataBack[]>(
-					airontoolsAPI + '/roles',
-				);
+				const roles = await getRolesService();
 				setState({
-					roles: response.data.map(role => transformRoleDataFront(role)),
+					roles,
 					loading: false,
 					error: null,
 				});
@@ -83,15 +81,12 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 				});
 			}
 		};
-
 		fetchRoles();
 	}, [updateRole]);
+
 	const handleDelete = async (roleId: string, roleName: string) => {
 		try {
-			const response = await axios.delete(
-				airontoolsAPI + `/roles/delete/${roleId}`,
-			);
-			console.log(response.data);
+			await deleteRoleService(roleId);
 			showAlert(
 				`El rol ${roleName} (${roleId}) ha sido eliminado correctamente.`,
 				'success',
@@ -100,8 +95,10 @@ function RoleList({ updateRole }: { updateRole?: boolean }) {
 				window.location.reload();
 			}, 300);
 		} catch (error) {
-			console.error(error);
-			showAlert(`No se ha podido eliminar el rol ${roleName}.`, 'error');
+			showAlert(
+				`No se ha podido eliminar el rol ${roleName}. ${(error as ErrorResponse).message}`,
+				'error',
+			);
 		}
 	};
 

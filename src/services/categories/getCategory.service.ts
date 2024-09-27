@@ -11,6 +11,6 @@ export async function getCategoryService(id: string) {
 		);
 		return transformCategoryDataToFrontend(response.data);
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

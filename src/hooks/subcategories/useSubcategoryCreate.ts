@@ -7,9 +7,7 @@ import { errorHandler } from '@utils/errorHandler.util';
 const useSubcategoryCreate = () => {
 	const { showAlert } = useAlert();
 
-	const handleCreateSubcategory = async (
-		subcategoryData: SubcategoryDataToSend,
-	) => {
+	const createSubcategory = async (subcategoryData: SubcategoryDataToSend) => {
 		try {
 			const data = await createSubcategoryService(subcategoryData);
 			showAlert('Subcategoría creada con éxito', 'success');
@@ -20,7 +18,7 @@ const useSubcategoryCreate = () => {
 		}
 	};
 
-	return { createSubcategory: handleCreateSubcategory };
+	return { createSubcategory };
 };
 
 export default useSubcategoryCreate;

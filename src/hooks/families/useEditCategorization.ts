@@ -1,26 +1,33 @@
-import { airontoolsAPI } from '@configs/api.config';
-import { useAlert } from '@contexts/Alert/AlertContext';
+import { useAlertHelper } from '@contexts/Alert/alert.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
-import useCategoryCreate from '@hooks/categories/useCategoryCreate';
-import useSubcategoryCreate from '@hooks/subcategories/useSubcategoryCreate';
-import { deleteCategory } from '@services/categories/deleteCategory.service';
-import { getcategoryByFamilyId } from '@services/categories/getCategoriesByCategorization.service';
+import { createCategoryService } from '@services/categories/createCategory.service';
+import { deleteCategoryService } from '@services/categories/deleteCategory.service';
+import { getcategoryByFamilyIdService } from '@services/categories/getCategoriesByCategorization.service';
+import { updateCategoryService } from '@services/categories/updateCategory.service';
 import { deleteFamilyService } from '@services/families/deleteFamily.service';
+import { getFamilyService } from '@services/families/getFamily.service';
+import { updateFamilyService } from '@services/families/updateFamily.service';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFileService from '@services/files/fileUpload.service';
+import { createSubcategoryService } from '@services/subcategories/createSubcategory.service';
 import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
-import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
+import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubcategoriesByCategorization.service';
+import { updateSubcategoryService } from '@services/subcategories/updateSubcategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
-import axios from 'axios';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
-	const { showAlert } = useAlert();
+	const {
+		showError,
+		showSuccess,
+		showSuccessAndReload,
+		showSuccessAndNavigate,
+	} = useAlertHelper();
 	const { user } = useAuthContext();
 	const { addCategoryInstance, getCategoryInstance, getAllCategoryInstances } =
 		useCategoryCreateContext();
@@ -31,34 +38,31 @@ export function useEditCategorization() {
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
-	const { createSubcategory } = useSubcategoryCreate();
-	const { createCategory } = useCategoryCreate();
-	const navigate = useNavigate();
 	const location = useLocation();
 	const family = location.state?.familyId;
-	//Obten los valores de para editar xdxdxd
 
+	//Obten los valores de para editar xdxdxd
 	useEffect(() => {
 		if (!family) return;
 		const getFamilyData = async () => {
 			try {
-				const response = await axios.get(`${airontoolsAPI}/families/${family}`);
-				const imageUrl = response.data.images ? response.data.images[0] : '';
-				familyToEdit.setId(response.data._id);
-				familyToEdit.setName(response.data.name);
-				familyToEdit.setDescription(response.data.description);
+				const response = await getFamilyService(family);
+				if (!response)
+					throw new Error('no se pudo obtener datos de la familia');
+				const imageUrl = response.images ? response.images[0] : '';
+				familyToEdit.setId(response.id);
+				familyToEdit.setName(response.name);
+				familyToEdit.setDescription(response.description || '');
 				familyToEdit.setImage(imageUrl);
+				familyToEdit.setCreatedBy(response.createdBy.id);
 			} catch (error) {
-				showAlert(
-					'No se pudo obtener las familias' + errorHandler(error),
-					'error',
-				);
+				showError('No se pudo obtener la familia', error);
 			}
 		};
 
 		const getCategoryData = async () => {
 			try {
-				const response = await getcategoryByFamilyId(family);
+				const response = await getcategoryByFamilyIdService(family);
 				if (response.length === 0) return;
 
 				for (const [index, category] of response.entries()) {
@@ -72,19 +76,17 @@ export function useEditCategorization() {
 						family: category.family.id,
 						image: imageUrl,
 						mode: 'edit',
+						createdBy: category.createdBy.id,
 					});
 				}
 			} catch (error) {
-				showAlert(
-					'No se pudo obtener las categorias' + errorHandler(error),
-					'error',
-				);
+				showError('No se pudo obtener las categorias', error);
 			}
 		};
 
 		const getSubcategoryData = async () => {
 			try {
-				const response = await getSubcategoryByFamilyId(family);
+				const response = await getSubcategoryByFamilyIdService(family);
 				if (response.length === 0) return;
 				response.forEach((subcategory, index) => {
 					const instanceId = 'cat' + index;
@@ -96,13 +98,11 @@ export function useEditCategorization() {
 						category: subcategory.category._id,
 						image: subcategory.images ? subcategory.images[0] : '',
 						mode: 'edit',
+						createdBy: subcategory.createdBy.id,
 					});
 				});
 			} catch (error) {
-				showAlert(
-					'No se pudo obtener las subcategorias' + errorHandler(error),
-					'error',
-				);
+				showError('No se pudo obtener las subcategorias', error);
 			}
 		};
 		getFamilyData();
@@ -114,151 +114,82 @@ export function useEditCategorization() {
 		try {
 			if (rawImage === null) return;
 			const url = await uploadFileService(rawImage, 'image', id);
-			console.log('Imagen subida ', url);
 			return url;
 		} catch (error) {
-			console.error('No se pudo subir archivos:', rawImage, error);
-			showAlert('no se pudo subir el archivo', 'error');
-		}
-	};
-
-	const handleDeleteFile = async (fileId: string) => {
-		try {
-			await deleteFileService(fileId);
-		} catch (error) {
-			console.error(`Error al eliminar archivo ${fileId}:`, error);
-			showAlert('no se pudo borrar el archivo', 'error');
+			throw errorHandler(error);
 		}
 	};
 
 	const handleDeleteFamily = async (familyId: string) => {
 		try {
 			await deleteFamilyService(familyId);
-			showAlert('Familia borrada', 'success');
-			navigate('/home/categorizacion');
+			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
 		} catch (error) {
-			console.error(error);
-			showAlert('no se pudo borrar familia', 'error');
+			showError('no se pudo borrar familia', error);
 		}
 	};
 
 	const handleDeleteCategory = async (id: string) => {
 		try {
-			await deleteCategory(id);
-			console.log('borrefamailia');
-			showAlert('Categoría borrada', 'success');
-			setTimeout(() => {
-				window.location.reload();
-			}, 300);
+			await deleteCategoryService(id);
+			showSuccessAndReload('Categoría borrada');
 		} catch (error) {
-			console.error(error);
-			showAlert('no se pudo borrar categoria', 'error');
+			showError('no se pudo borrar categoria', error);
 		}
 	};
 
 	const handleDeleteSubcategory = async (id: string) => {
 		try {
 			await deleteSubcategoryService(id);
-			console.log('borrefamailia');
-			showAlert('Subcategoría borrada', 'success');
-			setTimeout(() => {
-				window.location.reload();
-			}, 300);
+			showSuccessAndReload('Subcategoría borrada');
 		} catch (error) {
-			console.error(error);
-			showAlert('no se pudo borrar subcategoria', 'error');
+			showError('no se pudo borrar subcategoria', error);
 		}
 	};
 
-	const handleUpdateFamily = async () => {
+	const handleUpdate = async (
+		updateService: (id: string, data: any) => Promise<void>,
+		item: any,
+	) => {
 		try {
-			if (!user) return;
-			// Crear la familia
-			let img = familyToEdit.image;
-			if (!img) img = '';
-			if (familyToEdit.imageToDelete) {
-				await handleDeleteFile(familyToEdit.image);
+			let img = item.image;
+
+			if (item.imageToDelete && item.image) {
+				await deleteFileService(item.image);
 				img = '';
 			}
-			if (familyToEdit.rawImage && familyToEdit.id) {
-				if (familyToEdit.image) await handleDeleteFile(familyToEdit.image);
-				img =
-					(await handleRawImageUpload(
-						familyToEdit.rawImage,
-						familyToEdit.id,
-					)) || '';
+
+			if (item.rawImage && item.id) {
+				if (item.image) await deleteFileService(item.image);
+				img = (await handleRawImageUpload(item.rawImage, item.id)) || '';
 			}
-			await axios.patch(`${airontoolsAPI}/families/${familyToEdit.id}`, {
-				name: familyToEdit.name,
-				description: familyToEdit.description,
+
+			await updateService(item.id, {
+				...item,
 				images: [img],
 			});
-			showAlert('Familia actualizada', 'success');
+			showSuccess(`${item.name} actualizado`);
 		} catch (error) {
-			showAlert('no se pudo actualizar familia' + errorHandler(error), 'error');
+			showError(`No se pudo actualizar ${item.name}`, error);
+			console.error(`Error actualizando ${item.name}:`, error);
 		}
+	};
+	const handleUpdateFamily = async () => {
+		await handleUpdate(updateFamilyService, familyToEdit);
 	};
 
 	const handleUpdateCategory = async (key: string) => {
-		try {
-			const category = getCategoryInstance(key);
-			if (category) {
-				let img = category.image;
-				if (category.imageToDelete) {
-					await handleDeleteFile(category.image);
-					img = '';
-				}
-				if (category.rawImage && category.id) {
-					if (category.image) await handleDeleteFile(category.image);
-					img =
-						(await handleRawImageUpload(category.rawImage, category.id)) || '';
-				}
-				await axios.patch(`${airontoolsAPI}/categories/${category.id}`, {
-					name: category.name,
-					description: category.description,
-					images: [img],
-				});
-			}
-			showAlert('Categoria actualizada', 'success');
-		} catch (error) {
-			console.error('Error:', error);
-			showAlert('No se pudo actualizar categoria', 'error');
+		const category = getCategoryInstance(key);
+		if (category) {
+			await handleUpdate(updateCategoryService, category);
 		}
 	};
+
 	const handleUpdateSubcategory = async (key: string) => {
-		try {
-			const subcategory = getSubcategoryInstance(key);
-			if (subcategory) {
-				let img = subcategory.image;
-				if (subcategory.imageToDelete) {
-					await handleDeleteFile(subcategory.image);
-					img = '';
-				}
-				if (subcategory.rawImage && subcategory.id) {
-					if (subcategory.image) await handleDeleteFile(subcategory.image);
-					img =
-						(await handleRawImageUpload(
-							subcategory.rawImage,
-							subcategory.id,
-						)) || '';
-				}
-				await axios.patch(`${airontoolsAPI}/subcategories/${subcategory.id}`, {
-					name: subcategory.name,
-					description: subcategory.description,
-					images: [img],
-				});
-			}
-			showAlert('Subcategoria actualizada', 'success');
-		} catch (error) {
-			console.error('Error:', error);
-			showAlert('No se pudo actualizar subcategoria', 'error');
+		const subcategory = getSubcategoryInstance(key);
+		if (subcategory) {
+			await handleUpdate(updateSubcategoryService, subcategory);
 		}
-	};
-	const handleUpdateCategorization = async (e: {
-		preventDefault: () => void;
-	}) => {
-		e.preventDefault;
-		console.log('a');
 	};
 
 	const handleCreateSubcategory = async () => {
@@ -268,7 +199,7 @@ export function useEditCategorization() {
 			for (const subcategory of subcategoryInstances) {
 				if (subcategory.mode !== 'create') continue;
 
-				const subcategoryId = await createSubcategory({
+				const subcategoryId = await createSubcategoryService({
 					name: subcategory.name,
 					description: subcategory.description,
 					createdBy: user.id,
@@ -283,28 +214,15 @@ export function useEditCategorization() {
 				const uploadedSubcategoryImageUrl = subcategory.rawImage
 					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
 					: '';
-				console.log(
-					'Imagen subida para la subcategoría:',
-					uploadedSubcategoryImageUrl,
-				);
-
-				await axios.patch(
-					`${airontoolsAPI}/subcategories/${subcategoryId._id}`,
-					{
+				if (uploadedSubcategoryImageUrl) {
+					await updateSubcategoryService(subcategoryId._id, {
 						images: [uploadedSubcategoryImageUrl],
-					},
-				);
+					});
+				}
 			}
-			showAlert('Proceso completado exitosamente', 'success');
-			setTimeout(() => {
-				window.location.reload();
-			}, 300);
+			showSuccessAndReload('Proceso completado exitosamente');
 		} catch (error) {
-			console.error(
-				'Error al crear familias, categorías o subcategorías:',
-				error,
-			);
-			showAlert('no se pudo crear subcategorias', 'error');
+			showError('no se pudo crear subcategorias', error);
 		}
 	};
 	const handleCreateCategory = async () => {
@@ -314,7 +232,7 @@ export function useEditCategorization() {
 			for (const category of categoryInstances) {
 				if (category.mode !== 'create') continue;
 
-				const categoryId = await createCategory({
+				const categoryId = await createCategoryService({
 					name: category.name,
 					description: category.description,
 					createdBy: user.id,
@@ -322,31 +240,19 @@ export function useEditCategorization() {
 					family: familyToEdit.id,
 				});
 				console.log('ID de la categoría:', categoryId._id);
-
 				// Actualizar categoría con imagen
-
 				const uploadedCategoryImageUrl = category.rawImage
 					? await handleRawImageUpload(category.rawImage, categoryId._id)
 					: '';
-				console.log(
-					'Imagen subida para la categoría:',
-					uploadedCategoryImageUrl,
-				);
-
-				await axios.patch(`${airontoolsAPI}/categories/${categoryId._id}`, {
-					images: [uploadedCategoryImageUrl],
-				});
+				if (uploadedCategoryImageUrl) {
+					await updateCategoryService(categoryId._id, {
+						images: [uploadedCategoryImageUrl],
+					});
+				}
 			}
-			showAlert('Proceso completado exitosamente', 'success');
-			setTimeout(() => {
-				window.location.reload();
-			}, 300);
+			showSuccessAndReload('Proceso completado exitosamente');
 		} catch (error) {
-			console.error(
-				'Error al crear familias, categorías o subcategorías:',
-				error,
-			);
-			showAlert('no se pudo crear categorias', 'error');
+			showError('no se pudo crear categorias', error);
 		}
 	};
 	return {
@@ -357,7 +263,6 @@ export function useEditCategorization() {
 		handleCreateCategory,
 		handleUpdateSubcategory,
 		handleDeleteSubcategory,
-		handleUpdateCategorization,
 		handleCreateSubcategory,
 	};
 }

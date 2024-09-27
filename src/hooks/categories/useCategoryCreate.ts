@@ -1,6 +1,6 @@
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { CategoryDataToSend } from '@interfaces/Category.interface';
-import { createCategoryRequest } from '@services/categories/createCategory.service';
+import { createCategoryService } from '@services/categories/createCategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
 
 const useCategoryCreate = () => {
@@ -8,7 +8,7 @@ const useCategoryCreate = () => {
 
 	const createCategory = async (categoryData: CategoryDataToSend) => {
 		try {
-			const result = await createCategoryRequest(categoryData);
+			const result = await createCategoryService(categoryData);
 			showAlert('Categoría creada con éxito', 'success');
 			return result;
 		} catch (error) {
@@ -16,6 +16,7 @@ const useCategoryCreate = () => {
 			errorHandler(error);
 		}
 	};
+
 	return { createCategory };
 };
 

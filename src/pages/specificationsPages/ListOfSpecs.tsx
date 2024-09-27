@@ -7,7 +7,7 @@ import useSpecificationsManagement from '@hooks/specifications/useSpecifications
 import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
 import '@pages/css/listofspecs.css';
-import { getSpecifications } from '@services/specifications/getSpecifications.service';
+import { getSpecificationsService } from '@services/specifications/getSpecifications.service';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ function SpecificationsGrid() {
 	useEffect(() => {
 		const fetchSpecifications = async () => {
 			try {
-				const specs = await getSpecifications();
+				const specs = await getSpecificationsService();
 				setSpecifications(specs);
 			} catch (err) {
 				const error = err as ErrorResponse;

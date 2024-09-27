@@ -4,7 +4,7 @@ import { errorHandler } from '@utils/errorHandler.util';
 import { filterEmptyCategorizations } from '@utils/filterEmptyCategorizations.util';
 import axios from 'axios';
 
-export default async function createSpecification({
+export default async function createSpecificationService({
 	specification,
 }: {
 	specification: SpecDataToSend;
@@ -15,9 +15,6 @@ export default async function createSpecification({
 		categories: filterEmptyCategorizations(specification.categories),
 		subcategories: filterEmptyCategorizations(specification.subcategories),
 	};
-
-	console.log(filteredSpecification);
-
 	try {
 		const response = await axios.post(
 			`${airontoolsAPI}/specifications`,
@@ -25,6 +22,6 @@ export default async function createSpecification({
 		);
 		return response.data;
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

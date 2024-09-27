@@ -17,6 +17,6 @@ export async function createSubcategoryService(
 		});
 		return response.data;
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

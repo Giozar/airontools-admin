@@ -4,7 +4,7 @@ import { UserDataBackend, UserDataFrontend } from '@interfaces/User.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-export async function getUsers(): Promise<UserDataFrontend[]> {
+export async function getUsersService(): Promise<UserDataFrontend[]> {
 	try {
 		const response = await axios.get<UserDataBackend[]>(
 			`${airontoolsAPI}/auth`,
@@ -14,7 +14,6 @@ export async function getUsers(): Promise<UserDataFrontend[]> {
 		);
 		return transformedUsers;
 	} catch (error) {
-		errorHandler(error);
-		return [];
+		throw errorHandler(error);
 	}
 }

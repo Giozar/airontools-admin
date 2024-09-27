@@ -1,9 +1,9 @@
 // hooks/useFetchFamilies.ts
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';
-import { getcategoryByFamilyId } from '@services/categories/getCategoriesByCategorization.service';
+import { getcategoryByFamilyIdService } from '@services/categories/getCategoriesByCategorization.service';
 import { getFamiliesService } from '@services/families/getFamilies.service';
-import { getSubcategoryByFamilyId } from '@services/subcategories/getSubcategoriesByCategorization.service';
+import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubcategoriesByCategorization.service';
 import { useEffect, useState } from 'react';
 
 function useFetchCategorization() {
@@ -26,8 +26,10 @@ function useFetchCategorization() {
 				setFilteredFamilies(fetchedFamilies);
 				const familiesWithDetails = await Promise.all(
 					fetchedFamilies.map(async family => {
-						const categories = await getcategoryByFamilyId(family.id);
-						const subcategories = await getSubcategoryByFamilyId(family.id);
+						const categories = await getcategoryByFamilyIdService(family.id);
+						const subcategories = await getSubcategoryByFamilyIdService(
+							family.id,
+						);
 						return {
 							...family,
 							categories,

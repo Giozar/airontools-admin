@@ -1,13 +1,13 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { CategoryDataBackend } from '@interfaces/Category.interface';
+import { RoleDataSend } from '@interfaces/Role.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-export async function getCategoriesService() {
+export async function createRoleService(role: RoleDataSend) {
 	try {
-		const response = await axios.get<CategoryDataBackend[]>(
-			airontoolsAPI + '/categories',
-		);
+		const response = await axios.post(airontoolsAPI + '/roles/create', {
+			...role,
+		});
 		return response.data;
 	} catch (error) {
 		throw errorHandler(error);

@@ -4,8 +4,8 @@ import { useProductCreateContext } from '@contexts/product/ProductContext';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import updateProductService from '@services/products/updateProduct.service';
 import {
-	uploadProductUrlImages,
-	uploadProductUrlManual,
+	uploadProductUrlImagesService,
+	uploadProductUrlManualService,
 } from '@services/products/uploadProductAssets.service';
 
 export default function useEditProduct() {
@@ -32,7 +32,7 @@ export default function useEditProduct() {
 				setFileUrls: productToEdit.setImages,
 			});
 
-			await uploadProductUrlImages({
+			await uploadProductUrlImagesService({
 				productId: productToEdit.id,
 				images: [...productToEdit.images, ...newImageUrls],
 			});
@@ -49,7 +49,7 @@ export default function useEditProduct() {
 				setFiles: productToEdit.setManualsRaw,
 				setFileUrls: productToEdit.setManuals,
 			});
-			await uploadProductUrlManual({
+			await uploadProductUrlManualService({
 				productId: productToEdit.id,
 				manuals: [...productToEdit.manuals, ...newManualUrls],
 			});

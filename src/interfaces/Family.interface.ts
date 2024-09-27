@@ -5,11 +5,12 @@ import { UserDataBackend, UserDataFrontend } from './User.interface';
 // Datos para enviar al backend - PATCH, POST, PUT
 export interface FamilyDataToSend {
 	_id?: string;
-	name: string;
+	name?: string;
 	description?: string;
-	path: string;
+	path?: string;
 	images: string[];
-	createdBy: string;
+	createdBy?: string;
+	updatedBy?: string;
 }
 // Datos que vienen del backend - GET
 export interface FamilyDataBackend {

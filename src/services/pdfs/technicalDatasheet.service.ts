@@ -1,11 +1,12 @@
 import { airontoolsAPI } from '@configs/api.config';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios, { AxiosResponse } from 'axios';
 
 // Usa la variable de entorno para la URL base
 const API_BASE_URL = airontoolsAPI || 'http://localhost:4000';
 
 // Define la función para obtener el PDF del producto
-export const getTechnicalDatasheet = async (
+export const getTechnicalDatasheetService = async (
 	productId: string,
 ): Promise<Blob> => {
 	try {
@@ -25,13 +26,13 @@ export const getTechnicalDatasheet = async (
 		}
 	} catch (error) {
 		console.error('Error al obtener el technical datasheet:', error);
-		throw error; // Re-lanzar el error para que el consumidor pueda manejarlo
+		throw errorHandler(error); // Re-lanzar el error para que el consumidor pueda manejarlo
 	}
 };
 
-export const downloadTechnicalDatasheet = async (productId: string) => {
+export const downloadTechnicalDatasheetService = async (productId: string) => {
 	try {
-		const pdfBlob = await getTechnicalDatasheet(productId);
+		const pdfBlob = await getTechnicalDatasheetService(productId);
 		// Crear un enlace para descargar el PDF
 		const url = URL.createObjectURL(pdfBlob);
 		const link = document.createElement('a');
@@ -43,5 +44,6 @@ export const downloadTechnicalDatasheet = async (productId: string) => {
 		URL.revokeObjectURL(url); // Limpia la URL del objeto
 	} catch (error) {
 		console.error('Error al descargar el PDF:', error);
+		throw errorHandler(error);
 	}
 };

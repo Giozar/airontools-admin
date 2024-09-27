@@ -100,7 +100,7 @@
 	content: '⚙';
 	color: var(--accent-secondary);
 }
-.editspecification .autocomplete {
+.editSpecification .autocomplete {
 	margin-bottom: 0px;
 	background-color: var(--card-bg);
 	padding: 20px;
@@ -108,7 +108,7 @@
 	height: 150px;
 	color: var(--text-primary);
 }
-.editspecification .autocomplete .options-container {
+.editSpecification .autocomplete .options-container {
 	top: 100%;
 	left: -5%;
 }

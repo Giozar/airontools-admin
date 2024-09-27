@@ -3,8 +3,8 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useUserContext } from '@contexts/User/UserContext';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFileService from '@services/files/fileUpload.service';
-import createUser from '@services/users/createUser.service';
-import { getUser } from '@services/users/getUser.service';
+import createUserService from '@services/users/createUser.service';
+import { getUserService } from '@services/users/getUser.service';
 import { updateUserService } from '@services/users/updateUser.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { FormEvent, useEffect } from 'react';
@@ -42,7 +42,7 @@ export default function useUsers(userToEdit: string | null) {
 		const getUserData = async () => {
 			if (userToEdit) {
 				try {
-					const userData = await getUser(userToEdit);
+					const userData = await getUserService(userToEdit);
 					if (userData) {
 						setId(userData.id);
 						setName(userData.name);
@@ -89,7 +89,7 @@ export default function useUsers(userToEdit: string | null) {
 		try {
 			if (!role) throw 'Elige un rol válido';
 
-			const userCreated = await createUser({
+			const userCreated = await createUserService({
 				password,
 				imageUrl,
 				email,

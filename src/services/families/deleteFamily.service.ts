@@ -10,7 +10,6 @@ export const deleteFamilyService = async (familyId: string) => {
 		await axios.delete(`${airontoolsAPI}/categories/family/${familyId}`);
 		await axios.delete(`${airontoolsAPI}/subcategories/family/${familyId}`);
 	} catch (error) {
-		errorHandler(error);
-		throw new Error(`Error al eliminar la familia ${familyId}: ${error}`);
+		throw errorHandler(error);
 	}
 };

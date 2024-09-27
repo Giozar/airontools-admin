@@ -1,5 +1,5 @@
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
-import deleteSpecification from '@services/specifications/deleteSpecification.service';
+import deleteSpecificationService from '@services/specifications/deleteSpecification.service';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ const useSpecificationsManagement = () => {
 	};
 	const handleDelete = async (specid: string, specname: string) => {
 		try {
-			await deleteSpecification({ id: specid });
+			await deleteSpecificationService({ id: specid });
 			setDeletionMessage(
 				`${specname} (${specid}) ha sido eliminado correctamente.`,
 			);

@@ -1,3 +1,4 @@
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 interface Manual {
@@ -21,9 +22,8 @@ export const uploadManuals = async (manuals: Manual[]) => {
 				'Content-Type': 'multipart/form-data',
 			},
 		});
-		return response.data; // Devuelve la respuesta de la API
+		return response.data;
 	} catch (error) {
-		console.error('Upload failed:', error);
-		throw error; // Lanza el error para que el hook pueda manejarlo
+		throw errorHandler(error);
 	}
 };

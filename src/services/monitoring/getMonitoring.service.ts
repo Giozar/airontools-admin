@@ -9,8 +9,7 @@ const fetchComputerActivities = async (): Promise<ComputerActivity[]> => {
 		console.log(response.data);
 		return response.data;
 	} catch (error) {
-		errorHandler(error);
-		return [];
+		throw errorHandler(error);
 	}
 };
 

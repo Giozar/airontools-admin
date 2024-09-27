@@ -1,45 +1,36 @@
 // import {useLocation} from 'react-router-dom';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import '@pages/css/UserOptionsCreateRole.css';
-import axios from 'axios';
 import React, { useState } from 'react';
 
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import RoleList from '@components/roles/RoleList';
-import { airontoolsAPI } from '@configs/api.config';
-import { useAlert } from '@contexts/Alert/AlertContext';
+import { useAlertHelper } from '@contexts/Alert/alert.helper';
+import { createRoleService } from '@services/roles/createRole.service';
 
 function CreateRoleForm() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
-	const { showAlert } = useAlert();
+	const { showSuccess, showError } = useAlertHelper();
 	const [updateRole, setUpdateRole] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			const response = await axios.post(airontoolsAPI + '/roles/create', {
+			await createRoleService({
 				name,
 				description,
 				createdBy,
 			});
-			console.log('Role created successfully:', response.data);
-			showAlert('Rol creado con éxito', 'success');
+			showSuccess('Rol creado con éxito');
 			setUpdateRole(!updateRole);
 			setName('');
 			setDescription('');
 		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				const errorMessage =
-					error.response?.data?.message || 'Error desconocido';
-				showAlert(errorMessage, 'error');
-			} else {
-				showAlert('Error desconocido', 'error');
-			}
-			console.error('Error creating role:', error);
+			showError('No se pudo crear el rol', error);
 		}
 	};
 

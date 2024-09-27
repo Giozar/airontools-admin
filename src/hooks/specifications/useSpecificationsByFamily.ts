@@ -1,6 +1,6 @@
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { SpecDataFrontend } from '@interfaces/Specifications.interface';
-import { getSpecificationsByFamilyId } from '@services/specifications/getSpecificationsByCategorization.service';
+import { getSpecificationsByFamilyIdService } from '@services/specifications/getSpecificationsByCategorization.service';
 import { useEffect, useState } from 'react';
 
 export function useSpecificationsByFamily(id: string) {
@@ -13,7 +13,8 @@ export function useSpecificationsByFamily(id: string) {
 	const fetchSpecificationsByFamilyId = async (id: string) => {
 		try {
 			setLoading(true);
-			const specsFamilyIdResponse = await getSpecificationsByFamilyId(id);
+			const specsFamilyIdResponse =
+				await getSpecificationsByFamilyIdService(id);
 			if (specsFamilyIdResponse) {
 				setSpecificationsByFamilyId(specsFamilyIdResponse);
 			}

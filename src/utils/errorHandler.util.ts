@@ -10,9 +10,10 @@ export function errorHandler(error: unknown) {
 				`Error al realizar la petición: \n ${Object.values(response.data)[0]}`,
 			);
 		}
+		throw error;
 	}
-
 	if (error instanceof Error) {
-		throw new Error(`Ocurrió un error inesperado: ${error}`);
+		throw new Error(`Ocurrió un error inesperado: ${error.message}`);
 	}
+	throw new Error('Ocurrió un error desconocido.');
 }

@@ -4,6 +4,7 @@ import {
 	ProductDataBackend,
 	ProductDataFrontend,
 } from '@interfaces/Product.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 const API_URL = airontoolsAPI;
@@ -15,6 +16,6 @@ export const getProductsService = async (): Promise<ProductDataFrontend[]> => {
 		);
 		return response.data.map(transformProductDataToFrontend);
 	} catch (error) {
-		throw new Error('Error al cargar los productos: ' + error);
+		throw errorHandler(error);
 	}
 };

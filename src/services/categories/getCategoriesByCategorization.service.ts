@@ -4,20 +4,20 @@ import {
 	CategoryDataBackend,
 	CategoryDataFrontend,
 } from '@interfaces/Category.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 
 import axios from 'axios';
 
-export const getcategoryByFamilyId = async (
+export const getcategoryByFamilyIdService = async (
 	familyId: string,
 ): Promise<CategoryDataFrontend[]> => {
 	try {
 		const response = await axios.get<CategoryDataBackend[]>(
-			airontoolsAPI + `/categories/family/${familyId}`,
+			`${airontoolsAPI}/categories/family/${familyId}`,
 		);
 		const category = response.data;
 		return category.map(product => transformCategoryDataToFrontend(product));
 	} catch (error) {
-		console.error('Error al buscar categorias por familia', error);
-		throw error;
+		throw errorHandler(error);
 	}
 };

@@ -2,7 +2,7 @@ import { airontoolsAPI } from '@configs/api.config';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
-export async function uploadProductUrlImages({
+export async function uploadProductUrlImagesService({
 	productId,
 	images,
 }: {
@@ -22,7 +22,7 @@ export async function uploadProductUrlImages({
 	}
 }
 
-export async function uploadProductUrlManual({
+export async function uploadProductUrlManualService({
 	productId,
 	manuals,
 }: {
@@ -38,6 +38,6 @@ export async function uploadProductUrlManual({
 		);
 		return productUpdated;
 	} catch (error) {
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 }

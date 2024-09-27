@@ -13,7 +13,6 @@ export const getSubcategoryService = async (subcategoryId: string) => {
 
 		return transformSubcategoryDataToFrontend(response.data);
 	} catch (error) {
-		console.log(`${API_URL}/subcategories/${subcategoryId}`);
-		errorHandler(error);
+		throw errorHandler(error);
 	}
 };

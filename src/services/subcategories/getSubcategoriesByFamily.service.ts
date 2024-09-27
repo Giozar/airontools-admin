@@ -2,6 +2,7 @@
 
 import { airontoolsAPI } from '@configs/api.config';
 import { SubcategoryDataBackend } from '@interfaces/subcategory.interface';
+import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 const API_URL = airontoolsAPI;
@@ -13,6 +14,6 @@ export const getSubcategoriesByFamilyService = async (categoryId: string) => {
 		);
 		return response.data;
 	} catch (error) {
-		throw new Error('Error al cargar las subcategorías: ' + error);
+		throw errorHandler(error);
 	}
 };

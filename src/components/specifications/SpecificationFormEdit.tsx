@@ -4,7 +4,7 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { SpecDataToSend } from '@interfaces/Specifications.interface';
-import editSpecification from '@services/specifications/editSpecification.service';
+import editSpecificationService from '@services/specifications/editSpecification.service';
 import { useEffect, useState } from 'react';
 
 function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
@@ -53,7 +53,7 @@ function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
 	const saveSpecification = async () => {
 		try {
 			console.log(specification);
-			await editSpecification({ specification, id });
+			await editSpecificationService({ specification, id });
 			showAlert('Especificación guardada con éxito', 'success');
 		} catch (error) {
 			const err = error as ErrorResponse;
