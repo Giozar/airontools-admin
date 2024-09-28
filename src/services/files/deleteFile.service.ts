@@ -5,7 +5,9 @@ export const deleteFileService = async (url: string) => {
 	try {
 		// Enviar la URL en el cuerpo de la petición DELETE
 		const response = await axios.delete(
-			`${airontoolsAPI}/files/delete-file-s3`,
+			import.meta.env.MODE === 'production'
+				? `${airontoolsAPI}/files/delete-file-s3`
+				: `${airontoolsAPI}/files/delete-file`,
 			{
 				data: { fileUrl: url }, // Aquí envías la URL en el body
 			},
