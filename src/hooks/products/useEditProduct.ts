@@ -7,10 +7,12 @@ import {
 	uploadProductUrlImagesService,
 	uploadProductUrlManualService,
 } from '@services/products/uploadProductAssets.service';
+import { useEffect } from 'react';
 
 export default function useEditProduct() {
 	const { user } = useAuthContext();
 	const { ...productToEdit } = useProductCreateContext();
+	useEffect(() => {}, [productToEdit]);
 	const editProduct = async (e: Event) => {
 		e.preventDefault();
 		if (!user?.id) throw new Error('No hay usuario para editar herramienta');
