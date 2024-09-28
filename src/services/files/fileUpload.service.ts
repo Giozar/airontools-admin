@@ -13,14 +13,17 @@ const uploadFileService = async (
 	const folderPath = folders.filter(Boolean).join('/');
 
 	try {
-		const url = `${airontoolsAPI}/files/upload-file-s3/${folderPath}`;
-		console.log('Uploading to:', url);
-
-		const response = await axios.post(url, formData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
+		const response = await axios.post(
+			import.meta.env.MODE === 'production'
+				? `${airontoolsAPI}/files/upload-file-s3/${folderPath}`
+				: `${airontoolsAPI}/files/upload-file/${folderPath}`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
 			},
-		});
+		);
 
 		return response.data.secureUrl;
 	} catch (error) {
