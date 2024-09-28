@@ -13,7 +13,7 @@ const uploadFileService = async (
 	const folderPath = folders.filter(Boolean).join('/');
 
 	try {
-		const url = `${airontoolsAPI}/files/upload/${folderPath}`;
+		const url = `${airontoolsAPI}/files/upload-file-s3/${folderPath}`;
 		console.log('Uploading to:', url);
 
 		const response = await axios.post(url, formData, {
