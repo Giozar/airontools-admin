@@ -66,7 +66,7 @@ export default function useUsers(userToEdit: string | null) {
 	const handleRawImageUpload = async (rawImage: File, id: string) => {
 		try {
 			if (rawImage === null) return;
-			const url = await uploadFileService(rawImage, 'image/users', id);
+			const url = await uploadFileService(rawImage, 'images/users', id);
 			console.log('Imagen subida ', url);
 			return url;
 		} catch (error) {
