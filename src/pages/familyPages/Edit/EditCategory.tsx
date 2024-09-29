@@ -11,7 +11,7 @@ import { useState } from 'react';
 import CreateSubcategoriesWithCategory from '../Create/CreateSubcategory';
 import './EditCategory.css';
 import EditSubcategories from './EditSubcategory';
-import { handleOpenModal } from './handleOpenModal';
+import { handleOpenModal } from './WarningModal';
 /**
  * Muestra y permite la edición de categorías existentes en modo 'edit'.
  *

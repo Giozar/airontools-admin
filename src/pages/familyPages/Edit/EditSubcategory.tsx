@@ -5,7 +5,7 @@ import { useSubcategoryCreateContext } from '@contexts/categorization/Subcategor
 import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import './EditSubcategory.css';
-import { handleOpenModal } from './handleOpenModal';
+import { handleOpenModal } from './WarningModal';
 /**
  * Filtra y muestra las subcategorías del contexto que tienen el modo de edición y pertenecen a la categoría deseada.
  *

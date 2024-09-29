@@ -5,7 +5,7 @@ import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import './EditFamily.css';
-import { handleOpenModal } from './handleOpenModal';
+import { handleOpenModal } from './WarningModal';
 /**
  * Permite la edición y eliminación de una familia existente.
  *
