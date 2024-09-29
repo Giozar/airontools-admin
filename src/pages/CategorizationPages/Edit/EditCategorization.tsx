@@ -1,4 +1,4 @@
-import { useEditCategorization } from '@hooks/families/useEditCategorization';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 
 import EditCreateToggle from '@components/commons/EditCreateToggle';
 import CreateCategories from '@pages/CategorizationPages/Create/CreateCategory';

@@ -1,7 +1,7 @@
 import CheckboxInputList from '@components/commons/CheckboxInputList';
 import SelectInput from '@components/commons/SelectInput';
 import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
-import useFetchCategorization from '@hooks/families/useFetchCategorization';
+import useFetchCategorization from '@hooks/categorizations/useFetchCategorization';
 import { useEffect, useState } from 'react';
 
 export default function Categorizations({ index }: { index: number }) {

@@ -2,7 +2,7 @@ import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
-import { useEditCategorization } from '@hooks/families/useEditCategorization';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import '@pages/css/createFamily.css';
 /**
  * Permite la creación y gestión de categorías asociadas a una familia específica.
@@ -30,7 +30,7 @@ export default function CreateCategoriesWithFamily({
 		updateCategoryInstance,
 	} = useCategoryCreateContext();
 	const { handleCreateCategory } = useEditCategorization();
-	
+
 	return (
 		<div>
 			<div>

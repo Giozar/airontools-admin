@@ -3,7 +3,7 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useModal } from '@contexts/Modal/ModalContext';
-import { useEditCategorization } from '@hooks/families/useEditCategorization';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import { handleOpenModal } from '../../../handlers/handleOpenModal';
 import './EditFamily.css';
 /**
