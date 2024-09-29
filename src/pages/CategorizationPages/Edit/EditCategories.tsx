@@ -10,8 +10,8 @@ import '@pages/css/createFamily.css';
 import { useState } from 'react';
 import { handleOpenModal } from '../../../handlers/handleOpenModal';
 import CreateSubcategoriesWithCategory from '../Create/CreateSubcategory';
-import './EditCategory.css';
-import EditSubcategories from './EditSubcategory';
+import './EditCategories.css';
+import EditSubcategories from './EditSubcategories';
 /**
  * Muestra y permite la edición de categorías existentes en modo 'edit'.
  *
