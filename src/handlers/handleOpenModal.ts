@@ -1,6 +1,6 @@
 import fetchCounts from '@hooks/common/FetchCounts';
 
-export const WarningModal = async (
+export const handleOpenModal = async (
 	id: string,
 	name: string,
 	handleDelete: any,

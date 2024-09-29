@@ -8,10 +8,10 @@ import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
 import '@pages/css/createFamily.css';
 import { useState } from 'react';
+import { handleOpenModal } from '../../../handlers/handleOpenModal';
 import CreateSubcategoriesWithCategory from '../Create/CreateSubcategory';
 import './EditCategory.css';
 import EditSubcategories from './EditSubcategory';
-import { handleOpenModal } from './WarningModal';
 /**
  * Muestra y permite la edición de categorías existentes en modo 'edit'.
  *

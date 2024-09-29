@@ -1,5 +1,5 @@
+import FamilyList from '@components/categorizations/families/FamilyList';
 import ActionCard from '@components/commons/ActionCard';
-import FamilyList from '@components/families/FamilyList';
 
 import '@pages/css/familyList.css';
 import { useLocation } from 'react-router-dom';

@@ -4,8 +4,8 @@ import TextInput from '@components/commons/TextInput';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
+import { handleOpenModal } from '../../../handlers/handleOpenModal';
 import './EditFamily.css';
-import { handleOpenModal } from './WarningModal';
 /**
  * Permite la edición y eliminación de una familia existente.
  *

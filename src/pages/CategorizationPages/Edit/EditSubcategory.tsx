@@ -4,8 +4,8 @@ import TextInput from '@components/commons/TextInput';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { useEditCategorization } from '@hooks/families/useEditCategorization';
+import { handleOpenModal } from '../../../handlers/handleOpenModal';
 import './EditSubcategory.css';
-import { handleOpenModal } from './WarningModal';
 /**
  * Filtra y muestra las subcategorías del contexto que tienen el modo de edición y pertenecen a la categoría deseada.
  *

@@ -2,9 +2,9 @@ import DropdownMenu from '@components/commons/DropdownMenu';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useModal } from '@contexts/Modal/ModalContext';
+import { handleOpenModal } from '@handlers/handleOpenModal';
 import useFamilyManagement from '@hooks/families/useFamilyManagement';
 import useFetchCategorization from '@hooks/families/useFetchCategorization';
-import { WarningModal } from '@pages/familyPages/Edit/WarningModal';
 import { useEffect, useState } from 'react';
 
 export default function FamilyList() {
@@ -44,7 +44,7 @@ export default function FamilyList() {
 									<button
 										className='delete'
 										onClick={() =>
-											WarningModal(
+											handleOpenModal(
 												family.id,
 												family.name,
 												() => {
