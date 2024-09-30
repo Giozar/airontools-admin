@@ -160,7 +160,6 @@ export function useEditCategorization() {
 
 	// Función para borrar una familia
 	const handleDeleteFamily = async (family: FamilyCreateContextProps) => {
-		console.log('entro para eliminar familia');
 		if (!family.id)
 			throw new Error(`No existe la familia con el id ${family.id}`);
 		try {

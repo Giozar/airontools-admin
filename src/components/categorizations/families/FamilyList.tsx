@@ -3,6 +3,7 @@ import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import useFamilyManagement from '@hooks/categorizations/useFamilyManagement';
 import useFetchCategorization from '@hooks/categorizations/useFetchCategorization';
 import { useEffect, useState } from 'react';
@@ -10,6 +11,7 @@ import { useEffect, useState } from 'react';
 export default function FamilyList() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const { handleEdit, handleDelete } = useFamilyManagement();
+	const { handleDeleteFamily } = useEditCategorization();
 	const { loading, filteredFamilies, handleSearch, setupdateListFlag } =
 		useFetchCategorization();
 	useEffect(() => {}, [filteredFamilies]);
@@ -52,10 +54,10 @@ export default function FamilyList() {
 													setupdateListFlag(prev => !prev);
 												},
 												openModal,
-												false,
-												false,
-												false,
-												false,
+												true,
+												true,
+												true,
+												true,
 											)
 										}
 									>
