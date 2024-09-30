@@ -3,15 +3,17 @@ import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
-import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import useFamilyManagement from '@hooks/categorizations/useFamilyManagement';
 import useFetchCategorization from '@hooks/categorizations/useFetchCategorization';
 import { useEffect, useState } from 'react';
 
 export default function FamilyList() {
 	const [searchTerm, setSearchTerm] = useState('');
+	/**
+	 * TODO: Implementar este customHook --> const { handleCategoryFamily, handleDeleteFamily } = useEditCategorization();
+	 * TODO: Eliminar línea de abajo v
+	 * */
 	const { handleEdit, handleDelete } = useFamilyManagement();
-	const { handleDeleteFamily } = useEditCategorization();
 	const { loading, filteredFamilies, handleSearch, setupdateListFlag } =
 		useFetchCategorization();
 	useEffect(() => {}, [filteredFamilies]);
