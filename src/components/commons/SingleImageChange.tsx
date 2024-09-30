@@ -64,7 +64,7 @@ const SingleImageChange = ({
 							id='image-upload-input'
 						/>
 						<label className='upload-label' htmlFor='image-upload-input'>
-							Cambiar imagen
+							{filePreview || placeholder ? 'Cambiar imagen' : 'Cargar imagen'}
 						</label>
 
 						<button
