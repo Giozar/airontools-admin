@@ -80,9 +80,9 @@ const Modal: React.FC<ModalProps> = ({
 				</button>
 				<h2 className='modal__title'>{title}</h2>
 
-				<p className='modal__content'>
+				<div className='modal__content'>
 					{markdown ? <Markdown>{content}</Markdown> : content}
-				</p>
+				</div>
 				{image && (
 					<img className='modal__image' src={image} alt='elemento a eliminar' />
 				)}
