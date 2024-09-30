@@ -1,5 +1,5 @@
 import FormHeader from '@components/commons/form/FormHeader';
-import { useCreateCategorization } from '@hooks/families/useCreateCategorization';
+import { useCreateCategorization } from '@hooks/categorizations/useCreateCategorization';
 import '@pages/css/createFamily.css';
 import CreateCategories from './CreateCategory';
 import CreateFamily from './CreateFamily';

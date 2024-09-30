@@ -21,18 +21,21 @@ export function useCreateCategorization() {
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const { showError, showSuccessAndReload } = useAlertHelper();
 
-	const handleRawImageUpload = async (rawImage: File, id: string) => {
+	const handleRawImageUpload = async (
+		rawImage: File,
+		id: string,
+		type: string,
+	) => {
 		try {
 			if (rawImage === null) return;
-			console.log;
-			const url = await uploadFileService(rawImage, 'image', id);
+			const url = await uploadFileService(rawImage, `images/${type}`, id);
 			return url;
 		} catch (error) {
 			console.log(rawImage);
 			throw errorHandler(error);
 		}
 	};
-	//mucho texto
+	// mucho texto
 	const handleSubmit = async (e: { preventDefault: () => void }) => {
 		e.preventDefault();
 		try {
@@ -48,7 +51,11 @@ export function useCreateCategorization() {
 			const familyId = family._id;
 			// Actualizar familia para imagen
 			const uploadedUrlImages = familyToCreate.rawImage
-				? await handleRawImageUpload(familyToCreate.rawImage, familyId)
+				? await handleRawImageUpload(
+						familyToCreate.rawImage,
+						familyId,
+						'families',
+					)
 				: '';
 
 			if (uploadedUrlImages) {
@@ -56,7 +63,7 @@ export function useCreateCategorization() {
 					images: [uploadedUrlImages],
 				});
 			}
-			let categoriaslocas = [];
+			const categoriaslocas = [];
 			for (const category of categoryInstances) {
 				const categoryId = await createCategoryService({
 					name: category.name,
@@ -68,7 +75,11 @@ export function useCreateCategorization() {
 				categoriaslocas.push({ id: categoryId._id, name: category.name });
 				// Actualizar categoría con imagen
 				const uploadedCategoryImageUrl = category.rawImage
-					? await handleRawImageUpload(category.rawImage, categoryId._id)
+					? await handleRawImageUpload(
+							category.rawImage,
+							categoryId._id,
+							'categories',
+						)
 					: '';
 
 				if (uploadedCategoryImageUrl) {
@@ -91,7 +102,11 @@ export function useCreateCategorization() {
 
 				// Actualizar categoría con imagen
 				const uploadedSubcategoryImageUrl = subcategory.rawImage
-					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
+					? await handleRawImageUpload(
+							subcategory.rawImage,
+							subcategoryId._id,
+							'subcategories',
+						)
 					: '';
 
 				if (uploadedSubcategoryImageUrl) {
@@ -117,12 +132,16 @@ export function useCreateCategorization() {
 					createdBy: user.id,
 					images: [],
 					family: familyToCreate.id,
-					category: category,
+					category,
 				});
 
 				// Actualizar categoría con imagen
 				const uploadedSubcategoryImageUrl = subcategory.rawImage
-					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
+					? await handleRawImageUpload(
+							subcategory.rawImage,
+							subcategoryId._id,
+							'subcategories',
+						)
 					: '';
 				if (uploadedSubcategoryImageUrl) {
 					await updateSubcategoryService(subcategoryId._id, {

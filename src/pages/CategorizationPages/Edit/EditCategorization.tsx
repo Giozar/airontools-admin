@@ -1,12 +1,12 @@
-import { useEditCategorization } from '@hooks/families/useEditCategorization';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 
 import EditCreateToggle from '@components/commons/EditCreateToggle';
-import CreateCategories from '@pages/familyPages/Create/CreateCategory';
+import CreateCategories from '@pages/CategorizationPages/Create/CreateCategory';
+import EditCategories from './EditCategories';
 import './EditCategorization.css';
-import EditCategories from './EditCategory';
 import EditFamily from './EditFamily';
 
-export function CreateFamilyForm() {
+export default function EditCategorization() {
 	const { handleUpdateFamily } = useEditCategorization();
 
 	return (
@@ -19,8 +19,4 @@ export function CreateFamilyForm() {
 			/>
 		</form>
 	);
-}
-
-export default function CreateCategorization() {
-	return <CreateFamilyForm />;
 }

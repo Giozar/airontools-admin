@@ -1,7 +1,7 @@
 import SelectInput from '@components/commons/SelectInput';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useFetchCategoriesByFamily from '@hooks/categories/useFetchCategoriesByFamily';
-import useFetchFamilies from '@hooks/families/useFetchFamilies';
+import useFetchFamilies from '@hooks/categorizations/useFetchFamilies';
 import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcategoriesByFamily';
 
 export function ProductCategorization() {

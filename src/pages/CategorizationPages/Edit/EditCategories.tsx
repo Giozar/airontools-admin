@@ -5,13 +5,14 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useModal } from '@contexts/Modal/ModalContext';
-import { useEditCategorization } from '@hooks/families/useEditCategorization';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
+import { CategoryCreateContextProps } from '@interfaces/Category.interface';
 import '@pages/css/createFamily.css';
 import { useState } from 'react';
+import { handleOpenModal } from '../../../handlers/handleOpenModal';
 import CreateSubcategoriesWithCategory from '../Create/CreateSubcategory';
-import './EditCategory.css';
-import EditSubcategories from './EditSubcategory';
-import { handleOpenModal } from './handleOpenModal';
+import './EditCategories.css';
+import EditSubcategories from './EditSubcategories';
 /**
  * Muestra y permite la edición de categorías existentes en modo 'edit'.
  *
@@ -35,8 +36,8 @@ export default function EditCategories() {
 		useEditCategorization();
 	const { openModal } = useModal();
 
-	const handleConfirm = (id: string, key: string) => {
-		handleDeleteCategory(id);
+	const handleConfirm = (category: CategoryCreateContextProps, key: string) => {
+		handleDeleteCategory(category);
 		removeCategoryInstance(key);
 	};
 	const [openSubcategories, setOpenSubcategories] = useState<{
@@ -64,7 +65,7 @@ export default function EditCategories() {
 										handleOpenModal(
 											category.id || '',
 											'Categoría',
-											() => handleConfirm(category.id, key),
+											() => handleConfirm(category, key),
 											openModal,
 											false,
 											true,

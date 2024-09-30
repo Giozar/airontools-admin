@@ -58,7 +58,7 @@ export function useCreateProduct() {
 			) {
 				const manualUrls = await filesUpload({
 					type: 'manuals',
-					feature: `products/${productToCreate.id}`,
+					feature: `products/${createdProduct.id}`,
 					files: productToCreate.manualsRaw,
 					setFiles: productToCreate.setManualsRaw,
 					setFileUrls: productToCreate.setManuals,

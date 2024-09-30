@@ -3,6 +3,9 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
+import { CategoryCreateContextProps } from '@interfaces/Category.interface';
+import { FamilyCreateContextProps } from '@interfaces/Family.interface';
+import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
 import { createCategoryService } from '@services/categories/createCategory.service';
 import { deleteCategoryService } from '@services/categories/deleteCategory.service';
 import { getcategoryByFamilyIdService } from '@services/categories/getCategoriesByCategorization.service';
@@ -41,8 +44,11 @@ export function useEditCategorization() {
 	const location = useLocation();
 	const family = location.state?.familyId;
 
+	// useEffect para obtener los datos de familia, categorías y subcategorías
 	useEffect(() => {
 		if (!family) return;
+
+		// Función para obtener los datos de la familia
 		const getFamilyData = async () => {
 			try {
 				const response = await getFamilyService(family);
@@ -59,6 +65,7 @@ export function useEditCategorization() {
 			}
 		};
 
+		// Función para obtener los datos de las categorías
 		const getCategoryData = async () => {
 			try {
 				const response = await getcategoryByFamilyIdService(family);
@@ -83,6 +90,7 @@ export function useEditCategorization() {
 			}
 		};
 
+		// Función para obtener los datos de las subcategorías
 		const getSubcategoryData = async () => {
 			try {
 				const response = await getSubcategoryByFamilyIdService(family);
@@ -104,55 +112,20 @@ export function useEditCategorization() {
 				showError('No se pudo obtener las subcategorias', error);
 			}
 		};
+
+		// Llamado a las funciones de obtención de datos
 		getFamilyData();
 		getCategoryData();
 		getSubcategoryData();
 	}, [family]);
 
-	const handleRawImageUpload = async (rawImage: File, id: string) => {
-		try {
-			if (rawImage === null) return;
-			const url = await uploadFileService(rawImage, 'image', id);
-			return url;
-		} catch (error) {
-			throw errorHandler(error);
-		}
-	};
-
-	const handleDeleteFamily = async (familyId: string) => {
-		try {
-			await deleteFamilyService(familyId);
-			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
-		} catch (error) {
-			showError('no se pudo borrar familia', error);
-		}
-	};
-
-	const handleDeleteCategory = async (id: string) => {
-		try {
-			await deleteCategoryService(id);
-			showSuccessAndReload('Categoría borrada');
-		} catch (error) {
-			showError('no se pudo borrar categoria', error);
-		}
-	};
-
-	const handleDeleteSubcategory = async (id: string) => {
-		try {
-			await deleteSubcategoryService(id);
-			showSuccessAndReload('Subcategoría borrada');
-		} catch (error) {
-			showError('no se pudo borrar subcategoria', error);
-		}
-	};
-
+	// Función general para manejar la actualización de datos
 	const handleUpdate = async (
 		updateService: (id: string, data: any) => Promise<void>,
 		item: any,
 	) => {
 		try {
 			let img = item.image;
-
 			if (item.imageToDelete && item.image) {
 				await deleteFileService(item.image);
 				img = '';
@@ -173,6 +146,66 @@ export function useEditCategorization() {
 			console.error(`Error actualizando ${item.name}:`, error);
 		}
 	};
+
+	// Función para manejar la carga de imágenes
+	const handleRawImageUpload = async (rawImage: File, id: string) => {
+		try {
+			if (rawImage === null) return;
+			const url = await uploadFileService(rawImage, 'images', id);
+			return url;
+		} catch (error) {
+			throw errorHandler(error);
+		}
+	};
+
+	// Función para borrar una familia
+	const handleDeleteFamily = async (family: FamilyCreateContextProps) => {
+		if (!family.id)
+			throw new Error(`No existe la familia con el id ${family.id}`);
+		try {
+			if (family.image) {
+				await deleteFileService(family.image);
+			}
+			await deleteFamilyService(family.id);
+			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
+		} catch (error) {
+			showError('no se pudo borrar familia', error);
+		}
+	};
+
+	// Función para borrar una categoría
+	const handleDeleteCategory = async (category: CategoryCreateContextProps) => {
+		try {
+			if (!category.id)
+				throw new Error(`No existe la categoría con el id ${category.id}`);
+			if (category.image) {
+				await deleteFileService(category.image);
+			}
+			await deleteCategoryService(category.id);
+			showSuccessAndReload('Categoría borrada');
+		} catch (error) {
+			showError('no se pudo borrar categoría', error);
+		}
+	};
+
+	// Función para borrar una subcategoría
+	const handleDeleteSubcategory = async (
+		subcategory: SubcategoryCreateContextProps,
+	) => {
+		try {
+			if (!subcategory.id)
+				throw new Error(`No existe la categoría con el id ${subcategory.id}`);
+			if (subcategory.image) {
+				await deleteFileService(subcategory.image);
+			}
+			await deleteSubcategoryService(subcategory.id);
+			showSuccessAndReload('Subcategoría borrada');
+		} catch (error) {
+			showError('no se pudo borrar subcategoria', error);
+		}
+	};
+
+	// Funciones específicas de actualización
 	const handleUpdateFamily = async () => {
 		await handleUpdate(updateFamilyService, familyToEdit);
 	};
@@ -191,6 +224,7 @@ export function useEditCategorization() {
 		}
 	};
 
+	// Funciones de creación de categorías y subcategorías
 	const handleCreateSubcategory = async () => {
 		try {
 			if (!user) return;
@@ -208,8 +242,6 @@ export function useEditCategorization() {
 				});
 				console.log('ID de la subcategoría:', subcategoryId._id);
 
-				// Actualizar categoría con imagen
-
 				const uploadedSubcategoryImageUrl = subcategory.rawImage
 					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
 					: '';
@@ -224,10 +256,11 @@ export function useEditCategorization() {
 			showError('no se pudo crear subcategorias', error);
 		}
 	};
+
 	const handleCreateCategory = async () => {
 		try {
 			if (!user) return;
-			console.log('Subcategorias creadas');
+			console.log('Categorías creadas');
 			for (const category of categoryInstances) {
 				if (category.mode !== 'create') continue;
 
@@ -239,7 +272,7 @@ export function useEditCategorization() {
 					family: familyToEdit.id,
 				});
 				console.log('ID de la categoría:', categoryId._id);
-				// Actualizar categoría con imagen
+
 				const uploadedCategoryImageUrl = category.rawImage
 					? await handleRawImageUpload(category.rawImage, categoryId._id)
 					: '';
@@ -249,19 +282,19 @@ export function useEditCategorization() {
 					});
 				}
 			}
-			showSuccessAndReload('Proceso completado exitosamente');
 		} catch (error) {
 			showError('no se pudo crear categorias', error);
 		}
 	};
+
 	return {
 		handleUpdateFamily,
-		handleDeleteFamily,
-		handleUpdateCategory,
-		handleDeleteCategory,
 		handleCreateCategory,
-		handleUpdateSubcategory,
-		handleDeleteSubcategory,
 		handleCreateSubcategory,
+		handleUpdateCategory,
+		handleUpdateSubcategory,
+		handleDeleteFamily,
+		handleDeleteCategory,
+		handleDeleteSubcategory,
 	};
 }

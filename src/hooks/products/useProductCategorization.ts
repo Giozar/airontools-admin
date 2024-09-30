@@ -1,5 +1,5 @@
 import useFetchCategories from '@hooks/categories/useFetchCategories';
-import useFetchFamilies from '@hooks/families/useFetchFamilies';
+import useFetchFamilies from '@hooks/categorizations/useFetchFamilies';
 import useFetchSubcategories from '@hooks/subcategories/useFetchSubcategories';
 import { CategoryDataFrontend } from '@interfaces/Category.interface';
 import { FamilyDataFrontend } from '@interfaces/Family.interface';

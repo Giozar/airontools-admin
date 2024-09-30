@@ -1,19 +1,17 @@
-import ActionCard from '@components/commons/ActionCard';
 import DropdownMenu from '@components/commons/DropdownMenu';
 import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useModal } from '@contexts/Modal/ModalContext';
-
-import useFamilyManagement from '@hooks/families/useFamilyManagement';
-import useFetchCategorization from '@hooks/families/useFetchCategorization';
-import '@pages/css/familyList.css';
+import { handleOpenModal } from '@handlers/handleOpenModal';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
+import useFamilyManagement from '@hooks/categorizations/useFamilyManagement';
+import useFetchCategorization from '@hooks/categorizations/useFetchCategorization';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { handleOpenModal } from './Edit/handleOpenModal';
 
-function ListOfFamilies() {
+export default function FamilyList() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const { handleEdit, handleDelete } = useFamilyManagement();
+	const { handleDeleteFamily } = useEditCategorization();
 	const { loading, filteredFamilies, handleSearch, setupdateListFlag } =
 		useFetchCategorization();
 	useEffect(() => {}, [filteredFamilies]);
@@ -89,24 +87,5 @@ function ListOfFamilies() {
 				})}
 			</div>
 		</div>
-	);
-}
-
-export default function CategorizationMenu() {
-	const location = useLocation();
-	return (
-		<>
-			<div className='options users'>
-				<ActionCard
-					title='Crear Familia'
-					path={location.pathname + '/crear-familia'}
-				/>
-				<ActionCard
-					title='Especificaciones'
-					path={location.pathname + '/especificaciones'}
-				/>
-			</div>
-			<ListOfFamilies />
-		</>
 	);
 }

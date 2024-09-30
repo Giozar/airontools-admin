@@ -3,9 +3,10 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useModal } from '@contexts/Modal/ModalContext';
-import { useEditCategorization } from '@hooks/families/useEditCategorization';
-import './EditSubcategory.css';
-import { handleOpenModal } from './handleOpenModal';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
+import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
+import { handleOpenModal } from '../../../handlers/handleOpenModal';
+import './EditSubcategories.css';
 /**
  * Filtra y muestra las subcategorías del contexto que tienen el modo de edición y pertenecen a la categoría deseada.
  *
@@ -36,8 +37,11 @@ export default function EditSubcategories({
 		useEditCategorization();
 
 	const { openModal } = useModal();
-	const handleConfirm = (id: string, key: string) => {
-		handleDeleteSubcategory(id);
+	const handleConfirm = (
+		subcategory: SubcategoryCreateContextProps,
+		key: string,
+	) => {
+		handleDeleteSubcategory(subcategory);
 		removeSubcategoryInstance(key);
 	};
 
@@ -62,7 +66,7 @@ export default function EditSubcategories({
 										handleOpenModal(
 											Subcategory.id || '',
 											'Subcategoría',
-											() => handleConfirm(Subcategory.id, key),
+											() => handleConfirm(Subcategory, key),
 											openModal,
 											false,
 											false,

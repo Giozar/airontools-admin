@@ -7,11 +7,11 @@ interface ToggleProps {
 	CreateComponent: ReactElement;
 }
 
-const EditCreateToggle = ({
+export default function EditCreateToggle({
 	name,
 	EditComponent,
 	CreateComponent,
-}: ToggleProps) => {
+}: ToggleProps) {
 	const [isEditing, setIsEditing] = useState(true);
 
 	return (
@@ -36,6 +36,4 @@ const EditCreateToggle = ({
 			{isEditing ? cloneElement(EditComponent) : cloneElement(CreateComponent)}
 		</>
 	);
-};
-
-export default EditCreateToggle;
+}

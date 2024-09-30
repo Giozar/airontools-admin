@@ -3,9 +3,9 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useModal } from '@contexts/Modal/ModalContext';
-import { useEditCategorization } from '@hooks/families/useEditCategorization';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
+import { handleOpenModal } from '../../../handlers/handleOpenModal';
 import './EditFamily.css';
-import { handleOpenModal } from './handleOpenModal';
 /**
  * Permite la edición y eliminación de una familia existente.
  *
@@ -34,7 +34,7 @@ export default function EditFamily() {
 						handleOpenModal(
 							familyToCreate.id || '',
 							'Familia',
-							() => handleDeleteFamily(familyToCreate.id || ''),
+							() => handleDeleteFamily(familyToCreate || ''),
 							openModal,
 							true,
 							true,
