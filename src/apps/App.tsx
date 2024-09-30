@@ -154,7 +154,15 @@ const router = createBrowserRouter([
 							},
 							{
 								path: 'categorizacion',
-								element: <CategorizationMenu />,
+								element: (
+									<FamilyCreateProvider>
+										<CategoryCreateProvider>
+											<SubcategoryCreateProvider>
+												<CategorizationMenu />
+											</SubcategoryCreateProvider>
+										</CategoryCreateProvider>
+									</FamilyCreateProvider>
+								),
 							},
 							{
 								path: 'categorizacion',

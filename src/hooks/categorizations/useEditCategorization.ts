@@ -4,7 +4,10 @@ import { useCategoryCreateContext } from '@contexts/categorization/CategoryConte
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { CategoryCreateContextProps } from '@interfaces/Category.interface';
-import { FamilyCreateContextProps } from '@interfaces/Family.interface';
+import {
+	FamilyCreateContextProps,
+	FamilyDataFrontend,
+} from '@interfaces/Family.interface';
 import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
 import { createCategoryService } from '@services/categories/createCategory.service';
 import { deleteCategoryService } from '@services/categories/deleteCategory.service';
@@ -21,7 +24,7 @@ import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubc
 import { updateSubcategoryService } from '@services/subcategories/updateSubcategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
@@ -41,6 +44,7 @@ export function useEditCategorization() {
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
+	const navigate = useNavigate();
 	const location = useLocation();
 	const family = location.state?.familyId;
 
@@ -172,7 +176,17 @@ export function useEditCategorization() {
 			showError('no se pudo borrar familia', error);
 		}
 	};
-
+	//Ya que cambiará el backend solo se necesitara el id
+	const handleDeleteFamilybyId = async (familyId: string) => {
+		if (!familyId)
+			throw new Error(`No existe la familia con el id ${family.id}`);
+		try {
+			await deleteFamilyService(familyId);
+			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
+		} catch (error) {
+			showError('no se pudo borrar familia', error);
+		}
+	};
 	// Función para borrar una categoría
 	const handleDeleteCategory = async (category: CategoryCreateContextProps) => {
 		try {
@@ -287,6 +301,13 @@ export function useEditCategorization() {
 		}
 	};
 
+	const handleEditCategorization = (family: FamilyDataFrontend) => {
+		localStorage.setItem('familyToEdit', JSON.stringify({ family }));
+		navigate(`${location.pathname}/editar-familia`, {
+			state: { familyId: family.id },
+		});
+	};
+
 	return {
 		handleUpdateFamily,
 		handleCreateCategory,
@@ -294,7 +315,9 @@ export function useEditCategorization() {
 		handleUpdateCategory,
 		handleUpdateSubcategory,
 		handleDeleteFamily,
+		handleDeleteFamilybyId,
 		handleDeleteCategory,
 		handleDeleteSubcategory,
+		handleEditCategorization,
 	};
 }
