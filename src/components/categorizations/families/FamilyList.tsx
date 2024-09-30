@@ -52,10 +52,10 @@ export default function FamilyList() {
 													setupdateListFlag(prev => !prev);
 												},
 												openModal,
-												true,
-												true,
-												true,
-												true,
+												false,
+												false,
+												false,
+												false,
 											)
 										}
 									>

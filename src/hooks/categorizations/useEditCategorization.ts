@@ -3,6 +3,9 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
+import { CategoryCreateContextProps } from '@interfaces/Category.interface';
+import { FamilyCreateContextProps } from '@interfaces/Family.interface';
+import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
 import { createCategoryService } from '@services/categories/createCategory.service';
 import { deleteCategoryService } from '@services/categories/deleteCategory.service';
 import { getcategoryByFamilyIdService } from '@services/categories/getCategoriesByCategorization.service';
@@ -116,47 +119,6 @@ export function useEditCategorization() {
 		getSubcategoryData();
 	}, [family]);
 
-	// Función para manejar la carga de imágenes
-	const handleRawImageUpload = async (rawImage: File, id: string) => {
-		try {
-			if (rawImage === null) return;
-			const url = await uploadFileService(rawImage, 'image', id);
-			return url;
-		} catch (error) {
-			throw errorHandler(error);
-		}
-	};
-
-	// Función para borrar una familia
-	const handleDeleteFamily = async (familyId: string) => {
-		try {
-			await deleteFamilyService(familyId);
-			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
-		} catch (error) {
-			showError('no se pudo borrar familia', error);
-		}
-	};
-
-	// Función para borrar una categoría
-	const handleDeleteCategory = async (id: string) => {
-		try {
-			await deleteCategoryService(id);
-			showSuccessAndReload('Categoría borrada');
-		} catch (error) {
-			showError('no se pudo borrar categoria', error);
-		}
-	};
-
-	// Función para borrar una subcategoría
-	const handleDeleteSubcategory = async (id: string) => {
-		try {
-			await deleteSubcategoryService(id);
-			showSuccessAndReload('Subcategoría borrada');
-		} catch (error) {
-			showError('no se pudo borrar subcategoria', error);
-		}
-	};
-
 	// Función general para manejar la actualización de datos
 	const handleUpdate = async (
 		updateService: (id: string, data: any) => Promise<void>,
@@ -164,7 +126,6 @@ export function useEditCategorization() {
 	) => {
 		try {
 			let img = item.image;
-
 			if (item.imageToDelete && item.image) {
 				await deleteFileService(item.image);
 				img = '';
@@ -183,6 +144,65 @@ export function useEditCategorization() {
 		} catch (error) {
 			showError(`No se pudo actualizar ${item.name}`, error);
 			console.error(`Error actualizando ${item.name}:`, error);
+		}
+	};
+
+	// Función para manejar la carga de imágenes
+	const handleRawImageUpload = async (rawImage: File, id: string) => {
+		try {
+			if (rawImage === null) return;
+			const url = await uploadFileService(rawImage, 'images', id);
+			return url;
+		} catch (error) {
+			throw errorHandler(error);
+		}
+	};
+
+	// Función para borrar una familia
+	const handleDeleteFamily = async (family: FamilyCreateContextProps) => {
+		console.log('entro para eliminar familia');
+		if (!family.id)
+			throw new Error(`No existe la familia con el id ${family.id}`);
+		try {
+			if (family.image) {
+				await deleteFileService(family.image);
+			}
+			await deleteFamilyService(family.id);
+			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
+		} catch (error) {
+			showError('no se pudo borrar familia', error);
+		}
+	};
+
+	// Función para borrar una categoría
+	const handleDeleteCategory = async (category: CategoryCreateContextProps) => {
+		try {
+			if (!category.id)
+				throw new Error(`No existe la categoría con el id ${category.id}`);
+			if (category.image) {
+				await deleteFileService(category.image);
+			}
+			await deleteCategoryService(category.id);
+			showSuccessAndReload('Categoría borrada');
+		} catch (error) {
+			showError('no se pudo borrar categoría', error);
+		}
+	};
+
+	// Función para borrar una subcategoría
+	const handleDeleteSubcategory = async (
+		subcategory: SubcategoryCreateContextProps,
+	) => {
+		try {
+			if (!subcategory.id)
+				throw new Error(`No existe la categoría con el id ${subcategory.id}`);
+			if (subcategory.image) {
+				await deleteFileService(subcategory.image);
+			}
+			await deleteSubcategoryService(subcategory.id);
+			showSuccessAndReload('Subcategoría borrada');
+		} catch (error) {
+			showError('no se pudo borrar subcategoria', error);
 		}
 	};
 
