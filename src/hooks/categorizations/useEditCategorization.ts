@@ -3,12 +3,7 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
-import { CategoryCreateContextProps } from '@interfaces/Category.interface';
-import {
-	FamilyCreateContextProps,
-	FamilyDataFrontend,
-} from '@interfaces/Family.interface';
-import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
+import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { createCategoryService } from '@services/categories/createCategory.service';
 import { deleteCategoryService } from '@services/categories/deleteCategory.service';
 import { getcategoryByFamilyIdService } from '@services/categories/getCategoriesByCategorization.service';
@@ -163,23 +158,9 @@ export function useEditCategorization() {
 	};
 
 	// Función para borrar una familia
-	const handleDeleteFamily = async (family: FamilyCreateContextProps) => {
-		if (!family.id)
-			throw new Error(`No existe la familia con el id ${family.id}`);
-		try {
-			if (family.image) {
-				await deleteFileService(family.image);
-			}
-			await deleteFamilyService(family.id);
-			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
-		} catch (error) {
-			showError('no se pudo borrar familia', error);
-		}
-	};
-	//Ya que cambiará el backend solo se necesitara el id
-	const handleDeleteFamilybyId = async (familyId: string) => {
+	const handleDeleteFamily = async (familyId: string) => {
 		if (!familyId)
-			throw new Error(`No existe la familia con el id ${family.id}`);
+			throw new Error(`No existe la familia con el id ${familyId}`);
 		try {
 			await deleteFamilyService(familyId);
 			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
@@ -187,15 +168,13 @@ export function useEditCategorization() {
 			showError('no se pudo borrar familia', error);
 		}
 	};
+
 	// Función para borrar una categoría
-	const handleDeleteCategory = async (category: CategoryCreateContextProps) => {
+	const handleDeleteCategory = async (categoryId: string) => {
 		try {
-			if (!category.id)
-				throw new Error(`No existe la categoría con el id ${category.id}`);
-			if (category.image) {
-				await deleteFileService(category.image);
-			}
-			await deleteCategoryService(category.id);
+			if (!categoryId)
+				throw new Error(`No existe la categoría con el id ${categoryId}`);
+			await deleteCategoryService(categoryId);
 			showSuccessAndReload('Categoría borrada');
 		} catch (error) {
 			showError('no se pudo borrar categoría', error);
@@ -203,16 +182,11 @@ export function useEditCategorization() {
 	};
 
 	// Función para borrar una subcategoría
-	const handleDeleteSubcategory = async (
-		subcategory: SubcategoryCreateContextProps,
-	) => {
+	const handleDeleteSubcategory = async (subcategoryId: string) => {
 		try {
-			if (!subcategory.id)
-				throw new Error(`No existe la categoría con el id ${subcategory.id}`);
-			if (subcategory.image) {
-				await deleteFileService(subcategory.image);
-			}
-			await deleteSubcategoryService(subcategory.id);
+			if (!subcategoryId)
+				throw new Error(`No existe la categoría con el id ${subcategoryId}`);
+			await deleteSubcategoryService(subcategoryId);
 			showSuccessAndReload('Subcategoría borrada');
 		} catch (error) {
 			showError('no se pudo borrar subcategoria', error);
@@ -315,7 +289,6 @@ export function useEditCategorization() {
 		handleUpdateCategory,
 		handleUpdateSubcategory,
 		handleDeleteFamily,
-		handleDeleteFamilybyId,
 		handleDeleteCategory,
 		handleDeleteSubcategory,
 		handleEditCategorization,

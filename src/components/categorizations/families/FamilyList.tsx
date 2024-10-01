@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 
 export default function FamilyList() {
 	const [searchTerm, setSearchTerm] = useState('');
-	const { handleEditCategorization, handleDeleteFamilybyId } =
+	const { handleEditCategorization, handleDeleteFamily } =
 		useEditCategorization();
 	const { loading, filteredFamilies, handleSearch, setupdateListFlag } =
 		useFetchCategorization();
@@ -52,7 +52,7 @@ export default function FamilyList() {
 												family.id,
 												family.name,
 												() => {
-													handleDeleteFamilybyId(family.id);
+													handleDeleteFamily(family.id);
 													setupdateListFlag(prev => !prev);
 												},
 												openModal,
