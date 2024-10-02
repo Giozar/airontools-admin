@@ -3,6 +3,7 @@ import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useFetchCategoriesByFamilyId from '@hooks/categories/useFetchCategoriesByFamilyId';
 import useFetchFamilies from '@hooks/categorizations/useFetchFamilies';
 import useFetchSubcategoriesByCategoryId from '@hooks/subcategories/useFetchSubcategoriesByCategoryId';
+import { useEffect } from 'react';
 
 export function ProductCategorization() {
 	const {
@@ -18,6 +19,17 @@ export function ProductCategorization() {
 	const { families } = useFetchFamilies();
 	const { categories } = useFetchCategoriesByFamilyId(family);
 	const { subcategories } = useFetchSubcategoriesByCategoryId(category);
+
+	useEffect(() => {
+		if (!family) {
+			setCategory('');
+			setSubcategory('');
+		}
+
+		if (!category) {
+			setSubcategory('');
+		}
+	}, [family, category, subcategory]);
 
 	return (
 		<div>
