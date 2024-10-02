@@ -3,17 +3,14 @@ import EditIcon from '@components/svg/EditIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
-import useFamilyManagement from '@hooks/categorizations/useFamilyManagement';
+import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import useFetchCategorization from '@hooks/categorizations/useFetchCategorization';
 import { useEffect, useState } from 'react';
 
 export default function FamilyList() {
 	const [searchTerm, setSearchTerm] = useState('');
-	/**
-	 * TODO: Implementar este customHook --> const { handleCategoryFamily, handleDeleteFamily } = useEditCategorization();
-	 * TODO: Eliminar línea de abajo v
-	 * */
-	const { handleEdit, handleDelete } = useFamilyManagement();
+	const { handleEditCategorization, handleDeleteFamily } =
+		useEditCategorization();
 	const { loading, filteredFamilies, handleSearch, setupdateListFlag } =
 		useFetchCategorization();
 	useEffect(() => {}, [filteredFamilies]);
@@ -42,7 +39,10 @@ export default function FamilyList() {
 							<div className='cardHeader'>
 								<h2 className='cardTitle'>{family.name}</h2>
 								<div>
-									<button className='edit' onClick={() => handleEdit(family)}>
+									<button
+										className='edit'
+										onClick={() => handleEditCategorization(family)}
+									>
 										<EditIcon />
 									</button>
 									<button
@@ -52,7 +52,7 @@ export default function FamilyList() {
 												family.id,
 												family.name,
 												() => {
-													handleDelete(family.id || '', family.name);
+													handleDeleteFamily(family.id);
 													setupdateListFlag(prev => !prev);
 												},
 												openModal,

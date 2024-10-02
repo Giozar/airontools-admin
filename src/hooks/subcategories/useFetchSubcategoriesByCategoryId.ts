@@ -1,12 +1,11 @@
-// src/hooks/useFetchSubcategoriesByFamily.ts
+// src/hooks/useFetchSubcategoriesByCategoryId.ts
 
-import { transformSubcategoryDataToFrontend } from '@adapters/subcategory.adapter';
 import { useAlert } from '@contexts/Alert/AlertContext';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
-import { getSubcategoriesByFamilyService } from '@services/subcategories/getSubcategoriesByFamily.service';
+import { getSubcategoryByCategoryIdService } from '@services/subcategories/getSubcategoriesByCategorization.service';
 import { useEffect, useState } from 'react';
 
-const useFetchSubcategoriesByFamily = (id: string) => {
+const useFetchSubcategoriesByCategoryId = (id: string) => {
 	const { showAlert } = useAlert();
 	const [subcategories, setSubcategories] = useState<SubcategoryDataFrontend[]>(
 		[],
@@ -20,13 +19,9 @@ const useFetchSubcategoriesByFamily = (id: string) => {
 	const fetchSubcategories = async (categoryId: string) => {
 		setLoading(true);
 		try {
-			const backendSubcategories =
-				await getSubcategoriesByFamilyService(categoryId);
-			const frontendSubcategories = backendSubcategories.map(
-				transformSubcategoryDataToFrontend,
-			);
-			setSubcategories(frontendSubcategories);
-			setFilteredSubcategories(frontendSubcategories);
+			const subcategories = await getSubcategoryByCategoryIdService(categoryId);
+			setSubcategories(subcategories);
+			setFilteredSubcategories(subcategories);
 		} catch (error) {
 			console.error('Failed to fetch subcategories:', error);
 			showAlert('Error al cargar las subcategorías', 'error');
@@ -59,4 +54,4 @@ const useFetchSubcategoriesByFamily = (id: string) => {
 	};
 };
 
-export default useFetchSubcategoriesByFamily;
+export default useFetchSubcategoriesByCategoryId;

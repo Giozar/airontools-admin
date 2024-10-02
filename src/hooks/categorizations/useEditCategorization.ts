@@ -3,9 +3,7 @@ import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
-import { CategoryCreateContextProps } from '@interfaces/Category.interface';
-import { FamilyCreateContextProps } from '@interfaces/Family.interface';
-import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
+import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { createCategoryService } from '@services/categories/createCategory.service';
 import { deleteCategoryService } from '@services/categories/deleteCategory.service';
 import { getcategoryByFamilyIdService } from '@services/categories/getCategoriesByCategorization.service';
@@ -21,7 +19,7 @@ import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubc
 import { updateSubcategoryService } from '@services/subcategories/updateSubcategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
@@ -41,6 +39,7 @@ export function useEditCategorization() {
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
+	const navigate = useNavigate();
 	const location = useLocation();
 	const family = location.state?.familyId;
 
@@ -159,14 +158,11 @@ export function useEditCategorization() {
 	};
 
 	// Función para borrar una familia
-	const handleDeleteFamily = async (family: FamilyCreateContextProps) => {
-		if (!family.id)
-			throw new Error(`No existe la familia con el id ${family.id}`);
+	const handleDeleteFamily = async (familyId: string) => {
+		if (!familyId)
+			throw new Error(`No existe la familia con el id ${familyId}`);
 		try {
-			if (family.image) {
-				await deleteFileService(family.image);
-			}
-			await deleteFamilyService(family.id);
+			await deleteFamilyService(familyId);
 			showSuccessAndNavigate('Familia borrada', '/home/categorizacion');
 		} catch (error) {
 			showError('no se pudo borrar familia', error);
@@ -174,14 +170,11 @@ export function useEditCategorization() {
 	};
 
 	// Función para borrar una categoría
-	const handleDeleteCategory = async (category: CategoryCreateContextProps) => {
+	const handleDeleteCategory = async (categoryId: string) => {
 		try {
-			if (!category.id)
-				throw new Error(`No existe la categoría con el id ${category.id}`);
-			if (category.image) {
-				await deleteFileService(category.image);
-			}
-			await deleteCategoryService(category.id);
+			if (!categoryId)
+				throw new Error(`No existe la categoría con el id ${categoryId}`);
+			await deleteCategoryService(categoryId);
 			showSuccessAndReload('Categoría borrada');
 		} catch (error) {
 			showError('no se pudo borrar categoría', error);
@@ -189,16 +182,11 @@ export function useEditCategorization() {
 	};
 
 	// Función para borrar una subcategoría
-	const handleDeleteSubcategory = async (
-		subcategory: SubcategoryCreateContextProps,
-	) => {
+	const handleDeleteSubcategory = async (subcategoryId: string) => {
 		try {
-			if (!subcategory.id)
-				throw new Error(`No existe la categoría con el id ${subcategory.id}`);
-			if (subcategory.image) {
-				await deleteFileService(subcategory.image);
-			}
-			await deleteSubcategoryService(subcategory.id);
+			if (!subcategoryId)
+				throw new Error(`No existe la categoría con el id ${subcategoryId}`);
+			await deleteSubcategoryService(subcategoryId);
 			showSuccessAndReload('Subcategoría borrada');
 		} catch (error) {
 			showError('no se pudo borrar subcategoria', error);
@@ -287,6 +275,13 @@ export function useEditCategorization() {
 		}
 	};
 
+	const handleEditCategorization = (family: FamilyDataFrontend) => {
+		localStorage.setItem('familyToEdit', JSON.stringify({ family }));
+		navigate(`${location.pathname}/editar-familia`, {
+			state: { familyId: family.id },
+		});
+	};
+
 	return {
 		handleUpdateFamily,
 		handleCreateCategory,
@@ -296,5 +291,6 @@ export function useEditCategorization() {
 		handleDeleteFamily,
 		handleDeleteCategory,
 		handleDeleteSubcategory,
+		handleEditCategorization,
 	};
 }

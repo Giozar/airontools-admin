@@ -5,6 +5,7 @@ import TextInput from '@components/commons/TextInput';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import '@pages/css/createFamily.css';
+import { useEffect, useState } from 'react';
 
 export default function CreateSubcategoriesWithSelect() {
 	const {
@@ -16,6 +17,8 @@ export default function CreateSubcategoriesWithSelect() {
 	} = useSubcategoryCreateContext();
 	const { getAllCategoryInstances } = useCategoryCreateContext();
 	const categoryInstances = getAllCategoryInstances();
+	const [cat, setCat] = useState('');
+	useEffect(() => {}, [cat]);
 
 	return (
 		<div>
@@ -55,7 +58,11 @@ export default function CreateSubcategoriesWithSelect() {
 									value: category.name,
 									label: category.name,
 								}))}
-								setValue={value => Subcategory.setCategory(value)}
+								value={Subcategory.category}
+								setValue={value => {
+									Subcategory.setCategory(value);
+									setCat(value);
+								}}
 							/>
 							<TextInput
 								className='item-name'

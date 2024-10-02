@@ -15,9 +15,9 @@ export const getSubcategoryByFamilyIdService = async (
 		const response = await axios.get<SubcategoryDataBackend[]>(
 			airontoolsAPI + `/subcategories/family/${familyId}`,
 		);
-		const Subcategory = response.data;
-		return Subcategory.map(product =>
-			transformSubcategoryDataToFrontend(product),
+		const subcategories = response.data;
+		return subcategories.map(subcategory =>
+			transformSubcategoryDataToFrontend(subcategory),
 		);
 	} catch (error) {
 		console.error('Error al buscar subcategoria por familia', error);
@@ -25,16 +25,16 @@ export const getSubcategoryByFamilyIdService = async (
 	}
 };
 
-export const getSubcategoryBySubcategoryIdService = async (
-	SubcategoryId: string,
+export const getSubcategoryByCategoryIdService = async (
+	categoryId: string,
 ): Promise<SubcategoryDataFrontend[]> => {
 	try {
 		const response = await axios.get<SubcategoryDataBackend[]>(
-			airontoolsAPI + `/subcategories/category/${SubcategoryId}`,
+			airontoolsAPI + `/subcategories/category/${categoryId}`,
 		);
-		const Subcategory = response.data;
-		return Subcategory.map(product =>
-			transformSubcategoryDataToFrontend(product),
+		const subcategories = response.data;
+		return subcategories.map(subcategory =>
+			transformSubcategoryDataToFrontend(subcategory),
 		);
 	} catch (error) {
 		console.error('Error al buscar subcategoria por categoría', error);
