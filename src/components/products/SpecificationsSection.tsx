@@ -2,6 +2,7 @@ import TableRow from '@components/commons/TableRow';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
 import { useEffect } from 'react';
 import useSpecificationsProductCategorization from './hooks/useSpecificationsProductCategorization';
+import SpecificationProductForm from './SpecificationProductForm';
 
 export default function SpecificationsSection() {
 	const { specificationList } = useSpecificationsProductCategorization();
@@ -68,6 +69,7 @@ export default function SpecificationsSection() {
 						</tbody>
 					</table>
 					<p style={{ marginTop: '20px' }}>Nuevas especificaciones:</p>
+					<SpecificationProductForm />
 				</div>
 			) : (
 				<p>No hay especificaciones disponibles.</p>
