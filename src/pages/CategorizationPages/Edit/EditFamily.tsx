@@ -34,7 +34,7 @@ export default function EditFamily() {
 						handleOpenModal(
 							familyToCreate.id || '',
 							'Familia',
-							() => handleDeleteFamily(familyToCreate || ''),
+							() => handleDeleteFamily(familyToCreate.id || ''),
 							openModal,
 							true,
 							true,
