@@ -25,12 +25,12 @@ export const getSubcategoryByFamilyIdService = async (
 	}
 };
 
-export const getSubcategoryBySubcategoryIdService = async (
-	SubcategoryId: string,
+export const getSubcategoryByCategoryIdService = async (
+	categoryId: string,
 ): Promise<SubcategoryDataFrontend[]> => {
 	try {
 		const response = await axios.get<SubcategoryDataBackend[]>(
-			airontoolsAPI + `/subcategories/category/${SubcategoryId}`,
+			airontoolsAPI + `/subcategories/category/${categoryId}`,
 		);
 		const Subcategory = response.data;
 		return Subcategory.map(product =>

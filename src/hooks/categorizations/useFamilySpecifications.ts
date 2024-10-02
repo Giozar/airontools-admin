@@ -1,6 +1,6 @@
 import useFetchCategoriesByFamily from '@hooks/categories/useFetchCategoriesByFamily';
 import useFetchFamilies from '@hooks/categorizations/useFetchFamilies';
-import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcategoriesByFamily';
+import useFetchSubcategoriesByCategoryId from '@hooks/subcategories/useFetchSubcategoriesByCategoryId';
 import { useEffect, useState } from 'react';
 
 export function useFamilySpecifications() {
@@ -12,7 +12,7 @@ export function useFamilySpecifications() {
 	const { categories, fetchCategories } =
 		useFetchCategoriesByFamily(selectedFamily);
 	const { subcategories, fetchSubcategories } =
-		useFetchSubcategoriesByFamily(selectedCategory);
+		useFetchSubcategoriesByCategoryId(selectedCategory);
 	useEffect(() => {
 		if (selectedFamily) {
 			// console.log(`Family selected: ${selectedFamily}`);

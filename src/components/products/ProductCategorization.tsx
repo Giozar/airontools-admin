@@ -2,7 +2,7 @@ import SelectInput from '@components/commons/SelectInput';
 import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useFetchCategoriesByFamily from '@hooks/categories/useFetchCategoriesByFamily';
 import useFetchFamilies from '@hooks/categorizations/useFetchFamilies';
-import useFetchSubcategoriesByFamily from '@hooks/subcategories/useFetchSubcategoriesByFamily';
+import useFetchSubcategoriesByCategoryId from '@hooks/subcategories/useFetchSubcategoriesByCategoryId';
 
 export function ProductCategorization() {
 	const {
@@ -17,7 +17,7 @@ export function ProductCategorization() {
 	// Fetch families, categories, and subcategories based on current selections
 	const { families } = useFetchFamilies();
 	const { categories } = useFetchCategoriesByFamily(family);
-	const { subcategories } = useFetchSubcategoriesByFamily(category);
+	const { subcategories } = useFetchSubcategoriesByCategoryId(category);
 
 	return (
 		<div>
