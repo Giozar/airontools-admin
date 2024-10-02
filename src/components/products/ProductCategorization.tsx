@@ -3,7 +3,6 @@ import { useProductCreateContext } from '@contexts/product/ProductContext';
 import useFetchCategoriesByFamilyId from '@hooks/categories/useFetchCategoriesByFamilyId';
 import useFetchFamilies from '@hooks/categorizations/useFetchFamilies';
 import useFetchSubcategoriesByCategoryId from '@hooks/subcategories/useFetchSubcategoriesByCategoryId';
-import { useEffect } from 'react';
 
 export function ProductCategorization() {
 	const {
@@ -20,16 +19,18 @@ export function ProductCategorization() {
 	const { categories } = useFetchCategoriesByFamilyId(family);
 	const { subcategories } = useFetchSubcategoriesByCategoryId(category);
 
-	useEffect(() => {
-		if (!family) {
-			setCategory('');
-			setSubcategory('');
-		}
+	// Handle family change and reset category and subcategory
+	const handleFamilyChange = (newFamily: string) => {
+		setFamily(newFamily);
+		setCategory(''); // Reset category when family changes
+		setSubcategory(''); // Reset subcategory when family changes
+	};
 
-		if (!category) {
-			setSubcategory('');
-		}
-	}, [family, category, subcategory]);
+	// Handle category change and reset subcategory
+	const handleCategoryChange = (newCategory: string) => {
+		setCategory(newCategory);
+		setSubcategory(''); // Reset subcategory when category changes
+	};
 
 	return (
 		<div>
@@ -41,7 +42,7 @@ export function ProductCategorization() {
 					label: f.name,
 				}))}
 				value={family || ''} // Preselect the current family, fallback to an empty string
-				setValue={setFamily} // Handle family change
+				setValue={handleFamilyChange} // Handle family change with reset logic
 			/>
 			{family && (
 				<SelectInput
@@ -52,7 +53,7 @@ export function ProductCategorization() {
 						label: cat.name,
 					}))}
 					value={category || ''} // Preselect the current category, fallback to an empty string
-					setValue={setCategory} // Handle category change
+					setValue={handleCategoryChange} // Handle category change with reset logic
 				/>
 			)}
 			{category && (
@@ -64,7 +65,7 @@ export function ProductCategorization() {
 						label: subcat.name,
 					}))}
 					value={subcategory || ''} // Preselect the current subcategory, fallback to an empty string
-					setValue={setSubcategory} // Directly set subcategory
+					setValue={setSubcategory} // Handle subcategory selection
 				/>
 			)}
 		</div>
