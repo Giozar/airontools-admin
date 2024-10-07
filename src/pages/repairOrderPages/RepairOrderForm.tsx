@@ -1,4 +1,5 @@
 import DatalistOption from '@components/commons/DatalistOption';
+import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useState } from 'react';
 
@@ -7,6 +8,7 @@ export default function RepairOrderForm() {
 	const [tiempoEntrega, setTiempoEntrega] = useState('');
 	const [responsable, setResponsable] = useState('');
 	const [telefono, setTelefono] = useState('');
+	const [observaciones, setObservaciones] = useState('');
 	return (
 		<form>
 			<button> Generar Orden </button>
@@ -37,6 +39,12 @@ export default function RepairOrderForm() {
 				options={['2222-2222-2222', '3333-3333-3333']}
 				value={telefono}
 				setValue={setTelefono}
+			/>
+			<TextAreaInput
+				id={'observaciones'}
+				label={'Observaciones'}
+				value={observaciones}
+				onChange={e => setObservaciones(e.target.value)}
 			/>
 			<TextInput
 				id={'tiempoEntrega'}
