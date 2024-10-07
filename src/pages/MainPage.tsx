@@ -17,7 +17,7 @@ export default function ContentMainPage() {
 						/>
 						<ActionCard
 							title='Orden de reparación'
-							path={location.pathname + '/orden'}
+							path={location.pathname + '/ver-orden'}
 							description='Lista de ordenes de reparación, crear ordenes'
 						/>
 						<ActionCard
