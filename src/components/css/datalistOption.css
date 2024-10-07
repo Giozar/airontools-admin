@@ -1,0 +1,32 @@
+.datalist-input {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1rem;
+}
+.datalist-input__input {
+	transition: border-color 0.2s;
+	border: 1px solid var(--input-bg);
+	border-radius: 4px;
+}
+.datalist-input__label {
+	margin-bottom: 0.5rem;
+	font-weight: bold;
+}
+
+.datalist-input__datalist {
+	display: none;
+}
+
+.datalist-input__input:invalid {
+	border-color: red;
+}
+
+.datalist-input__input:disabled {
+	cursor: not-allowed;
+	background-color: #f5f5f5;
+}
+
+.datalist-input__input:focus {
+	outline: none;
+	border-color: var(--accent-primary);
+}
