@@ -16,6 +16,11 @@ export default function ContentMainPage() {
 							description='Lista de usuarios, crear usuarios, crear rol'
 						/>
 						<ActionCard
+							title='Orden de reparación'
+							path={location.pathname + '/orden'}
+							description='Lista de ordenes de reparación, crear ordenes'
+						/>
+						<ActionCard
 							title='Categorización'
 							path={location.pathname + '/categorizacion'}
 							description='Lista de familias (con categorias, subcategorias), crear familia (con categorias, subcategorias), especificaciones, crear especificaciones'
