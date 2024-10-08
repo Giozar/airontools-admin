@@ -1,4 +1,6 @@
 import DatalistOption from '@components/commons/DatalistOption';
+import TableComponent from '@components/commons/DynamicTable';
+import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useState } from 'react';
@@ -9,10 +11,49 @@ export default function RepairOrderForm() {
 	const [responsable, setResponsable] = useState('');
 	const [telefono, setTelefono] = useState('');
 	const [observaciones, setObservaciones] = useState('');
+	const tableData = {
+		headers: ['', '', '', '', ''],
+		rows: Array.from({ length: 9 }, () => [
+			<TextInput
+				id={'cantidad'}
+				label={'Cantidad'}
+				value={tiempoEntrega}
+				placeholder={'Cantidad'}
+				onChange={e => setTiempoEntrega(e.target.value)}
+			/>,
+			<TextInput
+				id={'modelo'}
+				label={'Modelo'}
+				value={tiempoEntrega}
+				placeholder={'Modelo de herramienta'}
+				onChange={e => setTiempoEntrega(e.target.value)}
+			/>,
+			<TextInput
+				id={'marca'}
+				label={'Marca'}
+				value={tiempoEntrega}
+				placeholder={'Marca de herramienta'}
+				onChange={e => setTiempoEntrega(e.target.value)}
+			/>,
+			<TextInput
+				id={'numerodeserie'}
+				label={'Número de serie'}
+				value={tiempoEntrega}
+				placeholder={'Número de serie'}
+				onChange={e => setTiempoEntrega(e.target.value)}
+			/>,
+			<TextAreaInput
+				id={'descripcion'}
+				label={'Descripción'}
+				value={observaciones}
+				placeholder={'Descripción del estado de la herramienta'}
+				onChange={e => setObservaciones(e.target.value)}
+			/>,
+		]),
+	};
 	return (
 		<form>
 			<button> Generar Orden </button>
-			Fecha: {Date().toString()}
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}
@@ -53,6 +94,17 @@ export default function RepairOrderForm() {
 				placeholder={'Tiempo de entrega'}
 				onChange={e => setTiempoEntrega(e.target.value)}
 			/>
+			Fecha de autorización: {Date().toString()}
+			<SingleImageChange
+				title={'Foto general de herramientas'}
+				filePreview={''}
+				setFilePreview={function (value: File | null): void {
+					throw new Error('Function not implemented.');
+				}}
+				capture={true}
+			/>
+			<h2>Datos de la herramienta</h2>
+			<TableComponent data={tableData} vertical={true} />
 		</form>
 	);
 }

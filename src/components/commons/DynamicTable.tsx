@@ -2,14 +2,15 @@ import '@components/css/DynamicTable.css';
 import { TableData } from '@interfaces/TableData.interface';
 interface TableComponentProps {
 	data: TableData;
+	vertical?: boolean;
 }
 
-const TableComponent = ({ data }: TableComponentProps) => {
+const TableComponent = ({ data, vertical }: TableComponentProps) => {
 	return (
 		<div className='table'>
 			<table className='table__element'>
 				<thead className='table__head'>
-					<tr className='table__row'>
+					<tr className={`table__row${vertical ? '--vertical' : ''}`}>
 						{data.headers.map((header, index) => (
 							<th className='table__header' key={index}>
 								{header}
@@ -19,9 +20,15 @@ const TableComponent = ({ data }: TableComponentProps) => {
 				</thead>
 				<tbody className='table__body'>
 					{data.rows.map((row, rowIndex) => (
-						<tr className='table__row' key={rowIndex}>
+						<tr
+							className={`table__row${vertical ? '--vertical' : ''}`}
+							key={rowIndex}
+						>
 							{row.map((cell, cellIndex) => (
-								<td className='table__cell' key={cellIndex}>
+								<td
+									className={`table__cell${vertical ? '--vertical' : ''}`}
+									key={cellIndex}
+								>
 									{cell}
 								</td>
 							))}

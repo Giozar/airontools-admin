@@ -8,6 +8,7 @@ interface ImageUploaderProps {
 	setFilePreview: (value: File | null) => void;
 	setFileToDelete?: (value: boolean) => void;
 	placeholder?: string;
+	capture?: boolean;
 }
 
 const SingleImageChange = ({
@@ -16,6 +17,7 @@ const SingleImageChange = ({
 	setFilePreview,
 	setFileToDelete,
 	placeholder,
+	capture,
 }: ImageUploaderProps) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,6 +64,7 @@ const SingleImageChange = ({
 							onChange={handleFileChange}
 							className='hidden'
 							id='image-upload-input'
+							capture={capture}
 						/>
 						<label className='upload-label' htmlFor='image-upload-input'>
 							{filePreview || placeholder ? 'Cambiar imagen' : 'Cargar imagen'}
