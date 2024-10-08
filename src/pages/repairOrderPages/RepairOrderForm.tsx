@@ -11,6 +11,7 @@ export default function RepairOrderForm() {
 	const [responsable, setResponsable] = useState('');
 	const [telefono, setTelefono] = useState('');
 	const [observaciones, setObservaciones] = useState('');
+	const [rawImage, setRawImage] = useState<File | null>(null);
 	const tableData = {
 		headers: ['', '', '', '', ''],
 		rows: Array.from({ length: 9 }, () => [
@@ -97,10 +98,8 @@ export default function RepairOrderForm() {
 			Fecha de autorización: {Date().toString()}
 			<SingleImageChange
 				title={'Foto general de herramientas'}
-				filePreview={''}
-				setFilePreview={function (value: File | null): void {
-					throw new Error('Function not implemented.');
-				}}
+				filePreview={rawImage ? URL.createObjectURL(rawImage) : ''}
+				setFilePreview={setRawImage}
 				capture={true}
 			/>
 			<h2>Datos de la herramienta</h2>
