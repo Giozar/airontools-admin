@@ -1,4 +1,6 @@
 .text-input {
+	display: flex;
+	flex-direction: column;
 	margin: 16px 0;
 	font-family: Arial, sans-serif;
 }
@@ -10,11 +12,9 @@
 }
 
 .text-input__input {
-	border: 1px solid var(--accent-secondary);
+	border: 1px solid var(--bg-input);
 	border-radius: 4px;
 	padding: 8px;
-	width: 100%;
-	max-width: 800px;
 	font-size: 14px;
 }
 

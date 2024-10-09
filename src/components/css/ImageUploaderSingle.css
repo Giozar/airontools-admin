@@ -6,10 +6,24 @@
 	border: 1px solid var(--text-primary);
 	border-radius: 0.5rem; /* 8px */
 	padding: 1rem; /* 16px */
-	width: 8rem;
-	height: 8rem; /* 64px * 4 = 256px */
+	 /* 64px * 4 = 256px */
 }
-
+.default-image{
+	width: 8rem;
+	height: 8rem;
+}
+.small-image{
+	width: 6rem;
+	height: 6rem;
+}
+.medium-image{
+	width: 12rem;
+	height: 12rem;
+}
+.large-image{
+	width: 20rem;
+	height: 20rem;
+}
 .image-uploader-image {
 	width: 100%;
 	height: 100%;

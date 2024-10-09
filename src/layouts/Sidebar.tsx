@@ -21,6 +21,8 @@ const routeMap: {
 	'Crear categorizaciones': string;
 	'Ver especificaciones': string;
 	'Crear especificaciones': string;
+	'Crear orden': string;
+	'Ver orden': string;
 } = {
 	'Ver herramientas': '/home/herramientas',
 	'Crear herramientas': '/home/herramientas/crear-herramienta',
@@ -32,6 +34,8 @@ const routeMap: {
 	'Ver especificaciones': '/home/categorizacion/especificaciones',
 	'Crear especificaciones':
 		'/home/categorizacion/especificaciones/crear-especificaciones',
+	'Crear orden': '/home/crear-orden',
+	'Ver orden': '/home/ver-orden',
 };
 export default function Sidebar() {
 	const { user, setUser, setAuth } = useAuthContext();
@@ -72,6 +76,11 @@ export default function Sidebar() {
 							Asistente AironTools
 						</Link>
 					)}
+					<ComboBox
+						option='Orden'
+						options={['Ver', 'Crear'].map(val => val + ' orden')}
+						onOptionSelected={handleOptionSelected}
+					/>
 					<ComboBox
 						option='Herramientas'
 						options={['Ver', 'Crear'].map(val => val + ' herramientas')}

@@ -14,7 +14,8 @@
 	background-color: var(--accent-primary);
 }
 
-.table__row {
+.table__row,
+.table__row--vertical {
 	transition: background-color 0.3s;
 }
 
@@ -28,7 +29,8 @@
 	background-color: var(--input-bg);
 }
 
-.table__cell {
+.table__cell,
+.table__cell--vertical {
 	border-top: 1px solid var(--bg-primary);
 	border-right: 1px solid var(--bg-primary);
 	padding: 10px;
@@ -70,4 +72,16 @@
 	cursor: not-allowed;
 	background-color: var(--neutral);
 	color: var(--bg-secondary);
+}
+.table__row--vertical:nth-child(even) {
+	background-color: rgba(27, 28, 32, 0.541);
+}
+@media screen and (max-width: 1094px) {
+	.table__row--vertical {
+		display: block;
+	}
+
+	.table__cell--vertical {
+		display: block;
+	}
 }
