@@ -9,6 +9,7 @@ interface ImageUploaderProps {
 	setFileToDelete?: (value: boolean) => void;
 	placeholder?: string;
 	capture?: boolean;
+	size?: string;
 }
 
 const SingleImageChange = ({
@@ -18,6 +19,7 @@ const SingleImageChange = ({
 	setFileToDelete,
 	placeholder,
 	capture,
+	size = 'default'
 }: ImageUploaderProps) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +38,7 @@ const SingleImageChange = ({
 		<>
 			<p>{title}</p>
 			<div
-				className='image-uploader-container-single'
+				className={`image-uploader-container-single ${size}-image`}
 				onMouseEnter={() => setIsHovering(true)}
 				onMouseLeave={() => setIsHovering(false)}
 			>

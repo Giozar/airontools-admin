@@ -13,7 +13,7 @@ export default function RepairOrderForm() {
 	const [observaciones, setObservaciones] = useState('');
 	const [rawImage, setRawImage] = useState<File | null>(null);
 	const tableData = {
-		headers: ['', '', '', '', ''],
+		headers: ['', '', '', '', '', ''],
 		rows: Array.from({ length: 9 }, () => [
 			<TextInput
 				id={'cantidad'}
@@ -50,6 +50,12 @@ export default function RepairOrderForm() {
 				placeholder={'Descripción del estado de la herramienta'}
 				onChange={e => setObservaciones(e.target.value)}
 			/>,
+			<SingleImageChange
+				title={'Foto de herramienta'}
+				filePreview={rawImage ? URL.createObjectURL(rawImage) : ''}
+				setFilePreview={setRawImage}
+				capture={true}
+			/>
 		]),
 	};
 	return (
@@ -101,6 +107,7 @@ export default function RepairOrderForm() {
 				filePreview={rawImage ? URL.createObjectURL(rawImage) : ''}
 				setFilePreview={setRawImage}
 				capture={true}
+				size='large'
 			/>
 			<h2>Datos de la herramienta</h2>
 			<TableComponent data={tableData} vertical={true} />
