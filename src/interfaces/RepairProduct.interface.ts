@@ -4,8 +4,8 @@ export interface RepairProduct {
 	brand: string; // Marca del producto
 	model: string; // Modelo del producto
 	serialNumber?: string; // Número de serie del producto (opcional)
-	description: string; // Descripción del estado y fallas del producto
+	description: string; // Descripción del producto
 	quantity: number; // Cantidad de productos
 	images?: string[]; // Imágenes opcionales del producto
-	observations?: string[]; // Observaciones adicionales
+	observation?: string; // Observaciones adicionales
 }
