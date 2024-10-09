@@ -2,7 +2,6 @@ import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import RepairOrderForm from './RepairOrderForm';
 const orders = [
 	{
 		id: 'AT4000',
@@ -96,25 +95,15 @@ export default function RepairOrderList() {
 			<button className='table__button table__button--edit' key='edit'>
 				<EditIcon />
 			</button>,
-			//user && (
-			<button
-				//	disabled={user.role?.name !== 'Administrador'}
-				//	className={`table__button table__button--delete ${user?.role?.name !== 'Administrador' ? 'table__button--disabled' : ''}`}
-				//	onClick={() => {
-				//	if (user?.role?.name === 'Administrador') {
-				//		handleOpenModal(tool);
-				//	}
-				//}}
-				key='delete'
-			>
+
+			<button key='delete'>
 				<TrashIcon />
 			</button>,
-			//),
+			// ),
 		]),
 	};
 	return (
 		<>
-			<RepairOrderForm />
 			<TableComponent data={tableData} />
 		</>
 	);

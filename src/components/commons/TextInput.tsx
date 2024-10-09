@@ -1,10 +1,11 @@
 import '@components/css/TextInput.css';
+import { ChangeEvent } from 'react';
 interface TextInputProps {
 	id: string;
 	label: string;
 	value: string;
 	placeholder: string;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	required?: boolean;
 	readOnly?: boolean;
 	className?: string;

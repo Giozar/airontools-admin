@@ -31,7 +31,8 @@ import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
 import CreateProductPage from '@pages/productPages/CreateProductPage';
 import EditProductPage from '@pages/productPages/EditProductPage';
 import ToolMenu from '@pages/productPages/ProductMenu';
-import RepairOrderList from '@pages/repairOrderPages/repairOrderList';
+import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage';
+import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
@@ -230,7 +231,11 @@ const router = createBrowserRouter([
 						children: [
 							{
 								path: 'ver-orden',
-								element: <RepairOrderList />,
+								element: <RepairOrderMenuPage />,
+							},
+							{
+								path: 'crear-orden',
+								element: <CreateRepairOrderPage />,
 							},
 							{
 								path: 'herramientas',
