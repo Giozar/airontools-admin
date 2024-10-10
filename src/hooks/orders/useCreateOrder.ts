@@ -20,7 +20,7 @@ export default function useCreateOrder() {
 	} = useCustomerContext();
 	const createOrder = async (e: Event) => {
 		e.preventDefault();
-		console.log(observations, customerName, phoneNumber, companyName);
+		console.log(observations, customerName, phoneNumber, companyName, imageRaw);
 	};
 
 	return { createOrder };

@@ -1,4 +1,5 @@
 import DatalistOption from '@components/commons/DatalistOption';
+import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
@@ -18,6 +19,8 @@ export default function RepairOrderForm({
 	const {
 		observations,
 		setObservations,
+		images,
+		setImages,
 		imageRaw,
 		setImageRaw,
 		deliveryDate,
@@ -73,15 +76,19 @@ export default function RepairOrderForm({
 				placeholder={'Tiempo de entrega'}
 				onChange={e => setTiempoEntrega(e.target.value)}
 			/>
-			{/*
+			*/}
 			Fecha de autorización: {Date().toString()}
 			<SingleImageChange
 				title={'Foto general de herramientas'}
-				filePreview={imageRaw ? URL.createObjectURL(imageRaw) : ''}
-				setFilePreview={setImageRaw}
+				filePreview={
+					imageRaw ? URL.createObjectURL(imageRaw) : images ? images[0] : ''
+				}
+				setFilePreview={file => {
+					if (file) setImageRaw(file);
+				}}
 				capture={true}
 				size='large'
-			/> */}
+			/>
 			<h2>Datos de la herramienta</h2>
 		</form>
 	);
