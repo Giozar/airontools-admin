@@ -15,7 +15,6 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	const [orderType, setOrderType] = useState<OrderType>(OrderType.REPAIR);
 	const [authorizationDate, setAuthorizationDate] = useState<Date>(new Date());
 	const [deliveryDate, setDeliveryDate] = useState<Date>(new Date());
-	const [products, setProducts] = useState<RepairProduct[]>([]);
 	const [observations, setObservations] = useState<string>('');
 	const [images, setImages] = useState<string[]>([]);
 	const [imageRaw, setImageRaw] = useState<File | null>(null);
@@ -27,6 +26,15 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	);
 	const [createdBy, setCreatedBy] = useState<string>('');
 	const [updatedBy, setUpdatedBy] = useState<string | undefined>(undefined);
+	const initialProducts: RepairProduct[] = Array.from({ length: 9 }, () => ({
+		quantity: 0,
+		brand: '',
+		model: '',
+		serialNumber: '',
+		description: '',
+		observation: '',
+	}));
+	const [products, setProducts] = useState<RepairProduct[]>(initialProducts);
 
 	return (
 		<OrderContext.Provider

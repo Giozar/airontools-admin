@@ -1,5 +1,8 @@
+import NumberInput from '@components/commons/NumberInput';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import { useOrderContext } from '@contexts/order/OrderContext';
+import { RepairProduct } from '@interfaces/RepairProduct.interface';
 import React from 'react';
 
 interface RowComponentProps {
@@ -7,67 +10,71 @@ interface RowComponentProps {
 }
 
 const RowComponent: React.FC<RowComponentProps> = ({ index }) => {
-	const [quantity, setQuantity] = React.useState('');
-	const [brand, setBrand] = React.useState('');
-	const [model, setModel] = React.useState('');
-	const [serialNumber, setSerialNumber] = React.useState('');
-	const [description, setDescription] = React.useState('');
-	const [observation, setObservation] = React.useState('');
+	const { products, setProducts } = useOrderContext();
+	const product = products[index];
+
+	const handleChange = (field: keyof RepairProduct, value: string) => {
+		const newProduct = [...products];
+		newProduct[index] = { ...newProduct[index], [field]: value };
+		setProducts(newProduct);
+	};
 
 	return (
 		<>
 			<td>
-				<TextInput
+				<NumberInput
 					id={`cantidad-${index}`}
 					label='Cantidad'
-					value={quantity}
+					value={product.quantity + ''}
 					placeholder='Cantidad'
-					onChange={e => setQuantity(e.target.value)}
+					onChange={e => handleChange('quantity', e.target.value)}
+					min={'0'}
+					max={'1000000'}
 				/>
 			</td>
 			<td>
 				<TextInput
 					id={`marca-${index}`}
 					label='Marca'
-					value={brand}
+					value={product.brand}
 					placeholder='Marca de herramienta'
-					onChange={e => setBrand(e.target.value)}
+					onChange={e => handleChange('brand', e.target.value)}
 				/>
 			</td>
 			<td>
 				<TextInput
 					id={`modelo-${index}`}
 					label='Modelo'
-					value={model}
+					value={product.model}
 					placeholder='Modelo de herramienta'
-					onChange={e => setModel(e.target.value)}
+					onChange={e => handleChange('model', e.target.value)}
 				/>
 			</td>
 			<td>
 				<TextInput
 					id={`numerodeserie-${index}`}
 					label='Número de serie'
-					value={serialNumber}
+					value={product.serialNumber || ''}
 					placeholder='Número de serie'
-					onChange={e => setSerialNumber(e.target.value)}
+					onChange={e => handleChange('serialNumber', e.target.value)}
 				/>
 			</td>
 			<td>
 				<TextAreaInput
 					id={`descripcion-${index}`}
 					label='Descripción'
-					value={description}
+					value={product.description}
 					placeholder='Descripción del estado de la herramienta'
-					onChange={e => setDescription(e.target.value)}
+					onChange={e => handleChange('description', e.target.value)}
 				/>
 			</td>
 			<td>
 				<TextAreaInput
 					id={`observacion-${index}`}
 					label='Observación'
-					value={observation}
+					value={product.observation || ''}
 					placeholder='Observación sobre la herramienta'
-					onChange={e => setObservation(e.target.value)}
+					onChange={e => handleChange('observation', e.target.value)}
 				/>
 			</td>
 		</>
