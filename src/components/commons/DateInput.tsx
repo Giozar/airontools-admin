@@ -5,7 +5,7 @@ interface Props {
 	setDate: (date: Date) => void;
 }
 
-const DatePicker = ({ label, date, setDate }: Props) => {
+ export default function DateInput({ label, date, setDate }: Props) {
 	return (
 		<div className='form-date'>
 			<label className='form-date__label' htmlFor='input-date'>
@@ -22,4 +22,3 @@ const DatePicker = ({ label, date, setDate }: Props) => {
 	);
 };
 
-export default DatePicker;
