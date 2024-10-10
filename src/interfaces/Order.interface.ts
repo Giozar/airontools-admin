@@ -52,6 +52,8 @@ export interface OrderContextProps {
 	setObservations?: (value: string) => void; // Setter para actualizar las observaciones
 	images?: string[]; // URLs de las imágenes opcionales
 	setImages?: (value: string[]) => void; // Setter para actualizar las imágenes
+	imageRaw?: File;
+	setImageRaw: (value: File) => void;
 	receivedBy: string; // ID del empleado que recibe el producto
 	setReceivedBy: (value: string) => void; // Setter para actualizar quién recibe
 	deliveryRepresentative: string; // Representante que entrega la herramienta

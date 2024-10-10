@@ -12,6 +12,7 @@ import { CategoryCreateProvider } from '@contexts/categorization/CategoryContext
 import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
 import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
 import { ModalProvider } from '@contexts/Modal/ModalContext';
+import { OrderProvider } from '@contexts/order/OrderContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
 import { SpecificationProvider } from '@contexts/specification/SpecificationContext';
 import { UserProvider } from '@contexts/User/UserContext';
@@ -231,11 +232,19 @@ const router = createBrowserRouter([
 						children: [
 							{
 								path: 'ver-orden',
-								element: <RepairOrderMenuPage />,
+								element: (
+									<OrderProvider>
+										<RepairOrderMenuPage />
+									</OrderProvider>
+								),
 							},
 							{
 								path: 'crear-orden',
-								element: <CreateRepairOrderPage />,
+								element: (
+									<OrderProvider>
+										<CreateRepairOrderPage />
+									</OrderProvider>
+								),
 							},
 							{
 								path: 'herramientas',

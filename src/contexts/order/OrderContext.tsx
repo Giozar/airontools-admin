@@ -17,6 +17,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	const [products, setProducts] = useState<RepairProduct[]>([]);
 	const [observations, setObservations] = useState<string>('');
 	const [images, setImages] = useState<string[]>([]);
+	const [imageRaw, setImageRaw] = useState<File>();
 	const [receivedBy, setReceivedBy] = useState<string>('');
 	const [deliveryRepresentative, setDeliveryRepresentative] =
 		useState<string>('');
@@ -41,6 +42,8 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 				setObservations,
 				images,
 				setImages,
+				imageRaw,
+				setImageRaw,
 				receivedBy,
 				setReceivedBy,
 				deliveryRepresentative,
