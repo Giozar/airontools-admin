@@ -18,7 +18,6 @@ const RowComponent: React.FC<RowComponentProps> = ({ index }) => {
 		newProduct[index] = { ...newProduct[index], [field]: value };
 		setProducts(newProduct);
 	};
-
 	return (
 		<>
 			<td>
