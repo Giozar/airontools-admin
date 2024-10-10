@@ -48,7 +48,7 @@ const DynamicSizeTable = ({
 							className={`table__row${vertical ? '--vertical' : ''}`}
 							key={rowIndex}
 						>
-							<RowComponent index={rowIndex} /> {/* Componente de fila */}
+							<RowComponent index={rowIndex} />
 						</tr>
 					))}
 				</tbody>

@@ -8,6 +8,7 @@ export interface RepairProduct {
 	quantity: number;
 	images?: string[];
 	observation?: string;
+	rawImage?: File | null;
 }
 
 export interface CreateRepairProduct {

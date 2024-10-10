@@ -1,13 +1,13 @@
 import DatalistOption from '@components/commons/DatalistOption';
 import DateInput from '@components/commons/DateInput';
+import DynamicSizeTable from '@components/commons/DynamicSizeTable';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
-import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
 import { useEffect } from 'react';
-import RepairProductForm from './RepairProductForm';
+import RowComponent from './RepairOrderRowComponent';
 
 interface RepairOrderFormProps {
 	actionName: string;
@@ -30,9 +30,14 @@ export default function RepairOrderForm({
 		setDeliveryDate,
 		authorizationDate,
 		setAuthorizationDate,
+		products,
 	} = useOrderContext();
 
-	const { observation } = useRepairProductContext();
+	const observation = products
+		.map(product => product.observation)
+		.filter(observation => observation !== '')
+		.join('. '); //obten las observaciones de los productos
+
 	const { name: companyName, setName: setCompanyName } = useCompanyContext();
 	const {
 		name: customerName,
@@ -71,7 +76,12 @@ export default function RepairOrderForm({
 				setValue={setPhoneNumber}
 			/>
 			<h2>Datos de la herramienta</h2>
-			<RepairProductForm />
+			<DynamicSizeTable
+				headers={['', '', '', '', '', '']}
+				maxRows={9}
+				RowComponent={RowComponent}
+				vertical={true}
+			/>
 			<TextAreaInput
 				id={'observaciones'}
 				label={'Observaciones'}

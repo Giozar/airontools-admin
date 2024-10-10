@@ -5,7 +5,7 @@ import { useOtherProductContext } from '@contexts/otherProduct/OtherProductConte
 import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
 
 export default function useCreateOrder() {
-	const { observations, imageRaw, deliveryDate, authorizationDate } =
+	const { observations, imageRaw, deliveryDate, authorizationDate, products } =
 		useOrderContext();
 	const { name: companyName } = useCompanyContext();
 	const { name: customerName, phoneNumber } = useCustomerContext();
@@ -27,6 +27,7 @@ export default function useCreateOrder() {
 			observation,
 			deliveryDate,
 			authorizationDate,
+			products,
 		);
 	};
 

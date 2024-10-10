@@ -1,4 +1,5 @@
 import NumberInput from '@components/commons/NumberInput';
+import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useOrderContext } from '@contexts/order/OrderContext';
@@ -18,6 +19,12 @@ const RowComponent: React.FC<RowComponentProps> = ({ index }) => {
 		newProduct[index] = { ...newProduct[index], [field]: value };
 		setProducts(newProduct);
 	};
+	const setFilePreview = (value: File | null) => {
+		const newProduct = [...products];
+		newProduct[index] = { ...newProduct[index], ['rawImage']: value };
+		setProducts(newProduct);
+	};
+
 	return (
 		<>
 			<td>
@@ -76,6 +83,15 @@ const RowComponent: React.FC<RowComponentProps> = ({ index }) => {
 					onChange={e => handleChange('observation', e.target.value)}
 				/>
 			</td>
+			<SingleImageChange
+				key={'foto'}
+				title={'Foto de herramienta'}
+				filePreview={
+					product.rawImage ? URL.createObjectURL(product.rawImage) : ''
+				}
+				setFilePreview={setFilePreview}
+				capture={true}
+			/>
 		</>
 	);
 };
