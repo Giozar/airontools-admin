@@ -1,10 +1,10 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { Customer } from '@interfaces/Customer.interface';
+import { CreateCustomer, UpdateCustomer } from '@interfaces/Customer.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 // Crear un nuevo cliente
-export async function createCustomerService(customer: Customer) {
+export async function createCustomerService(customer: CreateCustomer) {
 	try {
 		const response = await axios.post(`${airontoolsAPI}/customers`, customer);
 		return response.data;
@@ -48,7 +48,7 @@ export async function getCustomerByIdService(id: string) {
 // Actualizar un cliente por ID
 export async function updateCustomerService(
 	id: string,
-	updateCustomerDto: Partial<Customer>,
+	updateCustomerDto: Partial<UpdateCustomer>,
 ) {
 	try {
 		const response = await axios.patch(

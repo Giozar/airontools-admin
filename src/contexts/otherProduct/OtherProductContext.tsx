@@ -13,6 +13,8 @@ export const OtherProductProvider = ({ children }: { children: ReactNode }) => {
 	const [model, setModel] = useState<string>('');
 	const [brand, setBrand] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
+	const [createdBy, setCreatedBy] = useState<string>('');
+	const [updatedBy, setUpdatedBy] = useState<string>('');
 
 	return (
 		<OtherProductContext.Provider
@@ -25,6 +27,10 @@ export const OtherProductProvider = ({ children }: { children: ReactNode }) => {
 				setBrand,
 				description,
 				setDescription,
+				createdBy,
+				setCreatedBy,
+				updatedBy,
+				setUpdatedBy,
 			}}
 		>
 			{children}

@@ -1,3 +1,16 @@
+export interface Company {
+	_id: string;
+	name?: string;
+	industry?: string;
+	email?: string;
+	phoneNumber?: string;
+	website?: string;
+	addresses?: string[];
+	contacts?: string[];
+	createdBy: string;
+	updatedBy: string;
+}
+
 export interface CreateCompany {
 	name: string;
 	industry?: string;
