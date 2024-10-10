@@ -1,7 +1,9 @@
+import DynamicSizeTable from '@components/commons/DynamicSizeTable';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useOtherProductContext } from '@contexts/otherProduct/OtherProductContext';
 import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
+import RowComponent from './RepairOrderRowComponent';
 
 export default function RepairProductForm() {
 	const {
@@ -14,8 +16,15 @@ export default function RepairProductForm() {
 	} = useRepairProductContext();
 	const { brand, setBrand, model, setModel, description, setDescription } =
 		useOtherProductContext();
+
 	return (
 		<>
+			<DynamicSizeTable
+				headers={['', '', '', '', '', '']}
+				maxRows={5}
+				RowComponent={RowComponent}
+				vertical={true}
+			/>
 			<TextInput
 				key={'cantidad'}
 				id={'cantidad'}

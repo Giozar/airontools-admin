@@ -77,8 +77,10 @@
 	background-color: rgba(27, 28, 32, 0.541);
 }
 @media screen and (max-width: 1094px) {
-	.table__row--vertical {
+	.table__row--vertical,
+	.table__row--vertical td {
 		display: block;
+		padding: 0.5rem 1rem;
 	}
 
 	.table__cell--vertical {
