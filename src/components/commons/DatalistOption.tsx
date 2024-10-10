@@ -4,7 +4,7 @@ import React from 'react';
 interface DatalistInputProps {
 	id: string;
 	name: string;
-	type: string;
+	type?: string;
 	placeholder?: string;
 	options: string[];
 	value?: string;
@@ -14,7 +14,7 @@ interface DatalistInputProps {
 const DatalistOption: React.FC<DatalistInputProps> = ({
 	id,
 	name,
-	type,
+	type = 'text',
 	placeholder,
 	options,
 	value,

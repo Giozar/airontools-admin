@@ -48,7 +48,6 @@ export default function RepairOrderForm({
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}
-				type='text'
 				placeholder='Empresa de procedencia'
 				options={['hola', 'mundo']}
 				value={companyName}
@@ -57,7 +56,6 @@ export default function RepairOrderForm({
 			<DatalistOption
 				id={'responsable'}
 				name={'Responsable'}
-				type='text'
 				placeholder='Responsable por parte de la empresa'
 				options={['hola', 'mundo']}
 				value={customerName}
