@@ -15,6 +15,7 @@ export interface CreateOrder {
 	customer: string; // ID del cliente relacionado
 	orderType: OrderType; // Tipo de orden (en este caso siempre 'repair')
 	authorizationDate: Date; // Fecha de autorización
+	deliveryDate?: Date;
 	products: RepairProduct[]; // Lista para id's de productos a reparar
 	observations?: string; // Observaciones generales (opcional)
 	images?: string[]; // URLs de las imágenes opcionales (opcional)
@@ -29,6 +30,7 @@ export interface UpdateOrder {
 	customer?: string; // ID del cliente relacionado (opcional para edición)
 	orderType?: OrderType; // Tipo de orden (opcional para edición)
 	authorizationDate?: Date; // Fecha de autorización (opcional para edición)
+	deliveryDate?: Date;
 	products?: RepairProduct[]; // Lista de productos a reparar (opcional)
 	observations?: string; // Observaciones generales (opcional)
 	images?: string[]; // URLs de las imágenes (opcional)
@@ -46,13 +48,15 @@ export interface OrderContextProps {
 	setOrderType: (value: OrderType) => void; // Setter para actualizar el tipo de orden
 	authorizationDate: Date; // Fecha de autorización
 	setAuthorizationDate: (value: Date) => void; // Setter para actualizar la fecha de autorización
+	deliveryDate: Date;
+	setDeliveryDate: (value: Date) => void;
 	products: RepairProduct[]; // Lista de productos a reparar
 	setProducts: (value: RepairProduct[]) => void; // Setter para actualizar la lista de productos
-	observations?: string; // Observaciones generales (opcional)
-	setObservations?: (value: string) => void; // Setter para actualizar las observaciones
+	observations: string; // Observaciones generales
+	setObservations: (value: string) => void; // Setter para actualizar las observaciones
 	images?: string[]; // URLs de las imágenes opcionales
 	setImages?: (value: string[]) => void; // Setter para actualizar las imágenes
-	imageRaw?: File;
+	imageRaw: File | null;
 	setImageRaw: (value: File) => void;
 	receivedBy: string; // ID del empleado que recibe el producto
 	setReceivedBy: (value: string) => void; // Setter para actualizar quién recibe

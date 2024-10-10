@@ -11,6 +11,8 @@ import { AlertProvider } from '@contexts/Alert/AlertContext';
 import { CategoryCreateProvider } from '@contexts/categorization/CategoryContext';
 import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
 import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
+import { CompanyProvider } from '@contexts/company/CompanyContext';
+import { CustomerProvider } from '@contexts/customer/CustomerContext';
 import { ModalProvider } from '@contexts/Modal/ModalContext';
 import { OrderProvider } from '@contexts/order/OrderContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
@@ -242,7 +244,11 @@ const router = createBrowserRouter([
 								path: 'crear-orden',
 								element: (
 									<OrderProvider>
-										<CreateRepairOrderPage />
+										<CompanyProvider>
+											<CustomerProvider>
+												<CreateRepairOrderPage />
+											</CustomerProvider>
+										</CompanyProvider>
 									</OrderProvider>
 								),
 							},

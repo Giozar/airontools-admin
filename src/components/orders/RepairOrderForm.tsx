@@ -1,27 +1,46 @@
 import DatalistOption from '@components/commons/DatalistOption';
-import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
-import TextInput from '@components/commons/TextInput';
-import { useState } from 'react';
+import { useCompanyContext } from '@contexts/company/CompanyContext';
+import { useCustomerContext } from '@contexts/customer/CustomerContext';
+import { useOrderContext } from '@contexts/order/OrderContext';
 
-export default function RepairOrderForm() {
-	const [procedencia, setProcedencia] = useState('');
-	const [tiempoEntrega, setTiempoEntrega] = useState('');
-	const [responsable, setResponsable] = useState('');
-	const [telefono, setTelefono] = useState('');
-	const [observaciones, setObservaciones] = useState('');
-	const [rawImage, setRawImage] = useState<File | null>(null);
+interface RepairOrderFormProps {
+	actionName: string;
+	action: (e: any) => Promise<void>;
+	initialData?: Partial<any>; // Datos iniciales opcionales para edición
+}
+
+export default function RepairOrderForm({
+	actionName,
+	action,
+	initialData,
+}: RepairOrderFormProps) {
+	const {
+		observations,
+		setObservations,
+		imageRaw,
+		setImageRaw,
+		deliveryDate,
+		setDeliveryDate,
+	} = useOrderContext();
+	const { name: companyName, setName: setCompanyName } = useCompanyContext();
+	const {
+		name: customerName,
+		setName: setCustomerName,
+		phoneNumber,
+		setPhoneNumber,
+	} = useCustomerContext();
 	return (
-		<form>
-			<button> Generar Orden </button>
+		<form onSubmit={action}>
+			<button type='submit'>{actionName}</button>
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}
 				type='text'
 				placeholder='Empresa de procedencia'
 				options={['hola', 'mundo']}
-				value={procedencia}
-				setValue={setProcedencia}
+				value={companyName}
+				setValue={setCompanyName}
 			/>
 			<DatalistOption
 				id={'responsable'}
@@ -29,8 +48,8 @@ export default function RepairOrderForm() {
 				type='text'
 				placeholder='Responsable por parte de la empresa'
 				options={['hola', 'mundo']}
-				value={responsable}
-				setValue={setResponsable}
+				value={customerName}
+				setValue={setCustomerName}
 			/>
 			<DatalistOption
 				id={'telefono'}
@@ -38,30 +57,31 @@ export default function RepairOrderForm() {
 				type='tel'
 				placeholder='Número telefónico de la empresa'
 				options={['2222-2222-2222', '3333-3333-3333']}
-				value={telefono}
-				setValue={setTelefono}
+				value={phoneNumber}
+				setValue={setPhoneNumber}
 			/>
 			<TextAreaInput
 				id={'observaciones'}
 				label={'Observaciones'}
-				value={observaciones}
-				onChange={e => setObservaciones(e.target.value)}
+				value={observations}
+				onChange={e => setObservations(e.target.value)}
 			/>
-			<TextInput
+			{/* <TextInput
 				id={'tiempoEntrega'}
 				label={'Tiempo de entrega'}
 				value={tiempoEntrega}
 				placeholder={'Tiempo de entrega'}
 				onChange={e => setTiempoEntrega(e.target.value)}
 			/>
+			{/*
 			Fecha de autorización: {Date().toString()}
 			<SingleImageChange
 				title={'Foto general de herramientas'}
-				filePreview={rawImage ? URL.createObjectURL(rawImage) : ''}
-				setFilePreview={setRawImage}
+				filePreview={imageRaw ? URL.createObjectURL(imageRaw) : ''}
+				setFilePreview={setImageRaw}
 				capture={true}
 				size='large'
-			/>
+			/> */}
 			<h2>Datos de la herramienta</h2>
 		</form>
 	);

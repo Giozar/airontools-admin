@@ -14,10 +14,11 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	const [customer, setCustomer] = useState<string>('');
 	const [orderType, setOrderType] = useState<OrderType>(OrderType.REPAIR);
 	const [authorizationDate, setAuthorizationDate] = useState<Date>(new Date());
+	const [deliveryDate, setDeliveryDate] = useState<Date>(new Date());
 	const [products, setProducts] = useState<RepairProduct[]>([]);
 	const [observations, setObservations] = useState<string>('');
 	const [images, setImages] = useState<string[]>([]);
-	const [imageRaw, setImageRaw] = useState<File>();
+	const [imageRaw, setImageRaw] = useState<File | null>(null);
 	const [receivedBy, setReceivedBy] = useState<string>('');
 	const [deliveryRepresentative, setDeliveryRepresentative] =
 		useState<string>('');
@@ -36,6 +37,8 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 				setOrderType,
 				authorizationDate,
 				setAuthorizationDate,
+				deliveryDate,
+				setDeliveryDate,
 				products,
 				setProducts,
 				observations,

@@ -1,10 +1,10 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { Order } from '@interfaces/Order.interface';
+import { CreateOrder, UpdateOrder } from '@interfaces/Order.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 // Crear una nueva orden
-export async function createOrderService(order: Order) {
+export async function createOrderService(order: CreateOrder) {
 	try {
 		const response = await axios.post(`${airontoolsAPI}/orders`, order);
 		return response.data;
@@ -36,7 +36,7 @@ export async function getOrderByIdService(id: string) {
 // Actualizar una orden por ID
 export async function updateOrderService(
 	id: string,
-	updateOrderDto: Partial<Order>,
+	updateOrderDto: Partial<UpdateOrder>,
 ) {
 	try {
 		const response = await axios.patch(

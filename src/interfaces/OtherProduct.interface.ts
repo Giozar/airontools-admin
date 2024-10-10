@@ -4,3 +4,5 @@ export interface OtherProduct {
 	model: string;
 	brand: string;
 }
+
+export interface OtherProductContextProps {}
