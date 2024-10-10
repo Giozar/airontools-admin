@@ -1,4 +1,5 @@
 import DatalistOption from '@components/commons/DatalistOption';
+import DatePicker from '@components/commons/DateInput';
 import TableComponent from '@components/commons/DynamicTable';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
@@ -12,6 +13,8 @@ export default function RepairOrderForm() {
 	const [telefono, setTelefono] = useState('');
 	const [observaciones, setObservaciones] = useState('');
 	const [rawImage, setRawImage] = useState<File | null>(null);
+	const [date, setDate] = useState<Date>(new Date());
+
 	const tableData = {
 		headers: ['', '', '', '', '', ''],
 		rows: Array.from({ length: 9 }, () => [
@@ -55,12 +58,14 @@ export default function RepairOrderForm() {
 				filePreview={rawImage ? URL.createObjectURL(rawImage) : ''}
 				setFilePreview={setRawImage}
 				capture={true}
-			/>
+			/>,
 		]),
 	};
+	console.log(date + '🤣😂');
 	return (
 		<form>
 			<button> Generar Orden </button>
+			<DatePicker label='Fecha de autorización' setDate={setDate} date={date} />
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}

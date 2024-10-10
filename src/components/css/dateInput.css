@@ -1,0 +1,25 @@
+.form-date {
+	display: flex;
+	flex-direction: column;
+}
+.form-date__label {
+	padding-bottom: 8px;
+	font-weight: bold;
+}
+.form-date__input[type='datetime-local'] {
+	display: inline-block;
+	appearance: none;
+	visibility: visible;
+	border: 1px solid #ecf0f1;
+	background: #ecf0f1;
+	max-width: 280px;
+	color: #1d1d1d;
+	font-size: 18px;
+}
+.form-date__input[type='datetime-local']:focus {
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+	border-color: #80bdff;
+	background-color: #ffffff;
+	color: #495057;
+}
