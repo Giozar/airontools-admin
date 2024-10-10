@@ -1,4 +1,4 @@
-import '@components/css/dateInput.css';
+import '@components/css/DateInput.css';
 interface Props {
 	label?: string;
 	date: Date;
