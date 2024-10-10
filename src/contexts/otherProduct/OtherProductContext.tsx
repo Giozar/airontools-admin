@@ -13,6 +13,7 @@ export const OtherProductProvider = ({ children }: { children: ReactNode }) => {
 	const [model, setModel] = useState<string>('');
 	const [brand, setBrand] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
+	const [rawImage, setRawImage] = useState<File | null>(null);
 	const [createdBy, setCreatedBy] = useState<string>('');
 	const [updatedBy, setUpdatedBy] = useState<string>('');
 
@@ -27,6 +28,8 @@ export const OtherProductProvider = ({ children }: { children: ReactNode }) => {
 				setBrand,
 				description,
 				setDescription,
+				rawImage,
+				setRawImage,
 				createdBy,
 				setCreatedBy,
 				updatedBy,

@@ -35,6 +35,8 @@ export interface OtherProductContextProps {
 	setBrand: (value: string) => void;
 	description: string;
 	setDescription: (value: string) => void;
+	rawImage: File | null;
+	setRawImage: (value: File) => void;
 	createdBy: string;
 	setCreatedBy: (value: string) => void;
 	updatedBy: string;
