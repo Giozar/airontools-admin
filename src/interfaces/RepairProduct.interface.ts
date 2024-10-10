@@ -1,11 +1,53 @@
 export interface RepairProduct {
-	_id?: string; // ID opcional de MongoDB si se obtiene de la base de datos
-	productId?: string; // ID del producto (interno)
-	brand: string; // Marca del producto
-	model: string; // Modelo del producto
-	serialNumber?: string; // Número de serie del producto (opcional)
-	description: string; // Descripción del producto
-	quantity: number; // Cantidad de productos
-	images?: string[]; // Imágenes opcionales del producto
-	observation?: string; // Observaciones adicionales
+	_id?: string;
+	productId?: string;
+	brand: string;
+	model: string;
+	serialNumber?: string;
+	description: string;
+	quantity: number;
+	images?: string[];
+	observation?: string;
+}
+
+export interface CreateRepairProduct {
+	productId?: string;
+	brand: string;
+	model: string;
+	serialNumber?: string;
+	description: string;
+	quantity: number;
+	images?: string[];
+	observation?: string;
+}
+
+export interface UpdateRepairProduct {
+	_id: string;
+	productId?: string;
+	brand?: string;
+	model?: string;
+	serialNumber?: string;
+	description?: string;
+	quantity?: number;
+	images?: string[];
+	observation?: string;
+}
+
+export interface RepairProductContextProps {
+	productId?: string;
+	setProductId: (value: string) => void;
+	brand: string;
+	setBrand: (value: string) => void;
+	model: string;
+	setModel: (value: string) => void;
+	serialNumber: string;
+	setSerialNumber: (value: string) => void;
+	description: string;
+	setDescription: (value: string) => void;
+	quantity: number;
+	setQuantity: (value: number) => void;
+	images?: string[];
+	setImages: (value: string[]) => void;
+	observation: string;
+	setObservation: (value: string) => void;
 }

@@ -67,7 +67,7 @@ export async function deleteOtherProductService(id: string) {
 // Obtener todos los "other-products" por marca (brand)
 export async function getOtherProductsByBrandService(brand: string) {
 	try {
-		const response = await axios.get(
+		const response = await axios.get<OtherProduct[]>(
 			`${airontoolsAPI}/other-products/brand/${brand}`,
 		);
 		return response.data;

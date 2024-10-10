@@ -14,6 +14,18 @@ interface FilesInputProps {
 	setUrlsRemoved: (value: string[]) => void;
 }
 
+/**
+ * Ejecuta una acción al enviar el formulario de producto.
+ *
+ * @param {string} title - Enunciado del componente ej. Agregar imagen.
+ * @param {File[]} files - Valores de las imágenes en crudo.
+ * @param {string[]} urls - URLS de las imágenes.
+ * @param {(values: File[]) => void} setFiles - Setter de las imágenes en crudo.
+ * @param {(values: string[]) => void} setUrls - Setter de URLS de las imágenes.
+ * @param {string[]} urlsRemoved - valores de URLS de las imágenes a remover.
+ * @param {(values: string[]) => void} setUrlsRemoved - Setter que actualiza las URLS a remover.
+ * @returns {void} No devuelve ningún valor.
+ */
 export default function ImagesInput({
 	title,
 	files,

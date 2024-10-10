@@ -11,8 +11,13 @@ import { AlertProvider } from '@contexts/Alert/AlertContext';
 import { CategoryCreateProvider } from '@contexts/categorization/CategoryContext';
 import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
 import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
+import { CompanyProvider } from '@contexts/company/CompanyContext';
+import { CustomerProvider } from '@contexts/customer/CustomerContext';
 import { ModalProvider } from '@contexts/Modal/ModalContext';
+import { OrderProvider } from '@contexts/order/OrderContext';
+import { OtherProductProvider } from '@contexts/otherProduct/OtherProductContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
+import { RepairProductProvider } from '@contexts/repairProduct/RepairProductContext';
 import { SpecificationProvider } from '@contexts/specification/SpecificationContext';
 import { UserProvider } from '@contexts/User/UserContext';
 import BasePage from '@layouts/BasePage';
@@ -31,7 +36,8 @@ import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
 import CreateProductPage from '@pages/productPages/CreateProductPage';
 import EditProductPage from '@pages/productPages/EditProductPage';
 import ToolMenu from '@pages/productPages/ProductMenu';
-import RepairOrderList from '@pages/repairOrderPages/repairOrderList';
+import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage';
+import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
@@ -230,7 +236,27 @@ const router = createBrowserRouter([
 						children: [
 							{
 								path: 'ver-orden',
-								element: <RepairOrderList />,
+								element: (
+									<OrderProvider>
+										<RepairOrderMenuPage />
+									</OrderProvider>
+								),
+							},
+							{
+								path: 'crear-orden',
+								element: (
+									<OrderProvider>
+										<CompanyProvider>
+											<OtherProductProvider>
+												<RepairProductProvider>
+													<CustomerProvider>
+														<CreateRepairOrderPage />
+													</CustomerProvider>
+												</RepairProductProvider>
+											</OtherProductProvider>
+										</CompanyProvider>
+									</OrderProvider>
+								),
 							},
 							{
 								path: 'herramientas',

@@ -1,24 +1,38 @@
+// Definición de los tipos que puede tomar el cliente
 export enum CustomerType {
-	INDIVIDUAL = 'individual',
-	COMPANY = 'company',
+	INDIVIDUAL = 'INDIVIDUAL',
+	COMPANY = 'COMPANY',
 }
 
-export interface Address {
-	street?: string; // Calle
-	city?: string; // Ciudad
-	state?: string; // Estado
-	postalCode?: string; // Código postal
-	country?: string; // País (opcional)
+export interface CreateCustomer {
+	customerType: CustomerType;
+	name: string;
+	phoneNumber: string;
+	observations?: string;
+	createdBy: string;
 }
 
-export interface Customer {
-	customerType: CustomerType; // Tipo de cliente: individuo o empresa
-	name: string; // Nombre del cliente
-	company?: string; // Relación con la empresa (opcional)
-	email?: string; // Correo electrónico del cliente (opcional)
-	phoneNumber: string; // Teléfono de contacto (requerido)
-	address?: Address; // Dirección del cliente (opcional)
-	additionalContacts?: string[]; // Contactos adicionales (opcional)
-	createdBy: string; // Creador del registro
-	updatedBy?: string; // Actualizador del registro (opcional)
+export interface UpdateCustomer {
+	_id: string;
+	customerType?: CustomerType;
+	name?: string;
+	phoneNumber?: string;
+	observations?: string;
+	updatedBy: string;
+}
+
+export interface CustomerContextProps {
+	_id?: string;
+	customerType: CustomerType;
+	setCustomerType: (value: CustomerType) => void;
+	name: string;
+	setName: (value: string) => void;
+	phoneNumber: string;
+	setPhoneNumber: (value: string) => void;
+	observations?: string;
+	setObservations?: (value: string) => void;
+	createdBy: string;
+	setCreatedBy: (value: string) => void;
+	updatedBy?: string;
+	setUpdatedBy?: (value: string) => void;
 }
