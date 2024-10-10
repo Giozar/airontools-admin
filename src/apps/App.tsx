@@ -15,7 +15,9 @@ import { CompanyProvider } from '@contexts/company/CompanyContext';
 import { CustomerProvider } from '@contexts/customer/CustomerContext';
 import { ModalProvider } from '@contexts/Modal/ModalContext';
 import { OrderProvider } from '@contexts/order/OrderContext';
+import { OtherProductProvider } from '@contexts/otherProduct/OtherProductContext';
 import { ProductCreateProvider } from '@contexts/product/ProductContext';
+import { RepairProductProvider } from '@contexts/repairProduct/RepairProductContext';
 import { SpecificationProvider } from '@contexts/specification/SpecificationContext';
 import { UserProvider } from '@contexts/User/UserContext';
 import BasePage from '@layouts/BasePage';
@@ -245,9 +247,13 @@ const router = createBrowserRouter([
 								element: (
 									<OrderProvider>
 										<CompanyProvider>
-											<CustomerProvider>
-												<CreateRepairOrderPage />
-											</CustomerProvider>
+											<OtherProductProvider>
+												<RepairProductProvider>
+													<CustomerProvider>
+														<CreateRepairOrderPage />
+													</CustomerProvider>
+												</RepairProductProvider>
+											</OtherProductProvider>
 										</CompanyProvider>
 									</OrderProvider>
 								),

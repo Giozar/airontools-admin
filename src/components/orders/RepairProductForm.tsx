@@ -1,65 +1,82 @@
-import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import { useCreateOrder } from '@hooks/orders/useOrders';
+import { useOtherProductContext } from '@contexts/otherProduct/OtherProductContext';
+import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
 
 export default function RepairProductForm() {
-	const { order, setOrder } = useCreateOrder();
+	const {
+		quantity,
+		setQuantity,
+		serialNumber,
+		setSerialNumber,
+		observation,
+		setObservation,
+	} = useRepairProductContext();
+	const { brand, setBrand, model, setModel, description, setDescription } =
+		useOtherProductContext();
 	return (
 		<>
 			<TextInput
 				key={'cantidad'}
 				id={'cantidad'}
 				label={'Cantidad'}
-				value={tiempoEntrega}
+				value={quantity + ''}
 				placeholder={'Cantidad'}
-				onChange={e => setTiempoEntrega(e.target.value)}
+				onChange={e => setQuantity(parseInt(e.target.value))}
 			/>
-			,
-			<TextInput
-				key={'modelo'}
-				id={'modelo'}
-				label={'Modelo'}
-				value={tiempoEntrega}
-				placeholder={'Modelo de herramienta'}
-				onChange={e => setTiempoEntrega(e.target.value)}
-			/>
-			,
+
 			<TextInput
 				key={''}
 				id={'marca'}
 				label={'Marca'}
-				value={tiempoEntrega}
+				value={brand}
 				placeholder={'Marca de herramienta'}
-				onChange={e => setTiempoEntrega(e.target.value)}
+				onChange={e => setBrand(e.target.value)}
 			/>
-			,
+
+			<TextInput
+				key={'modelo'}
+				id={'modelo'}
+				label={'Modelo'}
+				value={model}
+				placeholder={'Modelo de herramienta'}
+				onChange={e => setModel(e.target.value)}
+			/>
+
 			<TextInput
 				key={'numerodeserie'}
 				id={'numerodeserie'}
 				label={'Número de serie'}
-				value={tiempoEntrega}
+				value={serialNumber}
 				placeholder={'Número de serie'}
-				onChange={e => setTiempoEntrega(e.target.value)}
+				onChange={e => setSerialNumber(e.target.value)}
 			/>
-			,
+
 			<TextAreaInput
 				key={'descripcion'}
 				id={'descripcion'}
 				label={'Descripción'}
-				value={observaciones}
+				value={description}
 				placeholder={'Descripción del estado de la herramienta'}
-				onChange={e => setObservaciones(e.target.value)}
+				onChange={e => setDescription(e.target.value)}
 			/>
-			,
-			<SingleImageChange
+
+			<TextAreaInput
+				key={'observacion'}
+				id={'observacion'}
+				label={'Observación'}
+				value={observation}
+				placeholder={'Descripción del estado de la herramienta'}
+				onChange={e => setObservation(e.target.value)}
+			/>
+
+			{/* <SingleImageChange
 				key={'foto'}
 				title={'Foto de herramienta'}
 				filePreview={rawImage ? URL.createObjectURL(rawImage) : ''}
 				setFilePreview={setRawImage}
 				capture={true}
-			/>
-			,
+			/> */}
 		</>
 	);
 }

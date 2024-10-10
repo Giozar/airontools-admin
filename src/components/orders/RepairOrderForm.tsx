@@ -4,6 +4,8 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
+import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
+import RepairProductForm from './RepairProductForm';
 
 interface RepairOrderFormProps {
 	actionName: string;
@@ -26,6 +28,8 @@ export default function RepairOrderForm({
 		deliveryDate,
 		setDeliveryDate,
 	} = useOrderContext();
+
+	const { observation } = useRepairProductContext();
 	const { name: companyName, setName: setCompanyName } = useCompanyContext();
 	const {
 		name: customerName,
@@ -63,10 +67,12 @@ export default function RepairOrderForm({
 				value={phoneNumber}
 				setValue={setPhoneNumber}
 			/>
+			<h2>Datos de la herramienta</h2>
+			<RepairProductForm />
 			<TextAreaInput
 				id={'observaciones'}
 				label={'Observaciones'}
-				value={observations}
+				value={observation}
 				onChange={e => setObservations(e.target.value)}
 			/>
 			{/* <TextInput
@@ -89,7 +95,6 @@ export default function RepairOrderForm({
 				capture={true}
 				size='large'
 			/>
-			<h2>Datos de la herramienta</h2>
 		</form>
 	);
 }
