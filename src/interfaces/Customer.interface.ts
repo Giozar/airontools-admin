@@ -4,6 +4,16 @@ export enum CustomerType {
 	COMPANY = 'COMPANY',
 }
 
+export interface Customer {
+	_id: string;
+	customerType: CustomerType;
+	name: string;
+	phoneNumber: string;
+	observations: string;
+	createdBy: string;
+	updatedBy: string;
+}
+
 export interface CreateCustomer {
 	customerType: CustomerType;
 	name: string;

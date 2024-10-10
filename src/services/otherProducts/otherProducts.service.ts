@@ -1,10 +1,16 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { OtherProduct } from '@interfaces/OtherProduct.interface';
+import {
+	CreateOtherProduct,
+	OtherProduct,
+	UpdateOtherProduct,
+} from '@interfaces/OtherProduct.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 // Crear un "other-product"
-export async function createOtherProductService(otherProduct: OtherProduct) {
+export async function createOtherProductService(
+	otherProduct: CreateOtherProduct,
+) {
 	try {
 		const response = await axios.post(
 			`${airontoolsAPI}/other-products`,
@@ -39,7 +45,7 @@ export async function getOtherProductByIdService(id: string) {
 // Actualizar un "other-product" por ID
 export async function updateOtherProductService(
 	id: string,
-	updateOtherProductDto: OtherProduct,
+	updateOtherProductDto: UpdateOtherProduct,
 ) {
 	try {
 		const response = await axios.patch(

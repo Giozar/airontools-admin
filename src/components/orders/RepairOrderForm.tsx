@@ -1,10 +1,12 @@
 import DatalistOption from '@components/commons/DatalistOption';
+import DateInput from '@components/commons/DateInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
+import { useEffect } from 'react';
 import RepairProductForm from './RepairProductForm';
 
 interface RepairOrderFormProps {
@@ -16,17 +18,18 @@ interface RepairOrderFormProps {
 export default function RepairOrderForm({
 	actionName,
 	action,
-	initialData,
+	// TODO: Manejar el dato inicial si existe, initialData,
 }: RepairOrderFormProps) {
 	const {
 		observations,
 		setObservations,
 		images,
-		setImages,
 		imageRaw,
 		setImageRaw,
 		deliveryDate,
 		setDeliveryDate,
+		authorizationDate,
+		setAuthorizationDate,
 	} = useOrderContext();
 
 	const { observation } = useRepairProductContext();
@@ -37,6 +40,8 @@ export default function RepairOrderForm({
 		phoneNumber,
 		setPhoneNumber,
 	} = useCustomerContext();
+
+	useEffect(() => {}, [observations, authorizationDate]);
 	return (
 		<form onSubmit={action}>
 			<button type='submit'>{actionName}</button>
@@ -75,15 +80,13 @@ export default function RepairOrderForm({
 				value={observation}
 				onChange={e => setObservations(e.target.value)}
 			/>
-			{/* <TextInput
-				id={'tiempoEntrega'}
-				label={'Tiempo de entrega'}
-				value={tiempoEntrega}
-				placeholder={'Tiempo de entrega'}
-				onChange={e => setTiempoEntrega(e.target.value)}
-			/>
-			*/}
-			Fecha de autorización: {Date().toString()}
+			{observation && (
+				<DateInput
+					label='Fecha de autorización'
+					date={authorizationDate}
+					setDate={setAuthorizationDate}
+				/>
+			)}
 			<SingleImageChange
 				title={'Foto general de herramientas'}
 				filePreview={
@@ -95,6 +98,13 @@ export default function RepairOrderForm({
 				capture={true}
 				size='large'
 			/>
+			{observation && (
+				<DateInput
+					label='Fecha de entrega'
+					date={deliveryDate}
+					setDate={setDeliveryDate}
+				/>
+			)}
 		</form>
 	);
 }

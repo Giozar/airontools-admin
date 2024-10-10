@@ -5,31 +5,13 @@ import { useOtherProductContext } from '@contexts/otherProduct/OtherProductConte
 import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
 
 export default function useCreateOrder() {
-	const {
-		observations,
-		setObservations,
-		imageRaw,
-		setImageRaw,
-		deliveryDate,
-		setDeliveryDate,
-	} = useOrderContext();
-	const { name: companyName, setName: setCompanyName } = useCompanyContext();
-	const {
-		name: customerName,
-		setName: setCustomerName,
-		phoneNumber,
-		setPhoneNumber,
-	} = useCustomerContext();
+	const { observations, imageRaw, deliveryDate, authorizationDate } =
+		useOrderContext();
+	const { name: companyName } = useCompanyContext();
+	const { name: customerName, phoneNumber } = useCustomerContext();
 
-	const {
-		quantity,
-		setQuantity,
-		serialNumber,
-		setSerialNumber,
-		observation,
-		setObservation,
-	} = useRepairProductContext();
-	const { brand, setBrand, model, setModel } = useOtherProductContext();
+	const { quantity, serialNumber, observation } = useRepairProductContext();
+	const { brand, model } = useOtherProductContext();
 	const createOrder = async (e: Event) => {
 		e.preventDefault();
 		console.log(
@@ -40,8 +22,11 @@ export default function useCreateOrder() {
 			imageRaw,
 			brand,
 			model,
+			quantity,
 			serialNumber,
 			observation,
+			deliveryDate,
+			authorizationDate,
 		);
 	};
 

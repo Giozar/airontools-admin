@@ -1,8 +1,19 @@
+export interface OtherProduct {
+	_id: string;
+	name: string;
+	model: string;
+	brand: string;
+	description: string;
+	createdBy: string;
+	updatedBy: string;
+}
+
 export interface CreateOtherProduct {
 	name?: string;
 	model: string;
 	brand: string;
 	description: string;
+	createdBy: string;
 }
 
 export interface UpdateOtherProduct {
@@ -11,6 +22,7 @@ export interface UpdateOtherProduct {
 	model?: string;
 	brand?: string;
 	description?: string;
+	updatedBy?: string;
 }
 
 export interface OtherProductContextProps {
@@ -23,4 +35,8 @@ export interface OtherProductContextProps {
 	setBrand: (value: string) => void;
 	description: string;
 	setDescription: (value: string) => void;
+	createdBy: string;
+	setCreatedBy: (value: string) => void;
+	updatedBy: string;
+	setUpdatedBy: (value: string) => void;
 }
