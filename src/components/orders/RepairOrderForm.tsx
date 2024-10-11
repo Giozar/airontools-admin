@@ -50,7 +50,9 @@ export default function RepairOrderForm({
 
 	const { addProduct, removeProduct } = useOrderProduct(0);
 
-	useEffect(() => {}, [observations, authorizationDate]);
+	useEffect(() => {
+		console.log(initialData);
+	}, [observations, authorizationDate]);
 
 	return (
 		<form onSubmit={action}>
