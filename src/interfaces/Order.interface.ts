@@ -1,3 +1,4 @@
+import { OrderProduct } from '@components/orders/OrderProduct.interface';
 import { RepairProduct } from './RepairProduct.interface';
 
 export enum OrderStatus {
@@ -50,8 +51,8 @@ export interface OrderContextProps {
 	setAuthorizationDate: (value: Date) => void; // Setter para actualizar la fecha de autorización
 	deliveryDate: Date;
 	setDeliveryDate: (value: Date) => void;
-	products: RepairProduct[]; // Lista de productos a reparar
-	setProducts: (value: RepairProduct[]) => void; // Setter para actualizar la lista de productos
+	products: OrderProduct[]; // Lista de productos a reparar
+	setProducts: (value: OrderProduct[]) => void; // Setter para actualizar la lista de productos
 	observations: string; // Observaciones generales
 	setObservations: (value: string) => void; // Setter para actualizar las observaciones
 	images?: string[]; // URLs de las imágenes opcionales

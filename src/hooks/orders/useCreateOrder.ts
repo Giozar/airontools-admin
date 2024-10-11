@@ -1,8 +1,7 @@
+import { useOrderProductService } from '@components/orders/useProductService';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
-import { useOtherProductContext } from '@contexts/otherProduct/OtherProductContext';
-import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
 
 export default function useCreateOrder() {
 	const { observations, imageRaw, deliveryDate, authorizationDate, products } =
@@ -10,23 +9,22 @@ export default function useCreateOrder() {
 	const { name: companyName } = useCompanyContext();
 	const { name: customerName, phoneNumber } = useCustomerContext();
 
-	const { quantity, serialNumber, observation } = useRepairProductContext();
-	const { brand, model } = useOtherProductContext();
+	const { findOrCreateProduct, isLoading, error } = useOrderProductService();
+
 	const createOrder = async (e: Event) => {
 		e.preventDefault();
-		if (products.filter(product => product.model !== 'airontools'))
-			console.log('se va a los backrooms');
+		try {
+			const response = await findOrCreateProduct(products[0]);
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+		}
 		console.log(
 			observations,
 			customerName,
 			phoneNumber,
 			companyName,
 			imageRaw,
-			brand,
-			model,
-			quantity,
-			serialNumber,
-			observation,
 			deliveryDate,
 			authorizationDate,
 			products,

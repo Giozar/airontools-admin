@@ -1,9 +1,9 @@
+import { OrderProduct } from '@components/orders/OrderProduct.interface';
 import {
 	OrderContextProps,
 	OrderStatus,
 	OrderType,
 } from '@interfaces/Order.interface';
-import { RepairProduct } from '@interfaces/RepairProduct.interface';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 // Crear el contexto con el tipo adecuado
@@ -26,17 +26,18 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	);
 	const [createdBy, setCreatedBy] = useState<string>('');
 	const [updatedBy, setUpdatedBy] = useState<string | undefined>(undefined);
-	const initialProducts: RepairProduct[] = Array.from({ length: 9 }, () => ({
-		quantity: 1,
-		name: '',
-		brand: '',
-		model: '',
-		serialNumber: '',
-		description: '',
-		observation: '',
-		rawImage: null,
-	}));
-	const [products, setProducts] = useState<RepairProduct[]>(initialProducts);
+	const [products, setProducts] = useState<OrderProduct[]>([
+		{
+			quantity: 1,
+			brand: '',
+			model: '',
+			serialNumber: '',
+			description: '',
+			observation: '',
+			rawImage: null,
+			createdBy: '',
+		},
+	]);
 
 	return (
 		<OrderContext.Provider

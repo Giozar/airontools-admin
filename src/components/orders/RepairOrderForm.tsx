@@ -8,6 +8,7 @@ import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import { useEffect } from 'react';
 import RowComponent from './RepairOrderRowComponent';
+import { useOrderProduct } from './useRepairProductUpdate';
 
 interface RepairOrderFormProps {
 	actionName: string;
@@ -46,7 +47,10 @@ export default function RepairOrderForm({
 		setPhoneNumber,
 	} = useCustomerContext();
 
+	const { addProduct, removeProduct } = useOrderProduct(0);
+
 	useEffect(() => {}, [observations, authorizationDate]);
+
 	return (
 		<form onSubmit={action}>
 			<button type='submit'>{actionName}</button>
@@ -77,10 +81,12 @@ export default function RepairOrderForm({
 			/>
 			<h2>Datos de la herramienta</h2>
 			<DynamicSizeTable
-				headers={['', '', '', '', '', '']}
+				headers={['', '', '', '', '', '', '']}
 				maxRows={9}
 				RowComponent={RowComponent}
 				vertical={true}
+				add={addProduct}
+				remove={removeProduct}
 			/>
 			<TextAreaInput
 				id={'observaciones'}

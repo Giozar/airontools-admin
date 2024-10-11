@@ -6,6 +6,8 @@ interface DynamicSizeTableProps {
 	vertical?: boolean;
 	maxRows?: number; // Propiedad para el límite de filas
 	RowComponent: React.FC<{ index: number }>; // Componente de fila
+	remove?: any;
+	add?: any;
 }
 
 const DynamicSizeTable = ({
@@ -13,12 +15,15 @@ const DynamicSizeTable = ({
 	RowComponent,
 	vertical,
 	maxRows = 9,
+	add,
+	remove,
 }: DynamicSizeTableProps) => {
 	const [rowsCount, setRowsCount] = useState(1); // Inicializa con 1 fila
 
 	const addRow = () => {
 		if (rowsCount < maxRows) {
 			setRowsCount(rowsCount + 1);
+			if (add) add();
 		} else {
 			alert(`El número máximo de filas es ${maxRows}`);
 		}
@@ -27,6 +32,7 @@ const DynamicSizeTable = ({
 	const removeRow = () => {
 		if (rowsCount > 1) {
 			setRowsCount(rowsCount - 1);
+			if (remove) remove(rowsCount - 1);
 		}
 	};
 
@@ -53,8 +59,12 @@ const DynamicSizeTable = ({
 					))}
 				</tbody>
 			</table>
-			<button onClick={addRow}>Añadir fila</button>
-			<button onClick={removeRow}>Quitar fila</button>
+			<button onClick={addRow} type='button'>
+				Añadir fila
+			</button>
+			<button onClick={removeRow} type='button'>
+				Quitar fila
+			</button>
 			<div>Total de filas: {rowsCount}</div>
 		</div>
 	);

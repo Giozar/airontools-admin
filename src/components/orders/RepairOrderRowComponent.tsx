@@ -2,28 +2,24 @@ import NumberInput from '@components/commons/NumberInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import { useOrderContext } from '@contexts/order/OrderContext';
-import { RepairProduct } from '@interfaces/RepairProduct.interface';
-import React from 'react';
+import { useOrderProduct } from './useRepairProductUpdate';
 
 interface RowComponentProps {
 	index: number;
 }
 
-const RowComponent: React.FC<RowComponentProps> = ({ index }) => {
-	const { products, setProducts } = useOrderContext();
-	const product = products[index];
-
-	const handleChange = (field: keyof RepairProduct, value: string) => {
-		const newProduct = [...products];
-		newProduct[index] = { ...newProduct[index], [field]: value };
-		setProducts(newProduct);
-	};
-	const setFilePreview = (value: File | null) => {
-		const newProduct = [...products];
-		newProduct[index] = { ...newProduct[index], ['rawImage']: value };
-		setProducts(newProduct);
-	};
+const RowComponent = ({ index }: RowComponentProps) => {
+	const { updateProduct, product } = useOrderProduct(index);
+	if (!product) return;
+	const {
+		quantity,
+		brand,
+		model,
+		serialNumber,
+		description,
+		observation,
+		rawImage,
+	} = product;
 
 	return (
 		<>
@@ -31,9 +27,9 @@ const RowComponent: React.FC<RowComponentProps> = ({ index }) => {
 				<NumberInput
 					id={`cantidad-${index}`}
 					label='Cantidad'
-					value={product.quantity + ''}
+					value={quantity.toString()}
 					placeholder='Cantidad'
-					onChange={e => handleChange('quantity', e.target.value)}
+					onChange={e => updateProduct({ quantity: parseInt(e.target.value) })}
 					min={'0'}
 					max={'1000000'}
 				/>
@@ -42,55 +38,52 @@ const RowComponent: React.FC<RowComponentProps> = ({ index }) => {
 				<TextInput
 					id={`marca-${index}`}
 					label='Marca'
-					value={product.brand}
+					value={brand}
 					placeholder='Marca de herramienta'
-					onChange={e => handleChange('brand', e.target.value)}
+					onChange={e => updateProduct({ brand: e.target.value })}
 				/>
 			</td>
 			<td>
 				<TextInput
 					id={`modelo-${index}`}
 					label='Modelo'
-					value={product.model}
+					value={model}
 					placeholder='Modelo de herramienta'
-					onChange={e => handleChange('model', e.target.value)}
+					onChange={e => updateProduct({ model: e.target.value })}
 				/>
 			</td>
 			<td>
 				<TextInput
 					id={`numerodeserie-${index}`}
 					label='Número de serie'
-					value={product.serialNumber || ''}
+					value={serialNumber || ''}
 					placeholder='Número de serie'
-					onChange={e => handleChange('serialNumber', e.target.value)}
+					onChange={e => updateProduct({ serialNumber: e.target.value })}
 				/>
 			</td>
 			<td>
 				<TextAreaInput
 					id={`descripcion-${index}`}
 					label='Descripción'
-					value={product.description}
+					value={description}
 					placeholder='Descripción del estado de la herramienta'
-					onChange={e => handleChange('description', e.target.value)}
+					onChange={e => updateProduct({ description: e.target.value })}
 				/>
 			</td>
 			<td>
 				<TextAreaInput
 					id={`observacion-${index}`}
 					label='Observación'
-					value={product.observation || ''}
+					value={observation || ''}
 					placeholder='Observación sobre la herramienta'
-					onChange={e => handleChange('observation', e.target.value)}
+					onChange={e => updateProduct({ observation: e.target.value })}
 				/>
 			</td>
 			<td>
 				<SingleImageChange
-					key={'foto'}
-					title={'Foto de herramienta'}
-					filePreview={
-						product.rawImage ? URL.createObjectURL(product.rawImage) : ''
-					}
-					setFilePreview={setFilePreview}
+					title='Foto de herramienta'
+					filePreview={rawImage ? URL.createObjectURL(rawImage) : ''}
+					setFilePreview={file => updateProduct({ rawImage: file })}
 					capture={true}
 				/>
 			</td>
