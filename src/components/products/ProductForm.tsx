@@ -32,6 +32,8 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 		setName,
 		model,
 		setModel,
+		brand,
+		setBrand,
 		description,
 		setDescription,
 		images,
@@ -73,6 +75,7 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			setId(initialData.id || '');
 			setName(initialData.name || '');
 			setModel(initialData.model || '');
+			setBrand(initialData.brand || '');
 			setDescription(initialData.description || '');
 			setImages(initialData.images || []);
 			setManuals(initialData.manuals || []);
@@ -115,6 +118,13 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 						value={model}
 						placeholder='H-1'
 						onChange={e => setModel(e.target.value)}
+					/>
+					<TextInput
+						id='productBrand'
+						label='Marca de herramienta'
+						value={brand}
+						placeholder='Airon Tools'
+						onChange={e => setBrand(e.target.value)}
 					/>
 				</div>
 				<div>
