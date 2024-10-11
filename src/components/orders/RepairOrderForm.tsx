@@ -8,7 +8,7 @@ import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import { useEffect } from 'react';
 import RowComponent from './RepairOrderRowComponent';
-import { useOrderProduct } from './useRepairProductUpdate';
+import { useOrderProduct } from './hooks/useRepairProductUpdate';
 
 interface RepairOrderFormProps {
 	actionName: string;

@@ -4,7 +4,7 @@ import {
 } from '@services/otherProducts/otherProducts.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useState } from 'react';
-import { OrderProduct } from './OrderProduct.interface';
+import { OrderProduct } from '../../../interfaces/OrderProduct.interface';
 
 export function useOrderProductService() {
 	const [isLoading, setIsLoading] = useState(false);

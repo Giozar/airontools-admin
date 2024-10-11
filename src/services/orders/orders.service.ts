@@ -1,5 +1,5 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { CreateOrder, UpdateOrder } from '@interfaces/Order.interface';
+import { CreateOrder, Order, UpdateOrder } from '@interfaces/Order.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
@@ -16,7 +16,7 @@ export async function createOrderService(order: CreateOrder) {
 // Obtener todas las órdenes
 export async function getAllOrdersService() {
 	try {
-		const response = await axios.get(`${airontoolsAPI}/orders`);
+		const response = await axios.get<Order[]>(`${airontoolsAPI}/orders`);
 		return response.data;
 	} catch (error) {
 		throw errorHandler(error);

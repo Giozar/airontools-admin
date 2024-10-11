@@ -2,7 +2,7 @@ import NumberInput from '@components/commons/NumberInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import { useOrderProduct } from './useRepairProductUpdate';
+import { useOrderProduct } from './hooks/useRepairProductUpdate';
 
 interface RowComponentProps {
 	index: number;

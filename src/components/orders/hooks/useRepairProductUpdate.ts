@@ -2,7 +2,7 @@
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import { useEffect } from 'react';
-import { OrderProduct } from './OrderProduct.interface';
+import { OrderProduct } from '../../../interfaces/OrderProduct.interface';
 
 export const useOrderProduct = (index: number) => {
 	const { products, setProducts } = useOrderContext();

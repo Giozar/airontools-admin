@@ -1,9 +1,9 @@
-import { OrderProduct } from '@components/orders/OrderProduct.interface';
 import {
 	OrderContextProps,
 	OrderStatus,
 	OrderType,
 } from '@interfaces/Order.interface';
+import { OrderProduct } from '@interfaces/OrderProduct.interface';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 // Crear el contexto con el tipo adecuado

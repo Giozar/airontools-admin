@@ -1,7 +1,7 @@
 // Definición de los tipos que puede tomar el cliente
 export enum CustomerType {
-	INDIVIDUAL = 'INDIVIDUAL',
-	COMPANY = 'COMPANY',
+	INDIVIDUAL = 'individual',
+	COMPANY = 'empresa',
 }
 
 export interface Customer {

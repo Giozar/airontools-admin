@@ -259,6 +259,22 @@ const router = createBrowserRouter([
 								),
 							},
 							{
+								path: 'ver-orden/crear-orden',
+								element: (
+									<OrderProvider>
+										<CompanyProvider>
+											<OtherProductProvider>
+												<RepairProductProvider>
+													<CustomerProvider>
+														<CreateRepairOrderPage />
+													</CustomerProvider>
+												</RepairProductProvider>
+											</OtherProductProvider>
+										</CompanyProvider>
+									</OrderProvider>
+								),
+							},
+							{
 								path: 'herramientas',
 								element: <ToolMenu />,
 							},

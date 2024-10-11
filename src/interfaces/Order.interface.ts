@@ -1,4 +1,4 @@
-import { OrderProduct } from '@components/orders/OrderProduct.interface';
+import { OrderProduct } from '@interfaces/OrderProduct.interface';
 import { RepairProduct } from './RepairProduct.interface';
 
 export enum OrderStatus {
@@ -12,12 +12,28 @@ export enum OrderType {
 	REPAIR = 'repair',
 }
 
+export interface Order {
+	customer: string; // ID del cliente
+	orderType: string; // Tipo de orden
+	authorizationDate: string; // Fecha de autorización
+	products: OrderProduct[]; // Array de productos
+	images: string[]; // Array de URLs de imágenes
+	receivedBy: string; // ID de quien recibió la orden
+	deliveryRepresentative: string; // Nombre del representante de entrega
+	orderStatus: string; // Estado de la orden
+	createdBy: string; // ID de quien creó la orden
+	_id: string; // ID de la orden
+	createdAt: string; // Fecha de creación
+	updatedAt: string; // Fecha de actualización
+	__v: number; // Versión
+}
+
 export interface CreateOrder {
 	customer: string; // ID del cliente relacionado
 	orderType: OrderType; // Tipo de orden (en este caso siempre 'repair')
 	authorizationDate: Date; // Fecha de autorización
 	deliveryDate?: Date;
-	products: RepairProduct[]; // Lista para id's de productos a reparar
+	products: OrderProduct[]; // Lista para id's de productos a reparar
 	observations?: string; // Observaciones generales (opcional)
 	images?: string[]; // URLs de las imágenes opcionales (opcional)
 	receivedBy: string; // ID del empleado que recibe el producto
