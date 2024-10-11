@@ -14,6 +14,8 @@ export default function useCreateOrder() {
 	const { brand, model } = useOtherProductContext();
 	const createOrder = async (e: Event) => {
 		e.preventDefault();
+		if (products.filter(product => product.model !== 'airontools'))
+			console.log('se va a los backrooms');
 		console.log(
 			observations,
 			customerName,

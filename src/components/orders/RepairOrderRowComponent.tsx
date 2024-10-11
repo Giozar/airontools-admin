@@ -83,15 +83,17 @@ const RowComponent: React.FC<RowComponentProps> = ({ index }) => {
 					onChange={e => handleChange('observation', e.target.value)}
 				/>
 			</td>
-			<SingleImageChange
-				key={'foto'}
-				title={'Foto de herramienta'}
-				filePreview={
-					product.rawImage ? URL.createObjectURL(product.rawImage) : ''
-				}
-				setFilePreview={setFilePreview}
-				capture={true}
-			/>
+			<td>
+				<SingleImageChange
+					key={'foto'}
+					title={'Foto de herramienta'}
+					filePreview={
+						product.rawImage ? URL.createObjectURL(product.rawImage) : ''
+					}
+					setFilePreview={setFilePreview}
+					capture={true}
+				/>
+			</td>
 		</>
 	);
 };

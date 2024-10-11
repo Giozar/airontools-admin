@@ -1,5 +1,6 @@
 export interface RepairProduct {
 	_id?: string;
+	name: string;
 	productId?: string;
 	brand: string;
 	model: string;
