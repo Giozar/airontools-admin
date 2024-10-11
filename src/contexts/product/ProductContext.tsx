@@ -18,6 +18,7 @@ export const ProductCreateProvider = ({
 	const [id, setId] = useState<string>('');
 	const [name, setName] = useState<string>('');
 	const [model, setModel] = useState<string>('');
+	const [brand, setBrand] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [characteristics, setCharacteristics] = useState<string[]>([]);
 	const [specifications, setSpecifications] = useState<ProductSpecification[]>(
@@ -52,6 +53,8 @@ export const ProductCreateProvider = ({
 				name,
 				setName,
 				model,
+				brand,
+				setBrand,
 				setModel,
 				description,
 				setDescription,

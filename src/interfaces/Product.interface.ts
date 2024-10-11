@@ -16,7 +16,8 @@ export interface TechnicalDatasheet {
 export interface ProductDataToSend {
 	_id?: string;
 	name: string;
-	model?: string;
+	model: string;
+	brand: string;
 	description?: string;
 	characteristics?: string[];
 	specifications: ProductSpecification[];
@@ -43,6 +44,8 @@ export interface ProductCreateContextProps {
 	setName: (value: string) => void;
 	model: string;
 	setModel: (value: string) => void;
+	brand: string;
+	setBrand: (value: string) => void;
 	description: string;
 	setDescription: (value: string) => void;
 	characteristics: string[];
@@ -90,7 +93,8 @@ export interface ProductCreateContextProps {
 export interface ProductDataBackend {
 	_id: string;
 	name: string;
-	model?: string;
+	model: string;
+	brand: string;
 	description?: string;
 	characteristics?: string[];
 	specifications: [{ specification: SpecDataToSend; value: string }];
@@ -112,7 +116,8 @@ export interface ProductDataBackend {
 export interface ProductDataFrontend {
 	id: string;
 	name: string;
-	model?: string;
+	model: string;
+	brand: string;
 	description?: string;
 	characteristics?: string[];
 	specifications: [{ specification: SpecDataToSend; value: string }];

@@ -12,6 +12,7 @@ export const transformProductDataToFrontend = (
 		id: Product._id,
 		name: Product.name,
 		model: Product.model,
+		brand: Product.brand,
 		description: Product.description,
 		characteristics: Product.characteristics,
 		specifications: Product.specifications,
@@ -42,6 +43,7 @@ export const transformProductDataToBackend = (
 		_id: Product.id,
 		name: Product.name,
 		model: Product.model,
+		brand: Product.brand,
 		description: Product.description,
 		characteristics: Product.characteristics,
 		specifications: transformedSpecifications, // Transformamos las especificaciones aquí
