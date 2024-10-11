@@ -2,76 +2,27 @@ import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-const orders = [
-	{
-		id: 'AT4000',
-		customer: '605c72f8b3a1d53d88e61c8b',
-		orderType: 'repair',
-		orderDate: '2024-10-01T10:00:00Z',
-		products: [
-			{
-				productId: '60d21b4667d0d8992e610c85',
-				description: 'Pantalla rota',
-				quantity: 1,
-				price: 150.0,
-			},
-		],
-		observations: 'El cliente menciona que la pantalla dejó de funcionar.',
-		images: ['https://example.com/images/screen_broken1.jpg'],
-		receivedBy: '605c72f8b3a1d53d88e61c8c',
-		responsible: '605c72f8b3a1d53d88e61c8d',
-		createdBy: '605c72f8b3a1d53d88e61c8e',
-		updatedBy: '605c72f8b3a1d53d88e61c8f',
-		createdAt: '2024-10-01T10:00:00Z',
-		updatedAt: '2024-10-01T10:00:00Z',
-	},
-	{
-		id: 'AT4001',
-		customer: '605c72f8b3a1d53d88e61c8b',
-		orderType: 'repair',
-		orderDate: '2024-10-02T11:30:00Z',
-		products: [
-			{
-				productId: '60d21b4667d0d8992e610c86',
-				description: 'Batería defectuosa',
-				quantity: 1,
-				price: 50.0,
-			},
-		],
-		observations: 'La batería se descarga rápidamente.',
-		images: ['https://example.com/images/battery_defective1.jpg'],
-		receivedBy: '605c72f8b3a1d53d88e61c8c',
-		responsible: '605c72f8b3a1d53d88e61c8d',
-		createdBy: '605c72f8b3a1d53d88e61c8e',
-		updatedBy: '605c72f8b3a1d53d88e61c8f',
-		createdAt: '2024-10-02T11:30:00Z',
-		updatedAt: '2024-10-02T11:30:00Z',
-	},
-	{
-		id: 'AT4002',
-		customer: '605c72f8b3a1d53d88e61c8c',
-		orderType: 'repair',
-		orderDate: '2024-10-03T09:15:00Z',
-		products: [
-			{
-				productId: '60d21b4667d0d8992e610c87',
-				description: 'Cámara no funciona',
-				quantity: 1,
-				price: 100.0,
-			},
-		],
-		observations: 'El cliente indica que la cámara no toma fotos.',
-		images: ['https://example.com/images/camera_not_working.jpg'],
-		receivedBy: '605c72f8b3a1d53d88e61c8c',
-		responsible: '605c72f8b3a1d53d88e61c8d',
-		createdBy: '605c72f8b3a1d53d88e61c8e',
-		updatedBy: '605c72f8b3a1d53d88e61c8f',
-		createdAt: '2024-10-03T09:15:00Z',
-		updatedAt: '2024-10-03T09:15:00Z',
-	},
-];
+import { Order } from '@interfaces/Order.interface';
+import { getAllOrdersService } from '@services/orders/orders.service';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function RepairOrderList() {
+	const [orders, setOrders] = useState<Order[]>([]);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const getOrders = async () => {
+			try {
+				const fetchedOrders = await getAllOrdersService();
+				setOrders(fetchedOrders);
+			} catch (error) {
+				console.error('Error fetching orders:', error);
+			}
+		};
+		getOrders();
+	}, []);
+
 	const tableData = {
 		headers: [
 			'ID',
@@ -84,27 +35,32 @@ export default function RepairOrderList() {
 			'Borrar',
 		],
 		rows: orders.map(order => [
-			order.id,
-			order.orderDate,
+			order._id,
+			new Date(order.createdAt).toLocaleDateString(),
 			order.orderType,
 			order.customer,
 			order.receivedBy,
-			<button className='table__button table__button--view' key='view'>
+			<button
+				className='table__button table__button--view'
+				key={`view-${order._id}`}
+			>
 				<EyeIcon />
 			</button>,
-			<button className='table__button table__button--edit' key='edit'>
+			<button
+				className='table__button table__button--edit'
+				key={`edit-${order._id}`}
+				onClick={() => {
+					navigate('editar-orden');
+					localStorage.setItem('OrderToEdit', order._id);
+				}}
+			>
 				<EditIcon />
 			</button>,
-
-			<button key='delete'>
+			<button key={`delete-${order._id}`}>
 				<TrashIcon />
 			</button>,
-			// ),
 		]),
 	};
-	return (
-		<>
-			<TableComponent data={tableData} />
-		</>
-	);
+
+	return <TableComponent data={tableData} />;
 }

@@ -1,13 +1,15 @@
 import DatalistOption from '@components/commons/DatalistOption';
 import DateInput from '@components/commons/DateInput';
+import DynamicSizeTable from '@components/commons/DynamicSizeTable';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
+import TextInput from '@components/commons/TextInput';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
-import { useRepairProductContext } from '@contexts/repairProduct/RepairProductContext';
 import { useEffect } from 'react';
-import RepairProductForm from './RepairProductForm';
+import RowComponent from './RepairOrderRowComponent';
+import { useOrderProduct } from './hooks/useRepairProductUpdate';
 
 interface RepairOrderFormProps {
 	actionName: string;
@@ -18,7 +20,7 @@ interface RepairOrderFormProps {
 export default function RepairOrderForm({
 	actionName,
 	action,
-	// TODO: Manejar el dato inicial si existe, initialData,
+	initialData,
 }: RepairOrderFormProps) {
 	const {
 		observations,
@@ -30,9 +32,14 @@ export default function RepairOrderForm({
 		setDeliveryDate,
 		authorizationDate,
 		setAuthorizationDate,
+		products,
 	} = useOrderContext();
 
-	const { observation } = useRepairProductContext();
+	const observation = products
+		.map(product => product.observation)
+		.filter(observation => observation !== '')
+		.join('. '); //obten las observaciones de los productos
+
 	const { name: companyName, setName: setCompanyName } = useCompanyContext();
 	const {
 		name: customerName,
@@ -41,14 +48,16 @@ export default function RepairOrderForm({
 		setPhoneNumber,
 	} = useCustomerContext();
 
+	const { addProduct, removeProduct } = useOrderProduct(0);
+
 	useEffect(() => {}, [observations, authorizationDate]);
+
 	return (
 		<form onSubmit={action}>
 			<button type='submit'>{actionName}</button>
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}
-				type='text'
 				placeholder='Empresa de procedencia'
 				options={['hola', 'mundo']}
 				value={companyName}
@@ -57,7 +66,6 @@ export default function RepairOrderForm({
 			<DatalistOption
 				id={'responsable'}
 				name={'Responsable'}
-				type='text'
 				placeholder='Responsable por parte de la empresa'
 				options={['hola', 'mundo']}
 				value={customerName}
@@ -72,15 +80,29 @@ export default function RepairOrderForm({
 				value={phoneNumber}
 				setValue={setPhoneNumber}
 			/>
+			<TextInput
+				id={'cotizacion'}
+				label={'Tiempo de entrega de cotización'}
+				placeholder={'Tiempo de entrega de cotización'}
+				value={observation}
+				onChange={e => setObservations(e.target.value)}
+			/>
 			<h2>Datos de la herramienta</h2>
-			<RepairProductForm />
+			<DynamicSizeTable
+				headers={['', '', '', '', '', '', '']}
+				maxRows={9}
+				RowComponent={RowComponent}
+				vertical={true}
+				add={addProduct}
+				remove={removeProduct}
+			/>
 			<TextAreaInput
 				id={'observaciones'}
 				label={'Observaciones'}
 				value={observation}
 				onChange={e => setObservations(e.target.value)}
 			/>
-			{observation && (
+			{false && (
 				<DateInput
 					label='Fecha de autorización'
 					date={authorizationDate}
@@ -98,7 +120,7 @@ export default function RepairOrderForm({
 				capture={true}
 				size='large'
 			/>
-			{observation && (
+			{false && (
 				<DateInput
 					label='Fecha de entrega'
 					date={deliveryDate}

@@ -37,6 +37,7 @@ import CreateProductPage from '@pages/productPages/CreateProductPage';
 import EditProductPage from '@pages/productPages/EditProductPage';
 import ToolMenu from '@pages/productPages/ProductMenu';
 import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage';
+import EditRepairOrderPage from '@pages/repairOrderPages/EditRepairOrderPage';
 import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
@@ -251,6 +252,38 @@ const router = createBrowserRouter([
 												<RepairProductProvider>
 													<CustomerProvider>
 														<CreateRepairOrderPage />
+													</CustomerProvider>
+												</RepairProductProvider>
+											</OtherProductProvider>
+										</CompanyProvider>
+									</OrderProvider>
+								),
+							},
+							{
+								path: 'ver-orden/crear-orden',
+								element: (
+									<OrderProvider>
+										<CompanyProvider>
+											<OtherProductProvider>
+												<RepairProductProvider>
+													<CustomerProvider>
+														<CreateRepairOrderPage />
+													</CustomerProvider>
+												</RepairProductProvider>
+											</OtherProductProvider>
+										</CompanyProvider>
+									</OrderProvider>
+								),
+							},
+							{
+								path: 'ver-orden/editar-orden',
+								element: (
+									<OrderProvider>
+										<CompanyProvider>
+											<OtherProductProvider>
+												<RepairProductProvider>
+													<CustomerProvider>
+														<EditRepairOrderPage />
 													</CustomerProvider>
 												</RepairProductProvider>
 											</OtherProductProvider>

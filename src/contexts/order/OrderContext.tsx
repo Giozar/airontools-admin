@@ -3,7 +3,7 @@ import {
 	OrderStatus,
 	OrderType,
 } from '@interfaces/Order.interface';
-import { RepairProduct } from '@interfaces/RepairProduct.interface';
+import { OrderProduct } from '@interfaces/OrderProduct.interface';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 // Crear el contexto con el tipo adecuado
@@ -15,7 +15,6 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	const [orderType, setOrderType] = useState<OrderType>(OrderType.REPAIR);
 	const [authorizationDate, setAuthorizationDate] = useState<Date>(new Date());
 	const [deliveryDate, setDeliveryDate] = useState<Date>(new Date());
-	const [products, setProducts] = useState<RepairProduct[]>([]);
 	const [observations, setObservations] = useState<string>('');
 	const [images, setImages] = useState<string[]>([]);
 	const [imageRaw, setImageRaw] = useState<File | null>(null);
@@ -27,6 +26,18 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	);
 	const [createdBy, setCreatedBy] = useState<string>('');
 	const [updatedBy, setUpdatedBy] = useState<string | undefined>(undefined);
+	const [products, setProducts] = useState<OrderProduct[]>([
+		{
+			quantity: 1,
+			brand: '',
+			model: '',
+			serialNumber: '',
+			description: '',
+			observation: '',
+			rawImage: null,
+			createdBy: '',
+		},
+	]);
 
 	return (
 		<OrderContext.Provider

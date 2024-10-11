@@ -1,5 +1,6 @@
 export interface RepairProduct {
 	_id?: string;
+	name: string;
 	productId?: string;
 	brand: string;
 	model: string;
@@ -8,6 +9,7 @@ export interface RepairProduct {
 	quantity: number;
 	images?: string[];
 	observation?: string;
+	rawImage?: File | null;
 }
 
 export interface CreateRepairProduct {
