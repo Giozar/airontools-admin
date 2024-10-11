@@ -1,6 +1,7 @@
 import DatalistOption from '@components/commons/DatalistOption';
 import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
+import PhoneInput from '@components/commons/PhoneInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
@@ -38,7 +39,7 @@ export default function RepairOrderForm({
 	const observation = products
 		.map(product => product.observation)
 		.filter(observation => observation !== '')
-		.join('. '); //obten las observaciones de los productos
+		.join('. '); // obten las observaciones de los productos
 
 	const { name: companyName, setName: setCompanyName } = useCompanyContext();
 	const {
@@ -71,7 +72,7 @@ export default function RepairOrderForm({
 				value={customerName}
 				setValue={setCustomerName}
 			/>
-			<DatalistOption
+			<PhoneInput
 				id={'telefono'}
 				name={'Teléfono'}
 				type='tel'
