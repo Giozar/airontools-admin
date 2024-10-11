@@ -6,9 +6,10 @@ import { CustomerType } from '@interfaces/Customer.interface';
 import { createCustomerService } from '@services/customers/customers.service';
 import { createOrderService } from '@services/orders/orders.service';
 
-export default function useCreateOrder() {
+export default function useEditOrder() {
 	const {
 		orderType,
+		//	deliveryRepresentative,
 		orderStatus,
 		observations,
 		imageRaw,
@@ -24,7 +25,7 @@ export default function useCreateOrder() {
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
 
-	const createOrder = async (e: Event) => {
+	const editOrder = async (e: Event) => {
 		e.preventDefault();
 		try {
 			//const response = await findOrCreateProduct(products[0]);
@@ -62,5 +63,5 @@ export default function useCreateOrder() {
 		);
 	};
 
-	return { createOrder };
+	return { editOrder };
 }

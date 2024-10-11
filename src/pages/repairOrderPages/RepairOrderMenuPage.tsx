@@ -9,9 +9,12 @@ export default function RepairOrderMenuPage() {
 					title='Crear Orden'
 					path={location.pathname + '/crear-orden'}
 				/>
+				<ActionCard
+					title='Editar Orden'
+					path={location.pathname + '/editar-orden'}
+				/>
 			</div>
 			<h2 className='listtitle'>Lista de Ordenes</h2>
-
 			<RepairOrderList />
 		</>
 	);
