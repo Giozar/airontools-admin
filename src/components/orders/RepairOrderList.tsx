@@ -51,6 +51,7 @@ export default function RepairOrderList() {
 				key={`edit-${order._id}`}
 				onClick={() => {
 					navigate('editar-orden');
+					localStorage.setItem('OrderToEdit', order._id);
 				}}
 			>
 				<EditIcon />

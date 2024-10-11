@@ -19,7 +19,6 @@ export default function useCreateOrder() {
 
 	const { name: companyName } = useCompanyContext();
 	const { name: customerName, phoneNumber } = useCustomerContext();
-
 	//const { findOrCreateProduct } = useOrderProductService();
 	const { user } = useAuthContext();
 	const createdBy = user?.id;

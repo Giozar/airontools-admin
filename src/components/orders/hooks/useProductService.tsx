@@ -1,3 +1,4 @@
+import { CreateOtherProduct } from '@interfaces/OtherProduct.interface';
 import {
 	createOtherProductService,
 	getOtherProductsByBrandService,
@@ -16,10 +17,9 @@ export function useOrderProductService() {
 
 		try {
 			let foundProduct = await searchInternalDatabase(product);
-			if (!foundProduct && product.brand !== 'airontools') {
+			if (foundProduct.length <= 0 && product.brand !== 'airontools') {
 				foundProduct = await searchExternalDatabase(product);
 			}
-			foundProduct = await createNewProduct(product);
 			if (!foundProduct) {
 				if (product.brand === 'airontools') {
 					throw new Error('Producto no encontrado en la base de datos interna');
@@ -47,7 +47,7 @@ export function useOrderProductService() {
 		return response.filter(p => product.model === p.name);
 	};
 
-	const createNewProduct = async (product: OrderProduct) => {
+	const createNewProduct = async (product: CreateOtherProduct) => {
 		const response = await createOtherProductService(product);
 		return response;
 	};

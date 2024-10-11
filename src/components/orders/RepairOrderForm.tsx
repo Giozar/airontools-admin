@@ -3,6 +3,7 @@ import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
+import TextInput from '@components/commons/TextInput';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
@@ -19,7 +20,7 @@ interface RepairOrderFormProps {
 export default function RepairOrderForm({
 	actionName,
 	action,
-	// TODO: Manejar el dato inicial si existe, initialData,
+	initialData,
 }: RepairOrderFormProps) {
 	const {
 		observations,
@@ -79,6 +80,13 @@ export default function RepairOrderForm({
 				value={phoneNumber}
 				setValue={setPhoneNumber}
 			/>
+			<TextInput
+				id={'cotizacion'}
+				label={'Tiempo de entrega de cotización'}
+				placeholder={'Tiempo de entrega de cotización'}
+				value={observation}
+				onChange={e => setObservations(e.target.value)}
+			/>
 			<h2>Datos de la herramienta</h2>
 			<DynamicSizeTable
 				headers={['', '', '', '', '', '', '']}
@@ -94,7 +102,7 @@ export default function RepairOrderForm({
 				value={observation}
 				onChange={e => setObservations(e.target.value)}
 			/>
-			{observation && (
+			{false && (
 				<DateInput
 					label='Fecha de autorización'
 					date={authorizationDate}
@@ -112,7 +120,7 @@ export default function RepairOrderForm({
 				capture={true}
 				size='large'
 			/>
-			{observation && (
+			{false && (
 				<DateInput
 					label='Fecha de entrega'
 					date={deliveryDate}

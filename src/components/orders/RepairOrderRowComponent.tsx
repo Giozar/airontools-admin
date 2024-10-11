@@ -27,7 +27,7 @@ const RowComponent = ({ index }: RowComponentProps) => {
 				<NumberInput
 					id={`cantidad-${index}`}
 					label='Cantidad'
-					value={quantity.toString()}
+					value={quantity}
 					placeholder='Cantidad'
 					onChange={e => updateProduct({ quantity: parseInt(e.target.value) })}
 					min={'0'}
