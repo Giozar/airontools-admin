@@ -1,6 +1,7 @@
 import ActionCard from '@components/commons/ActionCard';
 import TableComponent from '@components/commons/DynamicTable';
 import ProductInfoModal from '@components/products/ProductInfoModal';
+import Searchbar from '@components/search/Searchbar';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
@@ -8,21 +9,21 @@ import TrashIcon from '@components/svg/TrashIcon';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import useProductManagement from '@hooks/products/useProductManagement';
+import useProductsSearch from '@hooks/products/useProductSearch';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 import '@pages/productPages/ProductMenu.css';
-import { getProductsService } from '@services/products/getProducts.service';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function ListOfTools() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [selectedProduct, setSelectedProduct] =
 		useState<ProductDataFrontend | null>(null);
-	const [products, setProducts] = useState<ProductDataFrontend[]>([]);
+	//const [products, setProducts] = useState<ProductDataFrontend[]>([]);
 	const { handleEdit, handleDelete } = useProductManagement();
 	const { openModal } = useModal();
 	const { user } = useAuthContext();
-
-	useEffect(() => {
+	const { products, getSearchedProducts } = useProductsSearch();
+	/*useEffect(() => {
 		const fetchProducts = async () => {
 			try {
 				const response = await getProductsService();
@@ -33,7 +34,7 @@ function ListOfTools() {
 		};
 
 		fetchProducts();
-	}, [products]);
+	}, [products]);*/
 	const handleOpenModal = (product: ProductDataFrontend) => {
 		openModal(
 			'Eliminar Producto',
@@ -110,6 +111,7 @@ function ListOfTools() {
 				// }}
 				className='search'
 			/>
+			<Searchbar callback={getSearchedProducts} />
 			<ProductInfoModal
 				isOpen={modalOpen}
 				onClose={() => setModalOpen(false)}
