@@ -16,7 +16,6 @@ export default function useProductsSearch() {
 				setLoading(true);
 				previusSearch.current = search;
 				const newProducts = await searchProductsService(search);
-				console.log('🎉' + newProducts);
 				setProducts(newProducts);
 			} catch (error) {
 				errorHandler(error);
