@@ -5,7 +5,7 @@ import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import { SubcategoryDataFrontend } from '@interfaces/subcategory.interface';
 import { getCategoryService } from '@services/categories/getCategory.service';
 import { getSubcategoryService } from '@services/subcategories/getSubcategory.service';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CategorizationsSection from './CategorizationsSection';
 import SpecificationFormEdit from './SpecificationFormEdit';
 
@@ -16,72 +16,61 @@ export default function EditSpecifications({
 }) {
 	const { categorizations, setCategorizations } = useSpecificationContext();
 	const { showAlert } = useAlert();
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		// pedir las subcategorias de la lista, con ello clasificar
-		// pedir las categorias de la lista, con ello clasificar
-		// Que es eso???
 		const getCategorization = async () => {
-			// const familiesList: FamilyDataFrontend[] = [];
+			setLoading(true);
 			const categoriesList: CategoryDataFrontend[] = [];
 			const subcategoriesList: SubcategoryDataFrontend[] = [];
-
-			// Obtener familias
-			// if (Array.isArray(specToEdit.families)) {
-			// 	try {
-			// 		for (const familyId of specToEdit.families) {
-			// 			const family = await getFamilyService(familyId);
-			// 			if (family) familiesList.push(family);
-			// 		}
-			// 	} catch (error) {
-			// 		showAlert('Error al obtener familias: ' + error, 'error');
-			// 	}
-			// }
-
-			// Obtener categorías
-			if (Array.isArray(specToEdit.categories)) {
-				try {
-					for (const categoryId of specToEdit.categories) {
-						const category = await getCategoryService(categoryId);
-						if (category) categoriesList.push(category);
-					}
-				} catch (error) {
-					showAlert('Error al obtener categorías: ' + error, 'error');
+			try {
+				if (Array.isArray(specToEdit.categories)) {
+					const categoryPromises = specToEdit.categories.map(categoryId =>
+						getCategoryService(categoryId),
+					);
+					const categories = await Promise.all(categoryPromises);
+					categoriesList.push(...categories.filter(cat => cat));
 				}
-			}
 
-			// Obtener subcategorías
-			if (Array.isArray(specToEdit.subcategories)) {
-				try {
-					for (const subcategoryId of specToEdit.subcategories) {
-						const subcategory = await getSubcategoryService(subcategoryId);
-						if (subcategory) subcategoriesList.push(subcategory);
-					}
-				} catch (error) {
-					showAlert('Error al obtener subcategorías: ' + error, 'error');
+				if (Array.isArray(specToEdit.subcategories)) {
+					const subcategoryPromises = specToEdit.subcategories.map(
+						subcategoryId => getSubcategoryService(subcategoryId),
+					);
+					const subcategories = await Promise.all(subcategoryPromises);
+					subcategoriesList.push(...subcategories.filter(subcat => subcat));
 				}
-			}
+				console.log('hicealgo');
 
-			if (
-				specToEdit.families.length > 0 ||
-				categoriesList.length > 0 ||
-				subcategoriesList.length > 0
-			) {
-				const newCategorizations = specToEdit.families.map(fam => ({
-					selectedFamily: fam,
-					selectedCategories: categoriesList
-						.filter(cat => cat.family.id === fam)
-						.map(cat => cat.id),
-					selectedSubcategories: subcategoriesList
-						.filter(cat => cat.family.id === fam)
-						.map(cat => cat.id),
-				}));
-				setCategorizations(newCategorizations);
+				if (
+					specToEdit.families.length > 0 ||
+					categoriesList.length > 0 ||
+					subcategoriesList.length > 0
+				) {
+					const newCategorizations = specToEdit.families.map(fam => ({
+						selectedFamily: fam,
+						selectedCategories: categoriesList
+							.filter(cat => cat.family.id === fam)
+							.map(cat => cat.id),
+						selectedSubcategories: subcategoriesList
+							.filter(cat => cat.family.id === fam)
+							.map(cat => cat.id),
+					}));
+					console.log(newCategorizations);
+					setCategorizations(newCategorizations);
+				}
+			} catch (error) {
+				showAlert('Error al obtener datos: ' + error, 'error');
+			} finally {
+				setLoading(false);
 			}
 		};
-
 		getCategorization();
 	}, [specToEdit]);
+
+	if (loading) {
+		return <div>Cargando...</div>;
+	}
+	console.log('loading', specToEdit);
 
 	return (
 		<div>

@@ -17,27 +17,22 @@ export default function CategorizationsSection() {
 	};
 	return (
 		<>
-			{' '}
 			{categorizations.map((_, index) => (
 				<div
 					className='container-categorizations'
 					key={`container-categorizations-${index}`}
 				>
-					{' '}
 					<Categorizations key={index} index={index} />{' '}
 					<button
 						className='remove-categorizations'
 						key={`remove-categorization-${index}`}
 						onClick={() => removeCategorization(index)}
 					>
-						{' '}
-						Borrar categorizaciones{' '}
-					</button>{' '}
+						Borrar categorizaciones
+					</button>
 				</div>
-			))}{' '}
-			<button onClick={addCategorization}>
-				Añadir otra categorización
-			</button>{' '}
+			))}
+			<button onClick={addCategorization}>Añadir otra categorización</button>
 		</>
 	);
 }
