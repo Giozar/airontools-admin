@@ -1,6 +1,7 @@
 import ActionCard from '@components/commons/ActionCard';
 import TableComponent from '@components/commons/DynamicTable';
 import ProductInfoModal from '@components/products/ProductInfoModal';
+import Searchbar from '@components/search/Searchbar';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
@@ -8,32 +9,25 @@ import TrashIcon from '@components/svg/TrashIcon';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import useProductManagement from '@hooks/products/useProductManagement';
+import useProductsSearch from '@hooks/products/useProductSearch';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 import '@pages/productPages/ProductMenu.css';
-import { getProductsService } from '@services/products/getProducts.service';
 import { useEffect, useState } from 'react';
 
 function ListOfTools() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [selectedProduct, setSelectedProduct] =
 		useState<ProductDataFrontend | null>(null);
-	const [products, setProducts] = useState<ProductDataFrontend[]>([]);
 	const { handleEdit, handleDelete } = useProductManagement();
 	const { openModal } = useModal();
 	const { user } = useAuthContext();
+	const { products, getSearchedProducts, fetchAllProducts } =
+		useProductsSearch();
 
 	useEffect(() => {
-		const fetchProducts = async () => {
-			try {
-				const response = await getProductsService();
-				setProducts(response);
-			} catch (error) {
-				console.error('Failed to fetch tools:', error);
-			}
-		};
+		fetchAllProducts();
+	}, []);
 
-		fetchProducts();
-	}, [products]);
 	const handleOpenModal = (product: ProductDataFrontend) => {
 		openModal(
 			'Eliminar Producto',
@@ -100,16 +94,7 @@ function ListOfTools() {
 	return (
 		<div className='toollist'>
 			<h2 className='listtitle'>Lista de herramientas</h2>
-			<input
-				type='text'
-				placeholder='Buscar herramientas...'
-				// value={searchTerm}
-				// onChange={e => {
-				//   handleSearch(e.target.value);
-				//   setSearchTerm(e.target.value);
-				// }}
-				className='search'
-			/>
+			<Searchbar callback={getSearchedProducts} />
 			<ProductInfoModal
 				isOpen={modalOpen}
 				onClose={() => setModalOpen(false)}
