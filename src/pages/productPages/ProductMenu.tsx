@@ -12,7 +12,7 @@ import useProductManagement from '@hooks/products/useProductManagement';
 import useProductsSearch from '@hooks/products/useProductSearch';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 import '@pages/productPages/ProductMenu.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function ListOfTools() {
 	const [modalOpen, setModalOpen] = useState(false);
@@ -21,7 +21,12 @@ function ListOfTools() {
 	const { handleEdit, handleDelete } = useProductManagement();
 	const { openModal } = useModal();
 	const { user } = useAuthContext();
-	const { products, getSearchedProducts } = useProductsSearch();
+	const { products, getSearchedProducts, fetchAllProducts } =
+		useProductsSearch();
+
+	useEffect(() => {
+		fetchAllProducts();
+	}, []);
 
 	const handleOpenModal = (product: ProductDataFrontend) => {
 		openModal(
