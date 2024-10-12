@@ -65,6 +65,8 @@ export default function Categorizations({ index }: { index: number }) {
 			);
 		}
 	}, [families]);
+	console.log(categorizations[index].selectedCategories.length + '💖');
+	console.log(categorizations[index].selectedSubcategories.length + '💕');
 
 	return (
 		<div style={{ width: '50%' }}>
