@@ -42,25 +42,6 @@ export default function EditCategory() {
 			<li className='category-item' key={categoryKey}>
 				<div className='category-item__header'>
 					<h2 className='category-item__title'>Categoría: {category.name}</h2>
-					<button
-						type='button'
-						onClick={() => {
-							handleOpenModal(
-								category.id || '',
-								'Categoría',
-								() => handleConfirm(category.id),
-								openModal,
-								false,
-								true,
-								true,
-								true,
-								'byCategory',
-							);
-						}}
-						className='category-item__delete-button'
-					>
-						Eliminar categoría
-					</button>
 				</div>
 				<div className='category__columns'>
 					<div className='category__column-left'>
@@ -89,13 +70,6 @@ export default function EditCategory() {
 							rows={6}
 							className='category-item__text-area-input'
 						/>
-						<button
-							type='button'
-							onClick={() => handleUpdateCategory(categoryKey)}
-							className='category-item__update-button'
-						>
-							Actualizar Categoría
-						</button>
 					</div>
 					<div className='category__column-right'>
 						<SingleImageChange
@@ -115,6 +89,34 @@ export default function EditCategory() {
 							}
 						/>
 					</div>
+				</div>
+				<div className='category__footer'>
+					<button
+						type='button'
+						onClick={() => handleUpdateCategory(categoryKey)}
+						className='category-item__update-button'
+					>
+						Actualizar Categoría
+					</button>
+					<button
+						type='button'
+						onClick={() => {
+							handleOpenModal(
+								category.id || '',
+								'Categoría',
+								() => handleConfirm(category.id),
+								openModal,
+								false,
+								true,
+								true,
+								true,
+								'byCategory',
+							);
+						}}
+						className='category-item__delete-button'
+					>
+						Eliminar categoría
+					</button>
 				</div>
 			</li>
 		</>

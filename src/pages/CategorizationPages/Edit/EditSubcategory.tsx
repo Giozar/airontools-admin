@@ -81,34 +81,6 @@ export default function EditSubcategory() {
 							className='subcategory-item__text-area-input'
 							rows={6}
 						/>
-						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-							<button
-								type='button'
-								onClick={() => handleUpdateSubcategory(subcategoryKey)}
-								className='subcategory-item__update-button'
-							>
-								Actualizar Subcategoría
-							</button>
-							<button
-								type='button'
-								onClick={() =>
-									handleOpenModal(
-										subcategory.id || '',
-										'Subcategoría',
-										() => handleConfirm(subcategory.id),
-										openModal,
-										false,
-										false,
-										true,
-										true,
-										'bySubcategory',
-									)
-								}
-								className='subcategory-item__delete-button'
-							>
-								Eliminar subcategoría
-							</button>
-						</div>
 					</div>
 					<div className='subcategory__column-right'>
 						<SingleImageChange
@@ -130,6 +102,34 @@ export default function EditSubcategory() {
 							}
 						/>
 					</div>
+				</div>
+				<div className='subcategory__footer'>
+					<button
+						type='button'
+						onClick={() => handleUpdateSubcategory(subcategoryKey)}
+						className='subcategory-item__update-button'
+					>
+						Actualizar Subcategoría
+					</button>
+					<button
+						type='button'
+						onClick={() =>
+							handleOpenModal(
+								subcategory.id || '',
+								'Subcategoría',
+								() => handleConfirm(subcategory.id),
+								openModal,
+								false,
+								false,
+								true,
+								true,
+								'bySubcategory',
+							)
+						}
+						className='subcategory-item__delete-button'
+					>
+						Eliminar subcategoría
+					</button>
 				</div>
 			</li>
 		</>
