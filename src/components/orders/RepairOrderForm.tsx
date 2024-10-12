@@ -21,7 +21,6 @@ interface RepairOrderFormProps {
 export default function RepairOrderForm({
 	actionName,
 	action,
-	initialData,
 }: RepairOrderFormProps) {
 	const {
 		observations,

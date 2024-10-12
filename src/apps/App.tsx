@@ -24,6 +24,8 @@ import BasePage from '@layouts/BasePage';
 import CategorizationMenu from '@pages/CategorizationPages/CategorizationMenu';
 import CreateCategorization from '@pages/CategorizationPages/Create/CreateCategorization';
 import EditCategorization from '@pages/CategorizationPages/Edit/EditCategorization';
+import EditCategoryPage from '@pages/CategorizationPages/Edit/EditCategoryPage';
+import EditSubcategory from '@pages/CategorizationPages/Edit/EditSubcategory';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
 import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
@@ -194,6 +196,30 @@ const router = createBrowserRouter([
 												<CategoryCreateProvider>
 													<SubcategoryCreateProvider>
 														<EditCategorization />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
+									},
+									{
+										path: 'editar-familia/editar-categoria',
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<EditCategoryPage />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
+									},
+									{
+										path: 'editar-familia/editar-categoria/editar-subcategoria',
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<EditSubcategory />
 													</SubcategoryCreateProvider>
 												</CategoryCreateProvider>
 											</FamilyCreateProvider>

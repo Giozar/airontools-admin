@@ -1,16 +1,16 @@
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 
 import './EditCategorization.css';
-import CategoryList from './EditCategoryTable';
-import EditFamily from './EditFamily';
+import EditCategory from './EditCategory';
+import SubcategoryList from './EditSubcategoryTable';
 
-export default function EditCategorization() {
+export default function EditCategoryPage() {
 	const { handleUpdateFamily } = useEditCategorization();
 
 	return (
 		<form className='create-family-form' onSubmit={handleUpdateFamily}>
-			<EditFamily />
-			<CategoryList />
+			<EditCategory />
+			<SubcategoryList />
 		</form>
 	);
 }
