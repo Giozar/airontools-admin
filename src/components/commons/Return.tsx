@@ -1,4 +1,4 @@
-import '@components/css/return.css'; // Cambiar el nombre del archivo CSS
+import '@components/css/Return.css';
 import ReturnIcon from '@components/svg/ReturnIcon';
 import { Link, useLocation } from 'react-router-dom';
 
