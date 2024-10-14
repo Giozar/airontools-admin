@@ -28,18 +28,27 @@ export default function CreateSubcategories({
 	const hasSubcategories = Object.values(subcategoryInstances).some(
 		Subcategory => Subcategory.mode === 'create',
 	);
-	const SubcategoryAddedRef = useRef(false);
-	useEffect(() => {
-		if (init && !hasSubcategories && !SubcategoryAddedRef.current) {
-			addSubcategoryInstance(`subcat-${Date.now()}`, {});
-			SubcategoryAddedRef.current = true;
-		}
-	}, [init, hasSubcategories]);
-
 	const categoryKey = localStorage.getItem('categoryToEdit');
 	if (!categoryKey) return null;
 	const category = getCategoryInstance(categoryKey);
 	if (!category || category.mode !== 'edit') return null;
+
+	const SubcategoryAddedRef = useRef(false);
+	useEffect(() => {
+		console.log('🌹' + category.id);
+		if (category.id === '') console.log('aa');
+		if (
+			init &&
+			!hasSubcategories &&
+			!SubcategoryAddedRef.current &&
+			category.id
+		) {
+			addSubcategoryInstance(`subcat-${Date.now()}`, {
+				category: category.id,
+			});
+			SubcategoryAddedRef.current = true;
+		}
+	}, [init, hasSubcategories, addSubcategoryInstance]);
 
 	return (
 		<div className='create-subcategories'>

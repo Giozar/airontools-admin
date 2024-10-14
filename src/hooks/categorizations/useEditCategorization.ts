@@ -215,9 +215,10 @@ export function useEditCategorization() {
 		try {
 			if (!user) return;
 			console.log('Subcategorias creadas');
+			console.log(subcategoryInstances);
+			let categoryId = '';
 			for (const subcategory of subcategoryInstances) {
 				if (subcategory.mode !== 'create') continue;
-
 				const subcategoryId = await createSubcategoryService({
 					name: subcategory.name,
 					description: subcategory.description,
@@ -227,7 +228,7 @@ export function useEditCategorization() {
 					category: subcategory.category,
 				});
 				console.log('ID de la subcategoría:', subcategoryId._id);
-
+				categoryId = subcategory.category;
 				const uploadedSubcategoryImageUrl = subcategory.rawImage
 					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
 					: '';
@@ -238,7 +239,7 @@ export function useEditCategorization() {
 				}
 			}
 			removeCreateModeSubcategories();
-			addSubcategoryInstance(`subcat-${Date.now()}`, {});
+			addSubcategoryInstance(`subcat-${Date.now()}`, { category: categoryId });
 			showSuccess('Subcategorías creadas con éxito');
 		} catch (error) {
 			showError('no se pudo crear subcategorias', error);
