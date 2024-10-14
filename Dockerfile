@@ -7,11 +7,21 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --frozen-lockfile; \
-  else echo "No lockfile found." && exit 1; \
+
+# Instalar dependencias con manejo de errores
+RUN set -e; \
+  echo "Instalando dependencias..."; \
+  if [ -f yarn.lock ]; then \
+    echo "Usando yarn.lock para instalar dependencias"; \
+    yarn install --frozen-lockfile || (echo "Error durante yarn install" && exit 1); \
+  elif [ -f package-lock.json ]; then \
+    echo "Usando package-lock.json para instalar dependencias"; \
+    npm ci || (echo "Error durante npm ci" && exit 1); \
+  elif [ -f pnpm-lock.yaml ]; then \
+    echo "Usando pnpm-lock.yaml para instalar dependencias"; \
+    corepack enable pnpm && pnpm install --frozen-lockfile || (echo "Error durante pnpm install" && exit 1); \
+  else \
+    echo "No se encontró ningún archivo de lock." && exit 1; \
   fi
 
 # Build the application with environment variables
@@ -30,12 +40,20 @@ ENV VITE_AI_URL=${VITE_AI_URL}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Ensure the build uses the passed environment variables
-RUN \
-  if [ -f yarn.lock ]; then yarn build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-  else echo "No lockfile found." && exit 1; \
+# Build the application and catch any errors
+RUN set -e; \
+  echo "Iniciando el proceso de build..."; \
+  if [ -f yarn.lock ]; then \
+    echo "Usando yarn build"; \
+    yarn build || (echo "Error durante yarn build" && exit 1); \
+  elif [ -f package-lock.json ]; then \
+    echo "Usando npm run build"; \
+    npm run build || (echo "Error durante npm run build" && exit 1); \
+  elif [ -f pnpm-lock.yaml ]; then \
+    echo "Usando pnpm run build"; \
+    corepack enable pnpm && pnpm run build || (echo "Error durante pnpm run build" && exit 1); \
+  else \
+    echo "No se encontró ningún archivo de lock para el build." && exit 1; \
   fi
 
 # Final stage: Rebuild the source code only when needed

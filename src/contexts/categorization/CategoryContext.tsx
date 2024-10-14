@@ -11,7 +11,7 @@ import {
 	useState,
 } from 'react';
 import { CategoryInstance } from './category.class';
-//Esta funcion crea varias instancias de la clase Categoria
+// Esta funcion crea varias instancias de la clase Categoria
 // CategoryCreateContext.tsx
 const CategoryCreateContext = createContext<CategoryCreateContextType | null>(
 	null,

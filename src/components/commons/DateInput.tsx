@@ -5,7 +5,7 @@ interface Props {
 	setDate: (date: Date) => void;
 }
 
- export default function DateInput({ label, date, setDate }: Props) {
+export default function DateInput({ label, date, setDate }: Props) {
 	return (
 		<div className='form-date'>
 			<label className='form-date__label' htmlFor='input-date'>
@@ -20,5 +20,4 @@ interface Props {
 			/>
 		</div>
 	);
-};
-
+}

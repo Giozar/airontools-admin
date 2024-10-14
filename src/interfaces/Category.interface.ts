@@ -40,7 +40,7 @@ export interface CategoryClass {
 	mode?: 'create' | 'edit';
 }
 
-/*Para el contexto */
+/* Para el contexto */
 export interface CategoryCreateContextProps {
 	id: string;
 	name: string;
