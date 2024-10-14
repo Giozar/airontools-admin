@@ -35,14 +35,7 @@ export default function CreateSubcategories({
 
 	const SubcategoryAddedRef = useRef(false);
 	useEffect(() => {
-		console.log('🌹' + category.id);
-		if (category.id === '') console.log('aa');
-		if (
-			init &&
-			!hasSubcategories &&
-			!SubcategoryAddedRef.current &&
-			category.id
-		) {
+		if (init && !hasSubcategories && !SubcategoryAddedRef.current && category) {
 			addSubcategoryInstance(`subcat-${Date.now()}`, {
 				category: category.id,
 			});
