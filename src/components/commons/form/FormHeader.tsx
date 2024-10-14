@@ -2,16 +2,13 @@ import React, { FormEvent } from 'react';
 
 interface FormHeaderProps {
 	action: string;
-	onSubmit: (e: FormEvent) => Promise<void>;
+	onSubmit?: (e: FormEvent) => Promise<void>;
 }
 
-const FormHeader: React.FC<FormHeaderProps> = ({ action, onSubmit }) => {
+const FormHeader: React.FC<FormHeaderProps> = ({ action }) => {
 	return (
 		<div className='form-header'>
 			<h2>{action}</h2>
-			<button onClick={onSubmit} className='save'>
-				{action}
-			</button>
 		</div>
 	);
 };
