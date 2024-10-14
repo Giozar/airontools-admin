@@ -79,11 +79,16 @@ export default function Sidebar() {
 					<ComboBox
 						option='Orden'
 						options={['Ver', 'Crear'].map(val => val + ' orden')}
+						linkto={['/home/ver-orden', '/home/crear-orden']}
 						onOptionSelected={handleOptionSelected}
 					/>
 					<ComboBox
 						option='Herramientas'
 						options={['Ver', 'Crear'].map(val => val + ' herramientas')}
+						linkto={[
+							'/home/herramientas',
+							'/home/herramientas/crear-herramienta',
+						]}
 						onOptionSelected={handleOptionSelected}
 					/>
 					{user && user.role?.name === 'Administrador' && (
@@ -92,6 +97,7 @@ export default function Sidebar() {
 							options={['Ver', 'Crear', 'Crear rol de'].map(
 								val => val + ' usuarios',
 							)}
+							linkto={['/home/usuarios', '/home/usuarios/crear-usuario']}
 							onOptionSelected={handleOptionSelected}
 						/>
 					)}
@@ -99,6 +105,10 @@ export default function Sidebar() {
 						<ComboBox
 							option='Categorizaciones'
 							options={['Ver', 'Crear'].map(val => val + ' categorizaciones')}
+							linkto={[
+								'/home/categorizacion',
+								'/home/categorizacion/crear-familia',
+							]}
 							onOptionSelected={handleOptionSelected}
 						/>
 					)}
@@ -106,6 +116,10 @@ export default function Sidebar() {
 						<ComboBox
 							option='Especificaciones'
 							options={['Ver', 'Crear'].map(val => val + ' especificaciones')}
+							linkto={[
+								'/home/categorizacion/especificaciones',
+								'/home/categorizacion/especificaciones/crear-especificaciones',
+							]}
 							onOptionSelected={handleOptionSelected}
 						/>
 					)}

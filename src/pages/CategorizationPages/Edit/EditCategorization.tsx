@@ -1,5 +1,6 @@
 import EditFamily from '@components/categorizations/edit/EditFamily';
 import CategoryList from '@components/categorizations/edit/tables/EditCategoryTable';
+import ActionSearchList from '@components/commons/ActionSearchList';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 
 export default function EditCategorization() {
@@ -10,7 +11,13 @@ export default function EditCategorization() {
 			<form className='create-family-form' onSubmit={handleUpdateFamily}>
 				<EditFamily />
 			</form>
-			<CategoryList />
+			<ActionSearchList
+				Actiontitle='Crear Categoría'
+				ListTitle='Lista de categorías'
+				path={'crear-categoria'}
+				placeholder={'Buscar Categoría'}
+				ListComponent={CategoryList}
+			/>
 		</>
 	);
 }

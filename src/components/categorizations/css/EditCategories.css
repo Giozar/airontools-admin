@@ -93,11 +93,6 @@
 }
 
 .category__container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	gap: 1rem;
-	padding: 0;
-	width: 100%;
 	list-style: none;
 }
 .category__columns {

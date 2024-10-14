@@ -1,13 +1,16 @@
 import '@components/css/Combobox.css';
 import DownArrow from '@components/svg/DownArrow';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 export default function ComboBox({
 	option,
 	options,
+	linkto,
 	onOptionSelected,
 }: {
 	option: string;
 	options: string[];
+	linkto: string[];
 	onOptionSelected?: (selectedOption: string) => void;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +44,7 @@ export default function ComboBox({
 							className='combobox__option'
 							onClick={() => handleOptionClick(action)}
 						>
-							<span>{action}</span>
+							<Link to={linkto[index]}>{action}</Link>
 						</li>
 					))}
 				</ul>

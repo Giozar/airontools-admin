@@ -270,6 +270,7 @@ export function useEditCategorization() {
 					});
 				}
 			}
+			showSuccessAndReload('Categorías creadas con exito');
 		} catch (error) {
 			showError('no se pudo crear categorias', error);
 		}
