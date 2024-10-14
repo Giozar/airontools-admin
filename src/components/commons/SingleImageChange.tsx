@@ -19,7 +19,7 @@ const SingleImageChange = ({
 	setFileToDelete,
 	placeholder,
 	capture,
-	size = 'default'
+	size = 'default',
 }: ImageUploaderProps) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

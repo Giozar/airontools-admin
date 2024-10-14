@@ -1,4 +1,4 @@
-import CreateCategories from '../Create/CreateCategory';
+import CreateCategories from '@pages/CategorizationPages/Create/CreateCategory';
 
 export default function CreateCategoryPage() {
 	return (

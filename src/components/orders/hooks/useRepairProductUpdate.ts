@@ -1,8 +1,8 @@
 // useProductUpdate.ts
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
+import { OrderProduct } from '@interfaces/OrderProduct.interface';
 import { useEffect } from 'react';
-import { OrderProduct } from '../../../interfaces/OrderProduct.interface';
 
 export const useOrderProduct = (index: number) => {
 	const { products, setProducts } = useOrderContext();
@@ -10,7 +10,7 @@ export const useOrderProduct = (index: number) => {
 	const createdBy = user?.id || 'user';
 
 	useEffect(() => {
-		if (index === 0) updateProduct({ createdBy: createdBy });
+		if (index === 0) updateProduct({ createdBy });
 	}, [createdBy]);
 
 	const updateProduct = (updates: Partial<OrderProduct>) => {

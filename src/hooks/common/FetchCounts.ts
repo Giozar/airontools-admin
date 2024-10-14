@@ -41,7 +41,7 @@ async function fetchCounts(
 			specifications: null,
 			products: null,
 		};
-		//para que me complico la vida
+		// para que me complico la vida
 		let response;
 		if (options.fetchCategories) {
 			response = await axios.get(urls.categories);

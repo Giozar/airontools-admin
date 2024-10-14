@@ -1,4 +1,4 @@
-//Esta funcion crea varias instancias de la clase subcategoria
+// Esta funcion crea varias instancias de la clase subcategoria
 import {
 	SubcategoryClass,
 	SubcategoryCreateContextProps,

@@ -6,21 +6,21 @@
 	border: 1px solid var(--text-primary);
 	border-radius: 0.5rem; /* 8px */
 	padding: 1rem; /* 16px */
-	 /* 64px * 4 = 256px */
+	/* 64px * 4 = 256px */
 }
-.default-image{
+.default-image {
 	width: 8rem;
 	height: 8rem;
 }
-.small-image{
+.small-image {
 	width: 6rem;
 	height: 6rem;
 }
-.medium-image{
+.medium-image {
 	width: 12rem;
 	height: 12rem;
 }
-.large-image{
+.large-image {
 	width: 20rem;
 	height: 20rem;
 }

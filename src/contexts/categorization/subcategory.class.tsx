@@ -64,12 +64,15 @@ export class SubcategoryInstance implements SubcategoryCreateContextProps {
 	setImage(image: string) {
 		this.image = image;
 	}
+
 	setImageToDelete(imageToDelete: boolean) {
 		this.imageToDelete = imageToDelete;
 	}
+
 	setCreatedBy(createdBy: string) {
 		this.createdBy = createdBy;
 	}
+
 	setMode(mode: 'create' | 'edit') {
 		this.mode = mode;
 	}

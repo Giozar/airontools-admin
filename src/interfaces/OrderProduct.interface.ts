@@ -1,4 +1,4 @@
-//Esta interfaz se encargará de los productos en la orden
+// Esta interfaz se encargará de los productos en la orden
 export interface OrderProduct {
 	quantity: number;
 	brand: string;
