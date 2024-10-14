@@ -216,7 +216,7 @@ const router = createBrowserRouter([
 										),
 									},
 									{
-										path: 'editar-familia/crear-subcategoria',
+										path: 'editar-familia/editar-categoria/crear-subcategoria',
 										element: (
 											<FamilyCreateProvider>
 												<CategoryCreateProvider>
