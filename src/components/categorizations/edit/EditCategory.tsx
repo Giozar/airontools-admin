@@ -1,13 +1,12 @@
+import '@components/categorizations/css/EditCategories.css';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useModal } from '@contexts/Modal/ModalContext';
+import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import '@pages/css/createFamily.css';
 import { useEffect, useState } from 'react';
-import { handleOpenModal } from '../../../handlers/handleOpenModal';
-import './EditCategories.css';
 
 export default function EditCategory() {
 	const {

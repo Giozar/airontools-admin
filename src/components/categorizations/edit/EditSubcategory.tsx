@@ -1,3 +1,4 @@
+import '@components/categorizations/css/EditSubcategories.css';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
@@ -6,7 +7,6 @@ import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import { useEffect, useState } from 'react';
-import './EditSubcategories.css';
 
 /**
  * Componente que permite la edición de una subcategoría específica

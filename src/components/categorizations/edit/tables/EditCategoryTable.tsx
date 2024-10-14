@@ -14,7 +14,7 @@ export default function CategoryList() {
 		useCategoryCreateContext();
 	const { handleDeleteCategory } = useEditCategorization();
 	const { openModal } = useModal();
-
+	console.log(categoryInstances);
 	const handleConfirm = (categoryId: string, key: string) => {
 		handleDeleteCategory(categoryId);
 		removeCategoryInstance(key);

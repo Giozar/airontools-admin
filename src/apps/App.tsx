@@ -25,7 +25,7 @@ import CategorizationMenu from '@pages/CategorizationPages/CategorizationMenu';
 import CreateCategorization from '@pages/CategorizationPages/Create/CreateCategorization';
 import EditCategorization from '@pages/CategorizationPages/Edit/EditCategorization';
 import EditCategoryPage from '@pages/CategorizationPages/Edit/EditCategoryPage';
-import EditSubcategory from '@pages/CategorizationPages/Edit/EditSubcategory';
+import EditSubcategoryPage from '@pages/CategorizationPages/Edit/EditSubcategoryPage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
 import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
@@ -219,7 +219,7 @@ const router = createBrowserRouter([
 											<FamilyCreateProvider>
 												<CategoryCreateProvider>
 													<SubcategoryCreateProvider>
-														<EditSubcategory />
+														<EditSubcategoryPage />
 													</SubcategoryCreateProvider>
 												</CategoryCreateProvider>
 											</FamilyCreateProvider>
