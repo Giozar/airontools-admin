@@ -60,7 +60,7 @@ export default function RepairOrderForm({
 	const { addProduct, removeProduct } = useOrderProduct(0);
 
 	useEffect(() => {
-		console.log(initialData);
+		// console.log(initialData);
 	}, [observations, authorizationDate]);
 
 	useEffect(() => {

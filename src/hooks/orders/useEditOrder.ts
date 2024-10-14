@@ -16,36 +16,38 @@ export default function useEditOrder() {
 		deliveryDate,
 		authorizationDate,
 		products,
+		quoteDeliveryTime,
 	} = useOrderContext();
 
 	const { name: companyName } = useCompanyContext();
 	const { name: customerName, phoneNumber } = useCustomerContext();
 
-	//const { findOrCreateProduct } = useOrderProductService();
+	// const { findOrCreateProduct } = useOrderProductService();
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
 
 	const editOrder = async (e: Event) => {
 		e.preventDefault();
 		try {
-			//const response = await findOrCreateProduct(products[0]);
-			//console.log(response);
+			// const response = await findOrCreateProduct(products[0]);
+			// console.log(response);
 			const response = await createCustomerService({
 				customerType: CustomerType.INDIVIDUAL,
 				name: customerName,
-				phoneNumber: phoneNumber,
+				phoneNumber,
 				createdBy: createdBy || '',
 			});
 			console.log(response);
 			const response2 = await createOrderService({
 				customer: response._id,
-				orderType: orderType,
-				authorizationDate: authorizationDate,
-				products: products,
+				orderType,
+				authorizationDate,
+				products,
 				receivedBy: response._id,
 				deliveryRepresentative: 'Marco',
-				orderStatus: orderStatus,
+				orderStatus,
 				createdBy: createdBy || '',
+				quoteDeliveryTime,
 			});
 			console.log(response2);
 		} catch (error) {
