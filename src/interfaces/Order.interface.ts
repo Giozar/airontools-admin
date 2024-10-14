@@ -14,8 +14,11 @@ export enum OrderType {
 
 export interface Order {
 	customer: string; // ID del cliente
+	company?: string;
 	orderType: string; // Tipo de orden
 	authorizationDate: string; // Fecha de autorización
+	deliveryDate?: Date; //  Fecha de entrega del producto
+	quoteDeliveryTime: string; // Tiempo de entrega de la cotización
 	products: OrderProduct[]; // Array de productos
 	images: string[]; // Array de URLs de imágenes
 	receivedBy: string; // ID de quien recibió la orden
@@ -30,9 +33,11 @@ export interface Order {
 
 export interface CreateOrder {
 	customer: string; // ID del cliente relacionado
+	company?: string;
 	orderType: OrderType; // Tipo de orden (en este caso siempre 'repair')
 	authorizationDate: Date; // Fecha de autorización
-	deliveryDate?: Date;
+	deliveryDate?: Date; //  Fecha de entrega del producto
+	quoteDeliveryTime: string; // Tiempo de entrega de la cotización
 	products: OrderProduct[]; // Lista para id's de productos a reparar
 	observations?: string; // Observaciones generales (opcional)
 	images?: string[]; // URLs de las imágenes opcionales (opcional)
@@ -45,9 +50,11 @@ export interface CreateOrder {
 export interface UpdateOrder {
 	_id: string; // ID de la orden (requerido para editar)
 	customer?: string; // ID del cliente relacionado (opcional para edición)
+	company?: string;
 	orderType?: OrderType; // Tipo de orden (opcional para edición)
 	authorizationDate?: Date; // Fecha de autorización (opcional para edición)
 	deliveryDate?: Date;
+	quoteDeliveryTime?: string; // Tiempo de entrega de la cotización
 	products?: RepairProduct[]; // Lista de productos a reparar (opcional)
 	observations?: string; // Observaciones generales (opcional)
 	images?: string[]; // URLs de las imágenes (opcional)
@@ -61,12 +68,16 @@ export interface OrderContextProps {
 	_id?: string; // ID de la orden
 	customer: string; // ID del cliente relacionado
 	setCustomer: (value: string) => void; // Setter para actualizar el cliente
+	company?: string;
+	setCompany: (value: string) => void;
 	orderType: OrderType; // Tipo de orden (en este caso siempre 'repair')
 	setOrderType: (value: OrderType) => void; // Setter para actualizar el tipo de orden
 	authorizationDate: Date; // Fecha de autorización
 	setAuthorizationDate: (value: Date) => void; // Setter para actualizar la fecha de autorización
-	deliveryDate: Date;
+	deliveryDate: Date; // Fecha de entrega de la cotización
 	setDeliveryDate: (value: Date) => void;
+	quoteDeliveryTime: string; // Tiempo de entrega de la cotización
+	setQuoteDeliveryTime: (value: string) => void;
 	products: OrderProduct[]; // Lista de productos a reparar
 	setProducts: (value: OrderProduct[]) => void; // Setter para actualizar la lista de productos
 	observations: string; // Observaciones generales

@@ -34,6 +34,8 @@ export default function RepairOrderForm({
 		authorizationDate,
 		setAuthorizationDate,
 		products,
+		quoteDeliveryTime,
+		setQuoteDeliveryTime,
 	} = useOrderContext();
 
 	const observation = products
@@ -87,8 +89,8 @@ export default function RepairOrderForm({
 				id={'cotizacion'}
 				label={'Tiempo de entrega de cotización'}
 				placeholder={'Tiempo de entrega de cotización'}
-				value={observation}
-				onChange={e => setObservations(e.target.value)}
+				value={quoteDeliveryTime}
+				onChange={e => setQuoteDeliveryTime(e.target.value)}
 			/>
 			<h2>Datos de la herramienta</h2>
 			<DynamicSizeTable
