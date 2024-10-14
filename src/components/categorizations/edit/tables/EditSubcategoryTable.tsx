@@ -18,11 +18,11 @@ export default function SubcategoryList() {
 		getSubcategoryInstance,
 	} = useSubcategoryCreateContext();
 	const { getCategoryInstance } = useCategoryCreateContext();
-	const { handleDeleteCategory } = useEditCategorization();
+	const { handleDeleteSubcategory } = useEditCategorization();
 	const { openModal } = useModal();
 
 	const handleConfirm = (subcategoryId: string, key: string) => {
-		handleDeleteCategory(subcategoryId);
+		handleDeleteSubcategory(subcategoryId);
 		removeSubcategoryInstance(key);
 	};
 	const [categoryKey, setCategoryKey] = useState<string | null>(null);

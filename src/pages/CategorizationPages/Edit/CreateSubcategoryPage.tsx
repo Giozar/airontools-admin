@@ -1,4 +1,4 @@
-import CreateSubcategories from '../Create/CreateSubcategoriesWithCategory';
+import CreateSubcategories from '../Create/CreateSubcategory';
 
 export default function CreateCategoryPage() {
 	return (

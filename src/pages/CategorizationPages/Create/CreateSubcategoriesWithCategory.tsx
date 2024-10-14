@@ -1,21 +1,27 @@
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import { useEffect, useRef } from 'react';
-import './createSubcategory.css';
-
-interface CreateSubcategoryProps {
-	createButton?: boolean;
-	init?: boolean;
-}
-
-export default function CreateSubcategories({
-	createButton,
-	init = false,
-}: CreateSubcategoryProps) {
+import '@pages/css/createFamily.css';
+/**
+ * Permite crear nuevas subcategorías y asignarles una categoría específica.
+ *
+ * Este componente muestra un botón para añadir nuevas subcategorías con la categoría especificada.
+ * También muestra una lista de subcategorías en modo 'create', permitiendo la edición del nombre,
+ * descripción e imagen de cada subcategoría. Las subcategorías se pueden eliminar con un botón.
+ *
+ * @param {Object} props - Props del componente.
+ * @param {string} props.category - La categoría que se le asignará a la nueva subcategoría.
+ *
+ * @returns {JSX.Element} - Un componente que permite crear nuevas subcategorías con una categoría específica,
+ *   y que muestra una lista de subcategorías en modo 'create' con opciones para editar y eliminar.
+ */
+export default function CreateSubcategoriesWithCategory({
+	category,
+}: {
+	category: string;
+}) {
 	const {
 		subcategoryInstances,
 		addSubcategoryInstance,
@@ -23,57 +29,52 @@ export default function CreateSubcategories({
 		getSubcategoryInstance,
 		updateSubcategoryInstance,
 	} = useSubcategoryCreateContext();
-	const { getCategoryInstance } = useCategoryCreateContext();
+
 	const { handleCreateSubcategory } = useEditCategorization();
-	const hasSubcategories = Object.values(subcategoryInstances).some(
-		Subcategory => Subcategory.mode === 'create',
-	);
-	const SubcategoryAddedRef = useRef(false);
-	useEffect(() => {
-		if (init && !hasSubcategories && !SubcategoryAddedRef.current) {
-			addSubcategoryInstance(`subcat-${Date.now()}`, {});
-			SubcategoryAddedRef.current = true;
-		}
-	}, [init, hasSubcategories]);
-
-	const categoryKey = localStorage.getItem('categoryToEdit');
-	if (!categoryKey) return null;
-	const category = getCategoryInstance(categoryKey);
-	if (!category || category.mode !== 'edit') return null;
-
 	return (
-		<div className='create-subcategories'>
-			<h2 className='create-subcategories__title'>Subcategorías:</h2>
-			{!hasSubcategories && (
+		<div>
+			<div>
+				<h2>Subcategorias:</h2>
 				<button
 					type='button'
-					onClick={() =>
+					onClick={() => {
 						addSubcategoryInstance(`subcat-${Date.now()}`, {
-							category: category.id,
-						})
-					}
-					className='create-subcategories__add-button'
+							category,
+						});
+					}}
+					className='save-button'
 				>
-					Añadir nueva subcategoría
+					Añadir nueva Subcategoria
 				</button>
-			)}
-			{hasSubcategories && (
-				<ul className='create-subcategories__list'>
-					{Object.keys(subcategoryInstances).map(key => {
+			</div>
+
+			<ul className='subcategory'>
+				{Object.keys(subcategoryInstances)
+					.filter(key => subcategoryInstances[key].category === category)
+					.map(key => {
 						const Subcategory = getSubcategoryInstance(key);
-						if (!Subcategory || Subcategory.mode !== 'create') return null;
+						if (!Subcategory) return null;
+						if (Subcategory.mode !== 'create') return null;
 
 						return (
-							<li key={key} className='create-subcategories__item'>
-								<h2 className='create-subcategories__item-header'>
-									Nueva subcategoría
+							<li key={key}>
+								<h2 className='item-header'>
+									Nueva Subcategoría
+									<button
+										type='button'
+										onClick={() => removeSubcategoryInstance(key)}
+										className='cancel-button'
+									>
+										Borrar
+									</button>
 								</h2>
+
 								<TextInput
-									className='create-subcategories__item-name'
-									id={'subcategoria' + key}
-									label={'Nombre de subcategoría:'}
+									className='item-name'
+									id={'Subcategoria' + key}
+									label={'Nombre de Subcategoria:'}
 									value={Subcategory.name}
-									placeholder={'subcategoría 1'}
+									placeholder={'Subcategoria 1'}
 									onChange={e =>
 										updateSubcategoryInstance(key, { name: e.target.value })
 									}
@@ -81,11 +82,11 @@ export default function CreateSubcategories({
 								/>
 								<br />
 								<TextAreaInput
-									className='create-subcategories__item-description'
+									className='item-description'
 									id={'description' + key}
-									label={'Descripción de subcategoría:'}
+									label={'Descripción de Subcategoria:'}
 									value={Subcategory.description}
-									placeholder={'Introduce la descripción de la subcategoría...'}
+									placeholder={'Introduce la descripción de la Subcategoria...'}
 									onChange={e =>
 										updateSubcategoryInstance(key, {
 											description: e.target.value,
@@ -94,7 +95,7 @@ export default function CreateSubcategories({
 									rows={6}
 								/>
 								<SingleImageChange
-									title={`Imagen de subcategoría:`}
+									title={`Imagen de Subcategoria:`}
 									filePreview={
 										Subcategory.rawImage
 											? URL.createObjectURL(Subcategory.rawImage)
@@ -104,40 +105,13 @@ export default function CreateSubcategories({
 										updateSubcategoryInstance(key, { rawImage: file })
 									}
 								/>
-								<div className='create-subcategories__button-group'>
-									<button
-										type='button'
-										onClick={() =>
-											addSubcategoryInstance(`subcat-${Date.now()}`, {
-												category: category.id,
-											})
-										}
-										className='create-subcategories__add-button'
-									>
-										Añadir nueva subcategoría
-									</button>
-									<button
-										type='button'
-										onClick={() => removeSubcategoryInstance(key)}
-										className='create-subcategories__remove-button'
-									>
-										Borrar
-									</button>
-								</div>
 							</li>
 						);
 					})}
-					{createButton && (
-						<button
-							type='button'
-							onClick={handleCreateSubcategory}
-							className='create-subcategories__save-button'
-						>
-							Crear subcategoría(s)
-						</button>
-					)}
-				</ul>
-			)}
+			</ul>
+			<button type='button' onClick={handleCreateSubcategory} className='save'>
+				Crear subcategorias
+			</button>
 		</div>
 	);
 }
