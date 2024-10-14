@@ -65,7 +65,8 @@ export interface UpdateOrder {
 }
 
 export interface OrderContextProps {
-	_id?: string; // ID de la orden
+	_id: string; // ID de la orden
+	setId: (value: string) => void;
 	customer: string; // ID del cliente relacionado
 	setCustomer: (value: string) => void; // Setter para actualizar el cliente
 	company?: string;
@@ -96,4 +97,5 @@ export interface OrderContextProps {
 	setCreatedBy: (value: string) => void; // Setter para actualizar quién creó la orden
 	updatedBy?: string; // ID del usuario que actualizó la orden (opcional)
 	setUpdatedBy?: (value: string) => void; // Setter para actualizar quién actualizó la orden
+	resetOrder: () => void;
 }

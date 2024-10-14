@@ -45,4 +45,5 @@ export interface CustomerContextProps {
 	setCreatedBy: (value: string) => void;
 	updatedBy?: string;
 	setUpdatedBy?: (value: string) => void;
+	resetCustomer: () => void;
 }

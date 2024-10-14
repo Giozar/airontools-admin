@@ -16,10 +16,16 @@ export default function useCreateOrder() {
 		authorizationDate,
 		products,
 		quoteDeliveryTime,
-		observations,
+		deliveryRepresentative,
+		setId,
 	} = useOrderContext();
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
+
+	const productsObservation = products
+		.map(product => `${product.model}: ${product.observation}`)
+		.filter(observation => observation !== '')
+		.join('. '); // obten las observaciones de los productos
 
 	const createOrder = async (e: Event) => {
 		e.preventDefault();
@@ -48,12 +54,13 @@ export default function useCreateOrder() {
 				authorizationDate,
 				products,
 				receivedBy: createdBy,
-				deliveryRepresentative: 'Marco',
+				deliveryRepresentative,
 				orderStatus,
-				observations,
+				observations: productsObservation,
 				quoteDeliveryTime,
 				createdBy,
 			});
+			setId(createdOrder._id);
 			console.log(createdOrder);
 		} catch (error) {
 			console.log(error);

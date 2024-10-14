@@ -9,6 +9,7 @@ interface TextAreaInputProps {
 	className?: string;
 	classNameForLabel?: string;
 	classNameForTextArea?: string;
+	disabled?: boolean;
 }
 
 const TextAreaInput = ({
@@ -21,6 +22,7 @@ const TextAreaInput = ({
 	className,
 	classNameForLabel,
 	classNameForTextArea,
+	disabled,
 }: TextAreaInputProps) => {
 	return (
 		<div className={className || 'text-area-input'}>
@@ -31,6 +33,7 @@ const TextAreaInput = ({
 				{label}
 			</label>
 			<textarea
+				disabled={disabled}
 				id={id}
 				placeholder={placeholder}
 				rows={rows}

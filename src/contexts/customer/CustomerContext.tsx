@@ -9,14 +9,39 @@ const CustomerContext = createContext<CustomerContextProps | null>(null);
 
 // Proveedor del contexto de Customer
 export const CustomerProvider = ({ children }: { children: ReactNode }) => {
+	// Estado inicial
+	const initialState = {
+		customerType: CustomerType.INDIVIDUAL,
+		name: '',
+		phoneNumber: '',
+		company: '',
+		createdBy: '',
+		updatedBy: undefined as string | undefined,
+	};
+
+	// Definir los estados
 	const [customerType, setCustomerType] = useState<CustomerType>(
-		CustomerType.INDIVIDUAL,
+		initialState.customerType,
 	);
-	const [name, setName] = useState<string>('');
-	const [phoneNumber, setPhoneNumber] = useState<string>('');
-	const [company, setCompany] = useState<string>('');
-	const [createdBy, setCreatedBy] = useState<string>('');
-	const [updatedBy, setUpdatedBy] = useState<string | undefined>(undefined);
+	const [name, setName] = useState<string>(initialState.name);
+	const [phoneNumber, setPhoneNumber] = useState<string>(
+		initialState.phoneNumber,
+	);
+	const [company, setCompany] = useState<string>(initialState.company);
+	const [createdBy, setCreatedBy] = useState<string>(initialState.createdBy);
+	const [updatedBy, setUpdatedBy] = useState<string | undefined>(
+		initialState.updatedBy,
+	);
+
+	// Función para resetear los valores del contexto a su estado inicial
+	const resetCustomer = () => {
+		setCustomerType(initialState.customerType);
+		setName(initialState.name);
+		setPhoneNumber(initialState.phoneNumber);
+		setCompany(initialState.company);
+		setCreatedBy(initialState.createdBy);
+		setUpdatedBy(initialState.updatedBy);
+	};
 
 	return (
 		<CustomerContext.Provider
@@ -33,6 +58,7 @@ export const CustomerProvider = ({ children }: { children: ReactNode }) => {
 				setCreatedBy,
 				updatedBy,
 				setUpdatedBy,
+				resetCustomer,
 			}}
 		>
 			{children}
