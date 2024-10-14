@@ -1,7 +1,9 @@
 import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
+import { PDFIcon } from '@components/svg/PDFIcon';
 import TrashIcon from '@components/svg/TrashIcon';
+import { airontoolsAPI } from '@configs/api.config';
 import { Order } from '@interfaces/Order.interface';
 import { getAllOrdersService } from '@services/orders/orders.service';
 import { useEffect, useState } from 'react';
@@ -31,6 +33,7 @@ export default function RepairOrderList() {
 			'Cliente',
 			'Recibido por',
 			'Ver',
+			'PDF',
 			'Editar',
 			'Borrar',
 		],
@@ -46,6 +49,14 @@ export default function RepairOrderList() {
 			>
 				<EyeIcon />
 			</button>,
+			<a
+				key={'pdf'}
+				target='_blank'
+				href={`${airontoolsAPI}/basic-reports/repair-order/${order._id}`}
+				rel='noreferrer'
+			>
+				<PDFIcon />
+			</a>,
 			<button
 				className='table__button table__button--edit'
 				key={`edit-${order._id}`}
