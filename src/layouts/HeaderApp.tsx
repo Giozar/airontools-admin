@@ -1,5 +1,5 @@
 import Breadcrumb from '@components/commons/Breadcrumb';
-import Return from '@components/commons/return';
+import Return from '@components/commons/Return';
 import CircleLeftIcon from '@components/svg/CircleLeftIcon';
 import MenuIcon from '@components/svg/MenuIcon';
 import ThemeToggleButton from '@components/ThemeToggle';
