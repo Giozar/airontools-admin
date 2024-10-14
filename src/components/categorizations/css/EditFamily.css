@@ -1,5 +1,5 @@
-/* Bloque principal: category-item */
-.category-item {
+/* Bloque principal: family-item */
+.family-item {
 	display: flex;
 	position: relative; /* Necesario para posicionar el modal */
 	flex-direction: column;
@@ -11,19 +11,19 @@
 }
 
 /* Header del item de categoría */
-.category-item__header {
+.family-item__header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 1rem;
 }
 
-.category-item__title {
+.family-item__title {
 	margin: 0;
 	font-size: 1.5rem;
 }
 
-.category-item__delete-button {
+.family-item__delete-button {
 	cursor: pointer;
 	border: none;
 	border-radius: 4px;
@@ -32,30 +32,30 @@
 	color: #fff;
 }
 
-.category-item__delete-button:hover {
+.family-item__delete-button:hover {
 	background-color: #c0392b;
 }
 
 /* Estilos para el input de texto y el área de texto */
-.category-item__text-input,
-.category-item__text-area-input {
+.family-item__text-input,
+.family-item__text-area-input {
 	margin-bottom: 1rem;
 }
 
-.category-item__text-input input,
-.category-item__text-area-input textarea {
+.family-item__text-input input,
+.family-item__text-area-input textarea {
 	box-sizing: border-box;
 	border: 1px solid var(--input-bg);
 	border-radius: 4px;
 	padding: 0.5rem;
 	width: 100%;
 }
-.category-item__text-area-input textarea {
+.family-item__text-area-input textarea {
 	resize: vertical; /* Permite ajustar la altura */
 }
 
 /* Estilo para el botón de actualizar categoría */
-.category-item__update-button {
+.family-item__update-button {
 	cursor: pointer;
 	border: none;
 	border-radius: 4px;
@@ -64,10 +64,10 @@
 	color: #fff;
 }
 
-.category-item__update-button:hover {
+.family-item__update-button:hover {
 	background-color: #27ae60;
 }
-.category-item__edit-button {
+.family-item__edit-button {
 	cursor: pointer;
 	border: none;
 	border-radius: 4px;
@@ -77,7 +77,7 @@
 }
 
 /* Estilos para el modal */
-.category-item__modal {
+.family-item__modal {
 	position: fixed;
 	z-index: 2000;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -88,11 +88,11 @@
 	overflow: auto;
 }
 
-.category-item__modal .button {
+.family-item__modal .button {
 	margin-top: 1rem;
 }
 
-.category__container {
+.family__container {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 	gap: 1rem;
@@ -100,17 +100,18 @@
 	width: 100%;
 	list-style: none;
 }
-.category__columns {
+.family__columns {
 	display: flex;
 	gap: 1rem;
 }
-.category__column-left {
+.family__column-left {
 	flex: 1;
 }
-.category__column-right {
+.family__column-right {
 	width: fit-content;
 }
-
-form {
-	max-width: 1200px;
+.family__footer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
 }

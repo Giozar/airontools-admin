@@ -10,10 +10,13 @@ export function CreateFamilyForm() {
 
 	return (
 		<form className='createfamilyform' onSubmit={handleSubmit}>
-			<FormHeader action='Crear Categorización' onSubmit={handleSubmit} />
+			<FormHeader action='Crear Categorización' />
 			<CreateFamily />
 			<CreateCategories />
 			<CreateSubcategories />
+			<button onSubmit={handleSubmit} className='save'>
+				Crear Categorización
+			</button>
 		</form>
 	);
 }

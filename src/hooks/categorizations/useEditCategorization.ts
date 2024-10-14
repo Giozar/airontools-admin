@@ -23,26 +23,27 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
-	const {
-		showError,
-		showSuccess,
-		showSuccessAndReload,
-		showSuccessAndNavigate,
-	} = useAlertHelper();
+	const { showError, showSuccess, showSuccessAndNavigate } = useAlertHelper();
 	const { user } = useAuthContext();
-	const { addCategoryInstance, getCategoryInstance, getAllCategoryInstances } =
-		useCategoryCreateContext();
+	const {
+		addCategoryInstance,
+		getCategoryInstance,
+		getAllCategoryInstances,
+		removeCreateModeCategories,
+		resetCategoryInstances,
+	} = useCategoryCreateContext();
 	const {
 		addSubcategoryInstance,
 		getSubcategoryInstance,
 		getAllSubcategoryInstances,
+		removeCreateModeSubcategories,
+		resetSubcategoryInstances,
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const family = location.state?.familyId;
-
+	const family = localStorage.getItem('familyToEdit');
 	// useEffect para obtener los datos de familia, categorías y subcategorías
 	useEffect(() => {
 		if (!family) return;
@@ -95,7 +96,7 @@ export function useEditCategorization() {
 				const response = await getSubcategoryByFamilyIdService(family);
 				if (response.length === 0) return;
 				response.forEach((subcategory, index) => {
-					const instanceId = 'cat' + index;
+					const instanceId = 'subcat' + index;
 					addSubcategoryInstance(instanceId, {
 						id: subcategory.id,
 						name: subcategory.name,
@@ -111,13 +112,18 @@ export function useEditCategorization() {
 				showError('No se pudo obtener las subcategorias', error);
 			}
 		};
-
-		// Llamado a las funciones de obtención de datos
-		getFamilyData();
-		getCategoryData();
-		getSubcategoryData();
-	}, [family]);
-
+		if (location.pathname === '/home/categorizacion/crear-familia') {
+			familyToEdit.resetFamilyValues();
+			resetCategoryInstances();
+			resetSubcategoryInstances();
+			console.log('✨', familyToEdit);
+		} else {
+			// Llamado a las funciones de obtención de datos
+			getFamilyData();
+			getCategoryData();
+			getSubcategoryData();
+		}
+	}, [family, location.pathname]);
 	// Función general para manejar la actualización de datos
 	const handleUpdate = async (
 		updateService: (id: string, data: any) => Promise<void>,
@@ -175,7 +181,7 @@ export function useEditCategorization() {
 			if (!categoryId)
 				throw new Error(`No existe la categoría con el id ${categoryId}`);
 			await deleteCategoryService(categoryId);
-			showSuccessAndReload('Categoría borrada');
+			showSuccess('Categoría borrada');
 		} catch (error) {
 			showError('no se pudo borrar categoría', error);
 		}
@@ -187,7 +193,7 @@ export function useEditCategorization() {
 			if (!subcategoryId)
 				throw new Error(`No existe la categoría con el id ${subcategoryId}`);
 			await deleteSubcategoryService(subcategoryId);
-			showSuccessAndReload('Subcategoría borrada');
+			showSuccess('Subcategoría borrada');
 		} catch (error) {
 			showError('no se pudo borrar subcategoria', error);
 		}
@@ -217,9 +223,10 @@ export function useEditCategorization() {
 		try {
 			if (!user) return;
 			console.log('Subcategorias creadas');
+			console.log(subcategoryInstances);
+			let categoryId = '';
 			for (const subcategory of subcategoryInstances) {
 				if (subcategory.mode !== 'create') continue;
-
 				const subcategoryId = await createSubcategoryService({
 					name: subcategory.name,
 					description: subcategory.description,
@@ -229,7 +236,7 @@ export function useEditCategorization() {
 					category: subcategory.category,
 				});
 				console.log('ID de la subcategoría:', subcategoryId._id);
-
+				categoryId = subcategory.category;
 				const uploadedSubcategoryImageUrl = subcategory.rawImage
 					? await handleRawImageUpload(subcategory.rawImage, subcategoryId._id)
 					: '';
@@ -239,7 +246,9 @@ export function useEditCategorization() {
 					});
 				}
 			}
-			showSuccessAndReload('Proceso completado exitosamente');
+			removeCreateModeSubcategories();
+			addSubcategoryInstance(`subcat-${Date.now()}`, { category: categoryId });
+			showSuccess('Subcategorías creadas con éxito');
 		} catch (error) {
 			showError('no se pudo crear subcategorias', error);
 		}
@@ -270,16 +279,17 @@ export function useEditCategorization() {
 					});
 				}
 			}
+			removeCreateModeCategories();
+			addCategoryInstance(`cat-${Date.now()}`, {});
+			showSuccess('Categorías creadas con exito');
 		} catch (error) {
 			showError('no se pudo crear categorias', error);
 		}
 	};
 
 	const handleEditCategorization = (family: FamilyDataFrontend) => {
-		localStorage.setItem('familyToEdit', JSON.stringify({ family }));
-		navigate(`${location.pathname}/editar-familia`, {
-			state: { familyId: family.id },
-		});
+		localStorage.setItem('familyToEdit', family.id);
+		navigate(`${location.pathname}/editar-familia`);
 	};
 
 	return {

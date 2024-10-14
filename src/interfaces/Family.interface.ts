@@ -51,4 +51,5 @@ export interface FamilyCreateContextProps {
 	setImageToDelete?: (value: boolean) => void;
 	createdBy: string;
 	setCreatedBy: (value: string) => void;
+	resetFamilyValues: () => void;
 }

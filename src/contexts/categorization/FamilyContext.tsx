@@ -1,5 +1,11 @@
 import { FamilyCreateContextProps } from '@interfaces/Family.interface';
-import { createContext, ReactNode, useContext, useState } from 'react';
+import {
+	createContext,
+	ReactNode,
+	useCallback,
+	useContext,
+	useState,
+} from 'react';
 
 const FamilyCreateContext = createContext<FamilyCreateContextProps | null>(
 	null,
@@ -13,7 +19,15 @@ export const FamilyCreateProvider = ({ children }: { children: ReactNode }) => {
 	const [image, setImage] = useState('');
 	const [imageToDelete, setImageToDelete] = useState(false);
 	const [createdBy, setCreatedBy] = useState<string>('');
-
+	const resetFamilyValues = useCallback(() => {
+		setId('');
+		setName('');
+		setDescription('');
+		setRawImage(null);
+		setImage('');
+		setImageToDelete(false);
+		setCreatedBy('');
+	}, []);
 	return (
 		<FamilyCreateContext.Provider
 			value={{
@@ -31,6 +45,7 @@ export const FamilyCreateProvider = ({ children }: { children: ReactNode }) => {
 				setImageToDelete,
 				createdBy,
 				setCreatedBy,
+				resetFamilyValues,
 			}}
 		>
 			{children}

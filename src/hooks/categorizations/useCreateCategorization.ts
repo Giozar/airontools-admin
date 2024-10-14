@@ -15,11 +15,13 @@ import { errorHandler } from '@utils/errorHandler.util';
 export function useCreateCategorization() {
 	const { ...familyToCreate } = useFamilyCreateContext();
 	const { user } = useAuthContext();
-	const { getAllCategoryInstances } = useCategoryCreateContext();
+	const { getAllCategoryInstances, resetCategoryInstances } =
+		useCategoryCreateContext();
 	const categoryInstances = getAllCategoryInstances();
-	const { getAllSubcategoryInstances } = useSubcategoryCreateContext();
+	const { getAllSubcategoryInstances, resetSubcategoryInstances } =
+		useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
-	const { showError, showSuccessAndReload } = useAlertHelper();
+	const { showError, showSuccess } = useAlertHelper();
 
 	const handleRawImageUpload = async (
 		rawImage: File,
@@ -115,7 +117,10 @@ export function useCreateCategorization() {
 					});
 				}
 			}
-			showSuccessAndReload('Proceso completado exitosamente');
+			familyToCreate.resetFamilyValues();
+			resetCategoryInstances();
+			resetSubcategoryInstances();
+			showSuccess('Proceso completado exitosamente');
 		} catch (error) {
 			showError('error', error);
 		}
@@ -149,7 +154,8 @@ export function useCreateCategorization() {
 					});
 				}
 			}
-			showSuccessAndReload('Proceso completado exitosamente');
+			resetSubcategoryInstances();
+			showSuccess('Proceso completado exitosamente');
 		} catch (error) {
 			showError('error', error);
 		}

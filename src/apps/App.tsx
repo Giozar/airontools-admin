@@ -23,7 +23,11 @@ import { UserProvider } from '@contexts/User/UserContext';
 import BasePage from '@layouts/BasePage';
 import CategorizationMenu from '@pages/CategorizationPages/CategorizationMenu';
 import CreateCategorization from '@pages/CategorizationPages/Create/CreateCategorization';
+import CreateCategoryPage from '@pages/CategorizationPages/Edit/CreateCategoryPage';
+import CreateSubcategoryPage from '@pages/CategorizationPages/Edit/CreateSubcategoryPage';
 import EditCategorization from '@pages/CategorizationPages/Edit/EditCategorization';
+import EditCategoryPage from '@pages/CategorizationPages/Edit/EditCategoryPage';
+import EditSubcategoryPage from '@pages/CategorizationPages/Edit/EditSubcategoryPage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
 import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
@@ -194,6 +198,54 @@ const router = createBrowserRouter([
 												<CategoryCreateProvider>
 													<SubcategoryCreateProvider>
 														<EditCategorization />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
+									},
+									{
+										path: 'editar-familia/crear-categoria',
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<CreateCategoryPage />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
+									},
+									{
+										path: 'editar-familia/editar-categoria/crear-subcategoria',
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<CreateSubcategoryPage />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
+									},
+									{
+										path: 'editar-familia/editar-categoria',
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<EditCategoryPage />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
+									},
+									{
+										path: 'editar-familia/editar-categoria/editar-subcategoria',
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<EditSubcategoryPage />
 													</SubcategoryCreateProvider>
 												</CategoryCreateProvider>
 											</FamilyCreateProvider>

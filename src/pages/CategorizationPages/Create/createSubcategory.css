@@ -1,0 +1,56 @@
+.create-subcategories {
+	background-color: var(--card-bg);
+	padding: 20px;
+}
+.create-subcategories .text-area-input__textarea,
+.create-subcategories .text-input__input {
+	width: 100%;
+}
+.create-subcategories__title {
+	margin-bottom: 16px;
+	font-size: 24px;
+}
+
+.create-subcategories__add-button,
+.create-subcategories__save-button,
+.create-subcategories__remove-button {
+	cursor: pointer;
+	border: none;
+	border-radius: 4px;
+	padding: 10px 20px;
+}
+.create-subcategories__remove-button {
+	background-color: var(--error);
+}
+.create-subcategories__save-button {
+	background-color: var(--success);
+	width: 100%;
+}
+.create-subcategories__list {
+	padding: 0;
+	list-style: none;
+}
+
+.create-subcategories__item {
+	margin-bottom: 20px;
+	border-radius: 4px;
+	padding: 15px;
+}
+
+.create-subcategories__item-header {
+	margin-bottom: 10px;
+	color: var(--accent-primary);
+	font-size: 20px;
+}
+
+.create-subcategories__item-name,
+.create-subcategories__item-description {
+	margin-bottom: 10px;
+	width: 100%;
+}
+
+.create-subcategories__button-group {
+	display: flex;
+	justify-content: space-between;
+	margin: 1rem 0;
+}

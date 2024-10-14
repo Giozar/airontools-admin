@@ -1,0 +1,14 @@
+.return {
+	margin: 0 2rem;
+}
+
+.return__link {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.return__icon {
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}

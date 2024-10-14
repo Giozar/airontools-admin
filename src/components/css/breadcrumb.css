@@ -34,3 +34,10 @@
 	margin-top: -0.2rem;
 	color: var(--text-secondary);
 }
+
+/* Media query para ocultar breadcrumb en dispositivos pequeños */
+@media (max-width: 768px) {
+	.breadcrumb {
+		display: none;
+	}
+}

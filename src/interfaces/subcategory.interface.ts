@@ -105,4 +105,6 @@ export interface SubcategoryCreateContextType {
 		update: Partial<SubcategoryCreateContextProps>,
 	) => void;
 	getAllSubcategoryInstances: () => SubcategoryCreateContextProps[];
+	removeCreateModeSubcategories: () => void;
+	resetSubcategoryInstances: () => void;
 }
