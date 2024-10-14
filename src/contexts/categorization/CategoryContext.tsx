@@ -92,6 +92,10 @@ export const CategoryCreateProvider = ({
 		});
 	}, []);
 
+	const resetCategoryInstances = useCallback(() => {
+		setCategoryInstances({});
+	}, []);
+
 	return (
 		<CategoryCreateContext.Provider
 			value={{
@@ -102,6 +106,7 @@ export const CategoryCreateProvider = ({
 				updateCategoryInstance,
 				getAllCategoryInstances,
 				removeCreateModeCategories,
+				resetCategoryInstances,
 			}}
 		>
 			{children}

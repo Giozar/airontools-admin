@@ -92,6 +92,9 @@ export const SubcategoryCreateProvider = ({
 			);
 		});
 	}, []);
+	const resetSubcategoryInstances = useCallback(() => {
+		setSubcategoryInstances({});
+	}, []);
 	return (
 		<SubcategoryCreateContext.Provider
 			value={{
@@ -102,6 +105,7 @@ export const SubcategoryCreateProvider = ({
 				updateSubcategoryInstance,
 				getAllSubcategoryInstances,
 				removeCreateModeSubcategories,
+				resetSubcategoryInstances,
 			}}
 		>
 			{children}

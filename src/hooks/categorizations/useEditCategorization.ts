@@ -19,7 +19,7 @@ import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubc
 import { updateSubcategoryService } from '@services/subcategories/updateSubcategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
@@ -30,16 +30,19 @@ export function useEditCategorization() {
 		getCategoryInstance,
 		getAllCategoryInstances,
 		removeCreateModeCategories,
+		resetCategoryInstances,
 	} = useCategoryCreateContext();
 	const {
 		addSubcategoryInstance,
 		getSubcategoryInstance,
 		getAllSubcategoryInstances,
 		removeCreateModeSubcategories,
+		resetSubcategoryInstances,
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
 	const navigate = useNavigate();
+	const location = useLocation();
 	const family = localStorage.getItem('familyToEdit');
 	// useEffect para obtener los datos de familia, categorías y subcategorías
 	useEffect(() => {
@@ -109,13 +112,18 @@ export function useEditCategorization() {
 				showError('No se pudo obtener las subcategorias', error);
 			}
 		};
-
-		// Llamado a las funciones de obtención de datos
-		getFamilyData();
-		getCategoryData();
-		getSubcategoryData();
-	}, [family]);
-
+		if (location.pathname === '/home/categorizacion/crear-familia') {
+			familyToEdit.resetFamilyValues();
+			resetCategoryInstances();
+			resetSubcategoryInstances();
+			console.log('✨', familyToEdit);
+		} else {
+			// Llamado a las funciones de obtención de datos
+			getFamilyData();
+			getCategoryData();
+			getSubcategoryData();
+		}
+	}, [family, location.pathname]);
 	// Función general para manejar la actualización de datos
 	const handleUpdate = async (
 		updateService: (id: string, data: any) => Promise<void>,
