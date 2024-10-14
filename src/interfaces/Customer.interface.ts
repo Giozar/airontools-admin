@@ -9,7 +9,7 @@ export interface Customer {
 	customerType: CustomerType;
 	name: string;
 	phoneNumber: string;
-	observations: string;
+	company?: string;
 	createdBy: string;
 	updatedBy: string;
 }
@@ -18,7 +18,7 @@ export interface CreateCustomer {
 	customerType: CustomerType;
 	name: string;
 	phoneNumber: string;
-	observations?: string;
+	company?: string;
 	createdBy: string;
 }
 
@@ -27,7 +27,7 @@ export interface UpdateCustomer {
 	customerType?: CustomerType;
 	name?: string;
 	phoneNumber?: string;
-	observations?: string;
+	company?: string;
 	updatedBy: string;
 }
 
@@ -39,8 +39,8 @@ export interface CustomerContextProps {
 	setName: (value: string) => void;
 	phoneNumber: string;
 	setPhoneNumber: (value: string) => void;
-	observations?: string;
-	setObservations?: (value: string) => void;
+	company: string;
+	setCompany: (value: string) => void;
 	createdBy: string;
 	setCreatedBy: (value: string) => void;
 	updatedBy?: string;

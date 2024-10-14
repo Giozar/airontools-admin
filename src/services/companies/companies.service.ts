@@ -1,10 +1,10 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { Company } from '@interfaces/Company.interface';
+import { CreateCompany, UpdateCompany } from '@interfaces/Company.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
 // Crear una nueva empresa
-export async function createCompanyService(company: Company) {
+export async function createCompanyService(company: CreateCompany) {
 	try {
 		const response = await axios.post(`${airontoolsAPI}/companies`, company);
 		return response.data;
@@ -36,7 +36,7 @@ export async function getCompanyByIdService(id: string) {
 // Actualizar una empresa por ID
 export async function updateCompanyService(
 	id: string,
-	updateCompanyDto: Partial<Company>,
+	updateCompanyDto: Partial<UpdateCompany>,
 ) {
 	try {
 		const response = await axios.patch(

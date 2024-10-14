@@ -14,6 +14,7 @@ export const CustomerProvider = ({ children }: { children: ReactNode }) => {
 	);
 	const [name, setName] = useState<string>('');
 	const [phoneNumber, setPhoneNumber] = useState<string>('');
+	const [company, setCompany] = useState<string>('');
 	const [createdBy, setCreatedBy] = useState<string>('');
 	const [updatedBy, setUpdatedBy] = useState<string | undefined>(undefined);
 
@@ -26,6 +27,8 @@ export const CustomerProvider = ({ children }: { children: ReactNode }) => {
 				setName,
 				phoneNumber,
 				setPhoneNumber,
+				company,
+				setCompany,
 				createdBy,
 				setCreatedBy,
 				updatedBy,

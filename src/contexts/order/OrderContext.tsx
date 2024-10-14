@@ -12,6 +12,8 @@ const OrderContext = createContext<OrderContextProps | null>(null);
 // Proveedor del contexto de la orden
 export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	const [customer, setCustomer] = useState<string>('');
+	const [company, setCompany] = useState<string>('');
+	const [quoteDeliveryTime, setQuoteDeliveryTime] = useState<string>('');
 	const [orderType, setOrderType] = useState<OrderType>(OrderType.REPAIR);
 	const [authorizationDate, setAuthorizationDate] = useState<Date>(new Date());
 	const [deliveryDate, setDeliveryDate] = useState<Date>(new Date());
@@ -44,10 +46,14 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 			value={{
 				customer,
 				setCustomer,
+				company,
+				setCompany,
 				orderType,
 				setOrderType,
 				authorizationDate,
 				setAuthorizationDate,
+				quoteDeliveryTime,
+				setQuoteDeliveryTime,
 				deliveryDate,
 				setDeliveryDate,
 				products,
