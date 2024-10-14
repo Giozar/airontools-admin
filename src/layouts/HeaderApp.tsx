@@ -1,4 +1,5 @@
 import Breadcrumb from '@components/commons/Breadcrumb';
+import Return from '@components/commons/return';
 import CircleLeftIcon from '@components/svg/CircleLeftIcon';
 import MenuIcon from '@components/svg/MenuIcon';
 import ThemeToggleButton from '@components/ThemeToggle';
@@ -34,6 +35,7 @@ function HeaderApp({ toggleSidebar, isSidebarVisible }: HeaderAppProps) {
 					<ThemeToggleButton />
 				</div>
 			</div>
+			<Return />
 		</header>
 	);
 }
