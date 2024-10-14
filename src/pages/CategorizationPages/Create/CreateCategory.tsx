@@ -3,7 +3,7 @@ import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import './createCategory.css';
 
 interface CreateCategoryProps {
@@ -27,12 +27,13 @@ export default function CreateCategories({
 	const hasCategories = Object.values(categoryInstances).some(
 		category => category.mode === 'create',
 	);
-
+	const categoryAddedRef = useRef(false);
 	useEffect(() => {
-		if (init && !hasCategories) {
+		if (init && !hasCategories && !categoryAddedRef.current) {
 			addCategoryInstance(`cat-${Date.now()}`, {});
+			categoryAddedRef.current = true;
 		}
-	}, [init]);
+	}, [init, hasCategories]);
 
 	return (
 		<div className='create-categories'>

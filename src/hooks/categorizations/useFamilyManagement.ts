@@ -12,9 +12,7 @@ const useFamilyManagement = () => {
 
 	const handleEdit = (family: FamilyDataFrontend) => {
 		localStorage.setItem('familyToEdit', family.id);
-		navigate(`${location.pathname}/editar-familia`, {
-			state: { familyId: family.id },
-		});
+		navigate(`${location.pathname}/editar-familia`);
 	};
 
 	const handleDelete = async (familyId: string, familyName: string) => {

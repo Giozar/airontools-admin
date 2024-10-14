@@ -23,15 +23,14 @@ import { useNavigate } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
-	const {
-		showError,
-		showSuccess,
-		showSuccessAndReload,
-		showSuccessAndNavigate,
-	} = useAlertHelper();
+	const { showError, showSuccess, showSuccessAndNavigate } = useAlertHelper();
 	const { user } = useAuthContext();
-	const { addCategoryInstance, getCategoryInstance, getAllCategoryInstances } =
-		useCategoryCreateContext();
+	const {
+		addCategoryInstance,
+		getCategoryInstance,
+		getAllCategoryInstances,
+		removeCreateModeCategories,
+	} = useCategoryCreateContext();
 	const {
 		addSubcategoryInstance,
 		getSubcategoryInstance,
@@ -40,8 +39,6 @@ export function useEditCategorization() {
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
 	const navigate = useNavigate();
-	//const location = useLocation();
-	//const family = location.state?.familyId;
 	const family = localStorage.getItem('familyToEdit');
 	// useEffect para obtener los datos de familia, categorías y subcategorías
 	useEffect(() => {
@@ -175,7 +172,7 @@ export function useEditCategorization() {
 			if (!categoryId)
 				throw new Error(`No existe la categoría con el id ${categoryId}`);
 			await deleteCategoryService(categoryId);
-			showSuccessAndReload('Categoría borrada');
+			showSuccess('Categoría borrada');
 		} catch (error) {
 			showError('no se pudo borrar categoría', error);
 		}
@@ -187,7 +184,7 @@ export function useEditCategorization() {
 			if (!subcategoryId)
 				throw new Error(`No existe la categoría con el id ${subcategoryId}`);
 			await deleteSubcategoryService(subcategoryId);
-			showSuccessAndReload('Subcategoría borrada');
+			showSuccess('Subcategoría borrada');
 		} catch (error) {
 			showError('no se pudo borrar subcategoria', error);
 		}
@@ -239,7 +236,7 @@ export function useEditCategorization() {
 					});
 				}
 			}
-			showSuccessAndReload('Proceso completado exitosamente');
+			showSuccess('Proceso completado exitosamente');
 		} catch (error) {
 			showError('no se pudo crear subcategorias', error);
 		}
@@ -270,7 +267,9 @@ export function useEditCategorization() {
 					});
 				}
 			}
-			showSuccessAndReload('Categorías creadas con exito');
+			removeCreateModeCategories();
+			addCategoryInstance(`cat-${Date.now()}`, {});
+			showSuccess('Categorías creadas con exito');
 		} catch (error) {
 			showError('no se pudo crear categorias', error);
 		}
@@ -278,9 +277,7 @@ export function useEditCategorization() {
 
 	const handleEditCategorization = (family: FamilyDataFrontend) => {
 		localStorage.setItem('familyToEdit', family.id);
-		navigate(`${location.pathname}/editar-familia`, {
-			state: { familyId: family.id },
-		});
+		navigate(`${location.pathname}/editar-familia`);
 	};
 
 	return {

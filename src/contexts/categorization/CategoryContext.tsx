@@ -82,6 +82,15 @@ export const CategoryCreateProvider = ({
 		},
 		[],
 	);
+	const removeCreateModeCategories = useCallback(() => {
+		setCategoryInstances(prevInstances => {
+			return Object.fromEntries(
+				Object.entries(prevInstances).filter(
+					([_, category]) => category.mode !== 'create',
+				),
+			);
+		});
+	}, []);
 
 	return (
 		<CategoryCreateContext.Provider
@@ -92,6 +101,7 @@ export const CategoryCreateProvider = ({
 				getCategoryInstance,
 				updateCategoryInstance,
 				getAllCategoryInstances,
+				removeCreateModeCategories,
 			}}
 		>
 			{children}

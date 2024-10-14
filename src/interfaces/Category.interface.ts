@@ -84,4 +84,5 @@ export interface CategoryCreateContextType {
 		update: Partial<CategoryCreateContextProps>,
 	) => void;
 	getAllCategoryInstances: () => CategoryCreateContextProps[];
+	removeCreateModeCategories: () => void;
 }
