@@ -11,7 +11,7 @@ const useFamilyManagement = () => {
 	const { showAlert } = useAlert();
 
 	const handleEdit = (family: FamilyDataFrontend) => {
-		localStorage.setItem('familyToEdit', JSON.stringify({ family }));
+		localStorage.setItem('familyToEdit', family.id);
 		navigate(`${location.pathname}/editar-familia`, {
 			state: { familyId: family.id },
 		});

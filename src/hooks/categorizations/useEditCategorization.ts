@@ -19,7 +19,7 @@ import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubc
 import { updateSubcategoryService } from '@services/subcategories/updateSubcategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
@@ -40,9 +40,9 @@ export function useEditCategorization() {
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
 	const navigate = useNavigate();
-	const location = useLocation();
-	const family = location.state?.familyId;
-
+	//const location = useLocation();
+	//const family = location.state?.familyId;
+	const family = localStorage.getItem('familyToEdit');
 	// useEffect para obtener los datos de familia, categorías y subcategorías
 	useEffect(() => {
 		if (!family) return;
@@ -277,7 +277,7 @@ export function useEditCategorization() {
 	};
 
 	const handleEditCategorization = (family: FamilyDataFrontend) => {
-		localStorage.setItem('familyToEdit', JSON.stringify({ family }));
+		localStorage.setItem('familyToEdit', family.id);
 		navigate(`${location.pathname}/editar-familia`, {
 			state: { familyId: family.id },
 		});
