@@ -54,4 +54,5 @@ export interface CompanyContextProps {
 	setCreatedBy: (value: string) => void;
 	updatedBy?: string;
 	setUpdatedBy?: (value: string) => void;
+	resetCompany: () => void;
 }

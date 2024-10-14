@@ -5,12 +5,14 @@ import PhoneInput from '@components/commons/PhoneInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import { useEffect } from 'react';
 import RowComponent from './RepairOrderRowComponent';
 import { useOrderProduct } from './hooks/useRepairProductUpdate';
+import useResetRepairOrder from './hooks/useResetRepairOrder';
 
 interface RepairOrderFormProps {
 	actionName: string;
@@ -36,10 +38,15 @@ export default function RepairOrderForm({
 		products,
 		quoteDeliveryTime,
 		setQuoteDeliveryTime,
+		deliveryRepresentative,
+		setDeliveryRepresentative,
+		_id,
 	} = useOrderContext();
 
-	const observation = products
-		.map(product => product.observation)
+	const { resetRepairOrder } = useResetRepairOrder();
+
+	const productsObservation = products
+		.map(product => `${product.model}: ${product.observation}`)
 		.filter(observation => observation !== '')
 		.join('. '); // obten las observaciones de los productos
 
@@ -57,9 +64,11 @@ export default function RepairOrderForm({
 		console.log(initialData);
 	}, [observations, authorizationDate]);
 
+	useEffect(() => {
+		console.log('Se creo con éxito para generar');
+	}, [_id]);
 	return (
 		<form onSubmit={action}>
-			<button type='submit'>{actionName}</button>
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}
@@ -86,12 +95,28 @@ export default function RepairOrderForm({
 				setValue={setPhoneNumber}
 			/>
 			<TextInput
-				id={'cotizacion'}
+				id={'tiempo_de_entrega_de_cotizacion'}
 				label={'Tiempo de entrega de cotización'}
 				placeholder={'Tiempo de entrega de cotización'}
 				value={quoteDeliveryTime}
 				onChange={e => setQuoteDeliveryTime(e.target.value)}
 			/>
+			<TextInput
+				id={'representante_de_entrega'}
+				label={'Representante de entrega'}
+				placeholder={'Persona que entrega herramientas'}
+				value={deliveryRepresentative}
+				onChange={e => setDeliveryRepresentative(e.target.value)}
+			/>
+
+			{/* <TextInput
+				id={'empleado_que_recibe_herramientas'}
+				label={'Empleado que recibe herramientas'}
+				placeholder={'Empleado que recibe herramientas'}
+				value={receivedBy}
+				onChange={e => setReceivedBy(e.target.value)}
+			/> */}
+
 			<h2>Datos de la herramienta</h2>
 			<DynamicSizeTable
 				headers={['', '', '', '', '', '', '']}
@@ -104,8 +129,9 @@ export default function RepairOrderForm({
 			<TextAreaInput
 				id={'observaciones'}
 				label={'Observaciones'}
-				value={observation}
+				value={productsObservation}
 				onChange={e => setObservations(e.target.value)}
+				disabled={true}
 			/>
 			{false && (
 				<DateInput
@@ -131,6 +157,19 @@ export default function RepairOrderForm({
 					date={deliveryDate}
 					setDate={setDeliveryDate}
 				/>
+			)}
+			<button type='submit'>{actionName}</button>
+			{_id && (
+				<a
+					onClick={() => {
+						resetRepairOrder();
+					}}
+					target='_blank'
+					href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
+					rel='noreferrer'
+				>
+					Ver Orden de reparación
+				</a>
 			)}
 		</form>
 	);

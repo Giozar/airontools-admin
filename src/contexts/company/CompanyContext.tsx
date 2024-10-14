@@ -6,9 +6,26 @@ const CompanyContext = createContext<CompanyContextProps | null>(null);
 
 // Proveedor del contexto de Company
 export const CompanyProvider = ({ children }: { children: ReactNode }) => {
-	const [name, setName] = useState<string>('');
-	const [createdBy, setCreatedBy] = useState<string>('');
-	const [updatedBy, setUpdatedBy] = useState<string | undefined>(undefined);
+	// Estado inicial
+	const initialState = {
+		name: '',
+		createdBy: '',
+		updatedBy: undefined as string | undefined,
+	};
+
+	// Definir los estados
+	const [name, setName] = useState<string>(initialState.name);
+	const [createdBy, setCreatedBy] = useState<string>(initialState.createdBy);
+	const [updatedBy, setUpdatedBy] = useState<string | undefined>(
+		initialState.updatedBy,
+	);
+
+	// Función para resetear los valores del contexto a su estado inicial
+	const resetCompany = () => {
+		setName(initialState.name);
+		setCreatedBy(initialState.createdBy);
+		setUpdatedBy(initialState.updatedBy);
+	};
 
 	return (
 		<CompanyContext.Provider
@@ -19,6 +36,7 @@ export const CompanyProvider = ({ children }: { children: ReactNode }) => {
 				setCreatedBy,
 				updatedBy,
 				setUpdatedBy,
+				resetCompany,
 			}}
 		>
 			{children}
