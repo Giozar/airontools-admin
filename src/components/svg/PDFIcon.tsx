@@ -1,13 +1,18 @@
-import type { SVGProps } from 'react';
+interface SVGIconProps {
+	width?: number;
+	height?: number;
+	color?: string;
+	className?: string;
+}
 
-export function PDFIcon(props: SVGProps<SVGSVGElement>) {
+function PDFIcon({ width = 34, height = 34, className }: SVGIconProps) {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
-			width='3em'
-			height='3em'
-			viewBox='0 0 32 32'
-			{...props}
+			width={width}
+			height={height}
+			viewBox='0 0 24 24'
+			className={className}
 		>
 			<path
 				fill='#909090'
@@ -33,3 +38,5 @@ export function PDFIcon(props: SVGProps<SVGSVGElement>) {
 		</svg>
 	);
 }
+
+export default PDFIcon;

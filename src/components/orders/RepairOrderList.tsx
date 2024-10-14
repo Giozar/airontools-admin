@@ -1,7 +1,7 @@
 import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
-import { PDFIcon } from '@components/svg/PDFIcon';
+import PDFIcon from '@components/svg/PDFIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { Order } from '@interfaces/Order.interface';
