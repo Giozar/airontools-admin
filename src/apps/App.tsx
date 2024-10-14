@@ -24,6 +24,7 @@ import BasePage from '@layouts/BasePage';
 import CategorizationMenu from '@pages/CategorizationPages/CategorizationMenu';
 import CreateCategorization from '@pages/CategorizationPages/Create/CreateCategorization';
 import CreateCategoryPage from '@pages/CategorizationPages/Edit/CreateCategoryPage';
+import CreateSubcategoryPage from '@pages/CategorizationPages/Edit/CreateSubcategoryPage';
 import EditCategorization from '@pages/CategorizationPages/Edit/EditCategorization';
 import EditCategoryPage from '@pages/CategorizationPages/Edit/EditCategoryPage';
 import EditSubcategoryPage from '@pages/CategorizationPages/Edit/EditSubcategoryPage';
@@ -209,6 +210,18 @@ const router = createBrowserRouter([
 												<CategoryCreateProvider>
 													<SubcategoryCreateProvider>
 														<CreateCategoryPage />
+													</SubcategoryCreateProvider>
+												</CategoryCreateProvider>
+											</FamilyCreateProvider>
+										),
+									},
+									{
+										path: 'editar-familia/crear-subcategoria',
+										element: (
+											<FamilyCreateProvider>
+												<CategoryCreateProvider>
+													<SubcategoryCreateProvider>
+														<CreateSubcategoryPage />
 													</SubcategoryCreateProvider>
 												</CategoryCreateProvider>
 											</FamilyCreateProvider>

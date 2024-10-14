@@ -83,7 +83,15 @@ export const SubcategoryCreateProvider = ({
 		},
 		[],
 	);
-
+	const removeCreateModeSubcategories = useCallback(() => {
+		setSubcategoryInstances(prevInstances => {
+			return Object.fromEntries(
+				Object.entries(prevInstances).filter(
+					([_, category]) => category.mode !== 'create',
+				),
+			);
+		});
+	}, []);
 	return (
 		<SubcategoryCreateContext.Provider
 			value={{
@@ -93,6 +101,7 @@ export const SubcategoryCreateProvider = ({
 				getSubcategoryInstance,
 				updateSubcategoryInstance,
 				getAllSubcategoryInstances,
+				removeCreateModeSubcategories,
 			}}
 		>
 			{children}

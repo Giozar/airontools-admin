@@ -35,6 +35,7 @@ export function useEditCategorization() {
 		addSubcategoryInstance,
 		getSubcategoryInstance,
 		getAllSubcategoryInstances,
+		removeCreateModeSubcategories,
 	} = useSubcategoryCreateContext();
 	const subcategoryInstances = getAllSubcategoryInstances();
 	const categoryInstances = getAllCategoryInstances();
@@ -92,7 +93,7 @@ export function useEditCategorization() {
 				const response = await getSubcategoryByFamilyIdService(family);
 				if (response.length === 0) return;
 				response.forEach((subcategory, index) => {
-					const instanceId = 'cat' + index;
+					const instanceId = 'subcat' + index;
 					addSubcategoryInstance(instanceId, {
 						id: subcategory.id,
 						name: subcategory.name,
@@ -236,7 +237,9 @@ export function useEditCategorization() {
 					});
 				}
 			}
-			showSuccess('Proceso completado exitosamente');
+			removeCreateModeSubcategories();
+			addSubcategoryInstance(`subcat-${Date.now()}`, {});
+			showSuccess('Subcategorías creadas con éxito');
 		} catch (error) {
 			showError('no se pudo crear subcategorias', error);
 		}
