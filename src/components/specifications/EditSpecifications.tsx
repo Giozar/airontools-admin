@@ -39,11 +39,6 @@ export default function EditSpecifications({
 					const subcategories = await Promise.all(subcategoryPromises);
 					subcategoriesList.push(...subcategories.filter(subcat => subcat));
 				}
-<<<<<<< HEAD
-=======
-				console.log('hicealgo');
->>>>>>> 54452879b6c40c718eeb61812901ccbe4354b986
-
 				if (
 					specToEdit.families.length > 0 ||
 					categoriesList.length > 0 ||
@@ -67,20 +62,10 @@ export default function EditSpecifications({
 				setLoading(false);
 			}
 		};
-<<<<<<< HEAD
 		if (specToEdit) {
 			getCategorization();
 		}
 	}, [specToEdit, setCategorizations, showAlert]);
-
-	if (loading) {
-		return <div>Cargando...</div>;
-	}
-	console.log('loading', specToEdit);
-=======
-		getCategorization();
-	}, [specToEdit]);
->>>>>>> 54452879b6c40c718eeb61812901ccbe4354b986
 
 	if (loading) {
 		return <div>Cargando...</div>;
