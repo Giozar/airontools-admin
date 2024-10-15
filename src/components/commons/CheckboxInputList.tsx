@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CheckboxInput from './CheckboxInput';
 
 interface CheckboxInputListProps {
@@ -17,22 +17,25 @@ const CheckboxInputList: React.FC<CheckboxInputListProps> = ({
 	onChange,
 }) => {
 	const [selectedValues, setSelectedValues] = useState<string[]>(
-		preselectedValues || [],
+		() => preselectedValues || [],
 	);
 
-	const prevOptionsRef = useRef<{ value: string; label: string }[]>(options);
+	useEffect(() => {
+		// Solo actualizar si hay un cambio en las opciones
+		const newSelectedValues = selectedValues.filter(value =>
+			options.some(option => option.value === value),
+		);
+		setSelectedValues(newSelectedValues);
+	}, [options]);
 
 	useEffect(() => {
-		const prevOptions = prevOptionsRef.current;
-		prevOptionsRef.current = options;
-
-		if (JSON.stringify(prevOptions) !== JSON.stringify(options)) {
-			setSelectedValues([]);
-		}
 		if (preselectedValues) {
-			setSelectedValues(preselectedValues);
+			// Solo inicializa si no hay valores seleccionados
+			if (selectedValues.length === 0) {
+				setSelectedValues(preselectedValues);
+			}
 		}
-	}, [options, preselectedValues]);
+	}, [preselectedValues, selectedValues]);
 
 	const handleCheckboxChange = (value: string) => {
 		const newSelectedValues = selectedValues.includes(value)

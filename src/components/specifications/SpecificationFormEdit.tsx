@@ -1,47 +1,45 @@
 import '@components/css/createSpecs.css';
-import { useAlert } from '@contexts/Alert/AlertContext';
+import { useAlertHelper } from '@contexts/Alert/alert.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useSpecificationContext } from '@contexts/specification/SpecificationContext';
-import { ErrorResponse } from '@interfaces/ErrorResponse';
-import { SpecDataToSend } from '@interfaces/Specifications.interface';
 import editSpecificationService from '@services/specifications/editSpecification.service';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { SpecDataToSend } from '@interfaces/Specifications.interface';
 
 function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
 	const { categorizations } = useSpecificationContext();
 	const id = specToEdit?._id as string;
+	const { user } = useAuthContext();
+	const { showSuccessAndReload, showError } = useAlertHelper();
+	const createdBy = user?.id || 'user';
+
 	const [specification, setSpecification] = useState<SpecDataToSend>({
 		name: specToEdit?.name || '',
 		description: specToEdit?.description || '',
 		unit: specToEdit?.unit || '',
-		createdBy: '',
-		families: categorizations.map(cat => cat.selectedFamily),
-		categories: categorizations.flatMap(cat => cat.selectedCategories),
-		subcategories:
-			categorizations.flatMap(cat => cat.selectedSubcategories) || [],
+		createdBy,
+		families: [],
+		categories: [],
+		subcategories: [],
 	});
 
-	const { user } = useAuthContext();
-	const { showAlert } = useAlert();
-	const createdBy = user?.id || 'user';
-
-	useEffect(() => {
+	const updateSpecification = useCallback(() => {
 		const families = categorizations.map(cat => cat.selectedFamily);
 		const categories = categorizations.flatMap(cat => cat.selectedCategories);
-		const subcategories = categorizations.flatMap(
-			cat => cat.selectedSubcategories,
-		);
-		// Actualiza el estado de la especificación cuando cambian las IDs o el usuario autenticado
+		const subcategories = categorizations.flatMap(cat => cat.selectedSubcategories);
+
 		setSpecification(prevSpec => ({
 			...prevSpec,
-			createdBy,
 			families,
 			categories,
-			subcategories: subcategories || [],
+			subcategories,
 		}));
-	}, [categorizations, createdBy]);
+	}, [categorizations]);
 
-	// Maneja cambios en los campos de la especificación
+	useEffect(() => {
+		updateSpecification();
+	}, [updateSpecification]);
+
 	const handleInputChange = (field: keyof SpecDataToSend, value: string) => {
 		setSpecification(prevSpec => ({
 			...prevSpec,
@@ -49,36 +47,35 @@ function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
 		}));
 	};
 
-	// Guarda la especificación
 	const saveSpecification = async () => {
 		try {
-			console.log(specification);
 			await editSpecificationService({ specification, id });
-			showAlert('Especificación guardada con éxito', 'success');
+			showSuccessAndReload('Especificación guardada con éxito');
 		} catch (error) {
-			const err = error as ErrorResponse;
-			showAlert(
-				`Ocurrió un error al editar especificación ${err.message}`,
-				'error',
-			);
+			showError(`Error al editar especificación`, error);
 		}
 	};
 
 	return (
 		<div id='specifications'>
 			<form className='form-group'>
+				<label htmlFor='name'>Nombre</label>
 				<input
+					id='name'
 					type='text'
 					placeholder='Nombre'
 					value={specification.name}
 					onChange={e => handleInputChange('name', e.target.value)}
 					required
 				/>
+				<label htmlFor='description'>Descripción (opcional)</label>
 				<textarea
+					id='description'
 					placeholder='Descripción (opcional)'
 					value={specification.description}
 					onChange={e => handleInputChange('description', e.target.value)}
 				/>
+				<label htmlFor='unit'>Unidades (opcional)</label>
 				<input
 					id='unit'
 					type='text'
@@ -86,11 +83,10 @@ function SpecificationFormEdit({ specToEdit }: { specToEdit: SpecDataToSend }) {
 					value={specification.unit}
 					onChange={e => handleInputChange('unit', e.target.value)}
 				/>
+				<button onClick={saveSpecification} className='save' type='button'>
+					Guardar Especificación
+				</button>
 			</form>
-
-			<button onClick={saveSpecification} className='save'>
-				Guardar Especificación
-			</button>
 		</div>
 	);
 }
