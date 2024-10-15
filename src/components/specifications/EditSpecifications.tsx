@@ -39,7 +39,6 @@ export default function EditSpecifications({
 					const subcategories = await Promise.all(subcategoryPromises);
 					subcategoriesList.push(...subcategories.filter(subcat => subcat));
 				}
-				console.log('hicealgo');
 
 				if (
 					specToEdit.families.length > 0 ||
@@ -64,8 +63,10 @@ export default function EditSpecifications({
 				setLoading(false);
 			}
 		};
-		getCategorization();
-	}, [specToEdit]);
+		if (specToEdit) {
+			getCategorization();
+		}
+	}, [specToEdit, setCategorizations, showAlert]);
 
 	if (loading) {
 		return <div>Cargando...</div>;
