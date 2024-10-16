@@ -116,8 +116,8 @@ export function useEditCategorization() {
 			familyToEdit.resetFamilyValues();
 			resetCategoryInstances();
 			resetSubcategoryInstances();
-			console.log('✨', familyToEdit);
-		} else {
+		}
+		else if (location.pathname !== '/home/categorizacion') {
 			// Llamado a las funciones de obtención de datos
 			getFamilyData();
 			getCategoryData();
