@@ -75,6 +75,7 @@ export default function RepairOrderForm({
 				options={['hola', 'mundo']}
 				value={companyName}
 				setValue={setCompanyName}
+				required={true}
 			/>
 			<DatalistOption
 				id={'responsable'}
@@ -83,6 +84,7 @@ export default function RepairOrderForm({
 				options={['hola', 'mundo']}
 				value={customerName}
 				setValue={setCustomerName}
+				required={true}
 			/>
 			<PhoneInput
 				id={'telefono'}
@@ -99,6 +101,7 @@ export default function RepairOrderForm({
 				placeholder={'Tiempo de entrega de cotización'}
 				value={quoteDeliveryTime}
 				onChange={e => setQuoteDeliveryTime(e.target.value)}
+				required={true}
 			/>
 			<TextInput
 				id={'representante_de_entrega'}
@@ -106,6 +109,7 @@ export default function RepairOrderForm({
 				placeholder={'Persona que entrega herramientas'}
 				value={deliveryRepresentative}
 				onChange={e => setDeliveryRepresentative(e.target.value)}
+				required={true}
 			/>
 
 			{/* <TextInput

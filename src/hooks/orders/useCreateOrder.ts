@@ -1,3 +1,4 @@
+import { useAlertHelper } from '@contexts/Alert/alert.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
@@ -21,6 +22,7 @@ export default function useCreateOrder() {
 	} = useOrderContext();
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
+	const { showSuccess, showError } = useAlertHelper();
 
 	const productsObservation = products
 		.map(product => `${product.model}: ${product.observation}`)
@@ -62,8 +64,9 @@ export default function useCreateOrder() {
 			});
 			setId(createdOrder._id);
 			console.log(createdOrder);
+			showSuccess('Orden creada con éxito');
 		} catch (error) {
-			console.log(error);
+			showError('No se pudo crear la orden', error);
 		}
 	};
 
