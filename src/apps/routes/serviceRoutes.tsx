@@ -81,7 +81,7 @@ export const serviceRoutes = () => {
 			),
 		},
 		{
-			path: 'crear-orden',
+			path: 'ver-orden',
 			children: viewOrderRoutes(),
 		},
 	];
