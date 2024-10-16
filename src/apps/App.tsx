@@ -143,10 +143,6 @@ const router = createBrowserRouter([
 								element: <UserOptions />,
 							},
 							{
-								path: 'servicios',
-								element: <ServiceMainPage />,
-							},
-							{
 								path: 'usuarios',
 								children: [
 									{
@@ -178,6 +174,58 @@ const router = createBrowserRouter([
 							{
 								path: 'productos',
 								children: [
+									{
+										path: 'especificaciones',
+										element: <ListOfSpecs />,
+									},
+									{
+										path: 'especificaciones',
+										children: [
+											{
+												path: 'crear-especificaciones',
+												element: (
+													<SpecificationProvider>
+														<CreateSpecification />
+													</SpecificationProvider>
+												),
+											},
+											{
+												path: 'editar-especificacion',
+												element: (
+													<SpecificationProvider>
+														<EditSpecification />
+													</SpecificationProvider>
+												),
+											},
+										],
+									},
+									{
+										path: 'herramientas',
+										element: <ToolMenu />,
+									},
+
+									{
+										path: 'herramientas',
+
+										children: [
+											{
+												path: 'crear-herramienta',
+												element: (
+													<ProductCreateProvider>
+														<CreateProductPage />
+													</ProductCreateProvider>
+												),
+											},
+											{
+												path: 'editar-herramienta',
+												element: (
+													<ProductCreateProvider>
+														<EditProductPage />
+													</ProductCreateProvider>
+												),
+											},
+										],
+									},
 									{
 										path: 'categorizacion',
 										element: (
@@ -305,102 +353,79 @@ const router = createBrowserRouter([
 									},
 								],
 							},
+							{
+								path: 'servicios',
+								element: <ServiceMainPage />,
+							},
+							{
+								path: 'servicios',
+								children: [
+									{
+										path: 'ver-orden',
+										element: (
+											<OrderProvider>
+												<RepairOrderMenuPage />
+											</OrderProvider>
+										),
+									},
+									{
+										path: 'crear-orden',
+										element: (
+											<OrderProvider>
+												<CompanyProvider>
+													<OtherProductProvider>
+														<RepairProductProvider>
+															<CustomerProvider>
+																<CreateRepairOrderPage />
+															</CustomerProvider>
+														</RepairProductProvider>
+													</OtherProductProvider>
+												</CompanyProvider>
+											</OrderProvider>
+										),
+									},
+									{
+										path: 'ver-orden/crear-orden',
+										element: (
+											<OrderProvider>
+												<CompanyProvider>
+													<OtherProductProvider>
+														<RepairProductProvider>
+															<CustomerProvider>
+																<CreateRepairOrderPage />
+															</CustomerProvider>
+														</RepairProductProvider>
+													</OtherProductProvider>
+												</CompanyProvider>
+											</OrderProvider>
+										),
+									},
+									{
+										path: 'ver-orden/editar-orden/:orderId',
+										element: (
+											<OrderProvider>
+												<CompanyProvider>
+													<OtherProductProvider>
+														<RepairProductProvider>
+															<CustomerProvider>
+																<EditRepairOrderPage />
+															</CustomerProvider>
+														</RepairProductProvider>
+													</OtherProductProvider>
+												</CompanyProvider>
+											</OrderProvider>
+										),
+									},
+									{
+										path: 'ver-orden/editar-orden',
+										element: <EditOrderRedirect />,
+									},
+								],
+							},
 
 							{
 								path: 'monitor',
 								element: <MonitoringMenu />,
-							},
-						],
-					},
-					{
-						path: 'home',
-						children: [
-							{
-								path: 'ver-orden',
-								element: (
-									<OrderProvider>
-										<RepairOrderMenuPage />
-									</OrderProvider>
-								),
-							},
-							{
-								path: 'crear-orden',
-								element: (
-									<OrderProvider>
-										<CompanyProvider>
-											<OtherProductProvider>
-												<RepairProductProvider>
-													<CustomerProvider>
-														<CreateRepairOrderPage />
-													</CustomerProvider>
-												</RepairProductProvider>
-											</OtherProductProvider>
-										</CompanyProvider>
-									</OrderProvider>
-								),
-							},
-							{
-								path: 'ver-orden/crear-orden',
-								element: (
-									<OrderProvider>
-										<CompanyProvider>
-											<OtherProductProvider>
-												<RepairProductProvider>
-													<CustomerProvider>
-														<CreateRepairOrderPage />
-													</CustomerProvider>
-												</RepairProductProvider>
-											</OtherProductProvider>
-										</CompanyProvider>
-									</OrderProvider>
-								),
-							},
-							{
-								path: 'ver-orden/editar-orden/:orderId',
-								element: (
-									<OrderProvider>
-										<CompanyProvider>
-											<OtherProductProvider>
-												<RepairProductProvider>
-													<CustomerProvider>
-														<EditRepairOrderPage />
-													</CustomerProvider>
-												</RepairProductProvider>
-											</OtherProductProvider>
-										</CompanyProvider>
-									</OrderProvider>
-								),
-							},
-							{
-								path: 'ver-orden/editar-orden',
-								element: <EditOrderRedirect />,
-							},
-							{
-								path: 'herramientas',
-								element: <ToolMenu />,
-							},
-
-							{
-								path: 'herramientas',
-
-								children: [
-									{
-										path: 'crear-herramienta',
-										element: (
-											<ProductCreateProvider>
-												<CreateProductPage />
-											</ProductCreateProvider>
-										),
-									},
-									{
-										path: 'editar-herramienta',
-										element: (
-											<ProductCreateProvider>
-												<EditProductPage />
-											</ProductCreateProvider>
-										),
-									},
-								],
 							},
 						],
 					},
