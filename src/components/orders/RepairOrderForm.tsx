@@ -1,15 +1,17 @@
 import DatalistOption from '@components/commons/DatalistOption';
 import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
+import ModalContent from '@components/commons/ModalContent';
 import PhoneInput from '@components/commons/PhoneInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import RowComponent from './RepairOrderRowComponent';
 import { useOrderProduct } from './hooks/useRepairProductUpdate';
 import useResetRepairOrder from './hooks/useResetRepairOrder';
@@ -58,7 +60,7 @@ export default function RepairOrderForm({
 	} = useCustomerContext();
 
 	const { addProduct, removeProduct } = useOrderProduct(0);
-
+	const [openModal, setOpenModal] = useState(true);
 	useEffect(() => {
 		// console.log(initialData);
 	}, [observations, authorizationDate]);
@@ -161,18 +163,39 @@ export default function RepairOrderForm({
 					setDate={setDeliveryDate}
 				/>
 			)}
-			<button type='submit'>{actionName}</button>
+			<button type='submit' onClick={() => setOpenModal(true)}>
+				{actionName}
+			</button>
+
 			{_id && (
-				<a
-					onClick={() => {
-						resetRepairOrder();
-					}}
-					target='_blank'
-					href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
-					rel='noreferrer'
+				<ModalContent
+					isOpen={openModal}
+					onClose={() => setOpenModal(false)}
+					title={'Orden de reparación'}
 				>
-					Ver Orden de reparación
-				</a>
+					<h2 style={{ color: 'var(--success)', textAlign: 'center' }}>
+						¡Orden de reparación generada con éxito!
+					</h2>
+					<div>
+						<a
+							onClick={() => {
+								resetRepairOrder();
+							}}
+							target='_blank'
+							href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
+							rel='noreferrer'
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								flexDirection: 'column',
+							}}
+						>
+							Ver Orden de reparación
+							<PDFIcon width={100} height={100} />
+						</a>
+					</div>
+				</ModalContent>
 			)}
 		</form>
 	);
