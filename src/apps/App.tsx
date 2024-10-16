@@ -37,6 +37,7 @@ import LandingPage from '@pages/generalPages/LandingPage';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
 import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
+import ProductMainPage from '@pages/ProductMainPage';
 import CreateProductPage from '@pages/productPages/CreateProductPage';
 import EditProductPage from '@pages/productPages/EditProductPage';
 import ToolMenu from '@pages/productPages/ProductMenu';
@@ -44,6 +45,7 @@ import EditOrderRedirect from '@pages/Redirects/EditOrderRedirect';
 import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage';
 import EditRepairOrderPage from '@pages/repairOrderPages/EditRepairOrderPage';
 import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
+import ServiceMainPage from '@pages/ServiceMainPage';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
@@ -141,6 +143,10 @@ const router = createBrowserRouter([
 								element: <UserOptions />,
 							},
 							{
+								path: 'servicios',
+								element: <ServiceMainPage />,
+							},
+							{
 								path: 'usuarios',
 								children: [
 									{
@@ -166,119 +172,140 @@ const router = createBrowserRouter([
 								],
 							},
 							{
-								path: 'categorizacion',
-								element: (
-									<FamilyCreateProvider>
-										<CategoryCreateProvider>
-											<SubcategoryCreateProvider>
-												<CategorizationMenu />
-											</SubcategoryCreateProvider>
-										</CategoryCreateProvider>
-									</FamilyCreateProvider>
-								),
+								path: 'productos',
+								element: <ProductMainPage />,
 							},
 							{
-								path: 'categorizacion',
+								path: 'productos',
 								children: [
 									{
-										path: 'crear-familia',
+										path: 'categorizacion',
 										element: (
 											<FamilyCreateProvider>
 												<CategoryCreateProvider>
 													<SubcategoryCreateProvider>
-														<CreateCategorization />
+														<CategorizationMenu />
 													</SubcategoryCreateProvider>
 												</CategoryCreateProvider>
 											</FamilyCreateProvider>
 										),
 									},
 									{
-										path: 'editar-familia',
-										element: (
-											<FamilyCreateProvider>
-												<CategoryCreateProvider>
-													<SubcategoryCreateProvider>
-														<EditCategorization />
-													</SubcategoryCreateProvider>
-												</CategoryCreateProvider>
-											</FamilyCreateProvider>
-										),
-									},
-									{
-										path: 'editar-familia/crear-categoria',
-										element: (
-											<FamilyCreateProvider>
-												<CategoryCreateProvider>
-													<SubcategoryCreateProvider>
-														<CreateCategoryPage />
-													</SubcategoryCreateProvider>
-												</CategoryCreateProvider>
-											</FamilyCreateProvider>
-										),
-									},
-									{
-										path: 'editar-familia/editar-categoria/crear-subcategoria',
-										element: (
-											<FamilyCreateProvider>
-												<CategoryCreateProvider>
-													<SubcategoryCreateProvider>
-														<CreateSubcategoryPage />
-													</SubcategoryCreateProvider>
-												</CategoryCreateProvider>
-											</FamilyCreateProvider>
-										),
-									},
-									{
-										path: 'editar-familia/editar-categoria',
-										element: (
-											<FamilyCreateProvider>
-												<CategoryCreateProvider>
-													<SubcategoryCreateProvider>
-														<EditCategoryPage />
-													</SubcategoryCreateProvider>
-												</CategoryCreateProvider>
-											</FamilyCreateProvider>
-										),
-									},
-									{
-										path: 'editar-familia/editar-categoria/editar-subcategoria',
-										element: (
-											<FamilyCreateProvider>
-												<CategoryCreateProvider>
-													<SubcategoryCreateProvider>
-														<EditSubcategoryPage />
-													</SubcategoryCreateProvider>
-												</CategoryCreateProvider>
-											</FamilyCreateProvider>
-										),
-									},
-									{
-										path: 'especificaciones',
-										element: <ListOfSpecs />,
-									},
-									{
-										path: 'especificaciones',
+										path: 'categorizacion',
 										children: [
 											{
-												path: 'crear-especificaciones',
+												path: 'crear-familia',
 												element: (
-													<SpecificationProvider>
-														<CreateSpecification />
-													</SpecificationProvider>
+													<FamilyCreateProvider>
+														<CategoryCreateProvider>
+															<SubcategoryCreateProvider>
+																<CreateCategorization />
+															</SubcategoryCreateProvider>
+														</CategoryCreateProvider>
+													</FamilyCreateProvider>
 												),
 											},
 											{
-												path: 'editar-especificacion',
+												path: 'editar-familia',
 												element: (
-													<SpecificationProvider>
-														<EditSpecification />
-													</SpecificationProvider>
+													<FamilyCreateProvider>
+														<CategoryCreateProvider>
+															<SubcategoryCreateProvider>
+																<EditCategorization />
+															</SubcategoryCreateProvider>
+														</CategoryCreateProvider>
+													</FamilyCreateProvider>
 												),
+											},
+											{
+												path: 'editar-familia',
+												children: [
+													{
+														path: 'crear-categoria',
+														element: (
+															<FamilyCreateProvider>
+																<CategoryCreateProvider>
+																	<SubcategoryCreateProvider>
+																		<CreateCategoryPage />
+																	</SubcategoryCreateProvider>
+																</CategoryCreateProvider>
+															</FamilyCreateProvider>
+														),
+													},
+													{
+														path: 'editar-categoria',
+														element: (
+															<FamilyCreateProvider>
+																<CategoryCreateProvider>
+																	<SubcategoryCreateProvider>
+																		<EditCategoryPage />
+																	</SubcategoryCreateProvider>
+																</CategoryCreateProvider>
+															</FamilyCreateProvider>
+														),
+													},
+													{
+														path: 'editar-categoria',
+														children: [
+															{
+																path: 'crear-subcategoria',
+																element: (
+																	<FamilyCreateProvider>
+																		<CategoryCreateProvider>
+																			<SubcategoryCreateProvider>
+																				<CreateSubcategoryPage />
+																			</SubcategoryCreateProvider>
+																		</CategoryCreateProvider>
+																	</FamilyCreateProvider>
+																),
+															},
+															{
+																path: 'editar-subcategoria',
+																element: (
+																	<FamilyCreateProvider>
+																		<CategoryCreateProvider>
+																			<SubcategoryCreateProvider>
+																				<EditSubcategoryPage />
+																			</SubcategoryCreateProvider>
+																		</CategoryCreateProvider>
+																	</FamilyCreateProvider>
+																),
+															},
+														],
+													},
+												],
+											},
+
+											{
+												path: 'especificaciones',
+												element: <ListOfSpecs />,
+											},
+											{
+												path: 'especificaciones',
+												children: [
+													{
+														path: 'crear-especificaciones',
+														element: (
+															<SpecificationProvider>
+																<CreateSpecification />
+															</SpecificationProvider>
+														),
+													},
+													{
+														path: 'editar-especificacion',
+														element: (
+															<SpecificationProvider>
+																<EditSpecification />
+															</SpecificationProvider>
+														),
+													},
+												],
 											},
 										],
 									},
 								],
 							},
+
 							{
 								path: 'monitor',
 								element: <MonitoringMenu />,

@@ -16,19 +16,14 @@ export default function ContentMainPage() {
 							description='Lista de usuarios, crear usuarios, crear rol'
 						/>
 						<ActionCard
-							title='Orden de reparación'
-							path={location.pathname + '/ver-orden'}
-							description='Lista de ordenes de reparación, crear ordenes'
+							title='Productos'
+							path={location.pathname + '/productos'}
+							description='Menú Categorización, Especificaciones y Herramientas'
 						/>
 						<ActionCard
-							title='Categorización'
-							path={location.pathname + '/categorizacion'}
-							description='Lista de familias (con categorias, subcategorias), crear familia (con categorias, subcategorias), especificaciones, crear especificaciones'
-						/>
-						<ActionCard
-							title='Herramientas'
-							path={location.pathname + '/herramientas'}
-							description='Lista de herramientas, crear herramientas'
+							title='Servicios'
+							path={location.pathname + '/servicios'}
+							description='Menú de ordenes de reparación'
 						/>
 						<ActionCard title='Monitor' path={location.pathname + '/monitor'} />
 					</>
