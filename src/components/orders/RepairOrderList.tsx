@@ -25,30 +25,32 @@ export default function RepairOrderList() {
 
 	const tableData = {
 		headers: ['No. Orden', 'Fecha', 'Cliente', 'Recibido por', 'PDF', 'Editar'],
-		rows: orders.map(order => [
-			order.control,
-			new Date(order.createdAt).toLocaleDateString(),
-			order.customer?.name || '',
-			order.receivedBy?.name || '',
-			<a
-				key={'pdf'}
-				target='_blank'
-				href={`${airontoolsAPI}/basic-reports/repair-order/${order._id}`}
-				rel='noreferrer'
-			>
-				<PDFIcon />
-			</a>,
-			<button
-				className='table__button table__button--edit'
-				key={`edit-${order._id}`}
-				onClick={() => {
-					navigate('editar-orden');
-					localStorage.setItem('OrderToEdit', order._id);
-				}}
-			>
-				<EditIcon />
-			</button>,
-		]),
+		rows: orders
+			.map(order => [
+				'AT' + order.control,
+				new Date(order.createdAt).toLocaleDateString(),
+				order.customer?.name || '',
+				order.receivedBy?.name || '',
+				<a
+					key={'pdf'}
+					target='_blank'
+					href={`${airontoolsAPI}/basic-reports/repair-order/${order._id}`}
+					rel='noreferrer'
+				>
+					<PDFIcon />
+				</a>,
+				<button
+					className='table__button table__button--edit'
+					key={`edit-${order._id}`}
+					onClick={() => {
+						navigate('editar-orden');
+						localStorage.setItem('OrderToEdit', order._id);
+					}}
+				>
+					<EditIcon />
+				</button>,
+			])
+			.reverse(),
 	};
 
 	return <TableComponent data={tableData} />;
