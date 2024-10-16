@@ -8,26 +8,8 @@ import {
 } from 'react-router-dom';
 
 import { AlertProvider } from '@contexts/Alert/AlertContext';
-import { CategoryCreateProvider } from '@contexts/categorization/CategoryContext';
-import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
-import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
-import { CompanyProvider } from '@contexts/company/CompanyContext';
-import { CustomerProvider } from '@contexts/customer/CustomerContext';
 import { ModalProvider } from '@contexts/Modal/ModalContext';
-import { OrderProvider } from '@contexts/order/OrderContext';
-import { OtherProductProvider } from '@contexts/otherProduct/OtherProductContext';
-import { ProductCreateProvider } from '@contexts/product/ProductContext';
-import { RepairProductProvider } from '@contexts/repairProduct/RepairProductContext';
-import { SpecificationProvider } from '@contexts/specification/SpecificationContext';
-import { UserProvider } from '@contexts/User/UserContext';
 import BasePage from '@layouts/BasePage';
-import CategorizationMenu from '@pages/CategorizationPages/CategorizationMenu';
-import CreateCategorization from '@pages/CategorizationPages/Create/CreateCategorization';
-import CreateCategoryPage from '@pages/CategorizationPages/Edit/CreateCategoryPage';
-import CreateSubcategoryPage from '@pages/CategorizationPages/Edit/CreateSubcategoryPage';
-import EditCategorization from '@pages/CategorizationPages/Edit/EditCategorization';
-import EditCategoryPage from '@pages/CategorizationPages/Edit/EditCategoryPage';
-import EditSubcategoryPage from '@pages/CategorizationPages/Edit/EditSubcategoryPage';
 import ChatAssistant from '@pages/chatPages/chatAssistant';
 import Notifications from '@pages/css/miscPages.tsx/notifications';
 import Personal from '@pages/css/miscPages.tsx/PersonalInfo';
@@ -38,22 +20,12 @@ import Login from '@pages/Login';
 import Home from '@pages/MainPage';
 import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
 import ProductMainPage from '@pages/ProductMainPage';
-import CreateProductPage from '@pages/productPages/CreateProductPage';
-import EditProductPage from '@pages/productPages/EditProductPage';
-import ToolMenu from '@pages/productPages/ProductMenu';
-import EditOrderRedirect from '@pages/Redirects/EditOrderRedirect';
-import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage';
-import EditRepairOrderPage from '@pages/repairOrderPages/EditRepairOrderPage';
-import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
 import ServiceMainPage from '@pages/ServiceMainPage';
-import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
-import EditSpecification from '@pages/specificationsPages/EditSpecification';
-import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
-import UserOptionCreate from '@pages/userPages/UserOptionCreate';
-import UserOptionCreateRole from '@pages/userPages/UserOptionCreateRole';
-import UserOptionEdit from '@pages/userPages/UserOptionEdit';
 import UserOptions from '@pages/userPages/UserOptions';
 import { useEffect } from 'react';
+import { productRoutes } from './routes/productRoutes';
+import { serviceRoutes } from './routes/serviceRoutes';
+import { userRoutes } from './routes/userRoutes';
 
 const PrivateRoute = () => {
 	const { auth, loading } = useAuthContext();
@@ -144,28 +116,7 @@ const router = createBrowserRouter([
 							},
 							{
 								path: 'usuarios',
-								children: [
-									{
-										path: 'crear-usuario',
-										element: (
-											<UserProvider>
-												<UserOptionCreate />
-											</UserProvider>
-										),
-									},
-									{
-										path: 'editar-usuario',
-										element: (
-											<UserProvider>
-												<UserOptionEdit />
-											</UserProvider>
-										),
-									},
-									{
-										path: 'crear-rol',
-										element: <UserOptionCreateRole />,
-									},
-								],
+								children: userRoutes(),
 							},
 							{
 								path: 'productos',
@@ -173,185 +124,7 @@ const router = createBrowserRouter([
 							},
 							{
 								path: 'productos',
-								children: [
-									{
-										path: 'especificaciones',
-										element: <ListOfSpecs />,
-									},
-									{
-										path: 'especificaciones',
-										children: [
-											{
-												path: 'crear-especificaciones',
-												element: (
-													<SpecificationProvider>
-														<CreateSpecification />
-													</SpecificationProvider>
-												),
-											},
-											{
-												path: 'editar-especificacion',
-												element: (
-													<SpecificationProvider>
-														<EditSpecification />
-													</SpecificationProvider>
-												),
-											},
-										],
-									},
-									{
-										path: 'herramientas',
-										element: <ToolMenu />,
-									},
-
-									{
-										path: 'herramientas',
-
-										children: [
-											{
-												path: 'crear-herramienta',
-												element: (
-													<ProductCreateProvider>
-														<CreateProductPage />
-													</ProductCreateProvider>
-												),
-											},
-											{
-												path: 'editar-herramienta',
-												element: (
-													<ProductCreateProvider>
-														<EditProductPage />
-													</ProductCreateProvider>
-												),
-											},
-										],
-									},
-									{
-										path: 'categorizacion',
-										element: (
-											<FamilyCreateProvider>
-												<CategoryCreateProvider>
-													<SubcategoryCreateProvider>
-														<CategorizationMenu />
-													</SubcategoryCreateProvider>
-												</CategoryCreateProvider>
-											</FamilyCreateProvider>
-										),
-									},
-									{
-										path: 'categorizacion',
-										children: [
-											{
-												path: 'crear-familia',
-												element: (
-													<FamilyCreateProvider>
-														<CategoryCreateProvider>
-															<SubcategoryCreateProvider>
-																<CreateCategorization />
-															</SubcategoryCreateProvider>
-														</CategoryCreateProvider>
-													</FamilyCreateProvider>
-												),
-											},
-											{
-												path: 'editar-familia',
-												element: (
-													<FamilyCreateProvider>
-														<CategoryCreateProvider>
-															<SubcategoryCreateProvider>
-																<EditCategorization />
-															</SubcategoryCreateProvider>
-														</CategoryCreateProvider>
-													</FamilyCreateProvider>
-												),
-											},
-											{
-												path: 'editar-familia',
-												children: [
-													{
-														path: 'crear-categoria',
-														element: (
-															<FamilyCreateProvider>
-																<CategoryCreateProvider>
-																	<SubcategoryCreateProvider>
-																		<CreateCategoryPage />
-																	</SubcategoryCreateProvider>
-																</CategoryCreateProvider>
-															</FamilyCreateProvider>
-														),
-													},
-													{
-														path: 'editar-categoria',
-														element: (
-															<FamilyCreateProvider>
-																<CategoryCreateProvider>
-																	<SubcategoryCreateProvider>
-																		<EditCategoryPage />
-																	</SubcategoryCreateProvider>
-																</CategoryCreateProvider>
-															</FamilyCreateProvider>
-														),
-													},
-													{
-														path: 'editar-categoria',
-														children: [
-															{
-																path: 'crear-subcategoria',
-																element: (
-																	<FamilyCreateProvider>
-																		<CategoryCreateProvider>
-																			<SubcategoryCreateProvider>
-																				<CreateSubcategoryPage />
-																			</SubcategoryCreateProvider>
-																		</CategoryCreateProvider>
-																	</FamilyCreateProvider>
-																),
-															},
-															{
-																path: 'editar-subcategoria',
-																element: (
-																	<FamilyCreateProvider>
-																		<CategoryCreateProvider>
-																			<SubcategoryCreateProvider>
-																				<EditSubcategoryPage />
-																			</SubcategoryCreateProvider>
-																		</CategoryCreateProvider>
-																	</FamilyCreateProvider>
-																),
-															},
-														],
-													},
-												],
-											},
-
-											{
-												path: 'especificaciones',
-												element: <ListOfSpecs />,
-											},
-											{
-												path: 'especificaciones',
-												children: [
-													{
-														path: 'crear-especificaciones',
-														element: (
-															<SpecificationProvider>
-																<CreateSpecification />
-															</SpecificationProvider>
-														),
-													},
-													{
-														path: 'editar-especificacion',
-														element: (
-															<SpecificationProvider>
-																<EditSpecification />
-															</SpecificationProvider>
-														),
-													},
-												],
-											},
-										],
-									},
-								],
+								children: productRoutes(),
 							},
 							{
 								path: 'servicios',
@@ -359,68 +132,7 @@ const router = createBrowserRouter([
 							},
 							{
 								path: 'servicios',
-								children: [
-									{
-										path: 'ver-orden',
-										element: (
-											<OrderProvider>
-												<RepairOrderMenuPage />
-											</OrderProvider>
-										),
-									},
-									{
-										path: 'crear-orden',
-										element: (
-											<OrderProvider>
-												<CompanyProvider>
-													<OtherProductProvider>
-														<RepairProductProvider>
-															<CustomerProvider>
-																<CreateRepairOrderPage />
-															</CustomerProvider>
-														</RepairProductProvider>
-													</OtherProductProvider>
-												</CompanyProvider>
-											</OrderProvider>
-										),
-									},
-									{
-										path: 'ver-orden/crear-orden',
-										element: (
-											<OrderProvider>
-												<CompanyProvider>
-													<OtherProductProvider>
-														<RepairProductProvider>
-															<CustomerProvider>
-																<CreateRepairOrderPage />
-															</CustomerProvider>
-														</RepairProductProvider>
-													</OtherProductProvider>
-												</CompanyProvider>
-											</OrderProvider>
-										),
-									},
-									{
-										path: 'ver-orden/editar-orden/:orderId',
-										element: (
-											<OrderProvider>
-												<CompanyProvider>
-													<OtherProductProvider>
-														<RepairProductProvider>
-															<CustomerProvider>
-																<EditRepairOrderPage />
-															</CustomerProvider>
-														</RepairProductProvider>
-													</OtherProductProvider>
-												</CompanyProvider>
-											</OrderProvider>
-										),
-									},
-									{
-										path: 'ver-orden/editar-orden',
-										element: <EditOrderRedirect />,
-									},
-								],
+								children: serviceRoutes(),
 							},
 
 							{
