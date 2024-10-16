@@ -1,5 +1,8 @@
 import { OrderProduct } from '@interfaces/OrderProduct.interface';
+import { Company } from './Company.interface';
+import { Customer } from './Customer.interface';
 import { RepairProduct } from './RepairProduct.interface';
+import { UserDataBackend } from './User.interface';
 
 export enum OrderStatus {
 	PENDING = 'pending',
@@ -13,15 +16,15 @@ export enum OrderType {
 }
 
 export interface Order {
-	customer: string; // ID del cliente
-	company?: string;
+	customer: Customer; // ID del cliente
+	company?: Company;
 	orderType: string; // Tipo de orden
 	authorizationDate: string; // Fecha de autorización
 	deliveryDate?: Date; //  Fecha de entrega del producto
 	quoteDeliveryTime: string; // Tiempo de entrega de la cotización
 	products: OrderProduct[]; // Array de productos
 	images: string[]; // Array de URLs de imágenes
-	receivedBy: string; // ID de quien recibió la orden
+	receivedBy: UserDataBackend; // ID de quien recibió la orden
 	deliveryRepresentative: string; // Nombre del representante de entrega
 	orderStatus: string; // Estado de la orden
 	createdBy: string; // ID de quien creó la orden
@@ -29,6 +32,7 @@ export interface Order {
 	createdAt: string; // Fecha de creación
 	updatedAt: string; // Fecha de actualización
 	__v: number; // Versión
+	control: number;
 }
 
 export interface CreateOrder {

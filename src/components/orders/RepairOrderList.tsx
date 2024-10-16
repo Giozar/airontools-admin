@@ -1,8 +1,6 @@
 import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
-import EyeIcon from '@components/svg/EyeIcon';
 import PDFIcon from '@components/svg/PDFIcon';
-import TrashIcon from '@components/svg/TrashIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { Order } from '@interfaces/Order.interface';
 import { getAllOrdersService } from '@services/orders/orders.service';
@@ -26,29 +24,12 @@ export default function RepairOrderList() {
 	}, []);
 
 	const tableData = {
-		headers: [
-			'ID',
-			'Fecha',
-			'Tipo',
-			'Cliente',
-			'Recibido por',
-			'Ver',
-			'PDF',
-			'Editar',
-			'Borrar',
-		],
+		headers: ['No. Orden', 'Fecha', 'Cliente', 'Recibido por', 'PDF', 'Editar'],
 		rows: orders.map(order => [
-			order._id,
+			order.control,
 			new Date(order.createdAt).toLocaleDateString(),
-			order.orderType,
-			order.customer,
-			order.receivedBy,
-			<button
-				className='table__button table__button--view'
-				key={`view-${order._id}`}
-			>
-				<EyeIcon />
-			</button>,
+			order.customer?.name || '',
+			order.receivedBy?.name || '',
 			<a
 				key={'pdf'}
 				target='_blank'
@@ -66,9 +47,6 @@ export default function RepairOrderList() {
 				}}
 			>
 				<EditIcon />
-			</button>,
-			<button key={`delete-${order._id}`}>
-				<TrashIcon />
 			</button>,
 		]),
 	};
