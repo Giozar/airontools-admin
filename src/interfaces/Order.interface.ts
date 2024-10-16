@@ -102,4 +102,6 @@ export interface OrderContextProps {
 	updatedBy?: string; // ID del usuario que actualizó la orden (opcional)
 	setUpdatedBy?: (value: string) => void; // Setter para actualizar quién actualizó la orden
 	resetOrder: () => void;
+	success: boolean;
+	setSuccess: (value: boolean) => void;
 }

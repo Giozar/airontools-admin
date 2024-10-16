@@ -11,6 +11,7 @@ import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
+import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
 import RowComponent from './RepairOrderRowComponent';
 import { useOrderProduct } from './hooks/useRepairProductUpdate';
@@ -18,12 +19,13 @@ import { useOrderProduct } from './hooks/useRepairProductUpdate';
 interface RepairOrderFormProps {
 	actionName: string;
 	action: (e: any) => Promise<void>;
-	initialData?: Partial<any>; // Datos iniciales opcionales para edición
+	initialData?: Partial<Order>; // Datos iniciales opcionales para edición
 }
 
 export default function RepairOrderForm({
 	actionName,
 	action,
+	initialData,
 }: RepairOrderFormProps) {
 	const {
 		observations,
@@ -36,12 +38,15 @@ export default function RepairOrderForm({
 		authorizationDate,
 		setAuthorizationDate,
 		products,
+		setProducts,
 		quoteDeliveryTime,
 		setQuoteDeliveryTime,
 		deliveryRepresentative,
 		setDeliveryRepresentative,
 		_id,
 		setId,
+		success,
+		setSuccess,
 	} = useOrderContext();
 
 	const productsObservation = products
@@ -59,13 +64,31 @@ export default function RepairOrderForm({
 
 	const { addProduct, removeProduct } = useOrderProduct(0);
 	const [openModal, setOpenModal] = useState(true);
+	const setData = () => {
+		if (!initialData) return;
+		setId(initialData._id || '');
+		setProducts(initialData.products || []);
+		setCustomerName(initialData.customer?.name || '');
+		setCompanyName(initialData.company?.name || '');
+		setPhoneNumber(initialData.customer?.phoneNumber || '');
+		setDeliveryDate(initialData.deliveryDate || new Date());
+		setQuoteDeliveryTime(initialData.quoteDeliveryTime || '');
+		if (initialData.authorizationDate)
+			setAuthorizationDate(new Date(initialData.authorizationDate));
+		setDeliveryRepresentative(initialData.deliveryRepresentative || '');
+	};
 	useEffect(() => {
 		// console.log(initialData);
 	}, [observations, authorizationDate]);
 
 	useEffect(() => {
+		setData();
+	}, [initialData]);
+
+	useEffect(() => {
 		console.log('Se creo con éxito para generar');
 	}, [_id]);
+
 	return (
 		<form onSubmit={action}>
 			<DatalistOption
@@ -165,38 +188,35 @@ export default function RepairOrderForm({
 				{actionName}
 			</button>
 
-			{_id && (
-				<>
-					<h3>ola</h3>
-					<ModalContent
-						isOpen={openModal}
-						onClose={() => {
-							setOpenModal(false);
-							setId('');
-						}}
-						title={'Orden de reparación'}
-					>
-						<h2 style={{ color: 'var(--success)', textAlign: 'center' }}>
-							¡Orden de reparación generada con éxito!
-						</h2>
-						<div>
-							<a
-								target='_blank'
-								href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
-								rel='noreferrer'
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'center',
-									flexDirection: 'column',
-								}}
-							>
-								Ver Orden de reparación
-								<PDFIcon width={100} height={100} />
-							</a>
-						</div>
-					</ModalContent>
-				</>
+			{success && (
+				<ModalContent
+					isOpen={openModal}
+					onClose={() => {
+						setOpenModal(false);
+						setSuccess(false);
+					}}
+					title={'Orden de reparación'}
+				>
+					<h2 style={{ color: 'var(--success)', textAlign: 'center' }}>
+						¡Orden de reparación generada con éxito!
+					</h2>
+					<div>
+						<a
+							target='_blank'
+							href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
+							rel='noreferrer'
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								flexDirection: 'column',
+							}}
+						>
+							Ver Orden de reparación
+							<PDFIcon width={100} height={100} />
+						</a>
+					</div>
+				</ModalContent>
 			)}
 		</form>
 	);
