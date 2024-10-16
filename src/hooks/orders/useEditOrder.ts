@@ -18,6 +18,7 @@ export default function useEditOrder() {
 		deliveryRepresentative,
 		company,
 		customer,
+		receivedBy,
 		_id,
 		setSuccess,
 	} = useOrderContext();
@@ -49,6 +50,7 @@ export default function useEditOrder() {
 				authorizationDate,
 				products,
 				updatedBy: createdBy,
+				receivedBy,
 				deliveryRepresentative,
 				observations: productsObservation,
 				quoteDeliveryTime,

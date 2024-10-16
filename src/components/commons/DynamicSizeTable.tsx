@@ -1,11 +1,12 @@
 import '@components/css/DynamicTable.css';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 
 interface DynamicSizeTableProps {
-	headers: string[];
+	headers?: string[];
 	vertical?: boolean;
 	maxRows?: number; // Propiedad para el límite de filas
-	RowComponent: React.FC<{ index: number }>; // Componente de fila
+	columns?: number;
+	RowComponent: FunctionComponent<{ index: number }>; // Componente de fila
 	remove?: any;
 	add?: any;
 }
@@ -15,6 +16,7 @@ const DynamicSizeTable = ({
 	RowComponent,
 	vertical,
 	maxRows = 9,
+	columns = 0,
 	add,
 	remove,
 }: DynamicSizeTableProps) => {
@@ -41,11 +43,13 @@ const DynamicSizeTable = ({
 			<table className='table__element'>
 				<thead className='table__head'>
 					<tr className={`table__row${vertical ? '--vertical' : ''}`}>
-						{headers.map((header, index) => (
-							<th className='table__header' key={index}>
-								{header}
-							</th>
-						))}
+						{(headers || Array.from({ length: columns }, () => '')).map(
+							(header, index) => (
+								<th className='table__header' key={index}>
+									{header}
+								</th>
+							),
+						)}
 					</tr>
 				</thead>
 				<tbody className='table__body'>

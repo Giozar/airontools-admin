@@ -3,6 +3,7 @@ import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
 import ModalContent from '@components/commons/ModalContent';
 import PhoneInput from '@components/commons/PhoneInput';
+import SelectInput from '@components/commons/SelectInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
@@ -11,6 +12,7 @@ import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
+import useFetchUsers from '@hooks/users/useFetchUsers';
 import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
 import RowComponent from './RepairOrderRowComponent';
@@ -46,6 +48,8 @@ export default function RepairOrderForm({
 		setDeliveryRepresentative,
 		setCompany,
 		setCustomer,
+		receivedBy,
+		setReceivedBy,
 		_id,
 		setId,
 		success,
@@ -68,6 +72,7 @@ export default function RepairOrderForm({
 	const { addProduct, removeProduct } = useOrderProduct(0);
 	const [openModal, setOpenModal] = useState(true);
 	const { resetRepairOrder } = useResetRepairOrder();
+	const { userSelectOptions } = useFetchUsers();
 	const setData = () => {
 		if (!initialData) return;
 		setId(initialData._id || '');
@@ -82,6 +87,7 @@ export default function RepairOrderForm({
 		setDeliveryRepresentative(initialData.deliveryRepresentative || '');
 		setCompany(initialData.company?._id || '');
 		setCustomer(initialData.customer?._id || '');
+		setReceivedBy(initialData.receivedBy?._id || '');
 	};
 
 	useEffect(() => {}, [observations, authorizationDate]);
@@ -143,18 +149,17 @@ export default function RepairOrderForm({
 				onChange={e => setDeliveryRepresentative(e.target.value)}
 				required={true}
 			/>
-
-			{/* <TextInput
+			<SelectInput
 				id={'empleado_que_recibe_herramientas'}
-				label={'Empleado que recibe herramientas'}
-				placeholder={'Empleado que recibe herramientas'}
+				name={'Empleado que recibe herramientas'}
+				options={userSelectOptions()}
 				value={receivedBy}
-				onChange={e => setReceivedBy(e.target.value)}
-			/> */}
+				setValue={setReceivedBy}
+			/>
 
 			<h2>Datos de la herramienta</h2>
 			<DynamicSizeTable
-				headers={['', '', '', '', '', '', '']}
+				columns={7}
 				maxRows={9}
 				RowComponent={RowComponent}
 				vertical={true}
@@ -197,7 +202,7 @@ export default function RepairOrderForm({
 				{actionName}
 			</button>
 
-			{success && (
+			{success && _id && (
 				<ModalContent
 					isOpen={openModal}
 					onClose={() => {
