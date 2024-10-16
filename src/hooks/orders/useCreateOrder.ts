@@ -1,3 +1,5 @@
+import useResetRepairOrder from '@components/orders/hooks/useResetRepairOrder';
+import { useAlertHelper } from '@contexts/Alert/alert.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
@@ -17,10 +19,12 @@ export default function useCreateOrder() {
 		products,
 		quoteDeliveryTime,
 		deliveryRepresentative,
-		setId,
+		setSuccess,
 	} = useOrderContext();
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
+	const { showSuccess, showError } = useAlertHelper();
+	const { resetRepairOrder } = useResetRepairOrder();
 
 	const productsObservation = products
 		.map(product => `${product.model}: ${product.observation}`)
@@ -60,10 +64,12 @@ export default function useCreateOrder() {
 				quoteDeliveryTime,
 				createdBy,
 			});
-			setId(createdOrder._id);
 			console.log(createdOrder);
+			resetRepairOrder();
+			setSuccess(true);
+			showSuccess('Orden creada con éxito');
 		} catch (error) {
-			console.log(error);
+			showError('No se pudo crear la orden', error);
 		}
 	};
 

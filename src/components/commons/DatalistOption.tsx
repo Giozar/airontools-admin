@@ -9,6 +9,7 @@ interface DatalistInputProps {
 	options: string[];
 	value?: string;
 	setValue: (value: string) => void;
+	required?: boolean;
 }
 
 const DatalistOption: React.FC<DatalistInputProps> = ({
@@ -19,6 +20,7 @@ const DatalistOption: React.FC<DatalistInputProps> = ({
 	options,
 	value,
 	setValue,
+	required,
 }) => {
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(e.target.value);
@@ -38,6 +40,7 @@ const DatalistOption: React.FC<DatalistInputProps> = ({
 				list={`${id}-list`}
 				placeholder={placeholder}
 				className='datalist-input__input'
+				required={required}
 			/>
 			<datalist id={`${id}-list`} className='datalist-input__datalist'>
 				{options.map(option => (

@@ -32,6 +32,7 @@ const RowComponent = ({ index }: RowComponentProps) => {
 					onChange={e => updateProduct({ quantity: parseInt(e.target.value) })}
 					min={'0'}
 					max={'1000000'}
+					required={true}
 				/>
 			</td>
 			<td>
@@ -41,6 +42,7 @@ const RowComponent = ({ index }: RowComponentProps) => {
 					value={brand}
 					placeholder='Marca de herramienta'
 					onChange={e => updateProduct({ brand: e.target.value })}
+					required={true}
 				/>
 			</td>
 			<td>
@@ -50,6 +52,7 @@ const RowComponent = ({ index }: RowComponentProps) => {
 					value={model}
 					placeholder='Modelo de herramienta'
 					onChange={e => updateProduct({ model: e.target.value })}
+					required={true}
 				/>
 			</td>
 			<td>

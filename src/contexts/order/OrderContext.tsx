@@ -78,6 +78,8 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 		initialState.products,
 	);
 
+	const [success, setSuccess] = useState(false);
+
 	// Función para resetear los valores del contexto a su estado inicial
 	const resetOrder = () => {
 		setId(initialState._id);
@@ -96,6 +98,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 		setCreatedBy(initialState.createdBy);
 		setUpdatedBy(initialState.updatedBy);
 		setProducts(initialState.products);
+		setSuccess(false);
 	};
 
 	return (
@@ -134,6 +137,8 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 				updatedBy,
 				setUpdatedBy,
 				resetOrder,
+				success,
+				setSuccess,
 			}}
 		>
 			{children}
