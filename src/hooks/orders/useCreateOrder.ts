@@ -19,7 +19,9 @@ export default function useCreateOrder() {
 		products,
 		quoteDeliveryTime,
 		deliveryRepresentative,
+		receivedBy,
 		setSuccess,
+		setId,
 	} = useOrderContext();
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
@@ -57,7 +59,7 @@ export default function useCreateOrder() {
 				orderType,
 				authorizationDate,
 				products,
-				receivedBy: createdBy,
+				receivedBy,
 				deliveryRepresentative,
 				orderStatus,
 				observations: productsObservation,
@@ -67,6 +69,7 @@ export default function useCreateOrder() {
 			console.log(createdOrder);
 			resetRepairOrder();
 			setSuccess(true);
+			setId(createdOrder._id);
 			showSuccess('Orden creada con éxito');
 		} catch (error) {
 			showError('No se pudo crear la orden', error);

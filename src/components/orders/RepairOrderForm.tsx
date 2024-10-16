@@ -202,7 +202,7 @@ export default function RepairOrderForm({
 				{actionName}
 			</button>
 
-			{success && (
+			{success && _id && (
 				<ModalContent
 					isOpen={openModal}
 					onClose={() => {
