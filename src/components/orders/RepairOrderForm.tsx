@@ -14,7 +14,6 @@ import { useOrderContext } from '@contexts/order/OrderContext';
 import { useEffect, useState } from 'react';
 import RowComponent from './RepairOrderRowComponent';
 import { useOrderProduct } from './hooks/useRepairProductUpdate';
-import useResetRepairOrder from './hooks/useResetRepairOrder';
 
 interface RepairOrderFormProps {
 	actionName: string;
@@ -43,8 +42,6 @@ export default function RepairOrderForm({
 		setDeliveryRepresentative,
 		_id,
 	} = useOrderContext();
-
-	const { resetRepairOrder } = useResetRepairOrder();
 
 	const productsObservation = products
 		.map(product => `${product.model}: ${product.observation}`)
@@ -178,9 +175,6 @@ export default function RepairOrderForm({
 					</h2>
 					<div>
 						<a
-							onClick={() => {
-								resetRepairOrder();
-							}}
 							target='_blank'
 							href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
 							rel='noreferrer'
