@@ -3,5 +3,7 @@ import ProductForm from './ProductForm';
 
 export default function CreateProduct() {
 	const { createProduct } = useCreateProduct();
-	return <ProductForm actionName='Crear herramienta' action={createProduct} />;
+	return (
+		<ProductForm actionName='Guardar herramienta' action={createProduct} />
+	);
 }

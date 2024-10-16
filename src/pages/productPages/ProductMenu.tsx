@@ -4,7 +4,9 @@ import ProductInfoModal from '@components/products/ProductInfoModal';
 import Searchbar from '@components/search/Searchbar';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
+import PDFIcon from '@components/svg/PDFIcon';
 import TrashIcon from '@components/svg/TrashIcon';
+import { airontoolsAPI } from '@configs/api.config';
 
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useModal } from '@contexts/Modal/ModalContext';
@@ -48,6 +50,7 @@ function ListOfTools() {
 			'Categoría',
 			'Subcategoría',
 			'Ver',
+			'PDF',
 			'Editar',
 			'Borrar',
 		],
@@ -68,6 +71,14 @@ function ListOfTools() {
 			>
 				<EyeIcon />
 			</button>,
+			<a
+				key={'pdf'}
+				target='_blank'
+				href={`${airontoolsAPI}/basic-reports/product/${tool.id}`}
+				rel='noreferrer'
+			>
+				<PDFIcon />
+			</a>,
 			<button
 				className='table__button table__button--edit'
 				onClick={() => handleEdit(tool)}

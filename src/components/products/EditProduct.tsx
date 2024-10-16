@@ -33,7 +33,7 @@ export default function EditProduct() {
 		<>
 			<ProductForm
 				key={'Editar Productos'}
-				actionName='Editar herramientas'
+				actionName='Guardar cambios de herramienta'
 				action={edit}
 				initialData={product}
 			/>
