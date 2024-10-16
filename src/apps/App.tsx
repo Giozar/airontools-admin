@@ -328,7 +328,7 @@ const router = createBrowserRouter([
 								),
 							},
 							{
-								path: 'ver-orden/editar-orden',
+								path: 'ver-orden/editar-orden/:orderId',
 								element: (
 									<OrderProvider>
 										<CompanyProvider>

@@ -43,7 +43,7 @@ export default function RepairOrderList() {
 					className='table__button table__button--edit'
 					key={`edit-${order._id}`}
 					onClick={() => {
-						navigate('editar-orden');
+						navigate(`editar-orden/${order._id}`);
 						localStorage.setItem('OrderToEdit', order._id);
 					}}
 				>
