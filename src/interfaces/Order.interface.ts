@@ -3,15 +3,18 @@ import { Company } from './Company.interface';
 import { Customer } from './Customer.interface';
 import { UserDataBackend } from './User.interface';
 
-export enum OrderStatus {
-	PENDING = 'pending',
-	IN_PROGRESS = 'in_progress',
-	COMPLETED = 'completed',
-	CANCELLED = 'cancelled',
+export enum OrderType {
+	REPAIR = 'Reparación',
 }
 
-export enum OrderType {
-	REPAIR = 'repair',
+export enum OrderStatus {
+	PENDING = 'Pendiente',
+	IN_PROGRESS = 'En progreso',
+	COMPLETED = 'Completado',
+	CANCELLED = 'Cancelado',
+	ON_HOLD = 'En espera',
+	DELIVERED = 'Entregado',
+	REJECTED = 'Rechazado',
 }
 
 export interface Order {
