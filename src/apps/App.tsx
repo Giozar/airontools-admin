@@ -40,6 +40,7 @@ import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
 import CreateProductPage from '@pages/productPages/CreateProductPage';
 import EditProductPage from '@pages/productPages/EditProductPage';
 import ToolMenu from '@pages/productPages/ProductMenu';
+import EditOrderRedirect from '@pages/Redirects/EditOrderRedirect';
 import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage';
 import EditRepairOrderPage from '@pages/repairOrderPages/EditRepairOrderPage';
 import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
@@ -342,6 +343,10 @@ const router = createBrowserRouter([
 										</CompanyProvider>
 									</OrderProvider>
 								),
+							},
+							{
+								path: 'ver-orden/editar-orden',
+								element: <EditOrderRedirect />,
 							},
 							{
 								path: 'herramientas',
