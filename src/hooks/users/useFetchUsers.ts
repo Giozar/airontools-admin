@@ -20,6 +20,14 @@ const useFetchUsers = () => {
 		fetchUsers();
 	}, [usersList]);
 
+	const userSelectOptions = () => {
+		if (!usersList) return [{ value: '', label: '' }];
+		return usersList.map(user => ({
+			value: user.id,
+			label: user.name,
+		}));
+	};
+
 	const handleSearch = useCallback((term: string) => {
 		setSearchTerm(term.toLowerCase());
 	}, []);
@@ -36,6 +44,7 @@ const useFetchUsers = () => {
 		setUsersList,
 		filteredUsers,
 		setFilteredUsers,
+		userSelectOptions,
 		handleSearch,
 	};
 };
