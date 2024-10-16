@@ -9,41 +9,59 @@ function Breadcrumb({
 	separator?: React.ReactNode;
 }) {
 	const location = useLocation();
-	const pathnames = location.pathname.split('/').filter(x => x); // Obtener las partes de la ruta y filtrar las partes vacías
+	const pathnames = location.pathname.split('/').filter(Boolean); // Filtra partes vacías
+
+	const isId = (part: string) => /[a-f0-9]{24}/.test(part); // Verifica si el part es un ID
+	const getDisplayName = (part: string) =>
+		part.includes('-') ? part.split('-').join(' ') : part;
 
 	const renderBreadcrumbs = () => {
 		let fullPath = '';
-		return (
-			<>
-				{pathnames.map((part, index) => {
-					fullPath += `/${part}`;
-					const isLast = index === pathnames.length - 1;
-					const displayName = part.includes('-')
-						? part.split('-').join(' ')
-						: part;
 
-					if (isLast) {
-						return (
-							<span
-								key={part}
-								className='breadcrumb__item breadcrumb__item--current'
-							>
-								{displayName}
-							</span>
-						);
-					}
+		return pathnames.map((part, index) => {
+			fullPath += `/${part}`;
+			const isLast = index === pathnames.length - 1;
+			const isPrevLast = index === pathnames.length - 2;
 
-					return (
-						<span key={part} className='breadcrumb__item'>
-							<Link to={fullPath} className='breadcrumb__link'>
-								{displayName}
-							</Link>
-							<span className='breadcrumb__separator'>{separator}</span>
-						</span>
-					);
-				})}
-			</>
-		);
+			if (isLast && isId(part)) {
+				return (
+					<span
+						key={part}
+						className='breadcrumb__item breadcrumb__item--current'
+					></span>
+				);
+			}
+			if (isPrevLast && isId(pathnames[pathnames.length - 1])) {
+				return (
+					<span
+						key={part}
+						className='breadcrumb__item breadcrumb__item--current'
+					>
+						{getDisplayName(part)}
+					</span>
+				);
+			}
+
+			if (isLast) {
+				return (
+					<span
+						key={part}
+						className='breadcrumb__item breadcrumb__item--current'
+					>
+						{getDisplayName(part)}
+					</span>
+				);
+			}
+
+			return (
+				<span key={part} className='breadcrumb__item'>
+					<Link to={fullPath} className='breadcrumb__link'>
+						{getDisplayName(part)}
+					</Link>
+					<span className='breadcrumb__separator'>{separator}</span>
+				</span>
+			);
+		});
 	};
 
 	return <div className='breadcrumb'>{renderBreadcrumbs()}</div>;
