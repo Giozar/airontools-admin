@@ -1,7 +1,6 @@
 import { OrderProduct } from '@interfaces/OrderProduct.interface';
 import { Company } from './Company.interface';
 import { Customer } from './Customer.interface';
-import { RepairProduct } from './RepairProduct.interface';
 import { UserDataBackend } from './User.interface';
 
 export enum OrderStatus {
@@ -59,7 +58,7 @@ export interface UpdateOrder {
 	authorizationDate?: Date; // Fecha de autorización (opcional para edición)
 	deliveryDate?: Date;
 	quoteDeliveryTime?: string; // Tiempo de entrega de la cotización
-	products?: RepairProduct[]; // Lista de productos a reparar (opcional)
+	products?: OrderProduct[]; // Lista de productos a reparar (opcional)
 	observations?: string; // Observaciones generales (opcional)
 	images?: string[]; // URLs de las imágenes (opcional)
 	receivedBy?: string; // ID del empleado que recibe el producto (opcional)

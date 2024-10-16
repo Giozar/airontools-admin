@@ -15,6 +15,7 @@ import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
 import RowComponent from './RepairOrderRowComponent';
 import { useOrderProduct } from './hooks/useRepairProductUpdate';
+import useResetRepairOrder from './hooks/useResetRepairOrder';
 
 interface RepairOrderFormProps {
 	actionName: string;
@@ -43,6 +44,8 @@ export default function RepairOrderForm({
 		setQuoteDeliveryTime,
 		deliveryRepresentative,
 		setDeliveryRepresentative,
+		setCompany,
+		setCustomer,
 		_id,
 		setId,
 		success,
@@ -64,6 +67,7 @@ export default function RepairOrderForm({
 
 	const { addProduct, removeProduct } = useOrderProduct(0);
 	const [openModal, setOpenModal] = useState(true);
+	const { resetRepairOrder } = useResetRepairOrder();
 	const setData = () => {
 		if (!initialData) return;
 		setId(initialData._id || '');
@@ -76,10 +80,15 @@ export default function RepairOrderForm({
 		if (initialData.authorizationDate)
 			setAuthorizationDate(new Date(initialData.authorizationDate));
 		setDeliveryRepresentative(initialData.deliveryRepresentative || '');
+		setCompany(initialData.company?._id || '');
+		setCustomer(initialData.customer?._id || '');
 	};
+
+	useEffect(() => {}, [observations, authorizationDate]);
+
 	useEffect(() => {
-		// console.log(initialData);
-	}, [observations, authorizationDate]);
+		resetRepairOrder();
+	}, []);
 
 	useEffect(() => {
 		setData();
