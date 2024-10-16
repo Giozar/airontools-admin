@@ -41,6 +41,7 @@ export default function RepairOrderForm({
 		deliveryRepresentative,
 		setDeliveryRepresentative,
 		_id,
+		setId,
 	} = useOrderContext();
 
 	const productsObservation = products
@@ -165,31 +166,37 @@ export default function RepairOrderForm({
 			</button>
 
 			{_id && (
-				<ModalContent
-					isOpen={openModal}
-					onClose={() => setOpenModal(false)}
-					title={'Orden de reparación'}
-				>
-					<h2 style={{ color: 'var(--success)', textAlign: 'center' }}>
-						¡Orden de reparación generada con éxito!
-					</h2>
-					<div>
-						<a
-							target='_blank'
-							href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
-							rel='noreferrer'
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-								flexDirection: 'column',
-							}}
-						>
-							Ver Orden de reparación
-							<PDFIcon width={100} height={100} />
-						</a>
-					</div>
-				</ModalContent>
+				<>
+					<h3>ola</h3>
+					<ModalContent
+						isOpen={openModal}
+						onClose={() => {
+							setOpenModal(false);
+							setId('');
+						}}
+						title={'Orden de reparación'}
+					>
+						<h2 style={{ color: 'var(--success)', textAlign: 'center' }}>
+							¡Orden de reparación generada con éxito!
+						</h2>
+						<div>
+							<a
+								target='_blank'
+								href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
+								rel='noreferrer'
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									flexDirection: 'column',
+								}}
+							>
+								Ver Orden de reparación
+								<PDFIcon width={100} height={100} />
+							</a>
+						</div>
+					</ModalContent>
+				</>
 			)}
 		</form>
 	);

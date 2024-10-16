@@ -64,9 +64,9 @@ export default function useCreateOrder() {
 				quoteDeliveryTime,
 				createdBy,
 			});
-			setId(createdOrder._id);
 			console.log(createdOrder);
 			resetRepairOrder();
+			setId(createdOrder._id);
 			showSuccess('Orden creada con éxito');
 		} catch (error) {
 			showError('No se pudo crear la orden', error);
