@@ -70,7 +70,6 @@ export default function RepairOrderForm({
 	}, [_id]);
 	return (
 		<form onSubmit={action}>
-			{actionName}
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}
