@@ -9,8 +9,13 @@ import { createCustomerService } from '@services/customers/customers.service';
 import { createOrderService } from '@services/orders/orders.service';
 
 export default function useCreateOrder() {
-	const { name: companyName } = useCompanyContext();
-	const { name: customerName, phoneNumber } = useCustomerContext();
+	const { name: companyName, setName: setCompanyName } = useCompanyContext();
+	const {
+		name: customerName,
+		setName: setCustomerName,
+		phoneNumber,
+		setPhoneNumber,
+	} = useCustomerContext();
 	const {
 		orderType,
 		orderStatus,
@@ -19,6 +24,9 @@ export default function useCreateOrder() {
 		quoteDeliveryTime,
 		deliveryRepresentative,
 		setId,
+		setProducts,
+		setDeliveryRepresentative,
+		setQuoteDeliveryTime,
 	} = useOrderContext();
 	const { user } = useAuthContext();
 	const createdBy = user?.id;
@@ -29,6 +37,26 @@ export default function useCreateOrder() {
 		.filter(observation => observation !== '')
 		.join('. '); // obten las observaciones de los productos
 
+	const clearForm = () => {
+		if (!createdBy) throw new Error('No usuario para crear herramienta');
+		setCompanyName('');
+		setCustomerName('');
+		setPhoneNumber('');
+		setProducts([
+			{
+				quantity: 1,
+				brand: '',
+				model: '',
+				serialNumber: '',
+				description: '',
+				observation: '',
+				rawImage: null,
+				createdBy,
+			},
+		]);
+		setDeliveryRepresentative('');
+		setQuoteDeliveryTime('');
+	};
 	const createOrder = async (e: Event) => {
 		e.preventDefault();
 		if (!createdBy) throw new Error('No usuario para crear herramienta');
@@ -64,6 +92,7 @@ export default function useCreateOrder() {
 			});
 			setId(createdOrder._id);
 			console.log(createdOrder);
+			clearForm();
 			showSuccess('Orden creada con éxito');
 		} catch (error) {
 			showError('No se pudo crear la orden', error);
