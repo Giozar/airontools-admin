@@ -1,21 +1,21 @@
 import RepairOrderForm from '@components/orders/RepairOrderForm';
 import useEditOrder from '@hooks/orders/useEditOrder';
 import useFetchOrder from '@hooks/orders/useFetchOrder';
-import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function EditRepairOrderPage() {
 	const { editOrder } = useEditOrder();
-	const [id] = useState(() => {
-		const savedId = localStorage.getItem('OrderToEdit');
-		return savedId || '';
-	});
-	const { order } = useFetchOrder({ id });
+	const { orderId } = useParams();
+	const { order } = useFetchOrder({ id: orderId || '' });
 
 	return (
-		<RepairOrderForm
-			actionName='Editar Orden'
-			action={editOrder}
-			initialData={order}
-		/>
+		<>
+			<h2>Editar orden</h2>
+			<RepairOrderForm
+				actionName='Editar Orden'
+				action={editOrder}
+				initialData={order}
+			/>
+		</>
 	);
 }

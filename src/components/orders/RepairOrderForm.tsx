@@ -1,15 +1,18 @@
 import DatalistOption from '@components/commons/DatalistOption';
 import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
+import ModalContent from '@components/commons/ModalContent';
 import PhoneInput from '@components/commons/PhoneInput';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
-import { useEffect } from 'react';
+import { Order } from '@interfaces/Order.interface';
+import { useEffect, useState } from 'react';
 import RowComponent from './RepairOrderRowComponent';
 import { useOrderProduct } from './hooks/useRepairProductUpdate';
 import useResetRepairOrder from './hooks/useResetRepairOrder';
@@ -17,12 +20,13 @@ import useResetRepairOrder from './hooks/useResetRepairOrder';
 interface RepairOrderFormProps {
 	actionName: string;
 	action: (e: any) => Promise<void>;
-	initialData?: Partial<any>; // Datos iniciales opcionales para edición
+	initialData?: Partial<Order>; // Datos iniciales opcionales para edición
 }
 
 export default function RepairOrderForm({
 	actionName,
 	action,
+	initialData,
 }: RepairOrderFormProps) {
 	const {
 		observations,
@@ -35,14 +39,18 @@ export default function RepairOrderForm({
 		authorizationDate,
 		setAuthorizationDate,
 		products,
+		setProducts,
 		quoteDeliveryTime,
 		setQuoteDeliveryTime,
 		deliveryRepresentative,
 		setDeliveryRepresentative,
+		setCompany,
+		setCustomer,
 		_id,
+		setId,
+		success,
+		setSuccess,
 	} = useOrderContext();
-
-	const { resetRepairOrder } = useResetRepairOrder();
 
 	const productsObservation = products
 		.map(product => `${product.model}: ${product.observation}`)
@@ -58,14 +66,38 @@ export default function RepairOrderForm({
 	} = useCustomerContext();
 
 	const { addProduct, removeProduct } = useOrderProduct(0);
+	const [openModal, setOpenModal] = useState(true);
+	const { resetRepairOrder } = useResetRepairOrder();
+	const setData = () => {
+		if (!initialData) return;
+		setId(initialData._id || '');
+		setProducts(initialData.products || []);
+		setCustomerName(initialData.customer?.name || '');
+		setCompanyName(initialData.company?.name || '');
+		setPhoneNumber(initialData.customer?.phoneNumber || '');
+		setDeliveryDate(initialData.deliveryDate || new Date());
+		setQuoteDeliveryTime(initialData.quoteDeliveryTime || '');
+		if (initialData.authorizationDate)
+			setAuthorizationDate(new Date(initialData.authorizationDate));
+		setDeliveryRepresentative(initialData.deliveryRepresentative || '');
+		setCompany(initialData.company?._id || '');
+		setCustomer(initialData.customer?._id || '');
+	};
+
+	useEffect(() => {}, [observations, authorizationDate]);
 
 	useEffect(() => {
-		// console.log(initialData);
-	}, [observations, authorizationDate]);
+		resetRepairOrder();
+	}, []);
+
+	useEffect(() => {
+		setData();
+	}, [initialData]);
 
 	useEffect(() => {
 		console.log('Se creo con éxito para generar');
 	}, [_id]);
+
 	return (
 		<form onSubmit={action}>
 			<DatalistOption
@@ -75,6 +107,7 @@ export default function RepairOrderForm({
 				options={['hola', 'mundo']}
 				value={companyName}
 				setValue={setCompanyName}
+				required={true}
 			/>
 			<DatalistOption
 				id={'responsable'}
@@ -83,6 +116,7 @@ export default function RepairOrderForm({
 				options={['hola', 'mundo']}
 				value={customerName}
 				setValue={setCustomerName}
+				required={true}
 			/>
 			<PhoneInput
 				id={'telefono'}
@@ -99,6 +133,7 @@ export default function RepairOrderForm({
 				placeholder={'Tiempo de entrega de cotización'}
 				value={quoteDeliveryTime}
 				onChange={e => setQuoteDeliveryTime(e.target.value)}
+				required={true}
 			/>
 			<TextInput
 				id={'representante_de_entrega'}
@@ -106,6 +141,7 @@ export default function RepairOrderForm({
 				placeholder={'Persona que entrega herramientas'}
 				value={deliveryRepresentative}
 				onChange={e => setDeliveryRepresentative(e.target.value)}
+				required={true}
 			/>
 
 			{/* <TextInput
@@ -157,18 +193,39 @@ export default function RepairOrderForm({
 					setDate={setDeliveryDate}
 				/>
 			)}
-			<button type='submit'>{actionName}</button>
-			{_id && (
-				<a
-					onClick={() => {
-						resetRepairOrder();
+			<button type='submit' onClick={() => setOpenModal(true)}>
+				{actionName}
+			</button>
+
+			{success && (
+				<ModalContent
+					isOpen={openModal}
+					onClose={() => {
+						setOpenModal(false);
+						setSuccess(false);
 					}}
-					target='_blank'
-					href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
-					rel='noreferrer'
+					title={'Orden de reparación'}
 				>
-					Ver Orden de reparación
-				</a>
+					<h2 style={{ color: 'var(--success)', textAlign: 'center' }}>
+						¡Orden de reparación generada con éxito!
+					</h2>
+					<div>
+						<a
+							target='_blank'
+							href={`${airontoolsAPI}/basic-reports/repair-order/${_id}`}
+							rel='noreferrer'
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								flexDirection: 'column',
+							}}
+						>
+							Ver Orden de reparación
+							<PDFIcon width={100} height={100} />
+						</a>
+					</div>
+				</ModalContent>
 			)}
 		</form>
 	);
