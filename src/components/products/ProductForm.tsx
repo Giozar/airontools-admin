@@ -1,4 +1,5 @@
 import DynamicInputs from '@components/commons/DynamicInputs';
+import SelectInput from '@components/commons/SelectInput';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import ImagesInput from '@components/files/ImagesInput';
@@ -96,9 +97,15 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 			setCategory(initialData.category?._id || '');
 			setSubcategory(initialData.subcategory?._id || '');
 			setCreatedBy(initialData.createdBy?.id || '');
+			setBrand(initialData.brand || 'Airon Tools');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialData]);
+
+	// Por defecto siempre la marca será Airon Tools
+	useEffect(() => {
+		setBrand('Airon Tools');
+	}, []);
 
 	return (
 		<div className='createproductform'>
@@ -119,12 +126,17 @@ const ProductForm = ({ actionName, action, initialData }: ProductFormProps) => {
 						placeholder='H-1'
 						onChange={e => setModel(e.target.value)}
 					/>
-					<TextInput
-						id='productBrand'
-						label='Marca de herramienta'
+					<SelectInput
+						id='marca'
+						options={[
+							{ value: 'Airon Tools', label: 'Airon Tools' },
+							{ value: 'Airex', label: 'Airex' },
+						]}
 						value={brand}
-						placeholder='Airon Tools'
-						onChange={e => setBrand(e.target.value)}
+						setValue={setBrand}
+						key={'Marca-herramienta'}
+						name='Marca de la herramienta'
+						defaultOptionIndex={0}
 					/>
 				</div>
 				<div>
