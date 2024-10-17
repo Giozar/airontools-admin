@@ -7,37 +7,40 @@ function Return() {
 	const pathnames = location.pathname.split('/').filter(x => x); // Obtener partes de la ruta y filtrar vacíos
 	const isId = (part: string) => /[a-f0-9]{24}/.test(part); // Verifica si el part es un ID
 
+	const getDisplayName = (part: string) =>
+		part.includes('-') ? part.split('-').join(' ') : part;
+
 	const renderReturn = () => {
 		let fullPath = '';
-		return (
-			<>
-				{pathnames.map((part, index) => {
-					fullPath += `/${part}`;
-					const isLast = index === pathnames.length - 2;
-					const isPrevLast = index === pathnames.length - 3;
-					const displayName = part.includes('-')
-						? part.split('-').join(' ')
-						: part;
-					if (isId(pathnames[pathnames.length - 1]) && isPrevLast) {
-						return (
-							<Link to={fullPath} className='return__link' key={fullPath}>
-								<ReturnIcon />
-								Regresar a {displayName}
-							</Link>
-						);
-					}
-					if (!isId(pathnames[pathnames.length - 1]) && isLast) {
-						return (
-							<Link to={fullPath} className='return__link' key={fullPath}>
-								<ReturnIcon />
-								Regresar a {displayName}
-							</Link>
-						);
-					}
-					return null;
-				})}
-			</>
-		);
+		let prevPart = '';
+
+		return pathnames.map((part, index) => {
+			fullPath += `/${part}`;
+			const isLast = index === pathnames.length - 3;
+			const nextPart = pathnames[index + 1];
+
+			// Comprobación si el siguiente es un ID
+			if (nextPart && isId(nextPart)) {
+				prevPart = part;
+				return null;
+			} else if (isId(part) && isLast) {
+				return (
+					<Link to={fullPath} className='return__link' key={fullPath}>
+						<ReturnIcon />
+						Regresar a {getDisplayName(prevPart)}
+					</Link>
+				);
+			} else if (isLast) {
+				return (
+					<Link to={fullPath} className='return__link' key={fullPath}>
+						<ReturnIcon />
+						Regresar a {getDisplayName(part)}
+					</Link>
+				);
+			} else {
+				return null; // Cambiado de <></> a null para mejor claridad
+			}
+		});
 	};
 
 	return <div className='return'>{renderReturn()}</div>;
