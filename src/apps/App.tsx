@@ -7,6 +7,9 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
+import { productRoutes } from '@apps/routes/products/productRoutes';
+import { serviceRoutes } from '@apps/routes/services/serviceRoutes';
+import { userRoutes } from '@apps/routes/users/userRoutes';
 import { AlertProvider } from '@contexts/Alert/AlertContext';
 import { ModalProvider } from '@contexts/Modal/ModalContext';
 import BasePage from '@layouts/BasePage';
@@ -19,13 +22,8 @@ import LandingPage from '@pages/generalPages/LandingPage';
 import Login from '@pages/Login';
 import Home from '@pages/MainPage';
 import MonitoringMenu from '@pages/monitoringPages/MonitoringMenu';
-import ProductMainPage from '@pages/ProductMainPage';
-import ServiceMainPage from '@pages/ServiceMainPage';
 import UserOptions from '@pages/userPages/UserOptions';
 import { useEffect } from 'react';
-import { productRoutes } from './routes/productRoutes';
-import { serviceRoutes } from './routes/serviceRoutes';
-import { userRoutes } from './routes/userRoutes';
 
 const PrivateRoute = () => {
 	const { auth, loading } = useAuthContext();
@@ -118,23 +116,8 @@ const router = createBrowserRouter([
 								path: 'usuarios',
 								children: userRoutes(),
 							},
-							{
-								path: 'productos',
-								element: <ProductMainPage />,
-							},
-							{
-								path: 'productos',
-								children: productRoutes(),
-							},
-							{
-								path: 'servicios',
-								element: <ServiceMainPage />,
-							},
-							{
-								path: 'servicios',
-								children: serviceRoutes(),
-							},
-
+							...productRoutes(),
+							...serviceRoutes(),
 							{
 								path: 'monitor',
 								element: <MonitoringMenu />,

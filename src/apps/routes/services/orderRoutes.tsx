@@ -8,7 +8,7 @@ import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage
 import EditRepairOrderPage from '@pages/repairOrderPages/EditRepairOrderPage';
 import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
 
-export const viewOrderRoutes = () => [
+export const createEditOrderRoutes = () => [
 	{
 		path: 'crear-orden',
 		element: (
@@ -52,7 +52,7 @@ export const viewOrderRoutes = () => [
 	},
 ];
 
-export const serviceRoutes = () => [
+export const orderRoutes = () => [
 	{
 		path: 'ver-orden',
 		element: (
@@ -79,6 +79,6 @@ export const serviceRoutes = () => [
 	},
 	{
 		path: 'ver-orden',
-		children: viewOrderRoutes(),
+		children: createEditOrderRoutes(),
 	},
 ];
