@@ -13,6 +13,7 @@ import EditSubcategoryPage from '@pages/CategorizationPages/Edit/EditSubcategory
 import CreateProductPage from '@pages/productPages/CreateProductPage';
 import EditProductPage from '@pages/productPages/EditProductPage';
 import ToolMenu from '@pages/productPages/ProductMenu';
+import EditFamilyRedirect from '@pages/Redirects/EditFamilyRedirect';
 import CreateSpecification from '@pages/specificationsPages/CreateSpecification';
 import EditSpecification from '@pages/specificationsPages/EditSpecification';
 import ListOfSpecs from '@pages/specificationsPages/ListOfSpecs';
@@ -73,15 +74,7 @@ export const categorizationRoutes = () => {
 		},
 		{
 			path: 'editar-familia',
-			element: (
-				<FamilyCreateProvider>
-					<CategoryCreateProvider>
-						<SubcategoryCreateProvider>
-							<EditCategorization />
-						</SubcategoryCreateProvider>
-					</CategoryCreateProvider>
-				</FamilyCreateProvider>
-			),
+			element: <EditFamilyRedirect />,
 		},
 		{
 			path: 'editar-familia',
@@ -101,6 +94,18 @@ export const categorizationRoutes = () => {
 
 export const editFamilyRoutes = () => {
 	return [
+		{
+			path: ':familyId',
+			element: (
+				<FamilyCreateProvider>
+					<CategoryCreateProvider>
+						<SubcategoryCreateProvider>
+							<EditCategorization />
+						</SubcategoryCreateProvider>
+					</CategoryCreateProvider>
+				</FamilyCreateProvider>
+			),
+		},
 		{
 			path: 'crear-categoria',
 			element: (
