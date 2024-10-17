@@ -72,9 +72,9 @@ export function useEditCategorization() {
 				const response = await getcategoryByFamilyIdService(familyId);
 				if (response.length === 0) return;
 
-				for (const [index, category] of response.entries()) {
+				for (const category of response.values()) {
 					const imageUrl = category.images ? category.images[0] : '';
-					const instanceId = 'cat' + index;
+					const instanceId = category.id;
 
 					addCategoryInstance(instanceId, {
 						id: category.id,
@@ -97,8 +97,8 @@ export function useEditCategorization() {
 			try {
 				const response = await getSubcategoryByFamilyIdService(familyId);
 				if (response.length === 0) return;
-				response.forEach((subcategory, index) => {
-					const instanceId = 'subcat' + index;
+				response.forEach(subcategory => {
+					const instanceId = subcategory.id;
 					addSubcategoryInstance(instanceId, {
 						id: subcategory.id,
 						name: subcategory.name,

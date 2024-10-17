@@ -44,6 +44,7 @@ export default function CategoryList() {
 				category.name,
 				category.description || '---',
 				<img
+					key={'image' + key}
 					src={imageUrl}
 					alt={category.name}
 					style={{ width: '100px', height: 'auto' }}
@@ -60,13 +61,13 @@ export default function CategoryList() {
 					key={`edit-${category.id}`}
 					type='button'
 					onClick={() => {
-						navigate('editar-categoria');
-						localStorage.setItem('categoryToEdit', key);
+						navigate(`editar-categoria/${key}`);
 					}}
 				>
 					<EditIcon />
 				</button>,
 				<button
+					key={'button' + key}
 					type='button'
 					onClick={() => {
 						handleOpenModal(

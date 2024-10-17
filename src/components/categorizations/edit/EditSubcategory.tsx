@@ -6,7 +6,7 @@ import { useSubcategoryCreateContext } from '@contexts/categorization/Subcategor
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 /**
  * Componente que permite la edición de una subcategoría específica
@@ -25,29 +25,23 @@ export default function EditSubcategory() {
 		useEditCategorization();
 
 	const { openModal } = useModal();
-	const [subcategoryKey, setSubcategoryKey] = useState<string | null>(null);
-
-	useEffect(() => {
-		// Recupera la key de localStorage
-		const storedKey = localStorage.getItem('subcategoryToEdit');
-		setSubcategoryKey(storedKey);
-	}, []);
+	const { subcategoryId } = useParams();
 
 	const handleConfirm = (subcategoryId: string) => {
 		handleDeleteSubcategory(subcategoryId);
-		if (subcategoryKey) {
-			removeSubcategoryInstance(subcategoryKey);
+		if (subcategoryId) {
+			removeSubcategoryInstance(subcategoryId);
 		}
 	};
 
-	if (!subcategoryKey) return null;
+	if (!subcategoryId) return null;
 
-	const subcategory = getSubcategoryInstance(subcategoryKey);
+	const subcategory = getSubcategoryInstance(subcategoryId);
 	if (!subcategory || subcategory.mode !== 'edit') return null;
 
 	return (
 		<>
-			<li key={subcategoryKey} className='subcategory-item'>
+			<li key={subcategoryId} className='subcategory-item'>
 				<div className='subcategory-item__header'>
 					<h2 className='subcategory-item__title'>
 						Subcategoría: {subcategory.name}
@@ -56,12 +50,12 @@ export default function EditSubcategory() {
 				<div className='subcategory__columns'>
 					<div className='subcategory__column-left'>
 						<TextInput
-							id={`Subcategoria${subcategoryKey}`}
+							id={`Subcategoria${subcategoryId}`}
 							label='Nombre de Subcategoría:'
 							value={subcategory.name}
 							placeholder='Subcategoría 1'
 							onChange={e =>
-								updateSubcategoryInstance(subcategoryKey, {
+								updateSubcategoryInstance(subcategoryId, {
 									name: e.target.value,
 								})
 							}
@@ -69,12 +63,12 @@ export default function EditSubcategory() {
 							className='subcategory-item__text-input'
 						/>
 						<TextAreaInput
-							id={`description${subcategoryKey}`}
+							id={`description${subcategoryId}`}
 							label='Descripción de Subcategoría:'
 							value={subcategory.description}
 							placeholder='Introduce la descripción de la subcategoría...'
 							onChange={e =>
-								updateSubcategoryInstance(subcategoryKey, {
+								updateSubcategoryInstance(subcategoryId, {
 									description: e.target.value,
 								})
 							}
@@ -93,10 +87,10 @@ export default function EditSubcategory() {
 										: ''
 							}
 							setFilePreview={file =>
-								updateSubcategoryInstance(subcategoryKey, { rawImage: file })
+								updateSubcategoryInstance(subcategoryId, { rawImage: file })
 							}
 							setFileToDelete={bool =>
-								updateSubcategoryInstance(subcategoryKey, {
+								updateSubcategoryInstance(subcategoryId, {
 									imageToDelete: bool,
 								})
 							}
@@ -106,7 +100,7 @@ export default function EditSubcategory() {
 				<div className='subcategory__footer'>
 					<button
 						type='button'
-						onClick={() => handleUpdateSubcategory(subcategoryKey)}
+						onClick={() => handleUpdateSubcategory(subcategoryId)}
 						className='subcategory-item__update-button'
 					>
 						Actualizar Subcategoría
