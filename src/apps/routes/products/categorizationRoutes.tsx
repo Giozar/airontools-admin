@@ -1,3 +1,4 @@
+import { specificationRoutes } from '@apps/routes/products/specificationRoutes';
 import { CategoryCreateProvider } from '@contexts/categorization/CategoryContext';
 import { FamilyCreateProvider } from '@contexts/categorization/FamilyContext';
 import { SubcategoryCreateProvider } from '@contexts/categorization/SubcategoryContext';
@@ -9,7 +10,6 @@ import EditCategorization from '@pages/CategorizationPages/Edit/EditCategorizati
 import EditCategoryPage from '@pages/CategorizationPages/Edit/EditCategoryPage';
 import EditSubcategoryPage from '@pages/CategorizationPages/Edit/EditSubcategoryPage';
 import EditCategorizationRedirect from '@pages/Redirects/EditCategorizationRedirect';
-import { specificationRoutes } from './specificationRoutes';
 
 export const categorizationRoutes = () => [
 	{
