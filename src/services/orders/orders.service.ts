@@ -23,6 +23,23 @@ export async function getAllOrdersService() {
 	}
 }
 
+// Búsqueda de ordenes
+export const searchOrdersServices = async (
+	search: string,
+	limit: number = 10,
+	offset: number = 0,
+): Promise<Order[]> => {
+	try {
+		const response = await axios.post<Order[]>(
+			`${airontoolsAPI}/orders/search?limit=${limit}&offset=${offset}`,
+			search,
+		);
+		return response.data;
+	} catch (error) {
+		throw errorHandler(error);
+	}
+};
+
 // Obtener una orden por ID
 export async function getOrderByIdService(id: string) {
 	try {
