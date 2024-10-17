@@ -6,29 +6,45 @@ import { FamilyDataFrontend } from '@interfaces/Family.interface';
 import { useMemo } from 'react';
 
 const useCategorizationData = (families: FamilyDataFrontend[]) => {
-	const familyList = useMemo(() => families.map(fam => ({
-		value: fam.id,
-		label: fam.name,
-	})), [families]);
-	
-	const categoryList = useMemo(() => families.flatMap(fam =>
-		fam.categories ? fam.categories.map(cat => ({
-			family: cat.family.id || '',
-			options: { value: cat.id, label: cat.name },
-		})) : []
-	), [families]);
+	const familyList = useMemo(
+		() =>
+			families.map(fam => ({
+				value: fam.id,
+				label: fam.name,
+			})),
+		[families],
+	);
 
-	const subcategoryList = useMemo(() => families.flatMap(fam =>
-		fam.subcategories ? fam.subcategories.map(subcat => ({
-			category: subcat.category._id || '',
-			options: { value: subcat.id, label: subcat.name },
-		})) : []
-	), [families]);
+	const categoryList = useMemo(
+		() =>
+			families.flatMap(fam =>
+				fam.categories
+					? fam.categories.map(cat => ({
+							family: cat.family.id || '',
+							options: { value: cat.id, label: cat.name },
+						}))
+					: [],
+			),
+		[families],
+	);
+
+	const subcategoryList = useMemo(
+		() =>
+			families.flatMap(fam =>
+				fam.subcategories
+					? fam.subcategories.map(subcat => ({
+							category: subcat.category._id || '',
+							options: { value: subcat.id, label: subcat.name },
+						}))
+					: [],
+			),
+		[families],
+	);
 
 	return { familyList, categoryList, subcategoryList };
 };
 
-export default function Categorizations({ index }: {index : number}) {
+export default function Categorizations({ index }: { index: number }) {
 	const {
 		categorizations,
 		updateFamily,
@@ -36,19 +52,20 @@ export default function Categorizations({ index }: {index : number}) {
 		updateSubcategories,
 	} = useSpecificationContext();
 	const { families, loading } = useFetchCategorization();
-	
-	const { familyList, categoryList, subcategoryList } = useCategorizationData(families);
-	
+
+	const { familyList, categoryList, subcategoryList } =
+		useCategorizationData(families);
+
 	const handleFamilyChange = (selectedValues: string) => {
 		updateFamily(index, selectedValues);
 		updateCategories(index, []);
 		updateSubcategories(index, []);
 	};
-	
+
 	const handleCategoryChange = (selectedValues: string[]) => {
 		updateCategories(index, selectedValues);
 	};
-	
+
 	const handleSubcategoryChange = (selectedValues: string[]) => {
 		updateSubcategories(index, selectedValues);
 	};
@@ -61,11 +78,14 @@ export default function Categorizations({ index }: {index : number}) {
 						id={`familiaselect-${index}`}
 						name='Selecciona una familia'
 						options={familyList.filter(
-							fam => !categorizations.some(cat => cat.selectedFamily === fam.value),
+							fam =>
+								!categorizations.some(cat => cat.selectedFamily === fam.value),
 						)}
-						label={familyList.find(
-							fam => fam.value === categorizations[index].selectedFamily,
-						)?.label}
+						label={
+							familyList.find(
+								fam => fam.value === categorizations[index].selectedFamily,
+							)?.label
+						}
 						value={categorizations[index].selectedFamily}
 						setValue={handleFamilyChange}
 					/>
@@ -75,7 +95,9 @@ export default function Categorizations({ index }: {index : number}) {
 								id={`catselect-${index}`}
 								name='Selecciona las categorías'
 								options={categoryList
-									.filter(cat => cat.family === categorizations[index].selectedFamily)
+									.filter(
+										cat => cat.family === categorizations[index].selectedFamily,
+									)
 									.map(cat => cat.options)}
 								preselectedValues={categorizations[index].selectedCategories}
 								onChange={handleCategoryChange}
@@ -86,10 +108,14 @@ export default function Categorizations({ index }: {index : number}) {
 									name='Selecciona una subcategoría'
 									options={subcategoryList
 										.filter(subcat =>
-											categorizations[index].selectedCategories.includes(subcat.category),
+											categorizations[index].selectedCategories.includes(
+												subcat.category,
+											),
 										)
 										.map(cat => cat.options)}
-									preselectedValues={categorizations[index].selectedSubcategories}
+									preselectedValues={
+										categorizations[index].selectedSubcategories
+									}
 									onChange={handleSubcategoryChange}
 								/>
 							)}

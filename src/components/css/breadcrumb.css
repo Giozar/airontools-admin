@@ -32,7 +32,7 @@
 
 .breadcrumb__item--current {
 	margin-top: -0.2rem;
-	color: var(--text-secondary);
+	color: var(--info);
 }
 
 /* Media query para ocultar breadcrumb en dispositivos pequeños */

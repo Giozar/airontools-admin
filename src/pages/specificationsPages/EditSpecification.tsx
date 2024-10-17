@@ -3,7 +3,7 @@ import EditSpecifications from '@components/specifications/EditSpecifications';
 import useFetchSpecification from '@hooks/specifications/useFetchSpecification';
 import { useState } from 'react';
 
-export default function editSpecificationService() {
+export default function EditSpecificationService() {
 	const [id] = useState(() => {
 		const savedId = localStorage.getItem('specToEdit');
 		return savedId || '';

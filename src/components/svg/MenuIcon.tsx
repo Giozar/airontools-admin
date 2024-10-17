@@ -8,7 +8,7 @@ interface SVGIconProps {
 function MenuIcon({
 	width = 24,
 	height = 24,
-	color = 'currentColor',
+	color = 'var(--text-primary)',
 	className,
 }: SVGIconProps) {
 	return (

@@ -99,7 +99,7 @@ header {
 }
 
 .content .userinfo p span {
-	color: yellow;
+	color: var(--warning);
 }
 
 .header__button-toggle-theme {
