@@ -197,6 +197,48 @@
 
 	--add: #4caf50; /* Green for add actions */
 }
+.light-theme {
+	/* Colores de fondo */
+	--bg-primary: #e8f0f8; /* Azul muy claro para el fondo principal */
+	--bg-secondary: #f5f9fc; /* Blanco azulado para áreas secundarias */
+	--bg-tertiary: #d8e5f0; /* Azul claro para áreas terciarias */
+
+	/* Colores de texto */
+	--text-primary: #2c3e50; /* Azul oscuro para texto principal */
+	--text-secondary: #5c7a99; /* Azul grisáceo para texto secundario */
+
+	/* Enlaces y acentos */
+	--link: #2980b9; /* Azul medio para enlaces */
+	--accent-primary: #3498db; /* Azul brillante para acentos primarios */
+	--accent-secondary: #36749e; /* Azul oscuro para acentos secundarios */
+
+	/* Bordes y divisores */
+	--border: #bcd3e6; /* Azul muy claro para bordes */
+	--divider: #d0e1f2; /* Azul aún más claro para divisores */
+
+	/* Estados y feedback */
+	--success: #27ae60; /* Verde suave */
+	--error: #e74c3c; /* Rojo suave */
+	--warning: #f39c12; /* Naranja suave */
+	--info: #79c5f8; /* Azul informativo */
+
+	/* Estados interactivos */
+	--hover: #d0e1f2; /* Azul muy claro para hover */
+	--focus: #a9cce3; /* Azul claro para focus */
+	--active: #7fb3d5; /* Azul medio para estado activo */
+
+	/* Componentes específicos */
+	--menu-bg: #326eaa; /* Azul oscuro para fondo de menú */
+	--card-bg: #f5f9fc; /* Blanco azulado para fondo de tarjetas */
+	--input-bg: #e8f0f8; /* Azul muy claro para fondo de inputs */
+	--input-text: #2c3e50; /* Azul oscuro para texto de input */
+	--button-text: #ffffff; /* Blanco para texto de botones */
+	--disabled: #bdc3c7; /* Gris claro para elementos deshabilitados */
+	--placeholder: #95a5a6; /* Gris azulado para texto de placeholder */
+	--neutral: #7f8c8d; /* Gris neutro */
+
+	--add: #27ae60; /* Verde para acciones de añadir */
+}
 
 .storm-light-theme {
 	--bg-primary: #f9f9f9; /* Lightest grey for the background */
