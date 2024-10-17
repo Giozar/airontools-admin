@@ -19,7 +19,7 @@ import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubc
 import { updateSubcategoryService } from '@services/subcategories/updateSubcategory.service';
 import { errorHandler } from '@utils/errorHandler.util';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
@@ -43,15 +43,15 @@ export function useEditCategorization() {
 	const categoryInstances = getAllCategoryInstances();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const family = localStorage.getItem('familyToEdit');
+
+	const { familyId } = useParams();
 	// useEffect para obtener los datos de familia, categorías y subcategorías
 	useEffect(() => {
-		if (!family) return;
-
 		// Función para obtener los datos de la familia
 		const getFamilyData = async () => {
+			if (!familyId) return;
 			try {
-				const response = await getFamilyService(family);
+				const response = await getFamilyService(familyId);
 				if (!response)
 					throw new Error('no se pudo obtener datos de la familia');
 				const imageUrl = response.images ? response.images[0] : '';
@@ -67,8 +67,9 @@ export function useEditCategorization() {
 
 		// Función para obtener los datos de las categorías
 		const getCategoryData = async () => {
+			if (!familyId) return;
 			try {
-				const response = await getcategoryByFamilyIdService(family);
+				const response = await getcategoryByFamilyIdService(familyId);
 				if (response.length === 0) return;
 
 				for (const [index, category] of response.entries()) {
@@ -92,8 +93,9 @@ export function useEditCategorization() {
 
 		// Función para obtener los datos de las subcategorías
 		const getSubcategoryData = async () => {
+			if (!familyId) return;
 			try {
-				const response = await getSubcategoryByFamilyIdService(family);
+				const response = await getSubcategoryByFamilyIdService(familyId);
 				if (response.length === 0) return;
 				response.forEach((subcategory, index) => {
 					const instanceId = 'subcat' + index;
@@ -112,18 +114,20 @@ export function useEditCategorization() {
 				showError('No se pudo obtener las subcategorias', error);
 			}
 		};
-		if (location.pathname === '/home/categorizacion/crear-familia') {
-			familyToEdit.resetFamilyValues();
-			resetCategoryInstances();
-			resetSubcategoryInstances();
-		}
-		else if (location.pathname !== '/home/categorizacion') {
-			// Llamado a las funciones de obtención de datos
+		// Llamado a las funciones de obtención de datos
+		if (familyId) {
 			getFamilyData();
 			getCategoryData();
 			getSubcategoryData();
 		}
-	}, [family, location.pathname]);
+	}, [familyId]);
+
+	useEffect(() => {
+		familyToEdit.resetFamilyValues();
+		resetCategoryInstances();
+		resetSubcategoryInstances();
+	}, []);
+
 	// Función general para manejar la actualización de datos
 	const handleUpdate = async (
 		updateService: (id: string, data: any) => Promise<void>,
@@ -288,8 +292,7 @@ export function useEditCategorization() {
 	};
 
 	const handleEditCategorization = (family: FamilyDataFrontend) => {
-		localStorage.setItem('familyToEdit', family.id);
-		navigate(`${location.pathname}/editar-familia`);
+		navigate(`${location.pathname}/editar-familia/${family.id}`);
 	};
 
 	return {
