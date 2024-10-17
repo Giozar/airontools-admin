@@ -5,7 +5,7 @@
 	background-color: #000;
 	padding: 20px;
 	width: 250px;
-	color: var(--text-primary);
+	color: white;
 	font-family: Arial, sans-serif;
 }
 .sidebar__content {
@@ -31,7 +31,7 @@
 
 .sidebar__title h1 {
 	margin-top: 0;
-	color: var(--text-primary);
+	color: rgb(245, 235, 217);
 	font-weight: bold;
 	font-size: 18px;
 	text-align: center;
@@ -43,7 +43,7 @@
 	align-items: center;
 	transition: background-color 0.3s;
 	padding: 10px 0;
-	color: var(--accent-primary);
+	color: white;
 	text-decoration: none;
 }
 
@@ -97,7 +97,7 @@
 	align-items: center;
 	border-radius: 0.25rem;
 	padding: 0.5rem;
-	color: var(--text-primary);
+	color: rgb(245, 235, 217);
 	text-decoration: none;
 }
 .sidebar a svg {
@@ -106,10 +106,10 @@
 .sidebar a:hover,
 .sidebar .comboboxOptions li span:hover {
 	opacity: 0.8;
-	color: var(--text-secondary);
+	color: rgb(245, 235, 217);
 }
 
 .sidebar .combobox {
-	color: var(--text-primary);
+	color: rgb(245, 235, 217);
 	font-size: 1rem;
 }

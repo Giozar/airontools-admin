@@ -167,10 +167,10 @@
 	--bg-secondary: #ffff; /* White */
 	--bg-tertiary: #f0f0f0; /* Light grey */
 
-	--text-primary: #202020; /* Dark grey, softer than black */
+	--text-primary: #070707; /* Dark grey, softer than black */
 	--text-secondary: #555555; /* Medium grey */
 
-	--link: #0066cc; /* Softer blue */
+	--link: #008bd0; /* Softer blue */
 	--accent-primary: #0099ff; /* Lighter blue */
 	--accent-secondary: #0066cc; /* Slightly darker blue */
 
@@ -186,7 +186,7 @@
 	--focus: #cce5ff; /* Soft blue focus */
 	--active: #b3d1ff; /* Light blue for active state */
 
-	--menu-bg: #2064a4; /* Very light blue-grey for menu background */
+	--menu-bg: #20578a; /* Very light blue-grey for menu background */
 	--card-bg: #e0e3e6; /* White background for cards */
 	--input-bg: #ffffff; /* White background for inputs */
 	--input-text: #333333; /* Dark grey for input text */
@@ -197,6 +197,7 @@
 
 	--add: #4caf50; /* Green for add actions */
 }
+
 .storm-light-theme {
 	--bg-primary: #f9f9f9; /* Lightest grey for the background */
 	--bg-secondary: #ffffff; /* White for contrast */
