@@ -7,7 +7,9 @@
 	gap: 0.5rem;
 	color: var(--info);
 }
-
+.return__link:hover {
+	color: var(--text-primary);
+}
 .return__icon {
 	width: 1em;
 	height: 1em;

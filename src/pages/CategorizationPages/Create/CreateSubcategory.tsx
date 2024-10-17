@@ -1,10 +1,10 @@
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
-import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import { useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import './createSubcategory.css';
 
 interface CreateSubcategoryProps {
@@ -23,28 +23,29 @@ export default function CreateSubcategories({
 		getSubcategoryInstance,
 		updateSubcategoryInstance,
 	} = useSubcategoryCreateContext();
-	const { getCategoryInstance } = useCategoryCreateContext();
 	const { handleCreateSubcategory } = useEditCategorization();
-
+	const { categoryId } = useParams();
 	const SubcategoryAddedRef = useRef(false);
-	const categoryKey = localStorage.getItem('categoryToEdit');
-	const category = getCategoryInstance(categoryKey || '');
-
 	const hasSubcategories = Object.values(subcategoryInstances).some(
 		Subcategory => Subcategory.mode === 'create',
 	);
 
 	useEffect(() => {
-		if (init && !hasSubcategories && !SubcategoryAddedRef.current && category) {
+		if (
+			init &&
+			!hasSubcategories &&
+			!SubcategoryAddedRef.current &&
+			categoryId
+		) {
 			addSubcategoryInstance(`subcat-${Date.now()}`, {
-				category: category.id,
+				category: categoryId,
 			});
 			SubcategoryAddedRef.current = true; // Marca que se añadió una subcategoría
 		}
-	}, [init, hasSubcategories, category, addSubcategoryInstance]); // Asegúrate de que `category` esté en las dependencias
+	}, [init, hasSubcategories, addSubcategoryInstance, categoryId]); // Asegúrate de que `category` esté en las dependencias
 
 	// Asegúrate de manejar el caso donde category es null
-	if (!category || category.mode !== 'edit') return null;
+	if (!categoryId) return null;
 
 	return (
 		<div className='create-subcategories'>
@@ -54,7 +55,7 @@ export default function CreateSubcategories({
 					type='button'
 					onClick={() =>
 						addSubcategoryInstance(`subcat-${Date.now()}`, {
-							category: category.id,
+							category: categoryId,
 						})
 					}
 					className='create-subcategories__add-button'
@@ -114,7 +115,7 @@ export default function CreateSubcategories({
 										type='button'
 										onClick={() =>
 											addSubcategoryInstance(`subcat-${Date.now()}`, {
-												category: category.id,
+												category: categoryId,
 											})
 										}
 										className='create-subcategories__add-button'

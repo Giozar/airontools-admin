@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function EditOrderRedirect() {
+export default function EditCategorizationRedirect() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		navigate('/home/servicios/ver-orden');
+		navigate('/home/productos/categorizacion');
 	}, [navigate]);
 
 	return null;

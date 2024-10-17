@@ -204,8 +204,8 @@
 	--bg-tertiary: #d8e5f0; /* Azul claro para áreas terciarias */
 
 	/* Colores de texto */
-	--text-primary: #2c3e50; /* Azul oscuro para texto principal */
-	--text-secondary: #5c7a99; /* Azul grisáceo para texto secundario */
+	--text-primary: #181818; /* Azul oscuro para texto principal */
+	--text-secondary: #4c555f; /* Azul grisáceo para texto secundario */
 
 	/* Enlaces y acentos */
 	--link: #2980b9; /* Azul medio para enlaces */
@@ -230,7 +230,7 @@
 	/* Componentes específicos */
 	--menu-bg: #326eaa; /* Azul oscuro para fondo de menú */
 	--card-bg: #f5f9fc; /* Blanco azulado para fondo de tarjetas */
-	--input-bg: #e8f0f8; /* Azul muy claro para fondo de inputs */
+	--input-bg: #dce5ee; /* Azul muy claro para fondo de inputs */
 	--input-text: #2c3e50; /* Azul oscuro para texto de input */
 	--button-text: #ffffff; /* Blanco para texto de botones */
 	--disabled: #bdc3c7; /* Gris claro para elementos deshabilitados */

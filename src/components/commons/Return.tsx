@@ -7,36 +7,37 @@ function Return() {
 	const pathnames = location.pathname.split('/').filter(x => x); // Obtener partes de la ruta y filtrar vacíos
 	const isId = (part: string) => /[a-f0-9]{24}/.test(part); // Verifica si el part es un ID
 
+	const getDisplayName = (part: string) =>
+		part.includes('-') ? part.split('-').join(' ') : part;
+
+	const getPart = (index: number) => {
+		return isId(pathnames[index]) ? pathnames[index - 1] : pathnames[index];
+	};
+
 	const renderReturn = () => {
 		let fullPath = '';
+		const lastIndex = pathnames.length - 1;
+		fullPath = location.pathname
+			.replace(pathnames[lastIndex], '') // quita el ultimo elemento
+			.replace(/\/+$/, ''); // quita los // del final de la url
+
+		if (isId(pathnames[lastIndex])) {
+			fullPath = fullPath
+				.replace(pathnames[lastIndex - 1], '') // quita el penultimo elemento
+				.replace(/\/+$/, ''); // quita los // del final de la url
+		}
+
+		const part = getPart(
+			isId(pathnames[lastIndex]) ? lastIndex - 2 : lastIndex - 1,
+		);
+
+		if (!part) return null;
+
 		return (
-			<>
-				{pathnames.map((part, index) => {
-					fullPath += `/${part}`;
-					const isLast = index === pathnames.length - 2;
-					const isPrevLast = index === pathnames.length - 3;
-					const displayName = part.includes('-')
-						? part.split('-').join(' ')
-						: part;
-					if (isId(pathnames[pathnames.length - 1]) && isPrevLast) {
-						return (
-							<Link to={fullPath} className='return__link' key={fullPath}>
-								<ReturnIcon />
-								Regresar a {displayName}
-							</Link>
-						);
-					}
-					if (!isId(pathnames[pathnames.length - 1]) && isLast) {
-						return (
-							<Link to={fullPath} className='return__link' key={fullPath}>
-								<ReturnIcon />
-								Regresar a {displayName}
-							</Link>
-						);
-					}
-					return null;
-				})}
-			</>
+			<Link to={fullPath} className='return__link' key={fullPath}>
+				<ReturnIcon />
+				Regresar a {getDisplayName(part)}
+			</Link>
 		);
 	};
 

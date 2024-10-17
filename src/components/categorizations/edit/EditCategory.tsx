@@ -6,7 +6,7 @@ import { useCategoryCreateContext } from '@contexts/categorization/CategoryConte
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function EditCategory() {
 	const {
@@ -17,52 +17,48 @@ export default function EditCategory() {
 	const { handleUpdateCategory, handleDeleteCategory } =
 		useEditCategorization();
 	const { openModal } = useModal();
-	const [categoryKey, setCategoryKey] = useState<string | null>(null);
-
-	useEffect(() => {
-		const storedKey = localStorage.getItem('categoryToEdit');
-		setCategoryKey(storedKey);
-	}, []);
+	const { categoryId } = useParams();
+	if (!categoryId) return null;
 
 	const handleConfirm = (categoryId: string) => {
 		handleDeleteCategory(categoryId);
-		if (categoryKey) {
-			removeCategoryInstance(categoryKey);
+		if (categoryId) {
+			removeCategoryInstance(categoryId);
 		}
 	};
 
-	if (!categoryKey) return null;
+	if (!categoryId) return null;
 
-	const category = getCategoryInstance(categoryKey);
+	const category = getCategoryInstance(categoryId);
 	if (!category || category.mode !== 'edit') return null;
 
 	return (
 		<>
-			<li className='category-item' key={categoryKey}>
+			<li className='category-item' key={categoryId}>
 				<div className='category-item__header'>
 					<h2 className='category-item__title'>Categoría: {category.name}</h2>
 				</div>
 				<div className='category__columns'>
 					<div className='category__column-left'>
 						<TextInput
-							id={`Categoria${categoryKey}`}
+							id={`Categoria${categoryId}`}
 							label='Nombre de categoría:'
 							value={category.name}
 							placeholder='categoria 1'
 							onChange={e =>
-								updateCategoryInstance(categoryKey, { name: e.target.value })
+								updateCategoryInstance(categoryId, { name: e.target.value })
 							}
 							required
 							className='category-item__text-input'
 						/>
 						<br />
 						<TextAreaInput
-							id={`description${categoryKey}`}
+							id={`description${categoryId}`}
 							label='Descripción de categoría:'
 							value={category.description}
 							placeholder='Introduce la descripción de la categoría...'
 							onChange={e =>
-								updateCategoryInstance(categoryKey, {
+								updateCategoryInstance(categoryId, {
 									description: e.target.value,
 								})
 							}
@@ -81,10 +77,10 @@ export default function EditCategory() {
 										: ''
 							}
 							setFilePreview={file =>
-								updateCategoryInstance(categoryKey, { rawImage: file })
+								updateCategoryInstance(categoryId, { rawImage: file })
 							}
 							setFileToDelete={bool =>
-								updateCategoryInstance(categoryKey, { imageToDelete: bool })
+								updateCategoryInstance(categoryId, { imageToDelete: bool })
 							}
 						/>
 					</div>
@@ -92,7 +88,7 @@ export default function EditCategory() {
 				<div className='category__footer'>
 					<button
 						type='button'
-						onClick={() => handleUpdateCategory(categoryKey)}
+						onClick={() => handleUpdateCategory(categoryId)}
 						className='category-item__update-button'
 					>
 						Actualizar Categoría

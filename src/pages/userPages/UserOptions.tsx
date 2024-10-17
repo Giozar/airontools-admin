@@ -19,7 +19,7 @@ function ReturnUsers() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const { user: loggedUser } = useAuthContext();
 	const { handleEdit, handleDelete } = useUserManagement();
-	const { filteredUsers, handleSearch } = useFetchUsers();
+	const { filteredUsers, handleSearch, update, setUpdate } = useFetchUsers();
 	const { openModal } = useModal();
 
 	const [showModalFor, setShowModalFor] = useState<string | null>(null);
@@ -29,6 +29,7 @@ function ReturnUsers() {
 			`Vas a eliminar el usuario ${userToDelete.name}. ¿Estás seguro de que quieres continuar? `,
 			() => {
 				handleDelete(userToDelete);
+				setUpdate(!update);
 			},
 			false,
 			false,

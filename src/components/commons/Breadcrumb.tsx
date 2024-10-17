@@ -12,32 +12,40 @@ function Breadcrumb({
 	const pathnames = location.pathname.split('/').filter(Boolean); // Filtra partes vacías
 
 	const isId = (part: string) => /[a-f0-9]{24}/.test(part); // Verifica si el part es un ID
+
 	const getDisplayName = (part: string) =>
 		part.includes('-') ? part.split('-').join(' ') : part;
 
 	const renderBreadcrumbs = () => {
 		let fullPath = '';
+		let prevPart = '';
 
 		return pathnames.map((part, index) => {
 			fullPath += `/${part}`;
 			const isLast = index === pathnames.length - 1;
-			const isPrevLast = index === pathnames.length - 2;
+			const nextPart = pathnames[index + 1];
 
-			if (isLast && isId(part)) {
+			// Comprobación si el siguiente es un ID
+			if (nextPart && isId(nextPart)) {
+				prevPart = part;
+				return null;
+			} else if (isId(part)) {
+				if (isLast) {
+					return (
+						<span
+							key={part}
+							className='breadcrumb__item breadcrumb__item--current'
+						>
+							{getDisplayName(prevPart)}
+						</span>
+					);
+				}
 				return (
-					<span
-						key={part}
-						className='breadcrumb__item breadcrumb__item--current'
-					></span>
-				);
-			}
-			if (isPrevLast && isId(pathnames[pathnames.length - 1])) {
-				return (
-					<span
-						key={part}
-						className='breadcrumb__item breadcrumb__item--current'
-					>
-						{getDisplayName(part)}
+					<span key={part} className='breadcrumb__item'>
+						<Link to={fullPath} className='breadcrumb__link'>
+							{getDisplayName(prevPart)}
+						</Link>
+						<span className='breadcrumb__separator'>{separator}</span>
 					</span>
 				);
 			}

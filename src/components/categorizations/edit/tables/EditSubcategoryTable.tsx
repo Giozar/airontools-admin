@@ -2,13 +2,11 @@ import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
 import TrashIcon from '@components/svg/TrashIcon';
-import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function SubcategoryList() {
 	const navigate = useNavigate();
@@ -17,7 +15,6 @@ export default function SubcategoryList() {
 		removeSubcategoryInstance,
 		getSubcategoryInstance,
 	} = useSubcategoryCreateContext();
-	const { getCategoryInstance } = useCategoryCreateContext();
 	const { handleDeleteSubcategory } = useEditCategorization();
 	const { openModal } = useModal();
 
@@ -25,14 +22,8 @@ export default function SubcategoryList() {
 		handleDeleteSubcategory(subcategoryId);
 		removeSubcategoryInstance(key);
 	};
-	const [categoryKey, setCategoryKey] = useState<string | null>(null);
-
-	useEffect(() => {
-		const storedKey = localStorage.getItem('categoryToEdit');
-		setCategoryKey(storedKey);
-	}, []);
-	if (!categoryKey) return null;
-	const category = getCategoryInstance(categoryKey);
+	const { categoryId } = useParams();
+	if (!categoryId) return null;
 
 	const tableData = {
 		headers: [
@@ -47,7 +38,7 @@ export default function SubcategoryList() {
 		rows: Object.keys(subcategoryInstances).map(key => {
 			const subcategory = getSubcategoryInstance(key);
 			if (!subcategory || subcategory.mode !== 'edit') return []; // Devolver un arreglo vacío en lugar de null
-			if (subcategory.category !== category?.id) return [];
+			if (subcategory.category !== categoryId) return [];
 			const imageUrl = subcategory.rawImage
 				? URL.createObjectURL(subcategory.rawImage)
 				: !subcategory.imageToDelete
@@ -59,6 +50,7 @@ export default function SubcategoryList() {
 				subcategory.name,
 				subcategory.description || '---',
 				<img
+					key={'image' + key}
 					src={imageUrl}
 					alt={subcategory.name}
 					style={{ width: '100px', height: 'auto' }}
@@ -75,13 +67,13 @@ export default function SubcategoryList() {
 					key={`edit-${subcategory.id}`}
 					type='button'
 					onClick={() => {
-						navigate('editar-subcategoria');
-						localStorage.setItem('subcategoryToEdit', key);
+						navigate(`editar-subcategoria/${subcategory.id}`);
 					}}
 				>
 					<EditIcon />
 				</button>,
 				<button
+					key={'button' + key}
 					type='button'
 					onClick={() => {
 						handleOpenModal(

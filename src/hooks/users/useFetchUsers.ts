@@ -6,6 +6,7 @@ const useFetchUsers = () => {
 	const [usersList, setUsersList] = useState<UserDataFrontend[]>([]);
 	const [filteredUsers, setFilteredUsers] = useState<UserDataFrontend[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [update, setUpdate] = useState(false);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -18,7 +19,7 @@ const useFetchUsers = () => {
 			}
 		};
 		fetchUsers();
-	}, [usersList]);
+	}, [update]);
 
 	const userSelectOptions = () => {
 		if (!usersList) return [{ value: '', label: '' }];
@@ -46,6 +47,8 @@ const useFetchUsers = () => {
 		setFilteredUsers,
 		userSelectOptions,
 		handleSearch,
+		update,
+		setUpdate,
 	};
 };
 
