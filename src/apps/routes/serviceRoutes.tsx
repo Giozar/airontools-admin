@@ -8,81 +8,77 @@ import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage
 import EditRepairOrderPage from '@pages/repairOrderPages/EditRepairOrderPage';
 import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
 
-export const viewOrderRoutes = () => {
-	return [
-		{
-			path: 'crear-orden',
-			element: (
-				<OrderProvider>
-					<CompanyProvider>
-						<OtherProductProvider>
-							<RepairProductProvider>
-								<CustomerProvider>
-									<CreateRepairOrderPage />
-								</CustomerProvider>
-							</RepairProductProvider>
-						</OtherProductProvider>
-					</CompanyProvider>
-				</OrderProvider>
-			),
-		},
-		{
-			path: 'editar-orden',
-			element: <EditOrderRedirect />,
-		},
-		{
-			path: 'editar-orden',
-			children: [
-				{
-					path: ':orderId',
-					element: (
-						<OrderProvider>
-							<CompanyProvider>
-								<OtherProductProvider>
-									<RepairProductProvider>
-										<CustomerProvider>
-											<EditRepairOrderPage />
-										</CustomerProvider>
-									</RepairProductProvider>
-								</OtherProductProvider>
-							</CompanyProvider>
-						</OrderProvider>
-					),
-				},
-			],
-		},
-	];
-};
+export const viewOrderRoutes = () => [
+	{
+		path: 'crear-orden',
+		element: (
+			<OrderProvider>
+				<CompanyProvider>
+					<OtherProductProvider>
+						<RepairProductProvider>
+							<CustomerProvider>
+								<CreateRepairOrderPage />
+							</CustomerProvider>
+						</RepairProductProvider>
+					</OtherProductProvider>
+				</CompanyProvider>
+			</OrderProvider>
+		),
+	},
+	{
+		path: 'editar-orden',
+		element: <EditOrderRedirect />,
+	},
+	{
+		path: 'editar-orden',
+		children: [
+			{
+				path: ':orderId',
+				element: (
+					<OrderProvider>
+						<CompanyProvider>
+							<OtherProductProvider>
+								<RepairProductProvider>
+									<CustomerProvider>
+										<EditRepairOrderPage />
+									</CustomerProvider>
+								</RepairProductProvider>
+							</OtherProductProvider>
+						</CompanyProvider>
+					</OrderProvider>
+				),
+			},
+		],
+	},
+];
 
-export const serviceRoutes = () => {
-	return [
-		{
-			path: 'ver-orden',
-			element: (
-				<OrderProvider>
-					<RepairOrderMenuPage />
-				</OrderProvider>
-			),
-		},
-		{
-			path: 'crear-orden',
-			element: (
-				<OrderProvider>
-					<CompanyProvider>
-						<OtherProductProvider>
-							<RepairProductProvider>
-								<CustomerProvider>
-									<CreateRepairOrderPage />
-								</CustomerProvider>
-							</RepairProductProvider>
-						</OtherProductProvider>
-					</CompanyProvider>
-				</OrderProvider>
-			),
-		},
-		{
-			path: 'ver-orden',
-			children: viewOrderRoutes(),
-		},
-	];
-};
+export const serviceRoutes = () => [
+	{
+		path: 'ver-orden',
+		element: (
+			<OrderProvider>
+				<RepairOrderMenuPage />
+			</OrderProvider>
+		),
+	},
+	{
+		path: 'crear-orden',
+		element: (
+			<OrderProvider>
+				<CompanyProvider>
+					<OtherProductProvider>
+						<RepairProductProvider>
+							<CustomerProvider>
+								<CreateRepairOrderPage />
+							</CustomerProvider>
+						</RepairProductProvider>
+					</OtherProductProvider>
+				</CompanyProvider>
+			</OrderProvider>
+		),
+	},
+	{
+		path: 'ver-orden',
+		children: viewOrderRoutes(),
+	},
+];

@@ -3,37 +3,34 @@ import CreateProductPage from '@pages/productPages/CreateProductPage';
 import EditProductPage from '@pages/productPages/EditProductPage';
 import ToolMenu from '@pages/productPages/ProductMenu';
 
-export const toolRoutes = () => {
-	return [
-		{
-			path: 'herramientas',
-			element: <ToolMenu />,
-		},
+export const toolRoutes = () => [
+	{
+		path: 'herramientas',
+		element: <ToolMenu />,
+	},
 
-		{
-			path: 'herramientas',
+	{
+		path: 'herramientas',
 
-			children: createEditToolRoutes(),
-		},
-	];
-};
-export const createEditToolRoutes = () => {
-	return [
-		{
-			path: 'crear-herramienta',
-			element: (
-				<ProductCreateProvider>
-					<CreateProductPage />
-				</ProductCreateProvider>
-			),
-		},
-		{
-			path: 'editar-herramienta',
-			element: (
-				<ProductCreateProvider>
-					<EditProductPage />
-				</ProductCreateProvider>
-			),
-		},
-	];
-};
+		children: createEditToolRoutes(),
+	},
+];
+
+export const createEditToolRoutes = () => [
+	{
+		path: 'crear-herramienta',
+		element: (
+			<ProductCreateProvider>
+				<CreateProductPage />
+			</ProductCreateProvider>
+		),
+	},
+	{
+		path: 'editar-herramienta',
+		element: (
+			<ProductCreateProvider>
+				<EditProductPage />
+			</ProductCreateProvider>
+		),
+	},
+];
