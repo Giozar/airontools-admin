@@ -10,47 +10,35 @@ function Return() {
 	const getDisplayName = (part: string) =>
 		part.includes('-') ? part.split('-').join(' ') : part;
 
+	const getPart = (index: number) => {
+		return isId(pathnames[index]) ? pathnames[index - 1] : pathnames[index];
+	};
+
 	const renderReturn = () => {
 		let fullPath = '';
-		let prevPart = '';
-
 		const lastIndex = pathnames.length - 1;
-		const element01 = location.pathname
-			.replace(pathnames[lastIndex], '')
-			.replace(/\/{2}$/, '');
+		fullPath = location.pathname
+			.replace(pathnames[lastIndex], '') // quita el ultimo elemento
+			.replace(/\/+$/, ''); // quita los // del final de la url
 
 		if (isId(pathnames[lastIndex])) {
-			const element = element01
-				.replace(pathnames[lastIndex - 1], '')
-				.replace(/\/{2}$/, '');
-			console.log('😀' + element);
-		} else {
-			console.log('😎' + element01);
+			fullPath = fullPath
+				.replace(pathnames[lastIndex - 1], '') // quita el penultimo elemento
+				.replace(/\/+$/, ''); // quita los // del final de la url
 		}
 
-		return pathnames.map((part, index) => {
-			fullPath += `/${part}`;
-			const isLast = isId(part)
-				? index === pathnames.length - 3
-				: index === pathnames.length - 2;
-			const nextPart = pathnames[index + 1];
+		const part = getPart(
+			isId(pathnames[lastIndex]) ? lastIndex - 2 : lastIndex - 1,
+		);
 
-			// Comprobación si el siguiente es un ID
-			if (nextPart && isId(nextPart)) {
-				prevPart = part;
-				return null;
-			}
-			if (isLast) {
-				return (
-					<Link to={fullPath} className='return__link' key={fullPath}>
-						<ReturnIcon />
-						Regresar a {getDisplayName(prevPart)}
-					</Link>
-				);
-			} else {
-				return null; // Cambiado de <></> a null para mejor claridad
-			}
-		});
+		if (!part) return null;
+
+		return (
+			<Link to={fullPath} className='return__link' key={fullPath}>
+				<ReturnIcon />
+				Regresar a {getDisplayName(part)}
+			</Link>
+		);
 	};
 
 	return <div className='return'>{renderReturn()}</div>;

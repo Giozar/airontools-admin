@@ -47,6 +47,7 @@ const useFetchUsers = () => {
 		setFilteredUsers,
 		userSelectOptions,
 		handleSearch,
+		update,
 		setUpdate,
 	};
 };
