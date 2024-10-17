@@ -25,23 +25,26 @@ export default function CreateSubcategories({
 	} = useSubcategoryCreateContext();
 	const { getCategoryInstance } = useCategoryCreateContext();
 	const { handleCreateSubcategory } = useEditCategorization();
+
+	const SubcategoryAddedRef = useRef(false);
+	const categoryKey = localStorage.getItem('categoryToEdit');
+	const category = getCategoryInstance(categoryKey || '');
+
 	const hasSubcategories = Object.values(subcategoryInstances).some(
 		Subcategory => Subcategory.mode === 'create',
 	);
-	const categoryKey = localStorage.getItem('categoryToEdit');
-	if (!categoryKey) return null;
-	const category = getCategoryInstance(categoryKey);
-	if (!category || category.mode !== 'edit') return null;
 
-	const SubcategoryAddedRef = useRef(false);
 	useEffect(() => {
 		if (init && !hasSubcategories && !SubcategoryAddedRef.current && category) {
 			addSubcategoryInstance(`subcat-${Date.now()}`, {
 				category: category.id,
 			});
-			SubcategoryAddedRef.current = true;
+			SubcategoryAddedRef.current = true; // Marca que se añadió una subcategoría
 		}
-	}, [init, hasSubcategories, addSubcategoryInstance]);
+	}, [init, hasSubcategories, category, addSubcategoryInstance]); // Asegúrate de que `category` esté en las dependencias
+
+	// Asegúrate de manejar el caso donde category es null
+	if (!category || category.mode !== 'edit') return null;
 
 	return (
 		<div className='create-subcategories'>

@@ -24,18 +24,18 @@ const routeMap: {
 	'Crear orden': string;
 	'Ver orden': string;
 } = {
-	'Ver herramientas': '/home/herramientas',
-	'Crear herramientas': '/home/herramientas/crear-herramienta',
+	'Ver herramientas': '/home/productos/herramientas',
+	'Crear herramientas': '/home/productos/herramientas/crear-herramienta',
 	'Ver usuarios': '/home/usuarios',
 	'Crear usuarios': '/home/usuarios/crear-usuario',
 	'Crear rol de usuarios': '/home/usuarios/crear-rol',
-	'Ver categorizaciones': '/home/categorizacion',
-	'Crear categorizaciones': '/home/categorizacion/crear-familia',
-	'Ver especificaciones': '/home/categorizacion/especificaciones',
+	'Ver categorizaciones': '/home/productos/categorizacion',
+	'Crear categorizaciones': '/home/productos/categorizacion/crear-familia',
+	'Ver especificaciones': '/home/productos/categorizacion/especificaciones',
 	'Crear especificaciones':
-		'/home/categorizacion/especificaciones/crear-especificaciones',
-	'Crear orden': '/home/crear-orden',
-	'Ver orden': '/home/ver-orden',
+		'/home/productos/categorizacion/especificaciones/crear-especificaciones',
+	'Crear orden': '/home/servicios/crear-orden',
+	'Ver orden': '/home/servicios/ver-orden',
 };
 export default function Sidebar() {
 	const { user, setUser, setAuth } = useAuthContext();
