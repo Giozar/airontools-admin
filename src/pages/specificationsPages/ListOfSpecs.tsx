@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 
 function SpecificationsGrid() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [update, setUpdate] = useState(false);
 	const [specifications, setSpecifications] = useState<SpecDataFrontend[]>([]);
 	const { showAlert } = useAlert();
 	const { openModal } = useModal();
@@ -22,7 +23,10 @@ function SpecificationsGrid() {
 		openModal(
 			'Eliminar Especificacion',
 			`Vas a eliminar la especificacion ${name}. ¿Estás seguro de que quieres continuar? `,
-			() => handleDelete(id, name),
+			() => {
+				handleDelete(id, name);
+				setUpdate(!update);
+			},
 			true,
 			false,
 		);
@@ -42,7 +46,7 @@ function SpecificationsGrid() {
 			}
 		};
 		fetchSpecifications();
-	}, [specifications]);
+	}, [update]);
 
 	const filteredSpecifications = specifications.filter(spec =>
 		spec.name.toLowerCase().includes(searchTerm.toLowerCase()),

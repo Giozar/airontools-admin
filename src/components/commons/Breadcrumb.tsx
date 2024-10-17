@@ -28,7 +28,7 @@ function Breadcrumb({
 			// Comprobación si el siguiente es un ID
 			if (nextPart && isId(nextPart)) {
 				prevPart = part;
-				return <></>;
+				return null;
 			} else if (isId(part)) {
 				if (isLast) {
 					return (
