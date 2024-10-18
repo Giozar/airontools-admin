@@ -11,7 +11,8 @@ import { airontoolsAPI } from '@configs/api.config';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import useProductManagement from '@hooks/products/useProductManagement';
-import useProductsSearch from '@hooks/products/useProductSearch';
+import useProducts from '@hooks/products/useProducts';
+import useDebounce from '@hooks/search/useDebounce';
 import { ProductDataFrontend } from '@interfaces/Product.interface';
 import '@pages/productPages/ProductMenu.css';
 import { useEffect, useState } from 'react';
@@ -23,12 +24,14 @@ function ListOfTools() {
 	const { handleEdit, handleDelete } = useProductManagement();
 	const { openModal } = useModal();
 	const { user } = useAuthContext();
-	const { products, getSearchedProducts, fetchAllProducts } =
-		useProductsSearch();
+
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	const { fetchProducts, products } = useProducts();
+	const { debouncedFetch } = useDebounce(fetchProducts, 300);
 
 	useEffect(() => {
-		fetchAllProducts();
-	}, []);
+		debouncedFetch(searchTerm);
+	}, [searchTerm, debouncedFetch]);
 
 	const handleOpenModal = (product: ProductDataFrontend) => {
 		openModal(
@@ -105,7 +108,7 @@ function ListOfTools() {
 	return (
 		<div className='toollist'>
 			<h2 className='listtitle'>Lista de herramientas</h2>
-			<Searchbar callback={getSearchedProducts} />
+			<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
 			<ProductInfoModal
 				isOpen={modalOpen}
 				onClose={() => setModalOpen(false)}
