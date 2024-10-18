@@ -2,35 +2,35 @@ import Info from '@components/commons/Info';
 import InfoSection from '@components/commons/InfoSection';
 import ModalContent from '@components/commons/ModalContent';
 import NoImageIcon from '@components/svg/NoImageIcon';
-import { CategoryCreateContextProps } from '@interfaces/Category.interface';
+import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
 
-export default function CategoryInfoModal({
+export default function SubcategoryInfoModal({
 	isOpen,
 	onClose,
-	category,
 	familyName,
-	subcategories,
+	categoryName,
+	subcategory,
 }: {
 	isOpen: boolean;
 	onClose: () => void;
 	familyName: string;
-	category: CategoryCreateContextProps | null;
-	subcategories: string[] | null;
+	categoryName: string;
+	subcategory: SubcategoryCreateContextProps | null;
 }) {
-	if (!category) return null;
+	if (!subcategory) return null;
 	return (
 		<ModalContent
 			isOpen={isOpen}
 			onClose={onClose}
-			title={`Categoría: ${category.name || ''}`}
+			title={`Subcategoría: ${subcategory.name || ''}`}
 		>
 			<div style={{ maxHeight: '60vh', overflowY: 'auto', padding: '20px' }}>
 				<Info title={'Imagen'} info={'-'} />
 				<div className='grupo' style={{ margin: '1.5rem 0' }}>
-					{category.image ? (
+					{subcategory.image ? (
 						<img
-							src={category.image}
-							alt={category.image}
+							src={subcategory.image}
+							alt={subcategory.image}
 							width={150}
 							height={150}
 						/>
@@ -39,13 +39,14 @@ export default function CategoryInfoModal({
 					)}
 
 					<div>
-						<Info title={'Nombre'} info={category.name} />
+						<Info title={'Nombre'} info={subcategory.name} />
 						<Info title={'Familia'} info={familyName} />
-						<Info title={'Descripción'} info={category.description} />
+						<Info title={'Categoría'} info={categoryName} />
+						<Info title={'Descripción'} info={subcategory.description} />
 					</div>
 				</div>
 
-				<InfoSection title='Subcategorias' items={subcategories || []} />
+				<InfoSection title='Productos' items={[]} />
 			</div>
 		</ModalContent>
 	);

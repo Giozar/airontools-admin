@@ -1,4 +1,4 @@
-import CategoryInfoModal from '@components/categorizations/CategoryInfoModal';
+import CategoryInfoModal from '@components/categorizations/modals/CategoryInfoModal';
 import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
