@@ -1,38 +1,42 @@
+// Importing necessary components, hooks, and libraries
 import TableComponent from '@components/commons/DynamicTable';
+import Searchbar from '@components/search/Searchbar';
 import EditIcon from '@components/svg/EditIcon';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
-import { Order } from '@interfaces/Order.interface';
-import { getAllOrdersService } from '@services/orders/orders.service';
-import { useEffect, useState } from 'react';
+import useDebounce from '@hooks/search/useDebounce';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useOrders from './hooks/useOrders';
 
+// Main component for displaying repair orders list
 export default function RepairOrderList() {
-	const [orders, setOrders] = useState<Order[]>([]);
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	const { fetchOrders, orders } = useOrders();
+	const { debouncedFetch } = useDebounce(fetchOrders, 300);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		const getOrders = async () => {
-			try {
-				const fetchedOrders = await getAllOrdersService();
-				setOrders(fetchedOrders);
-			} catch (error) {
-				console.error('Error fetching orders:', error);
-			}
-		};
-		getOrders();
-	}, []);
+		debouncedFetch(searchTerm);
+	}, [searchTerm, debouncedFetch]);
+
+	const handleEditOrder = useCallback(
+		(orderId: string) => {
+			navigate(`editar-orden/${orderId}`);
+		},
+		[navigate],
+	);
 
 	const tableData = {
-		headers: ['No. Orden', 'Fecha', 'Cliente', 'Recibido por', 'PDF', 'Editar'],
+		headers: ['Order No.', 'Date', 'Customer', 'Received By', 'PDF', 'Edit'],
 		rows: orders
 			.map(order => [
-				'AT' + order.control,
+				`AT${order.control}`,
 				new Date(order.createdAt).toLocaleDateString(),
 				order.customer?.name || '',
 				order.receivedBy?.name || '',
 				<a
-					key={'pdf'}
+					key={`pdf-${order._id}`}
 					target='_blank'
 					href={`${airontoolsAPI}/basic-reports/repair-order/${order._id}`}
 					rel='noreferrer'
@@ -40,11 +44,9 @@ export default function RepairOrderList() {
 					<PDFIcon />
 				</a>,
 				<button
-					className='table__button table__button--edit'
 					key={`edit-${order._id}`}
-					onClick={() => {
-						navigate(`editar-orden/${order._id}`);
-					}}
+					className='table__button table__button--edit'
+					onClick={() => handleEditOrder(order._id)}
 				>
 					<EditIcon />
 				</button>,
@@ -52,5 +54,10 @@ export default function RepairOrderList() {
 			.reverse(),
 	};
 
-	return <TableComponent data={tableData} />;
+	return (
+		<>
+			<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
+			<TableComponent data={tableData} />
+		</>
+	);
 }

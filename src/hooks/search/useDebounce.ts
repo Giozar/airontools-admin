@@ -1,14 +1,14 @@
+// Custom hook to debounce the callback function
 import debounce from 'just-debounce-it';
-import { useCallback } from 'react';
-import { Search } from 'react-router-dom';
+import { useMemo } from 'react';
 
-export default function useDebounce({ callback }: { callback: Function }) {
-	const debouncedSearch = useCallback(
-		debounce((search: Search) => {
-			callback({ search });
-		}, 300),
-		[callback],
+export default function useDebounce(
+	callback: (arg: string) => void,
+	delay: number,
+) {
+	const debouncedFetch = useMemo(
+		() => debounce(callback, delay),
+		[callback, delay],
 	);
-
-	return { debouncedSearch };
+	return { debouncedFetch };
 }
