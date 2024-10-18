@@ -1,3 +1,4 @@
+import { fileUpload } from '@components/files/helpers/filesUpload.helper';
 import { useAlertHelper } from '@contexts/Alert/alert.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
@@ -6,7 +7,11 @@ import { useOrderContext } from '@contexts/order/OrderContext';
 import { CustomerType } from '@interfaces/Customer.interface';
 import { updateCompanyService } from '@services/companies/companies.service';
 import { updateCustomerService } from '@services/customers/customers.service';
-import { updateOrderService } from '@services/orders/orders.service';
+import { deleteFileService } from '@services/files/deleteFile.service';
+import {
+	updateOrderService,
+	uploadOrderUrlImagesService,
+} from '@services/orders/orders.service';
 
 export default function useEditOrder() {
 	const { name: companyName } = useCompanyContext();
@@ -19,6 +24,11 @@ export default function useEditOrder() {
 		company,
 		customer,
 		receivedBy,
+		imageRaw,
+		setImageRaw,
+		setImages,
+		imageRemoved,
+		setImageRemoved,
 		_id,
 		setSuccess,
 	} = useOrderContext();
@@ -56,6 +66,36 @@ export default function useEditOrder() {
 				quoteDeliveryTime,
 			});
 			console.log(editedOrder);
+
+			if (imageRemoved) {
+				console.log(imageRemoved);
+				await deleteFileService(imageRemoved);
+				setImageRemoved('');
+				setImages([]);
+				await updateOrderService(_id, {
+					images: [],
+				});
+			}
+
+			if (imageRaw) {
+				console.log('Subo archivo');
+				const imageUrls = await fileUpload({
+					type: 'images',
+					feature: `orders/${_id}`,
+					file: imageRaw,
+					setFile: setImageRaw,
+					setFileUrl: (url: string) => {
+						if (setImages) {
+							setImages([url]);
+						}
+					},
+				});
+				imageUrls &&
+					(await uploadOrderUrlImagesService({
+						orderId: _id,
+						imageUrls: [imageUrls],
+					}));
+			}
 			setSuccess(true);
 			showSuccess('Orden editada con éxito');
 		} catch (error) {

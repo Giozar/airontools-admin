@@ -37,6 +37,7 @@ export default function RepairOrderForm({
 		imageRaw,
 		setImages,
 		setImageRaw,
+		setImageRemoved,
 		deliveryDate,
 		setDeliveryDate,
 		authorizationDate,
@@ -182,14 +183,14 @@ export default function RepairOrderForm({
 					setDate={setAuthorizationDate}
 				/>
 			)}
+
 			<SingleImageChange
 				title={'Foto general de herramientas'}
 				filePreview={
 					imageRaw ? URL.createObjectURL(imageRaw) : images ? images[0] : ''
 				}
-				setFilePreview={file => {
-					if (file) setImageRaw(file);
-				}}
+				setFilePreview={setImageRaw}
+				setImageRemoved={setImageRemoved}
 				capture={true}
 				size='large'
 			/>

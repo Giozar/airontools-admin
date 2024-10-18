@@ -93,6 +93,8 @@ export interface OrderContextProps {
 	setImages: (value: string[]) => void; // Setter para actualizar las imágenes
 	imageRaw: File | null;
 	setImageRaw: (value: File | null) => void;
+	imageRemoved: string; // URLs de las imágenes opcionales
+	setImageRemoved: (value: string) => void; // Setter para actualizar las imágenes
 	receivedBy: string; // ID del empleado que recibe el producto
 	setReceivedBy: (value: string) => void; // Setter para actualizar quién recibe
 	deliveryRepresentative: string; // Representante que entrega la herramienta
