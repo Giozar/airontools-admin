@@ -6,7 +6,7 @@ import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 /**
  * Permite la edición y eliminación de una familia existente.
  *
@@ -23,7 +23,11 @@ export default function EditFamily() {
 	const { handleUpdateFamily, handleDeleteFamily } = useEditCategorization();
 	const { openModal } = useModal();
 	const navigate = useNavigate();
-
+	const location = useLocation();
+	const rutaAnteriorAnterior = location.pathname.replace(
+		`/${location.pathname.split('/').slice(-2).join('/')}`,
+		'',
+	);
 	return (
 		<div className='family-item' key={familyToCreate.id}>
 			<div className='family-item__header'>
@@ -83,7 +87,7 @@ export default function EditFamily() {
 							'Familia',
 							() => {
 								handleDeleteFamily(familyToCreate.id || '');
-								navigate(-1);
+								navigate(rutaAnteriorAnterior);
 							},
 							openModal,
 							true,
