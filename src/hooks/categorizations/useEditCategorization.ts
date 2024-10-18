@@ -23,7 +23,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export function useEditCategorization() {
 	const { ...familyToEdit } = useFamilyCreateContext();
-	const { showError, showSuccess, showSuccessAndReturn } = useAlertHelper();
+	const { showError, showSuccess } = useAlertHelper();
 	const { user } = useAuthContext();
 	const {
 		addCategoryInstance,
@@ -173,7 +173,7 @@ export function useEditCategorization() {
 			throw new Error(`No existe la familia con el id ${familyId}`);
 		try {
 			await deleteFamilyService(familyId);
-			showSuccessAndReturn('Familia borrada');
+			showSuccess('Familia borrada');
 		} catch (error) {
 			showError('no se pudo borrar familia', error);
 		}
