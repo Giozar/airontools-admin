@@ -35,6 +35,7 @@ export default function RepairOrderForm({
 		setObservations,
 		images,
 		imageRaw,
+		setImages,
 		setImageRaw,
 		deliveryDate,
 		setDeliveryDate,
@@ -88,6 +89,7 @@ export default function RepairOrderForm({
 		setCompany(initialData.company?._id || '');
 		setCustomer(initialData.customer?._id || '');
 		setReceivedBy(initialData.receivedBy?._id || '');
+		setImages(initialData?.images || []);
 	};
 
 	useEffect(() => {}, [observations, authorizationDate]);
