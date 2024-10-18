@@ -1,4 +1,5 @@
 import uploadFileService from '@services/files/fileUpload.service';
+import { errorHandler } from '@utils/errorHandler.util';
 interface FilesUploadArgs {
 	type: string;
 	feature: string;
@@ -28,4 +29,31 @@ export async function filesUpload({
 	setFiles([]);
 	setFileUrls(urls);
 	return urls;
+}
+
+interface FileUploadArgs {
+	type: string;
+	feature: string;
+	file: File | null;
+	setFile: (value: File | null) => void;
+	setFileUrl: (value: string) => void;
+}
+export async function fileUpload({
+	type,
+	feature,
+	file,
+	setFile,
+	setFileUrl,
+}: FileUploadArgs) {
+	try {
+		if (!file) return;
+		const url = await uploadFileService(file, type, feature);
+		setFileUrl(url);
+		// Limpia los estados
+		setFile(null);
+		return url;
+	} catch (error) {
+		console.error('No se pudo subir archivo:', (file as File).name, error);
+		throw errorHandler(error);
+	}
 }

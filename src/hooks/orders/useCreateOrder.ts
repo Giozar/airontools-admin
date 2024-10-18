@@ -1,3 +1,4 @@
+import { fileUpload } from '@components/files/helpers/filesUpload.helper';
 import useResetRepairOrder from '@components/orders/hooks/useResetRepairOrder';
 import { useAlertHelper } from '@contexts/Alert/alert.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
@@ -7,7 +8,10 @@ import { useOrderContext } from '@contexts/order/OrderContext';
 import { CustomerType } from '@interfaces/Customer.interface';
 import { createCompanyService } from '@services/companies/companies.service';
 import { createCustomerService } from '@services/customers/customers.service';
-import { createOrderService } from '@services/orders/orders.service';
+import {
+	createOrderService,
+	uploadOrderUrlImagesService,
+} from '@services/orders/orders.service';
 
 export default function useCreateOrder() {
 	const { name: companyName } = useCompanyContext();
@@ -20,6 +24,9 @@ export default function useCreateOrder() {
 		quoteDeliveryTime,
 		deliveryRepresentative,
 		receivedBy,
+		imageRaw,
+		setImages,
+		setImageRaw,
 		setSuccess,
 		setId,
 	} = useOrderContext();
@@ -70,6 +77,26 @@ export default function useCreateOrder() {
 			resetRepairOrder();
 			setSuccess(true);
 			setId(createdOrder._id);
+
+			if (createdOrder?._id && imageRaw) {
+				console.log('Subo archivo');
+				const imageUrls = await fileUpload({
+					type: 'images',
+					feature: `orders/${createdOrder._id}`,
+					file: imageRaw,
+					setFile: setImageRaw,
+					setFileUrl: (url: string) => {
+						if (setImages) {
+							setImages([url]);
+						}
+					},
+				});
+				imageUrls &&
+					(await uploadOrderUrlImagesService({
+						orderId: createdOrder._id,
+						imageUrls: [imageUrls],
+					}));
+			}
 			showSuccess('Orden creada con éxito');
 		} catch (error) {
 			showError('No se pudo crear la orden', error);

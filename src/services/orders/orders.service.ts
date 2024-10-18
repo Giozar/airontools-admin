@@ -78,3 +78,23 @@ export async function deleteOrderService(id: string) {
 		throw errorHandler(error);
 	}
 }
+
+export async function uploadOrderUrlImagesService({
+	orderId,
+	imageUrls,
+}: {
+	orderId: string;
+	imageUrls: string[];
+}) {
+	try {
+		const orderUpdated = await axios.patch(
+			airontoolsAPI + '/orders/' + orderId,
+			{
+				images: imageUrls,
+			},
+		);
+		return orderUpdated;
+	} catch (error) {
+		errorHandler(error);
+	}
+}

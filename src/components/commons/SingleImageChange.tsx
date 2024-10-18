@@ -1,12 +1,13 @@
 import '@components/css/ImageUploaderSingle.css'; // Ensure the path is correct
 import EyeIcon from '@components/svg/EyeIcon';
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 interface ImageUploaderProps {
 	title: string;
 	filePreview: string;
 	setFilePreview: (value: File | null) => void;
 	setFileToDelete?: (value: boolean) => void;
+	setImageRemoved?: (value: string) => void;
 	placeholder?: string;
 	capture?: boolean;
 	size?: string;
@@ -17,12 +18,13 @@ const SingleImageChange = ({
 	filePreview,
 	setFilePreview,
 	setFileToDelete,
+	setImageRemoved,
 	placeholder,
 	capture,
 	size = 'default',
 }: ImageUploaderProps) => {
 	const [isHovering, setIsHovering] = useState(false);
-	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
 			setFilePreview(file);
@@ -30,10 +32,15 @@ const SingleImageChange = ({
 	};
 
 	const handleRemoveImage = () => {
+		if (setImageRemoved) setImageRemoved(filePreview);
+		console.log(filePreview);
 		setFilePreview(null);
 		if (setFileToDelete) setFileToDelete(true);
 	};
 
+	useEffect(() => {
+		console.log(filePreview, 'se tiene que quitar la imagen');
+	}, [filePreview]);
 	return (
 		<>
 			<p>{title}</p>

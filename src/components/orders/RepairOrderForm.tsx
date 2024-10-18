@@ -35,7 +35,9 @@ export default function RepairOrderForm({
 		setObservations,
 		images,
 		imageRaw,
+		setImages,
 		setImageRaw,
+		setImageRemoved,
 		deliveryDate,
 		setDeliveryDate,
 		authorizationDate,
@@ -88,6 +90,7 @@ export default function RepairOrderForm({
 		setCompany(initialData.company?._id || '');
 		setCustomer(initialData.customer?._id || '');
 		setReceivedBy(initialData.receivedBy?._id || '');
+		setImages(initialData?.images || []);
 	};
 
 	useEffect(() => {}, [observations, authorizationDate]);
@@ -180,14 +183,14 @@ export default function RepairOrderForm({
 					setDate={setAuthorizationDate}
 				/>
 			)}
+
 			<SingleImageChange
 				title={'Foto general de herramientas'}
 				filePreview={
 					imageRaw ? URL.createObjectURL(imageRaw) : images ? images[0] : ''
 				}
-				setFilePreview={file => {
-					if (file) setImageRaw(file);
-				}}
+				setFilePreview={setImageRaw}
+				setImageRemoved={setImageRemoved}
 				capture={true}
 				size='large'
 			/>
