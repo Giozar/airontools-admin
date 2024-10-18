@@ -48,5 +48,6 @@
 	margin-top: 0;
 	border: none;
 	background-color: transparent;
+	color: var(--text-primary);
 	font-size: 24px;
 }
