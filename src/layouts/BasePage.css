@@ -199,7 +199,6 @@ form {
 	display: grid;
 	row-gap: 0.5rem;
 	margin: 0 1rem;
-	max-width: 600px;
 }
 .search {
 	border: 0px;
