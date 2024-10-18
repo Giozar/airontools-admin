@@ -1,5 +1,9 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { CreateCompany, UpdateCompany } from '@interfaces/Company.interface';
+import {
+	Company,
+	CreateCompany,
+	UpdateCompany,
+} from '@interfaces/Company.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
@@ -17,6 +21,24 @@ export async function createCompanyService(company: CreateCompany) {
 export async function getAllCompaniesService() {
 	try {
 		const response = await axios.get(`${airontoolsAPI}/companies`);
+		return response.data;
+	} catch (error) {
+		throw errorHandler(error);
+	}
+}
+
+export async function searchCompaniesService(
+	searchTerm: string,
+	limit: number = 10,
+	offset: number = 0,
+): Promise<Company[]> {
+	try {
+		const response = await axios.post<Company[]>(
+			`${airontoolsAPI}/companies/search?limit=${limit}&offset=${offset}`,
+			{
+				keywords: searchTerm,
+			},
+		);
 		return response.data;
 	} catch (error) {
 		throw errorHandler(error);
