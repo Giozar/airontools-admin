@@ -6,7 +6,7 @@ import { useSubcategoryCreateContext } from '@contexts/categorization/Subcategor
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 /**
  * Componente que permite la edición de una subcategoría específica
@@ -26,11 +26,18 @@ export default function EditSubcategory() {
 
 	const { openModal } = useModal();
 	const { subcategoryId } = useParams();
+	const navigate = useNavigate();
+	const location = useLocation();
+	const rutaAnteriorAnterior = location.pathname.replace(
+		`/${location.pathname.split('/').slice(-2).join('/')}`,
+		'',
+	);
 
 	const handleConfirm = (subcategoryId: string) => {
 		handleDeleteSubcategory(subcategoryId);
 		if (subcategoryId) {
 			removeSubcategoryInstance(subcategoryId);
+			navigate(rutaAnteriorAnterior);
 		}
 	};
 

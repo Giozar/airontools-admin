@@ -1,11 +1,17 @@
+import SubcategoryInfoModal from '@components/categorizations/modals/SubcategoryModal';
 import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
+import NoImageIcon from '@components/svg/NoImageIcon';
 import TrashIcon from '@components/svg/TrashIcon';
+import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
+import { useFamilyCreateContext } from '@contexts/categorization/FamilyContext';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
+import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function SubcategoryList() {
@@ -15,15 +21,53 @@ export default function SubcategoryList() {
 		removeSubcategoryInstance,
 		getSubcategoryInstance,
 	} = useSubcategoryCreateContext();
-	const { handleDeleteSubcategory } = useEditCategorization();
-	const { openModal } = useModal();
+	const { handleDeleteSubcategory, getProductListFromSubcategory } =
+		useEditCategorization();
+	const { name: familyName } = useFamilyCreateContext();
+	const { getCategoryInstance } = useCategoryCreateContext();
 
+	const { openModal } = useModal();
+	const { categoryId } = useParams();
+	const [subcategoryModal, setSubcategoryModal] = useState<{
+		subcategory: SubcategoryCreateContextProps | null;
+		open: boolean;
+	}>({
+		subcategory: null,
+		open: false,
+	});
 	const handleConfirm = (subcategoryId: string, key: string) => {
 		handleDeleteSubcategory(subcategoryId);
 		removeSubcategoryInstance(key);
 	};
-	const { categoryId } = useParams();
+	const [productsList, setProductsList] = useState<string[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchProducts = async () => {
+			if (!subcategoryModal.subcategory?.id) return;
+			setLoading(true);
+			try {
+				const products = await getProductListFromSubcategory(
+					subcategoryModal.subcategory?.id,
+				);
+				setProductsList(products);
+			} catch (err) {
+				console.error(err);
+				setLoading(false);
+			} finally {
+				setLoading(false);
+			}
+		};
+		if (subcategoryModal.subcategory?.id) {
+			fetchProducts();
+		}
+	}, [subcategoryModal.subcategory?.id]);
+
+	if (loading && subcategoryModal.subcategory?.id) {
+		return <div>Cargando productos...</div>;
+	}
 	if (!categoryId) return null;
+	const categoryName = getCategoryInstance(categoryId)?.name || '';
 
 	const tableData = {
 		headers: [
@@ -49,16 +93,21 @@ export default function SubcategoryList() {
 				subcategory.id,
 				subcategory.name,
 				subcategory.description || '---',
-				<img
-					key={'image' + key}
-					src={imageUrl}
-					alt={subcategory.name}
-					style={{ width: '100px', height: 'auto' }}
-				/>,
+				imageUrl ? (
+					<img
+						key={'image' + key}
+						src={imageUrl}
+						alt={subcategory.name}
+						style={{ width: '100px', height: 'auto' }}
+					/>
+				) : (
+					<NoImageIcon />
+				),
 				<button
 					className='table__button table__button--view'
 					key={`view-${subcategory.id}`}
 					type='button'
+					onClick={() => setSubcategoryModal({ subcategory, open: true })}
 				>
 					<EyeIcon />
 				</button>,
@@ -96,5 +145,17 @@ export default function SubcategoryList() {
 		}),
 	};
 
-	return <TableComponent data={tableData} />;
+	return (
+		<>
+			<SubcategoryInfoModal
+				isOpen={subcategoryModal.open}
+				onClose={() => setSubcategoryModal({ subcategory: null, open: false })}
+				familyName={familyName}
+				categoryName={categoryName}
+				subcategory={subcategoryModal.subcategory}
+				products={productsList}
+			/>
+			<TableComponent data={tableData} />
+		</>
+	);
 }

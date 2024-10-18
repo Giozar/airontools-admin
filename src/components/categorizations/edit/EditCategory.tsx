@@ -6,7 +6,7 @@ import { useCategoryCreateContext } from '@contexts/categorization/CategoryConte
 import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export default function EditCategory() {
 	const {
@@ -18,12 +18,20 @@ export default function EditCategory() {
 		useEditCategorization();
 	const { openModal } = useModal();
 	const { categoryId } = useParams();
+	const navigate = useNavigate();
+	const location = useLocation();
+	const rutaAnteriorAnterior = location.pathname.replace(
+		`/${location.pathname.split('/').slice(-2).join('/')}`,
+		'',
+	);
+	console.log(rutaAnteriorAnterior);
 	if (!categoryId) return null;
 
 	const handleConfirm = (categoryId: string) => {
 		handleDeleteCategory(categoryId);
 		if (categoryId) {
 			removeCategoryInstance(categoryId);
+			navigate(rutaAnteriorAnterior);
 		}
 	};
 

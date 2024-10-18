@@ -22,7 +22,12 @@ export const useAlertHelper = () => {
 			navigate(0); // Recarga la página actual
 		}, 1000);
 	};
-
+	const showSuccessAndReturn = (message: string) => {
+		showAlert(message, 'success');
+		setTimeout(() => {
+			navigate(-1); // Recarga la página actual
+		}, 1000);
+	};
 	const showSuccessAndNavigate = (message: string, navigateTo: string) => {
 		showAlert(message, 'success');
 		setTimeout(() => {
@@ -40,5 +45,6 @@ export const useAlertHelper = () => {
 		showWarning,
 		showSuccessAndReload,
 		showSuccessAndNavigate,
+		showSuccessAndReturn,
 	};
 };
