@@ -13,6 +13,10 @@ import { getFamilyService } from '@services/families/getFamily.service';
 import { updateFamilyService } from '@services/families/updateFamily.service';
 import { deleteFileService } from '@services/files/deleteFile.service';
 import uploadFileService from '@services/files/fileUpload.service';
+import {
+	getproductsByCategoryIdService,
+	getproductsBySubcategoryIdService,
+} from '@services/products/getProductsByCategorization.service';
 import { createSubcategoryService } from '@services/subcategories/createSubcategory.service';
 import { deleteSubcategoryService } from '@services/subcategories/deleteSubcategory.service';
 import { getSubcategoryByFamilyIdService } from '@services/subcategories/getSubcategoriesByCategorization.service';
@@ -294,7 +298,26 @@ export function useEditCategorization() {
 	const handleEditCategorization = (family: FamilyDataFrontend) => {
 		navigate(`${location.pathname}/editar-familia/${family.id}`);
 	};
-
+	const getProductListFromCategory = async (categoryId: string) => {
+		try {
+			const response = await getproductsByCategoryIdService(categoryId);
+			console.log(categoryId);
+			console.log(response);
+			return response.map(product => product.name);
+		} catch (error) {
+			showError('No se pudo conseguir la lista de productos', error);
+			return [];
+		}
+	};
+	const getProductListFromSubcategory = async (subcategoryId: string) => {
+		try {
+			const response = await getproductsBySubcategoryIdService(subcategoryId);
+			return response.map(product => product.name);
+		} catch (error) {
+			showError('No se pudo conseguir la lista de productos', error);
+			return [];
+		}
+	};
 	return {
 		handleUpdateFamily,
 		handleCreateCategory,
@@ -305,5 +328,7 @@ export function useEditCategorization() {
 		handleDeleteCategory,
 		handleDeleteSubcategory,
 		handleEditCategorization,
+		getProductListFromCategory,
+		getProductListFromSubcategory,
 	};
 }

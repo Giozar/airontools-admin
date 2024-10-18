@@ -11,14 +11,15 @@ import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import { CategoryCreateContextProps } from '@interfaces/Category.interface';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function CategoryList() {
 	const navigate = useNavigate();
 	const { categoryInstances, removeCategoryInstance, getCategoryInstance } =
 		useCategoryCreateContext();
-	const { handleDeleteCategory } = useEditCategorization();
+	const { handleDeleteCategory, getProductListFromCategory } =
+		useEditCategorization();
 	const { name: familyName } = useFamilyCreateContext();
 	const { openModal } = useModal();
 	const handleConfirm = (categoryId: string, key: string) => {
@@ -35,7 +36,33 @@ export default function CategoryList() {
 		category: null,
 		open: false,
 	});
+	const [productsList, setProductsList] = useState<string[]>([]);
+	const [loading, setLoading] = useState(true);
 
+	useEffect(() => {
+		const fetchProducts = async () => {
+			if (!categoryModal.category?.id) return;
+			setLoading(true);
+			try {
+				const products = await getProductListFromCategory(
+					categoryModal.category?.id,
+				);
+				setProductsList(products);
+			} catch (err) {
+				console.error(err);
+				setLoading(false);
+			} finally {
+				setLoading(false);
+			}
+		};
+		if (categoryModal.category?.id) {
+			fetchProducts();
+		}
+	}, [categoryModal.category?.id]);
+
+	if (loading && categoryModal.category?.id) {
+		return <div>Cargando productos...</div>;
+	}
 	const tableData = {
 		headers: [
 			'ID',
@@ -130,6 +157,7 @@ export default function CategoryList() {
 								.filter((name): name is string => name !== null)
 						: []
 				}
+				products={productsList}
 			/>
 			<TableComponent data={tableData} />
 		</>

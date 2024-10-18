@@ -11,7 +11,7 @@ import { useModal } from '@contexts/Modal/ModalContext';
 import { handleOpenModal } from '@handlers/handleOpenModal';
 import { useEditCategorization } from '@hooks/categorizations/useEditCategorization';
 import { SubcategoryCreateContextProps } from '@interfaces/subcategory.interface';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export default function SubcategoryList() {
@@ -21,7 +21,8 @@ export default function SubcategoryList() {
 		removeSubcategoryInstance,
 		getSubcategoryInstance,
 	} = useSubcategoryCreateContext();
-	const { handleDeleteSubcategory } = useEditCategorization();
+	const { handleDeleteSubcategory, getProductListFromSubcategory } =
+		useEditCategorization();
 	const { name: familyName } = useFamilyCreateContext();
 	const { getCategoryInstance } = useCategoryCreateContext();
 
@@ -38,6 +39,33 @@ export default function SubcategoryList() {
 		handleDeleteSubcategory(subcategoryId);
 		removeSubcategoryInstance(key);
 	};
+	const [productsList, setProductsList] = useState<string[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchProducts = async () => {
+			if (!subcategoryModal.subcategory?.id) return;
+			setLoading(true);
+			try {
+				const products = await getProductListFromSubcategory(
+					subcategoryModal.subcategory?.id,
+				);
+				setProductsList(products);
+			} catch (err) {
+				console.error(err);
+				setLoading(false);
+			} finally {
+				setLoading(false);
+			}
+		};
+		if (subcategoryModal.subcategory?.id) {
+			fetchProducts();
+		}
+	}, [subcategoryModal.subcategory?.id]);
+
+	if (loading && subcategoryModal.subcategory?.id) {
+		return <div>Cargando productos...</div>;
+	}
 	if (!categoryId) return null;
 	const categoryName = getCategoryInstance(categoryId)?.name || '';
 
@@ -125,6 +153,7 @@ export default function SubcategoryList() {
 				familyName={familyName}
 				categoryName={categoryName}
 				subcategory={subcategoryModal.subcategory}
+				products={productsList}
 			/>
 			<TableComponent data={tableData} />
 		</>

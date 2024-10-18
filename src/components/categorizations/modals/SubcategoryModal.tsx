@@ -10,12 +10,14 @@ export default function SubcategoryInfoModal({
 	familyName,
 	categoryName,
 	subcategory,
+	products,
 }: {
 	isOpen: boolean;
 	onClose: () => void;
 	familyName: string;
 	categoryName: string;
 	subcategory: SubcategoryCreateContextProps | null;
+	products: string[];
 }) {
 	if (!subcategory) return null;
 	return (
@@ -46,7 +48,7 @@ export default function SubcategoryInfoModal({
 					</div>
 				</div>
 
-				<InfoSection title='Productos' items={[]} />
+				<InfoSection title='Productos' items={products || []} />
 			</div>
 		</ModalContent>
 	);
