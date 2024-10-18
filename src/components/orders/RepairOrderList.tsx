@@ -28,7 +28,14 @@ export default function RepairOrderList() {
 	);
 
 	const tableData = {
-		headers: ['Order No.', 'Date', 'Customer', 'Received By', 'PDF', 'Edit'],
+		headers: [
+			'Order No.',
+			'Fecha',
+			'Cliente',
+			'Recibido por',
+			'PDF',
+			'Editar Orden',
+		],
 		rows: orders
 			.map(order => [
 				`AT${order.control}`,
