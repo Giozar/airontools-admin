@@ -1,25 +1,23 @@
+// Custom hook to fetch orders
+import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { Order } from '@interfaces/Order.interface';
 import { searchOrdersServices } from '@services/orders/orders.service';
-import { errorHandler } from '@utils/errorHandler.util';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-export default function useOrders({ search }: { search: string }) {
+export default function useOrders() {
 	const [orders, setOrders] = useState<Order[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string>('');
-	const previusSearch = useRef(search);
 
-	const fetchOrders = useCallback(async (search: string) => {
-		if (previusSearch.current === search) return;
-
+	const fetchOrders = useCallback(async (searchTerm: string) => {
 		try {
 			setLoading(true);
 			setError('');
-			previusSearch.current = search;
-			const newOrders = await searchOrdersServices(search);
+			const newOrders = await searchOrdersServices(searchTerm);
 			setOrders(newOrders);
 		} catch (error) {
-			errorHandler(error);
+			const err = error as ErrorResponse;
+			setError(err.message);
 		} finally {
 			setLoading(false);
 		}

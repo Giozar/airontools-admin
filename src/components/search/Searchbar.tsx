@@ -1,30 +1,30 @@
-import useDebounce from '@hooks/search/useDebounce';
-import { Search } from '@interfaces/Search.interface';
-import { useState, type ChangeEvent } from 'react';
+// Searchbar component for entering the search term
+import { type ChangeEvent } from 'react';
 
-export default function Searchbar({ callback }: { callback: Function }) {
-	const { debouncedSearch } = useDebounce({ callback });
-	const [search, setSearch] = useState<string>('');
+interface SearchbarProps {
+	searchValue: string;
+	onSearchChange: (value: string) => void;
+}
 
-	function handleInput(event: ChangeEvent<HTMLInputElement>) {
-		const searchValue: Search = {
-			keywords: event.target.value,
-		};
-
-		if (searchValue.keywords.startsWith(' ')) return;
-		setSearch(searchValue.keywords);
-		debouncedSearch(searchValue.keywords);
-	}
+export default function Searchbar({
+	searchValue,
+	onSearchChange,
+}: SearchbarProps) {
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const newValue = event.target.value;
+		if (newValue.startsWith(' ')) return;
+		onSearchChange(newValue);
+	};
 
 	return (
-		<label htmlFor='searchProductbar'>
+		<label htmlFor='searchOrderBar'>
 			<input
-				id='searchProductbar'
-				onInput={handleInput}
-				value={search}
+				id='searchOrderBar'
+				value={searchValue}
+				onChange={handleInputChange}
 				type='search'
-				name='searchProductbar'
-				placeholder='Buscar...'
+				name='searchOrderBar'
+				placeholder='Search...'
 			/>
 		</label>
 	);

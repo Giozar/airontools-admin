@@ -24,15 +24,18 @@ export async function getAllOrdersService() {
 }
 
 // Búsqueda de ordenes
+// Order search service
 export const searchOrdersServices = async (
-	search: string,
+	searchTerm: string,
 	limit: number = 10,
 	offset: number = 0,
 ): Promise<Order[]> => {
 	try {
 		const response = await axios.post<Order[]>(
 			`${airontoolsAPI}/orders/search?limit=${limit}&offset=${offset}`,
-			search,
+			{
+				keywords: searchTerm,
+			},
 		);
 		return response.data;
 	} catch (error) {
