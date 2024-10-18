@@ -63,7 +63,9 @@ const PrivateRouteAdmin = () => {
 		<Navigate to='/home' replace />
 	);
 };
-
+const PrivateRouteEditor = () => {
+	return <Outlet />;
+};
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -116,13 +118,16 @@ const router = createBrowserRouter([
 								path: 'usuarios',
 								children: userRoutes(),
 							},
-							...productRoutes(),
-							...serviceRoutes(),
 							{
 								path: 'monitor',
 								element: <MonitoringMenu />,
 							},
 						],
+					},
+					{
+						path: 'home',
+						element: <PrivateRouteEditor />,
+						children: [...productRoutes(), ...serviceRoutes()],
 					},
 					{
 						path: 'notificaciones',

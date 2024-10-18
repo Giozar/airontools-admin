@@ -30,12 +30,14 @@ export default function ContentMainPage() {
 				) : (
 					<>
 						<ActionCard
-							title='Herramientas'
-							path={location.pathname + '/herramientas'}
+							title='Productos'
+							path={location.pathname + '/productos'}
+							description='Menú Categorización, Especificaciones y Herramientas'
 						/>
 						<ActionCard
-							title='El editor puede ver esto'
-							path={location.pathname}
+							title='Servicios'
+							path={location.pathname + '/servicios'}
+							description='Menú de ordenes de reparación'
 						/>
 					</>
 				)}
