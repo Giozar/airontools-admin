@@ -21,6 +21,7 @@ export default function EditFamily() {
 	const { ...familyToCreate } = useFamilyCreateContext();
 	const { handleUpdateFamily, handleDeleteFamily } = useEditCategorization();
 	const { openModal } = useModal();
+
 	return (
 		<div className='family-item' key={familyToCreate.id}>
 			<div className='family-item__header'>
