@@ -1,6 +1,7 @@
 import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
+import NoImageIcon from '@components/svg/NoImageIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useSubcategoryCreateContext } from '@contexts/categorization/SubcategoryContext';
 import { useModal } from '@contexts/Modal/ModalContext';
@@ -49,12 +50,16 @@ export default function SubcategoryList() {
 				subcategory.id,
 				subcategory.name,
 				subcategory.description || '---',
-				<img
-					key={'image' + key}
-					src={imageUrl}
-					alt={subcategory.name}
-					style={{ width: '100px', height: 'auto' }}
-				/>,
+				imageUrl ? (
+					<img
+						key={'image' + key}
+						src={imageUrl}
+						alt={subcategory.name}
+						style={{ width: '100px', height: 'auto' }}
+					/>
+				) : (
+					<NoImageIcon />
+				),
 				<button
 					className='table__button table__button--view'
 					key={`view-${subcategory.id}`}

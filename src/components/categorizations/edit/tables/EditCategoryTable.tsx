@@ -1,6 +1,7 @@
 import TableComponent from '@components/commons/DynamicTable';
 import EditIcon from '@components/svg/EditIcon';
 import EyeIcon from '@components/svg/EyeIcon';
+import NoImageIcon from '@components/svg/NoImageIcon';
 import TrashIcon from '@components/svg/TrashIcon';
 import { useCategoryCreateContext } from '@contexts/categorization/CategoryContext';
 import { useModal } from '@contexts/Modal/ModalContext';
@@ -43,12 +44,16 @@ export default function CategoryList() {
 				category.id,
 				category.name,
 				category.description || '---',
-				<img
-					key={'image' + key}
-					src={imageUrl}
-					alt={category.name}
-					style={{ width: '100px', height: 'auto' }}
-				/>,
+				imageUrl ? (
+					<img
+						key={'image' + key}
+						src={imageUrl}
+						alt={category.name}
+						style={{ width: '50px', height: 'auto' }}
+					/>
+				) : (
+					<NoImageIcon />
+				),
 				<button
 					className='table__button table__button--view'
 					key={`view-${category.id}`}
