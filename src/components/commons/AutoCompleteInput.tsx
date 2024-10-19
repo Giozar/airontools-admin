@@ -1,4 +1,3 @@
-import useDebounce from '@hooks/search/useDebounce';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface Option {
@@ -9,41 +8,62 @@ interface Option {
 interface AutocompleteProps {
 	options: Option[]; // Cambiado de values a options
 	onChange: (value: string) => void; // Cambiado a string
-	fetchFunc: any;
+	searchValue: any;
+	onSearchChange: any;
 }
 
 const Autocomplete: React.FC<AutocompleteProps> = ({
 	options,
 	onChange,
-	fetchFunc,
+	searchValue,
+	onSearchChange,
 }) => {
-	const [searchText, setSearchText] = useState<string>('');
 	const [displayed, setDisplayed] = useState<boolean>(false);
 	const [optionFocused, setOptionFocused] = useState<number>(0);
 	const inputRef = useRef<HTMLInputElement | null>(null);
-	const { debouncedFetch } = useDebounce(fetchFunc, 300);
-
-	useEffect(() => {
-		if (searchText) {
-			debouncedFetch(searchText);
-		}
-	}, [searchText, debouncedFetch]);
 
 	const handleInputFocus = () => {
 		setDisplayed(true);
 	};
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchText(e.target.value);
+		onSearchChange(e.target.value);
 		setOptionFocused(0); // Reset focused option
 	};
 
+	const handleOption = (option: Option) => {
+		if (inputRef.current) {
+			inputRef.current.value = option.name; // Actualiza el valor del input
+		}
+		onSearchChange(option.name); // Actualiza el valor de búsqueda
+		onChange(option.id); // Llama a onChange con el id
+		setDisplayed(false); // Cierra el menú desplegable
+	};
+
+	// Maneja clics fuera del componente
+	const handleDocumentClick = (event: MouseEvent) => {
+		if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+			setDisplayed(false); // Cierra el menú si se hace clic fuera
+		}
+	};
+
+	// Configura y limpia el evento de clic global
+	useEffect(() => {
+		document.addEventListener('click', handleDocumentClick);
+		return () => {
+			document.removeEventListener('click', handleDocumentClick);
+		};
+	}, []);
+
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		const filteredOptions = options.filter(option =>
-			option.name.toLowerCase().includes(searchText.toLowerCase()),
+			option.name.toLowerCase().includes(searchValue.toLowerCase()),
 		);
 
-		if (filteredOptions.length === 0) return;
+		if (filteredOptions.length === 0) {
+			if (e.key === 'Enter') onChange(searchValue);
+			return;
+		}
 		const selectedOption = filteredOptions[optionFocused];
 
 		switch (e.key) {
@@ -57,9 +77,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 				break;
 			case 'Enter':
 				if (selectedOption) {
-					setSearchText(selectedOption.name);
-					setDisplayed(false);
-					onChange(selectedOption.name); // Llama a onChange con el name
+					handleOption(selectedOption);
 				}
 				break;
 			case 'Escape':
@@ -73,14 +91,14 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 	};
 
 	const filteredOptions = options.filter(option =>
-		option.name.toLowerCase().includes(searchText.toLowerCase()),
+		option.name.toLowerCase().includes(searchValue.toLowerCase()),
 	);
 
 	return (
 		<div style={{ position: 'relative' }}>
 			<input
 				ref={inputRef}
-				value={searchText}
+				value={searchValue}
 				onFocus={handleInputFocus}
 				onChange={handleInputChange}
 				onKeyDown={handleKeyDown}
@@ -101,11 +119,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 						filteredOptions.map((option, index) => (
 							<div
 								key={option.id} // Usa el id
-								onMouseDown={() => {
-									setSearchText(option.name); // Usa name
-									setDisplayed(false);
-									onChange(option.name); // Llama a onChange con name
-								}}
+								onMouseDown={() => handleOption(option)}
 								style={{
 									padding: '8px',
 									backgroundColor: index === optionFocused ? 'grey' : 'black',
@@ -116,7 +130,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 							</div>
 						))
 					) : (
-						<div style={{ padding: '8px' }}>No results found</div>
+						<div style={{ padding: '8px' }}>No hay coincidencias</div>
 					)}
 				</div>
 			)}
