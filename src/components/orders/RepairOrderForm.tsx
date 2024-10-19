@@ -1,3 +1,4 @@
+import AutoCompleteInput from '@components/commons/AutoCompleteInput';
 import DatalistOption from '@components/commons/DatalistOption';
 import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
@@ -12,6 +13,7 @@ import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
+import useProducts from '@hooks/products/useProducts';
 import useFetchUsers from '@hooks/users/useFetchUsers';
 import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
@@ -73,6 +75,8 @@ export default function RepairOrderForm({
 	const [openModal, setOpenModal] = useState(true);
 	const { resetRepairOrder } = useResetRepairOrder();
 	const { userSelectOptions } = useFetchUsers();
+	const { products: loco, fetchProducts } = useProducts();
+	const [value, setValue] = useState<string>('');
 	const setData = () => {
 		if (!initialData) return;
 		setId(initialData._id || '');
@@ -106,6 +110,14 @@ export default function RepairOrderForm({
 
 	return (
 		<form onSubmit={action}>
+			{value}
+			<AutoCompleteInput
+				options={loco.map(prod => ({ id: prod.model, name: prod.model }))} // Corregido aquí
+				onChange={setValue}
+				fetchFunc={fetchProducts}
+			/>
+			<br></br>
+			<br></br>
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}

@@ -1,106 +1,127 @@
-import '@components/css/autocompleteInput.css';
+import useDebounce from '@hooks/search/useDebounce';
 import React, { useEffect, useRef, useState } from 'react';
+
 interface Option {
-	id: string;
-	name: string;
+	id: string; // Cambiado a string
+	name: string; // Cambiado a name
 }
 
-interface AutoCompleteInputProps {
-	inputName: string;
-	options: Option[];
-	onSelect: (value: string) => void; // Callback para manejar la selección
-	clearInput?: boolean;
+interface AutocompleteProps {
+	options: Option[]; // Cambiado de values a options
+	onChange: (value: string) => void; // Cambiado a string
+	fetchFunc: any;
 }
 
-function AutoCompleteInput({
-	inputName,
+const Autocomplete: React.FC<AutocompleteProps> = ({
 	options,
-	onSelect,
-	clearInput,
-}: AutoCompleteInputProps) {
-	const [, setInputValue] = useState<string>('');
-	const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
-	const inputRef = useRef<HTMLInputElement>(null);
-	const optionsRef = useRef<HTMLDivElement>(null);
+	onChange,
+	fetchFunc,
+}) => {
+	const [searchText, setSearchText] = useState<string>('');
+	const [displayed, setDisplayed] = useState<boolean>(false);
+	const [optionFocused, setOptionFocused] = useState<number>(0);
+	const inputRef = useRef<HTMLInputElement | null>(null);
+	const { debouncedFetch } = useDebounce(fetchFunc, 300);
+
 	useEffect(() => {
-		if (inputRef.current === null) return;
-		inputRef.current.value = '';
-	}, [clearInput]);
+		if (searchText) {
+			debouncedFetch(searchText);
+		}
+	}, [searchText, debouncedFetch]);
 
-	// Maneja el cambio en el input
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value.toLowerCase();
-		setInputValue(value);
-		setFilteredOptions(
-			options.filter(option => option.name.toLowerCase().includes(value)),
-		);
-	};
-
-	// Maneja el enfoque en el input
 	const handleInputFocus = () => {
-		setFilteredOptions(options);
+		setDisplayed(true);
 	};
 
-	// Maneja la selección de una opción
-	const handleOptionClick = (option: Option) => {
-		if (inputRef.current) {
-			inputRef.current.value = option.name;
-			setInputValue(option.name);
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchText(e.target.value);
+		setOptionFocused(0); // Reset focused option
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		const filteredOptions = options.filter(option =>
+			option.name.toLowerCase().includes(searchText.toLowerCase()),
+		);
+
+		if (filteredOptions.length === 0) return;
+		const selectedOption = filteredOptions[optionFocused];
+
+		switch (e.key) {
+			case 'ArrowUp':
+				setOptionFocused(prev => Math.max(prev - 1, 0));
+				break;
+			case 'ArrowDown':
+				setOptionFocused(prev =>
+					Math.min(prev + 1, filteredOptions.length - 1),
+				);
+				break;
+			case 'Enter':
+				if (selectedOption) {
+					setSearchText(selectedOption.name);
+					setDisplayed(false);
+					onChange(selectedOption.name); // Llama a onChange con el name
+				}
+				break;
+			case 'Escape':
+				setDisplayed(false);
+				break;
+			default:
+				if (!displayed) {
+					setDisplayed(true);
+				}
 		}
-		setFilteredOptions([]);
-		onSelect(option.id);
 	};
 
-	// Maneja clics fuera del componente
-	const handleDocumentClick = (event: MouseEvent) => {
-		if (
-			inputRef.current &&
-			optionsRef.current &&
-			!inputRef.current.contains(event.target as Node) &&
-			!optionsRef.current.contains(event.target as Node)
-		) {
-			setFilteredOptions([]);
-		}
-	};
-
-	// Configura y limpia el evento de clic global
-	useEffect(() => {
-		document.addEventListener('click', handleDocumentClick);
-		return () => {
-			document.removeEventListener('click', handleDocumentClick);
-		};
-	}, []);
-
-	const renderOptions = () => (
-		<div ref={optionsRef} className='options-container'>
-			{filteredOptions.map((option, index) => (
-				<div
-					key={index}
-					className='option-item'
-					onClick={() => handleOptionClick(option)}
-				>
-					{option.name}
-				</div>
-			))}
-		</div>
+	const filteredOptions = options.filter(option =>
+		option.name.toLowerCase().includes(searchText.toLowerCase()),
 	);
 
 	return (
-		<div className='autocomplete'>
-			<div className='autocomplete-input'>
-				<label htmlFor={inputName}>{inputName}</label>
-				<input
-					id={inputName}
-					type='text'
-					ref={inputRef}
-					placeholder={`Buscar ${inputName}`}
-					onChange={handleInputChange}
-					onFocus={handleInputFocus}
-				/>
-				{renderOptions()}
-			</div>
+		<div style={{ position: 'relative' }}>
+			<input
+				ref={inputRef}
+				value={searchText}
+				onFocus={handleInputFocus}
+				onChange={handleInputChange}
+				onKeyDown={handleKeyDown}
+				style={{ width: '300px', padding: '8px' }}
+			/>
+			{displayed && (
+				<div
+					style={{
+						border: '1px solid #d9d9d9',
+						position: 'absolute',
+						zIndex: 1000,
+						width: '100%',
+						maxHeight: '200px',
+						overflowY: 'auto',
+					}}
+				>
+					{filteredOptions.length > 0 ? (
+						filteredOptions.map((option, index) => (
+							<div
+								key={option.id} // Usa el id
+								onMouseDown={() => {
+									setSearchText(option.name); // Usa name
+									setDisplayed(false);
+									onChange(option.name); // Llama a onChange con name
+								}}
+								style={{
+									padding: '8px',
+									backgroundColor: index === optionFocused ? 'grey' : 'black',
+									cursor: 'pointer',
+								}}
+							>
+								{option.name} {/* Muestra el name */}
+							</div>
+						))
+					) : (
+						<div style={{ padding: '8px' }}>No results found</div>
+					)}
+				</div>
+			)}
 		</div>
 	);
-}
+};
 
-export default AutoCompleteInput;
+export default Autocomplete;
