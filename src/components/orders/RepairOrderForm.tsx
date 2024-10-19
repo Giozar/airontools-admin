@@ -13,7 +13,7 @@ import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
-import useCustomers from '@hooks/customers/useCustomers';
+import useCompanies from '@hooks/companies/useCompanies';
 import useDebounce from '@hooks/search/useDebounce';
 import useFetchUsers from '@hooks/users/useFetchUsers';
 import { Order } from '@interfaces/Order.interface';
@@ -80,10 +80,12 @@ export default function RepairOrderForm({
 	const { resetRepairOrder } = useResetRepairOrder();
 	const { userSelectOptions } = useFetchUsers();
 	const [searchTerm, setSearchTerm] = useState<string>('');
-	const { fetchCustomers, customers } = useCustomers();
-	const { debouncedFetch } = useDebounce(fetchCustomers, 300);
-
+	// const { fetchCustomers, customers } = useCustomers();
+	// const { debouncedFetch } = useDebounce(fetchCustomers, 300);
+	const { fetchCompanies, companies: customers } = useCompanies();
+	const { debouncedFetch } = useDebounce(fetchCompanies, 300);
 	const [value, setValue] = useState<string>('');
+
 	const setData = () => {
 		if (!initialData) return;
 		setId(initialData._id || '');
@@ -115,13 +117,13 @@ export default function RepairOrderForm({
 	useEffect(() => {
 		console.log('Se creo con éxito para generar');
 	}, [_id]);
+
 	useEffect(() => {
 		debouncedFetch(searchTerm);
 	}, [searchTerm, debouncedFetch]);
 
 	return (
 		<form onSubmit={action}>
-			{value}
 			<AutoCompleteInput
 				onChange={setValue}
 				options={customers.map(customer => ({
@@ -130,10 +132,9 @@ export default function RepairOrderForm({
 				}))}
 				searchValue={searchTerm}
 				onSearchChange={setSearchTerm}
+				placeholder='Empresa de procedencia'
+				label='Procedencia'
 			/>
-
-			<br></br>
-			<br></br>
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}

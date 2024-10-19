@@ -10,6 +10,8 @@ interface AutocompleteProps {
 	onChange: (value: string) => void; // Cambiado a string
 	searchValue: any;
 	onSearchChange: any;
+	placeholder?: string;
+	label?: string;
 }
 
 const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -17,6 +19,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 	onChange,
 	searchValue,
 	onSearchChange,
+	placeholder,
+	label,
 }) => {
 	const [displayed, setDisplayed] = useState<boolean>(false);
 	const [optionFocused, setOptionFocused] = useState<number>(0);
@@ -71,7 +75,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 			option.name.toLowerCase().includes(searchValue.toLowerCase()),
 		);
 
-		if (filteredOptions.length === 0 && searchValue) handleNewOption();
+		if (filteredOptions.length === 0 && searchValue)
+			if (e.key === 'Enter') handleNewOption();
 		if (filteredOptions.length === 0) return;
 		const selectedOption = filteredOptions[optionFocused];
 
@@ -104,21 +109,27 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 	);
 
 	return (
-		<div style={{ position: 'relative' }}>
+		<div className='datalist-input' style={{ position: 'relative' }}>
+			<label htmlFor={label} className='datalist-input__label'>
+				{label}
+			</label>
 			<input
 				ref={inputRef}
 				value={searchValue}
 				onFocus={handleInputFocus}
 				onChange={handleInputChange}
 				onKeyDown={handleKeyDown}
-				style={{ width: '300px', padding: '8px' }}
+				className='datalist-input__input'
+				required={true}
+				style={{ marginBottom: '0px' }}
+				placeholder={placeholder}
 			/>
-			{isNewValue ? 'Se registrará como nuevo' : ''}
 			{displayed && (
 				<div
 					style={{
 						border: '1px solid #d9d9d9',
 						position: 'absolute',
+						top: '4rem',
 						zIndex: 1000,
 						width: '100%',
 						maxHeight: '200px',
@@ -132,7 +143,10 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 								onMouseDown={() => handleOption(option)}
 								style={{
 									padding: '8px',
-									backgroundColor: index === optionFocused ? 'grey' : 'black',
+									backgroundColor:
+										index === optionFocused
+											? 'var(--accent-primary)'
+											: 'var(--bg-primary)',
 									cursor: 'pointer',
 								}}
 							>
@@ -144,7 +158,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 							onMouseDown={() => handleNewOption()}
 							style={{
 								padding: '8px',
-								backgroundColor: optionFocused === 0 ? 'grey' : 'black',
+								backgroundColor: 'var(--accent-primary)',
 							}}
 						>
 							No hay coincidencias, ¿Agregar nuevo?
@@ -152,6 +166,17 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 					)}
 				</div>
 			)}
+			<br></br>
+			<em
+				style={{
+					margin: '0',
+					marginTop: '-0.5rem',
+					color: 'var(--warning)',
+					fontWeight: 'bold',
+				}}
+			>
+				{isNewValue ? 'Se registrará como nuevo' : ''}
+			</em>
 		</div>
 	);
 };
