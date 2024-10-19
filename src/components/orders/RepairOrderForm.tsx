@@ -13,7 +13,7 @@ import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
-import useProducts from '@hooks/products/useProducts';
+import useCustomers from '@hooks/customers/useCustomers';
 import useDebounce from '@hooks/search/useDebounce';
 import useFetchUsers from '@hooks/users/useFetchUsers';
 import { Order } from '@interfaces/Order.interface';
@@ -80,8 +80,8 @@ export default function RepairOrderForm({
 	const { resetRepairOrder } = useResetRepairOrder();
 	const { userSelectOptions } = useFetchUsers();
 	const [searchTerm, setSearchTerm] = useState<string>('');
-	const { fetchProducts, products: prods } = useProducts();
-	const { debouncedFetch } = useDebounce(fetchProducts, 300);
+	const { fetchCustomers, customers } = useCustomers();
+	const { debouncedFetch } = useDebounce(fetchCustomers, 300);
 
 	const [value, setValue] = useState<string>('');
 	const setData = () => {
@@ -124,9 +124,9 @@ export default function RepairOrderForm({
 			{value}
 			<AutoCompleteInput
 				onChange={setValue}
-				options={prods.map(prod => ({
-					id: `El id de ${prod.model}`,
-					name: prod.model,
+				options={customers.map(customer => ({
+					id: customer._id,
+					name: customer.name,
 				}))}
 				searchValue={searchTerm}
 				onSearchChange={setSearchTerm}

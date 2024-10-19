@@ -21,6 +21,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 	const [displayed, setDisplayed] = useState<boolean>(false);
 	const [optionFocused, setOptionFocused] = useState<number>(0);
 	const inputRef = useRef<HTMLInputElement | null>(null);
+	const [isNewValue, setIsNewValue] = useState(false);
 
 	const handleInputFocus = () => {
 		setDisplayed(true);
@@ -38,6 +39,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 		onSearchChange(option.name); // Actualiza el valor de búsqueda
 		onChange(option.id); // Llama a onChange con el id
 		setDisplayed(false); // Cierra el menú desplegable
+		setIsNewValue(false);
 	};
 
 	const handleNewOption = () => {
@@ -46,6 +48,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 		}
 		onChange(searchValue); // Llama a onChange con el id
 		setDisplayed(false); // Cierra el menú desplegable
+		setIsNewValue(true);
 	};
 
 	// Maneja clics fuera del componente
@@ -68,8 +71,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 			option.name.toLowerCase().includes(searchValue.toLowerCase()),
 		);
 
+		if (filteredOptions.length === 0 && searchValue) handleNewOption();
 		if (filteredOptions.length === 0) return;
-
 		const selectedOption = filteredOptions[optionFocused];
 
 		switch (e.key) {
@@ -110,6 +113,7 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 				onKeyDown={handleKeyDown}
 				style={{ width: '300px', padding: '8px' }}
 			/>
+			{isNewValue ? 'Se registrará como nuevo' : ''}
 			{displayed && (
 				<div
 					style={{
