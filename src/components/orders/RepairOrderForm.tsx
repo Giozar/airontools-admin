@@ -4,9 +4,9 @@ import DynamicSizeTable from '@components/commons/DynamicSizeTable';
 import ModalContent from '@components/commons/ModalContent';
 import PhoneInput from '@components/commons/PhoneInput';
 import SelectInput from '@components/commons/SelectInput';
-import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import SingleImageInput from '@components/files/SingleImageInput';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
@@ -35,6 +35,7 @@ export default function RepairOrderForm({
 		setObservations,
 		images,
 		imageRaw,
+		imageRemoved,
 		setImages,
 		setImageRaw,
 		setImageRemoved,
@@ -183,17 +184,21 @@ export default function RepairOrderForm({
 					setDate={setAuthorizationDate}
 				/>
 			)}
-
-			<SingleImageChange
-				title={'Foto general de herramientas'}
-				filePreview={
-					imageRaw ? URL.createObjectURL(imageRaw) : images ? images[0] : ''
-				}
-				setFilePreview={setImageRaw}
-				setImageRemoved={setImageRemoved}
-				capture={true}
+			<SingleImageInput
+				title='Foto general de las herramientas'
+				url={images.length > 0 ? images[0] : null} // Verifica si existe una imagen en la primera posición
+				file={imageRaw}
+				setFile={setImageRaw}
+				setUrl={(value: string | null) => {
+					// Si el valor es nulo, limpiamos el array, de lo contrario, actualizamos el primer valor del array
+					setImages(value ? [value] : []);
+				}}
+				setUrlRemoved={setImageRemoved}
+				urlRemoved={imageRemoved}
+				key='fotos-herramientas'
 				size='large'
 			/>
+
 			{false && (
 				<DateInput
 					label='Fecha de entrega'
