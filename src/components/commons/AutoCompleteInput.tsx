@@ -40,6 +40,14 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 		setDisplayed(false); // Cierra el menú desplegable
 	};
 
+	const handleNewOption = () => {
+		if (inputRef.current) {
+			inputRef.current.value = searchValue; // Actualiza el valor del input
+		}
+		onChange(searchValue); // Llama a onChange con el id
+		setDisplayed(false); // Cierra el menú desplegable
+	};
+
 	// Maneja clics fuera del componente
 	const handleDocumentClick = (event: MouseEvent) => {
 		if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
@@ -60,10 +68,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 			option.name.toLowerCase().includes(searchValue.toLowerCase()),
 		);
 
-		if (filteredOptions.length === 0) {
-			if (e.key === 'Enter') onChange(searchValue);
-			return;
-		}
+		if (filteredOptions.length === 0) return;
+
 		const selectedOption = filteredOptions[optionFocused];
 
 		switch (e.key) {
@@ -130,7 +136,15 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 							</div>
 						))
 					) : (
-						<div style={{ padding: '8px' }}>No hay coincidencias</div>
+						<div
+							onMouseDown={() => handleNewOption()}
+							style={{
+								padding: '8px',
+								backgroundColor: optionFocused === 0 ? 'grey' : 'black',
+							}}
+						>
+							No hay coincidencias, ¿Agregar nuevo?
+						</div>
 					)}
 				</div>
 			)}
