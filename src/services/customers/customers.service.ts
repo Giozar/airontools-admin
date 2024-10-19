@@ -1,5 +1,9 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { CreateCustomer, UpdateCustomer } from '@interfaces/Customer.interface';
+import {
+	CreateCustomer,
+	Customer,
+	UpdateCustomer,
+} from '@interfaces/Customer.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
@@ -24,10 +28,28 @@ export async function getAllCustomersService() {
 }
 
 // Obtener clientes por ID de empresa
-export async function getCustomersByCompanyIdService(companyId: string) {
+export async function getCustomersByCustomerIdService(companyId: string) {
 	try {
 		const response = await axios.get(
 			`${airontoolsAPI}/customers/company/${companyId}`,
+		);
+		return response.data;
+	} catch (error) {
+		throw errorHandler(error);
+	}
+}
+
+export async function searchCustomersService(
+	searchTerm: string,
+	limit: number = 10,
+	offset: number = 0,
+): Promise<Customer[]> {
+	try {
+		const response = await axios.post<Customer[]>(
+			`${airontoolsAPI}/customers/search?limit=${limit}&offset=${offset}`,
+			{
+				keywords: searchTerm,
+			},
 		);
 		return response.data;
 	} catch (error) {
