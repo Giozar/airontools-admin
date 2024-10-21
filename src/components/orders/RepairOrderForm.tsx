@@ -1,5 +1,4 @@
 import AutocompleteDebouncedSearch from '@components/commons/AutocompleteDebouncedSearch';
-import DatalistOption from '@components/commons/DatalistOption';
 import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
 import ModalContent from '@components/commons/ModalContent';
@@ -14,6 +13,7 @@ import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import useCompanies from '@hooks/companies/useCompanies';
+import useCustomers from '@hooks/customers/useCustomers';
 import useFetchUsers from '@hooks/users/useFetchUsers';
 import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
@@ -66,9 +66,8 @@ export default function RepairOrderForm({
 		.filter(observation => observation !== '')
 		.join('. '); // obten las observaciones de los productos
 
-	const { name: companyName, setName: setCompanyName } = useCompanyContext();
+	const { setName: setCompanyName } = useCompanyContext();
 	const {
-		name: customerName,
 		setName: setCustomerName,
 		phoneNumber,
 		setPhoneNumber,
@@ -81,7 +80,7 @@ export default function RepairOrderForm({
 	// const { fetchCustomers, customers } = useCustomers();
 	// const { debouncedFetch } = useDebounce(fetchCustomers, 300);
 	const { fetchCompanies, companies } = useCompanies();
-	const [value, setValue] = useState<string>('');
+	const { fetchCustomers, customers } = useCustomers();
 
 	const setData = () => {
 		if (!initialData) return;
@@ -117,32 +116,23 @@ export default function RepairOrderForm({
 
 	return (
 		<form onSubmit={action}>
-			{value}
 			<AutocompleteDebouncedSearch
+				key={'procedencia'}
 				label='Procedencia'
 				placeholder='Empresa de procedencia'
-				setValue={setValue}
+				setValue={setCompany}
 				fetchFunction={fetchCompanies}
 				options={companies}
 			/>
-			<DatalistOption
-				id={'procedencia'}
-				name={'Procedencia'}
-				placeholder='Empresa de procedencia'
-				options={['hola', 'mundo']}
-				value={companyName}
-				setValue={setCompanyName}
-				required={true}
+			<AutocompleteDebouncedSearch
+				key={'responsable'}
+				label='Responsable'
+				placeholder='Empleado responsable'
+				setValue={setCustomer}
+				fetchFunction={fetchCustomers}
+				options={customers}
 			/>
-			<DatalistOption
-				id={'responsable'}
-				name={'Responsable'}
-				placeholder='Responsable por parte de la empresa'
-				options={['hola', 'mundo']}
-				value={customerName}
-				setValue={setCustomerName}
-				required={true}
-			/>
+
 			<PhoneInput
 				id={'telefono'}
 				name={'Teléfono'}
