@@ -2,7 +2,6 @@ import { fileUpload } from '@components/files/helpers/filesUpload.helper';
 import useResetRepairOrder from '@components/orders/hooks/useResetRepairOrder';
 import { useAlertHelper } from '@contexts/Alert/alert.helper';
 import { useAuthContext } from '@contexts/auth/AuthContext';
-import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import { CustomerType } from '@interfaces/Customer.interface';
@@ -14,8 +13,7 @@ import {
 } from '@services/orders/orders.service';
 
 export default function useCreateOrder() {
-	const { name: companyName } = useCompanyContext();
-	const { name: customerName, phoneNumber } = useCustomerContext();
+	const { phoneNumber, customerType } = useCustomerContext();
 	const {
 		orderType,
 		orderStatus,
@@ -25,6 +23,8 @@ export default function useCreateOrder() {
 		deliveryRepresentative,
 		receivedBy,
 		imageRaw,
+		company,
+		customer,
 		setImages,
 		setImageRaw,
 		setSuccess,
@@ -40,29 +40,43 @@ export default function useCreateOrder() {
 		.filter(observation => observation !== '')
 		.join('. '); // obten las observaciones de los productos
 
+	const isId = (part: string) => /[a-f0-9]{24}/.test(part); // Verifica si el part es un ID
+
 	const createOrder = async (e: Event) => {
 		e.preventDefault();
 		if (!createdBy) throw new Error('No usuario para crear herramienta');
 
 		try {
-			const createdCompany = await createCompanyService({
-				name: companyName,
-				createdBy,
-			});
-			console.log(createdCompany);
+			let companyId = company || '';
+			if (!isId(companyId)) {
+				const createdCompany = await createCompanyService({
+					name: companyId,
+					createdBy,
+				});
+				console.log(createdCompany);
+				companyId = createdCompany._id;
+			}
+			let customerId = customer || '';
 
-			const createdCustomer = await createCustomerService({
-				customerType: CustomerType.INDIVIDUAL,
-				name: customerName,
-				company: createdCompany._id,
-				phoneNumber,
-				createdBy,
-			});
-			console.log(createdCustomer);
+			console.log(
+				CustomerType[customerType as unknown as keyof typeof CustomerType],
+			);
+			if (!isId(customerId)) {
+				const createdCustomer = await createCustomerService({
+					customerType:
+						CustomerType[customerType as unknown as keyof typeof CustomerType],
+					name: customerId,
+					company: companyId,
+					phoneNumber,
+					createdBy,
+				});
+				console.log(createdCustomer);
+				customerId = createdCustomer._id;
+			}
 
 			const createdOrder = await createOrderService({
-				customer: createdCustomer._id,
-				company: createdCompany._id,
+				customer: customerId,
+				company: companyId,
 				orderType,
 				authorizationDate,
 				products,

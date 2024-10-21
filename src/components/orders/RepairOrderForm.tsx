@@ -141,7 +141,13 @@ export default function RepairOrderForm({
 					label: value,
 				}))}
 				value={customerType}
-				setValue={(str: string) => setCustomerType(str as CustomerType)}
+				setValue={(str: string) => {
+					if (str in CustomerType) {
+						setCustomerType(str as CustomerType);
+					} else {
+						console.error('Valor inválido para CustomerType:', str);
+					}
+				}}
 			/>
 			{/* customerName */}
 			{company && (
