@@ -51,6 +51,7 @@ export default function RepairOrderForm({
 		setQuoteDeliveryTime,
 		deliveryRepresentative,
 		setDeliveryRepresentative,
+		company,
 		setCompany,
 		setCustomer,
 		receivedBy,
@@ -124,15 +125,18 @@ export default function RepairOrderForm({
 				fetchFunction={fetchCompanies}
 				options={companies}
 			/>
-			<AutocompleteDebouncedSearch
-				key={'responsable'}
-				label='Responsable'
-				placeholder='Empleado responsable'
-				setValue={setCustomer}
-				fetchFunction={fetchCustomers}
-				options={customers}
-			/>
-
+			{company && (
+				<AutocompleteDebouncedSearch
+					key={'responsable'}
+					label='Responsable'
+					placeholder='Empleado responsable'
+					setValue={setCustomer}
+					fetchFunction={(searchTerm: string) =>
+						fetchCustomers({ companyId: company, searchTerm })
+					}
+					options={customers}
+				/>
+			)}
 			<PhoneInput
 				id={'telefono'}
 				name={'Teléfono'}

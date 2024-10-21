@@ -36,6 +36,8 @@ const Autocomplete = ({
 		if (newValue.startsWith(' ')) return;
 		onSearchChange(e.target.value);
 		setOptionFocused(0); // Reset focused option
+		onChange('');
+		setIsNewValue(false);
 	};
 
 	const handleOption = (option: Option) => {
