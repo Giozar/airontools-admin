@@ -15,6 +15,7 @@ import { useOrderContext } from '@contexts/order/OrderContext';
 import useCompanies from '@hooks/companies/useCompanies';
 import useCustomers from '@hooks/customers/useCustomers';
 import useFetchUsers from '@hooks/users/useFetchUsers';
+import { CustomerType } from '@interfaces/Customer.interface';
 import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
 import RowComponent from './RepairOrderRowComponent';
@@ -67,11 +68,15 @@ export default function RepairOrderForm({
 		.filter(observation => observation !== '')
 		.join('. '); // obten las observaciones de los productos
 
-	const { setName: setCompanyName } = useCompanyContext();
+	const { /* name: companyName, */ setName: setCompanyName } =
+		useCompanyContext();
 	const {
+		// name: customerName,
 		setName: setCustomerName,
 		phoneNumber,
 		setPhoneNumber,
+		customerType,
+		setCustomerType,
 	} = useCustomerContext();
 
 	const { addProduct, removeProduct } = useOrderProduct(0);
@@ -87,7 +92,9 @@ export default function RepairOrderForm({
 		if (!initialData) return;
 		setId(initialData._id || '');
 		setProducts(initialData.products || []);
+		setCustomer(initialData.customer?._id || '');
 		setCustomerName(initialData.customer?.name || '');
+		setCompany(initialData.company?._id || '');
 		setCompanyName(initialData.company?.name || '');
 		setPhoneNumber(initialData.customer?.phoneNumber || '');
 		setDeliveryDate(initialData.deliveryDate || new Date());
@@ -117,6 +124,7 @@ export default function RepairOrderForm({
 
 	return (
 		<form onSubmit={action}>
+			{/* companyName */}
 			<AutocompleteDebouncedSearch
 				key={'procedencia'}
 				label='Procedencia'
@@ -125,6 +133,17 @@ export default function RepairOrderForm({
 				fetchFunction={fetchCompanies}
 				options={companies}
 			/>
+			<SelectInput
+				id={'tipo_de_cliente'}
+				name={'Empresa o individual:'}
+				options={Object.entries(CustomerType).map(([key, value]) => ({
+					value: key,
+					label: value,
+				}))}
+				value={customerType}
+				setValue={(str: string) => setCustomerType(str as CustomerType)}
+			/>
+			{/* customerName */}
 			{company && (
 				<AutocompleteDebouncedSearch
 					key={'responsable'}
