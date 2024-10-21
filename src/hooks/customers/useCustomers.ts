@@ -1,6 +1,9 @@
 import { Customer } from '@interfaces/Customer.interface';
 import { ErrorResponse } from '@interfaces/ErrorResponse';
-import { searchCustomersService } from '@services/customers/customers.service';
+import {
+	SearchCustomersParams,
+	searchCustomersService,
+} from '@services/customers/customers.service';
 import { useCallback, useState } from 'react';
 
 export default function useCustomers() {
@@ -8,11 +11,11 @@ export default function useCustomers() {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string>('');
 
-	const fetchCustomers = useCallback(async (searchTerm: string) => {
+	const fetchCustomers = useCallback(async (params: SearchCustomersParams) => {
 		try {
 			setLoading(true);
 			setError('');
-			const customersFound = await searchCustomersService(searchTerm);
+			const customersFound = await searchCustomersService(params);
 			setCustomers(customersFound);
 		} catch (error) {
 			const err = error as ErrorResponse;

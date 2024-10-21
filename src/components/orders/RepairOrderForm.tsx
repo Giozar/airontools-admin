@@ -1,3 +1,4 @@
+import AutoCompleteInput from '@components/commons/AutoCompleteInput';
 import DatalistOption from '@components/commons/DatalistOption';
 import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
@@ -12,6 +13,8 @@ import { airontoolsAPI } from '@configs/api.config';
 import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
+import useCompanies from '@hooks/companies/useCompanies';
+import useDebounce from '@hooks/search/useDebounce';
 import useFetchUsers from '@hooks/users/useFetchUsers';
 import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
@@ -76,6 +79,13 @@ export default function RepairOrderForm({
 	const [openModal, setOpenModal] = useState(true);
 	const { resetRepairOrder } = useResetRepairOrder();
 	const { userSelectOptions } = useFetchUsers();
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	// const { fetchCustomers, customers } = useCustomers();
+	// const { debouncedFetch } = useDebounce(fetchCustomers, 300);
+	const { fetchCompanies, companies: customers } = useCompanies();
+	const { debouncedFetch } = useDebounce(fetchCompanies, 300);
+	const [value, setValue] = useState<string>('');
+
 	const setData = () => {
 		if (!initialData) return;
 		setId(initialData._id || '');
@@ -108,8 +118,23 @@ export default function RepairOrderForm({
 		console.log('Se creo con éxito para generar');
 	}, [_id]);
 
+	useEffect(() => {
+		debouncedFetch(searchTerm);
+	}, [searchTerm, debouncedFetch]);
+
 	return (
 		<form onSubmit={action}>
+			<AutoCompleteInput
+				onChange={setValue}
+				options={customers.map(customer => ({
+					id: customer._id,
+					name: customer.name,
+				}))}
+				searchValue={searchTerm}
+				onSearchChange={setSearchTerm}
+				placeholder='Empresa de procedencia'
+				label='Procedencia'
+			/>
 			<DatalistOption
 				id={'procedencia'}
 				name={'Procedencia'}
