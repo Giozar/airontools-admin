@@ -39,16 +39,25 @@ export async function getCustomersByCustomerIdService(companyId: string) {
 	}
 }
 
-export async function searchCustomersService(
-	searchTerm: string,
-	limit: number = 10,
-	offset: number = 0,
-): Promise<Customer[]> {
+export interface SearchCustomersParams {
+	searchTerm: string;
+	limit?: number;
+	offset?: number;
+	companyId?: string;
+}
+
+export async function searchCustomersService({
+	searchTerm,
+	limit = 10,
+	offset = 0,
+	companyId = '',
+}: SearchCustomersParams): Promise<Customer[]> {
 	try {
 		const response = await axios.post<Customer[]>(
 			`${airontoolsAPI}/customers/search?limit=${limit}&offset=${offset}`,
 			{
 				keywords: searchTerm,
+				companyId,
 			},
 		);
 		return response.data;
