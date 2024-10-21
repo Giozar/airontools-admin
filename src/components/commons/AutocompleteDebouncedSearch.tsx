@@ -7,6 +7,7 @@ interface AutocompleteDebouncedSearchProps {
 	fetchFunction: (searchTerm: string) => Promise<void>;
 	options: any[];
 	setValue: (value: string) => void;
+	value: string;
 }
 export default function AutocompleteDebouncedSearch({
 	label,
@@ -14,8 +15,9 @@ export default function AutocompleteDebouncedSearch({
 	fetchFunction,
 	options,
 	setValue,
+	value,
 }: AutocompleteDebouncedSearchProps) {
-	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [searchTerm, setSearchTerm] = useState<string>(value);
 	const [lastSearchTerm, setLastSearchTerm] = useState<string>('-');
 	const { debouncedFetch } = useDebounce(fetchFunction, 300);
 
@@ -25,6 +27,13 @@ export default function AutocompleteDebouncedSearch({
 			debouncedFetch(searchTerm);
 		}
 	}, [searchTerm, debouncedFetch]);
+
+	// Efecto para resetear el searchTerm cuando value cambia a ''
+	useEffect(() => {
+		if (value === '') {
+			setSearchTerm(''); // Resetea el searchTerm si el valor del padre es ''
+		}
+	}, [value]);
 
 	return (
 		<AutoCompleteInput

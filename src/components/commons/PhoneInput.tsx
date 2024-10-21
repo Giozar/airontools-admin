@@ -9,6 +9,7 @@ interface PhoneInputProps {
 	options: string[];
 	value?: string;
 	setValue: (value: string) => void;
+	required: boolean;
 }
 
 export default function PhoneInput({
@@ -19,6 +20,7 @@ export default function PhoneInput({
 	options,
 	value,
 	setValue,
+	required,
 }: PhoneInputProps) {
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.target as HTMLInputElement;
@@ -50,6 +52,7 @@ export default function PhoneInput({
 				list={`${id}-list`}
 				placeholder={placeholder}
 				className='datalist-input__input'
+				required={required}
 			/>
 			<datalist id={`${id}-list`} className='datalist-input__datalist'>
 				{options.map(option => (

@@ -54,6 +54,7 @@ export default function RepairOrderForm({
 		setDeliveryRepresentative,
 		company,
 		setCompany,
+		customer,
 		setCustomer,
 		receivedBy,
 		setReceivedBy,
@@ -112,7 +113,7 @@ export default function RepairOrderForm({
 
 	useEffect(() => {
 		resetRepairOrder();
-		setCustomerType('COMPANY' as CustomerType); // valor por defecto
+		setCompany('');
 	}, []);
 
 	useEffect(() => {
@@ -143,9 +144,9 @@ export default function RepairOrderForm({
 			/>
 			{/* companyName */}
 			<AutocompleteDebouncedSearch
-				key={'procedencia'}
 				label='Procedencia'
 				placeholder='Empresa de procedencia'
+				value={company || ''}
 				setValue={setCompany}
 				fetchFunction={fetchCompanies}
 				options={companies}
@@ -155,6 +156,7 @@ export default function RepairOrderForm({
 					key={'responsable'}
 					label='Responsable'
 					placeholder='Empleado responsable'
+					value={customer || ''}
 					setValue={setCustomer}
 					fetchFunction={(searchTerm: string) =>
 						fetchCustomers({ companyId: company, searchTerm })
@@ -170,6 +172,7 @@ export default function RepairOrderForm({
 				options={['2222-2222-2222', '3333-3333-3333']}
 				value={phoneNumber}
 				setValue={setPhoneNumber}
+				required={true}
 			/>
 			<TextInput
 				id={'tiempo_de_entrega_de_cotizacion'}
