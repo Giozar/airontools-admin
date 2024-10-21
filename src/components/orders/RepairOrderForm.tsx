@@ -15,6 +15,7 @@ import { useOrderContext } from '@contexts/order/OrderContext';
 import useCompanies from '@hooks/companies/useCompanies';
 import useCustomers from '@hooks/customers/useCustomers';
 import useFetchUsers from '@hooks/users/useFetchUsers';
+import { CustomerType } from '@interfaces/Customer.interface';
 import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
 import RowComponent from './RepairOrderRowComponent';
@@ -51,7 +52,9 @@ export default function RepairOrderForm({
 		setQuoteDeliveryTime,
 		deliveryRepresentative,
 		setDeliveryRepresentative,
+		company,
 		setCompany,
+		customer,
 		setCustomer,
 		receivedBy,
 		setReceivedBy,
@@ -66,11 +69,15 @@ export default function RepairOrderForm({
 		.filter(observation => observation !== '')
 		.join('. '); // obten las observaciones de los productos
 
-	const { setName: setCompanyName } = useCompanyContext();
+	const { /* name: companyName, */ setName: setCompanyName } =
+		useCompanyContext();
 	const {
+		// name: customerName,
 		setName: setCustomerName,
 		phoneNumber,
 		setPhoneNumber,
+		customerType,
+		setCustomerType,
 	} = useCustomerContext();
 
 	const { addProduct, removeProduct } = useOrderProduct(0);
@@ -86,7 +93,9 @@ export default function RepairOrderForm({
 		if (!initialData) return;
 		setId(initialData._id || '');
 		setProducts(initialData.products || []);
+		setCustomer(initialData.customer?._id || '');
 		setCustomerName(initialData.customer?.name || '');
+		setCompany(initialData.company?._id || '');
 		setCompanyName(initialData.company?.name || '');
 		setPhoneNumber(initialData.customer?.phoneNumber || '');
 		setDeliveryDate(initialData.deliveryDate || new Date());
@@ -116,23 +125,44 @@ export default function RepairOrderForm({
 
 	return (
 		<form onSubmit={action}>
+			<SelectInput
+				id={'tipo_de_cliente'}
+				name={'Empresa o individual:'}
+				options={Object.entries(CustomerType).map(([key, value]) => ({
+					value: key,
+					label: value,
+				}))}
+				value={customerType}
+				setValue={(str: string) => {
+					if (str in CustomerType) {
+						setCustomerType(str as CustomerType);
+					} else {
+						console.error('Valor inválido para CustomerType:', str);
+					}
+				}}
+			/>
+			{/* companyName */}
 			<AutocompleteDebouncedSearch
-				key={'procedencia'}
 				label='Procedencia'
 				placeholder='Empresa de procedencia'
+				value={company || ''}
 				setValue={setCompany}
 				fetchFunction={fetchCompanies}
 				options={companies}
 			/>
-			<AutocompleteDebouncedSearch
-				key={'responsable'}
-				label='Responsable'
-				placeholder='Empleado responsable'
-				setValue={setCustomer}
-				fetchFunction={fetchCustomers}
-				options={customers}
-			/>
-
+			{company && (
+				<AutocompleteDebouncedSearch
+					key={'responsable'}
+					label='Responsable'
+					placeholder='Empleado responsable'
+					value={customer || ''}
+					setValue={setCustomer}
+					fetchFunction={(searchTerm: string) =>
+						fetchCustomers({ companyId: company, searchTerm })
+					}
+					options={customers}
+				/>
+			)}
 			<PhoneInput
 				id={'telefono'}
 				name={'Teléfono'}
@@ -141,6 +171,7 @@ export default function RepairOrderForm({
 				options={['2222-2222-2222', '3333-3333-3333']}
 				value={phoneNumber}
 				setValue={setPhoneNumber}
+				required={true}
 			/>
 			<TextInput
 				id={'tiempo_de_entrega_de_cotizacion'}
