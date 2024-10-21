@@ -133,34 +133,35 @@ export default function RepairOrderForm({
 				fetchFunction={fetchCompanies}
 				options={companies}
 			/>
-			<SelectInput
-				id={'tipo_de_cliente'}
-				name={'Empresa o individual:'}
-				options={Object.entries(CustomerType).map(([key, value]) => ({
-					value: key,
-					label: value,
-				}))}
-				value={customerType}
-				setValue={(str: string) => {
-					if (str in CustomerType) {
-						setCustomerType(str as CustomerType);
-					} else {
-						console.error('Valor inválido para CustomerType:', str);
-					}
-				}}
-			/>
-			{/* customerName */}
 			{company && (
-				<AutocompleteDebouncedSearch
-					key={'responsable'}
-					label='Responsable'
-					placeholder='Empleado responsable'
-					setValue={setCustomer}
-					fetchFunction={(searchTerm: string) =>
-						fetchCustomers({ companyId: company, searchTerm })
-					}
-					options={customers}
-				/>
+				<>
+					<SelectInput
+						id={'tipo_de_cliente'}
+						name={'Empresa o individual:'}
+						options={Object.entries(CustomerType).map(([key, value]) => ({
+							value: key,
+							label: value,
+						}))}
+						value={customerType}
+						setValue={(str: string) => {
+							if (str in CustomerType) {
+								setCustomerType(str as CustomerType);
+							} else {
+								console.error('Valor inválido para CustomerType:', str);
+							}
+						}}
+					/>
+					<AutocompleteDebouncedSearch
+						key={'responsable'}
+						label='Responsable'
+						placeholder='Empleado responsable'
+						setValue={setCustomer}
+						fetchFunction={(searchTerm: string) =>
+							fetchCustomers({ companyId: company, searchTerm })
+						}
+						options={customers}
+					/>
+				</>
 			)}
 			<PhoneInput
 				id={'telefono'}
