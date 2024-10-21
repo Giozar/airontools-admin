@@ -8,20 +8,20 @@ interface Option {
 interface AutocompleteProps {
 	options: Option[]; // Cambiado de values a options
 	onChange: (value: string) => void; // Cambiado a string
-	searchValue: any;
-	onSearchChange: any;
+	searchValue: string;
+	onSearchChange: (value: string) => void;
 	placeholder?: string;
 	label?: string;
 }
 
-const Autocomplete: React.FC<AutocompleteProps> = ({
+const Autocomplete = ({
 	options,
 	onChange,
 	searchValue,
 	onSearchChange,
 	placeholder,
 	label,
-}) => {
+}: AutocompleteProps) => {
 	const [displayed, setDisplayed] = useState<boolean>(false);
 	const [optionFocused, setOptionFocused] = useState<number>(0);
 	const inputRef = useRef<HTMLInputElement | null>(null);
@@ -32,6 +32,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 	};
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newValue = e.target.value;
+		if (newValue.startsWith(' ')) return;
 		onSearchChange(e.target.value);
 		setOptionFocused(0); // Reset focused option
 	};
@@ -71,23 +73,17 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 	}, []);
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		const filteredOptions = options.filter(option =>
-			option.name.toLowerCase().includes(searchValue.toLowerCase()),
-		);
-
-		if (filteredOptions.length === 0 && searchValue)
+		if (options.length === 0 && searchValue)
 			if (e.key === 'Enter') handleNewOption();
-		if (filteredOptions.length === 0) return;
-		const selectedOption = filteredOptions[optionFocused];
+		if (options.length === 0) return;
+		const selectedOption = options[optionFocused];
 
 		switch (e.key) {
 			case 'ArrowUp':
 				setOptionFocused(prev => Math.max(prev - 1, 0));
 				break;
 			case 'ArrowDown':
-				setOptionFocused(prev =>
-					Math.min(prev + 1, filteredOptions.length - 1),
-				);
+				setOptionFocused(prev => Math.min(prev + 1, options.length - 1));
 				break;
 			case 'Enter':
 				if (selectedOption) {
@@ -103,10 +99,6 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 				}
 		}
 	};
-
-	const filteredOptions = options.filter(option =>
-		option.name.toLowerCase().includes(searchValue.toLowerCase()),
-	);
 
 	return (
 		<div className='datalist-input' style={{ position: 'relative' }}>
@@ -136,8 +128,8 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
 						overflowY: 'auto',
 					}}
 				>
-					{filteredOptions.length > 0 ? (
-						filteredOptions.map((option, index) => (
+					{options.length > 0 ? (
+						options.map((option, index) => (
 							<div
 								key={option.id} // Usa el id
 								onMouseDown={() => handleOption(option)}

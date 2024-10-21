@@ -1,5 +1,4 @@
-import AutoCompleteInput from '@components/commons/AutoCompleteInput';
-import DatalistOption from '@components/commons/DatalistOption';
+import AutocompleteDebouncedSearch from '@components/commons/AutocompleteDebouncedSearch';
 import DateInput from '@components/commons/DateInput';
 import DynamicSizeTable from '@components/commons/DynamicSizeTable';
 import ModalContent from '@components/commons/ModalContent';
@@ -14,7 +13,7 @@ import { useCompanyContext } from '@contexts/company/CompanyContext';
 import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import useCompanies from '@hooks/companies/useCompanies';
-import useDebounce from '@hooks/search/useDebounce';
+import useCustomers from '@hooks/customers/useCustomers';
 import useFetchUsers from '@hooks/users/useFetchUsers';
 import { Order } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
@@ -67,9 +66,8 @@ export default function RepairOrderForm({
 		.filter(observation => observation !== '')
 		.join('. '); // obten las observaciones de los productos
 
-	const { name: companyName, setName: setCompanyName } = useCompanyContext();
+	const { setName: setCompanyName } = useCompanyContext();
 	const {
-		name: customerName,
 		setName: setCustomerName,
 		phoneNumber,
 		setPhoneNumber,
@@ -79,12 +77,10 @@ export default function RepairOrderForm({
 	const [openModal, setOpenModal] = useState(true);
 	const { resetRepairOrder } = useResetRepairOrder();
 	const { userSelectOptions } = useFetchUsers();
-	const [searchTerm, setSearchTerm] = useState<string>('');
 	// const { fetchCustomers, customers } = useCustomers();
 	// const { debouncedFetch } = useDebounce(fetchCustomers, 300);
-	const { fetchCompanies, companies: customers } = useCompanies();
-	const { debouncedFetch } = useDebounce(fetchCompanies, 300);
-	const [value, setValue] = useState<string>('');
+	const { fetchCompanies, companies } = useCompanies();
+	const { fetchCustomers, customers } = useCustomers();
 
 	const setData = () => {
 		if (!initialData) return;
@@ -118,41 +114,25 @@ export default function RepairOrderForm({
 		console.log('Se creo con éxito para generar');
 	}, [_id]);
 
-	useEffect(() => {
-		debouncedFetch(searchTerm);
-	}, [searchTerm, debouncedFetch]);
-
 	return (
 		<form onSubmit={action}>
-			<AutoCompleteInput
-				onChange={setValue}
-				options={customers.map(customer => ({
-					id: customer._id,
-					name: customer.name,
-				}))}
-				searchValue={searchTerm}
-				onSearchChange={setSearchTerm}
-				placeholder='Empresa de procedencia'
+			<AutocompleteDebouncedSearch
+				key={'procedencia'}
 				label='Procedencia'
-			/>
-			<DatalistOption
-				id={'procedencia'}
-				name={'Procedencia'}
 				placeholder='Empresa de procedencia'
-				options={['hola', 'mundo']}
-				value={companyName}
-				setValue={setCompanyName}
-				required={true}
+				setValue={setCompany}
+				fetchFunction={fetchCompanies}
+				options={companies}
 			/>
-			<DatalistOption
-				id={'responsable'}
-				name={'Responsable'}
-				placeholder='Responsable por parte de la empresa'
-				options={['hola', 'mundo']}
-				value={customerName}
-				setValue={setCustomerName}
-				required={true}
+			<AutocompleteDebouncedSearch
+				key={'responsable'}
+				label='Responsable'
+				placeholder='Empleado responsable'
+				setValue={setCustomer}
+				fetchFunction={fetchCustomers}
+				options={customers}
 			/>
+
 			<PhoneInput
 				id={'telefono'}
 				name={'Teléfono'}
