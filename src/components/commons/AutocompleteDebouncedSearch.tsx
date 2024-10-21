@@ -16,11 +16,11 @@ export default function AutocompleteDebouncedSearch({
 	setValue,
 }: AutocompleteDebouncedSearchProps) {
 	const [searchTerm, setSearchTerm] = useState<string>('');
-	const [lastSearchTerm, setLastSearchTerm] = useState<string>('');
+	const [lastSearchTerm, setLastSearchTerm] = useState<string>('-');
 	const { debouncedFetch } = useDebounce(fetchFunction, 300);
 
 	useEffect(() => {
-		if (searchTerm && lastSearchTerm !== searchTerm) {
+		if (lastSearchTerm !== searchTerm) {
 			setLastSearchTerm(searchTerm);
 			debouncedFetch(searchTerm);
 		}
