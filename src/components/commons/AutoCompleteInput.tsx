@@ -14,14 +14,14 @@ interface AutocompleteProps {
 	label?: string;
 }
 
-const Autocomplete = ({
+export default function Autocomplete({
 	options,
 	onChange,
 	searchValue,
 	onSearchChange,
 	placeholder,
 	label,
-}: AutocompleteProps) => {
+}: AutocompleteProps) {
 	const [displayed, setDisplayed] = useState<boolean>(false);
 	const [optionFocused, setOptionFocused] = useState<number>(0);
 	const inputRef = useRef<HTMLInputElement | null>(null);
@@ -77,6 +77,8 @@ const Autocomplete = ({
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (options.length === 0 && searchValue)
 			if (e.key === 'Enter') handleNewOption();
+		if (options.length === optionFocused && searchValue)
+			if (e.key === 'Enter') handleNewOption();
 		if (options.length === 0) return;
 		const selectedOption = options[optionFocused];
 
@@ -85,7 +87,7 @@ const Autocomplete = ({
 				setOptionFocused(prev => Math.max(prev - 1, 0));
 				break;
 			case 'ArrowDown':
-				setOptionFocused(prev => Math.min(prev + 1, options.length - 1));
+				setOptionFocused(prev => Math.min(prev + 1, options.length));
 				break;
 			case 'Enter':
 				if (selectedOption) {
@@ -131,22 +133,36 @@ const Autocomplete = ({
 					}}
 				>
 					{options.length > 0 ? (
-						options.map((option, index) => (
+						<>
+							{options.map((option, index) => (
+								<div
+									key={option.id} // Usa el id
+									onMouseDown={() => handleOption(option)}
+									style={{
+										padding: '8px',
+										backgroundColor:
+											index === optionFocused
+												? 'var(--accent-primary)'
+												: 'var(--bg-primary)',
+										cursor: 'pointer',
+									}}
+								>
+									{option.name} {/* Muestra el name */}
+								</div>
+							))}
 							<div
-								key={option.id} // Usa el id
-								onMouseDown={() => handleOption(option)}
+								onMouseDown={() => handleNewOption()}
 								style={{
 									padding: '8px',
 									backgroundColor:
-										index === optionFocused
+										options.length === optionFocused
 											? 'var(--accent-primary)'
 											: 'var(--bg-primary)',
-									cursor: 'pointer',
 								}}
 							>
-								{option.name} {/* Muestra el name */}
+								¿Agregar nuevo?
 							</div>
-						))
+						</>
 					) : (
 						<div
 							onMouseDown={() => handleNewOption()}
@@ -173,6 +189,4 @@ const Autocomplete = ({
 			</em>
 		</div>
 	);
-};
-
-export default Autocomplete;
+}

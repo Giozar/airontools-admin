@@ -8,13 +8,13 @@ interface AutocompleteDebouncedSearchProps {
 	options: any[];
 	setValue: (value: string) => void;
 }
-const AutocompleteDebouncedSearch = ({
+export default function AutocompleteDebouncedSearch({
 	label,
 	placeholder,
 	fetchFunction,
 	options,
 	setValue,
-}: AutocompleteDebouncedSearchProps) => {
+}: AutocompleteDebouncedSearchProps) {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const { debouncedFetch } = useDebounce(fetchFunction, 300);
 
@@ -35,6 +35,4 @@ const AutocompleteDebouncedSearch = ({
 			label={label}
 		/>
 	);
-};
-
-export default AutocompleteDebouncedSearch;
+}
