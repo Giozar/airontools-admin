@@ -17,7 +17,7 @@ export default function AutocompleteDebouncedSearch({
 	setValue,
 	value,
 }: AutocompleteDebouncedSearchProps) {
-	const [searchTerm, setSearchTerm] = useState<string>(value);
+	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [lastSearchTerm, setLastSearchTerm] = useState<string>('-');
 	const { debouncedFetch } = useDebounce(fetchFunction, 300);
 

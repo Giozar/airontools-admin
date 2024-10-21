@@ -113,7 +113,6 @@ export default function RepairOrderForm({
 
 	useEffect(() => {
 		resetRepairOrder();
-		setCompany('');
 	}, []);
 
 	useEffect(() => {
