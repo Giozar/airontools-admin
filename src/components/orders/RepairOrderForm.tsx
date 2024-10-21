@@ -112,6 +112,7 @@ export default function RepairOrderForm({
 
 	useEffect(() => {
 		resetRepairOrder();
+		setCustomerType('COMPANY' as CustomerType); // valor por defecto
 	}, []);
 
 	useEffect(() => {
@@ -124,6 +125,22 @@ export default function RepairOrderForm({
 
 	return (
 		<form onSubmit={action}>
+			<SelectInput
+				id={'tipo_de_cliente'}
+				name={'Empresa o individual:'}
+				options={Object.entries(CustomerType).map(([key, value]) => ({
+					value: key,
+					label: value,
+				}))}
+				value={customerType}
+				setValue={(str: string) => {
+					if (str in CustomerType) {
+						setCustomerType(str as CustomerType);
+					} else {
+						console.error('Valor inválido para CustomerType:', str);
+					}
+				}}
+			/>
 			{/* companyName */}
 			<AutocompleteDebouncedSearch
 				key={'procedencia'}
@@ -134,34 +151,16 @@ export default function RepairOrderForm({
 				options={companies}
 			/>
 			{company && (
-				<>
-					<SelectInput
-						id={'tipo_de_cliente'}
-						name={'Empresa o individual:'}
-						options={Object.entries(CustomerType).map(([key, value]) => ({
-							value: key,
-							label: value,
-						}))}
-						value={customerType}
-						setValue={(str: string) => {
-							if (str in CustomerType) {
-								setCustomerType(str as CustomerType);
-							} else {
-								console.error('Valor inválido para CustomerType:', str);
-							}
-						}}
-					/>
-					<AutocompleteDebouncedSearch
-						key={'responsable'}
-						label='Responsable'
-						placeholder='Empleado responsable'
-						setValue={setCustomer}
-						fetchFunction={(searchTerm: string) =>
-							fetchCustomers({ companyId: company, searchTerm })
-						}
-						options={customers}
-					/>
-				</>
+				<AutocompleteDebouncedSearch
+					key={'responsable'}
+					label='Responsable'
+					placeholder='Empleado responsable'
+					setValue={setCustomer}
+					fetchFunction={(searchTerm: string) =>
+						fetchCustomers({ companyId: company, searchTerm })
+					}
+					options={customers}
+				/>
 			)}
 			<PhoneInput
 				id={'telefono'}
