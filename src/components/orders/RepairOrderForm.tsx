@@ -123,25 +123,23 @@ export default function RepairOrderForm({
 		console.log('Se creo con éxito para generar');
 	}, [_id]);
 
+	const customerTypeOptions = Object.values(CustomerType).map(type => ({
+		value: type,
+		label: type,
+	}));
+
 	return (
 		<form onSubmit={action}>
 			<SelectInput
-				id={'tipo_de_cliente'}
-				name={'Empresa o individual:'}
-				options={Object.entries(CustomerType).map(([key, value]) => ({
-					value: key,
-					label: value,
-				}))}
+				id='customerTypeSelect'
+				name='Tipo de Cliente'
+				options={customerTypeOptions}
 				value={customerType}
-				setValue={(str: string) => {
-					if (str in CustomerType) {
-						setCustomerType(str as CustomerType);
-					} else {
-						console.error('Valor inválido para CustomerType:', str);
-					}
-				}}
+				setValue={value => setCustomerType(value as CustomerType)}
+				defaultOptionIndex={1}
+				label='Selecciona un tipo de cliente'
 			/>
-			{/* companyName */}
+
 			<AutocompleteDebouncedSearch
 				label='Procedencia'
 				placeholder='Empresa de procedencia'
@@ -150,19 +148,18 @@ export default function RepairOrderForm({
 				fetchFunction={fetchCompanies}
 				options={companies}
 			/>
-			{company && (
-				<AutocompleteDebouncedSearch
-					key={'responsable'}
-					label='Responsable'
-					placeholder='Empleado responsable'
-					value={customer || ''}
-					setValue={setCustomer}
-					fetchFunction={(searchTerm: string) =>
-						fetchCustomers({ companyId: company, searchTerm })
-					}
-					options={customers}
-				/>
-			)}
+			<AutocompleteDebouncedSearch
+				key={'customer'}
+				label='Responsable'
+				placeholder='Cliente responsable'
+				value={customer || ''}
+				setValue={setCustomer}
+				fetchFunction={(searchTerm: string) =>
+					fetchCustomers({ companyId: company, searchTerm })
+				}
+				options={customers}
+			/>
+
 			<PhoneInput
 				id={'telefono'}
 				name={'Teléfono'}
@@ -192,6 +189,7 @@ export default function RepairOrderForm({
 			<SelectInput
 				id={'empleado_que_recibe_herramientas'}
 				name={'Empleado que recibe herramientas'}
+				label='Empleado que recibe herramientas'
 				options={userSelectOptions()}
 				value={receivedBy}
 				setValue={setReceivedBy}
