@@ -1,5 +1,10 @@
 import { airontoolsAPI } from '@configs/api.config';
-import { CreateOrder, Order, UpdateOrder } from '@interfaces/Order.interface';
+import {
+	CreateOrder,
+	Order,
+	OrderPage,
+	UpdateOrder,
+} from '@interfaces/Order.interface';
 import { errorHandler } from '@utils/errorHandler.util';
 import axios from 'axios';
 
@@ -36,12 +41,12 @@ export async function getAllOrdersService() {
 // Order search service
 export const searchOrdersServices = async (
 	searchTerm: string,
+	page: number = 1,
 	limit: number = 10,
-	offset: number = 0,
-): Promise<Order[]> => {
+): Promise<OrderPage> => {
 	try {
-		const response = await axios.post<Order[]>(
-			`${airontoolsAPI}/orders/search?limit=${limit}&offset=${offset}`,
+		const response = await axios.post<OrderPage>(
+			`${airontoolsAPI}/orders/search?limit=${limit}&page=${page}`,
 			{
 				keywords: searchTerm,
 			},
