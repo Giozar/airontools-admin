@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 interface Option {
-	id: string; // Cambiado a string
-	name: string; // Cambiado a name
+	id: string;
+	name: string;
 }
 
 interface AutocompleteProps {
-	options: Option[]; // Cambiado de values a options
-	onChange: (value: string) => void; // Cambiado a string
+	options: Option[];
+	onChange: (value: string) => void;
 	searchValue: string;
 	onSearchChange: (value: string) => void;
 	placeholder?: string;
@@ -34,7 +34,7 @@ export default function Autocomplete({
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = e.target.value;
 		if (newValue.startsWith(' ')) return;
-		onSearchChange(e.target.value);
+		onSearchChange(newValue);
 		setOptionFocused(0); // Reset focused option
 		setIsNewValue(false);
 	};
@@ -53,10 +53,20 @@ export default function Autocomplete({
 		if (inputRef.current) {
 			inputRef.current.value = searchValue; // Actualiza el valor del input
 		}
-		onChange(searchValue); // Llama a onChange con el id
+		onChange(searchValue); // Llama a onChange con el valor actual
 		setDisplayed(false); // Cierra el menú desplegable
 		setIsNewValue(true);
 	};
+
+	// Mostrar "Se registrará como nuevo" automáticamente si no hay coincidencias y setear el valor nuevo
+	useEffect(() => {
+		if (options.length === 0 && searchValue) {
+			setIsNewValue(true);
+			onChange(searchValue); // Actualiza automáticamente los datos cuando no hay coincidencias
+		} else {
+			setIsNewValue(false);
+		}
+	}, [options, searchValue, onChange]);
 
 	// Maneja clics fuera del componente
 	const handleDocumentClick = (event: MouseEvent) => {
@@ -74,10 +84,12 @@ export default function Autocomplete({
 	}, []);
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (options.length === 0 && searchValue)
+		if (options.length === 0 && searchValue) {
 			if (e.key === 'Enter') handleNewOption();
-		if (options.length === optionFocused && searchValue)
+		}
+		if (options.length === optionFocused && searchValue) {
 			if (e.key === 'Enter') handleNewOption();
+		}
 		if (options.length === 0) return;
 		const selectedOption = options[optionFocused];
 
@@ -86,7 +98,7 @@ export default function Autocomplete({
 				setOptionFocused(prev => Math.max(prev - 1, 0));
 				break;
 			case 'ArrowDown':
-				setOptionFocused(prev => Math.min(prev + 1, options.length));
+				setOptionFocused(prev => Math.min(prev + 1, options.length - 1));
 				break;
 			case 'Enter':
 				if (selectedOption) {
@@ -132,50 +144,35 @@ export default function Autocomplete({
 					}}
 				>
 					{options.length > 0 ? (
-						<>
-							{options.map((option, index) => (
-								<div
-									key={option.id} // Usa el id
-									onMouseDown={() => handleOption(option)}
-									style={{
-										padding: '8px',
-										backgroundColor:
-											index === optionFocused
-												? 'var(--accent-primary)'
-												: 'var(--bg-primary)',
-										cursor: 'pointer',
-									}}
-								>
-									{option.name} {/* Muestra el name */}
-								</div>
-							))}
+						options.map((option, index) => (
 							<div
-								onMouseDown={() => handleNewOption()}
+								key={option.id}
+								onMouseDown={() => handleOption(option)}
 								style={{
 									padding: '8px',
 									backgroundColor:
-										options.length === optionFocused
+										index === optionFocused
 											? 'var(--accent-primary)'
 											: 'var(--bg-primary)',
+									cursor: 'pointer',
 								}}
 							>
-								¿Agregar nuevo?
+								{option.name}
 							</div>
-						</>
+						))
 					) : (
 						<div
-							onMouseDown={() => handleNewOption()}
 							style={{
 								padding: '8px',
 								backgroundColor: 'var(--accent-primary)',
 							}}
 						>
-							No hay coincidencias, ¿Agregar nuevo?
+							No hay coincidencias, se creará uno nuevo automáticamente.
 						</div>
 					)}
 				</div>
 			)}
-			<br></br>
+			<br />
 			<em
 				style={{
 					margin: '0',
