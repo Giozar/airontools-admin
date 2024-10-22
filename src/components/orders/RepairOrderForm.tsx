@@ -119,16 +119,12 @@ export default function RepairOrderForm({
 		setData();
 	}, [initialData]);
 
-	useEffect(() => {
-		console.log('Se creo con éxito para generar');
-	}, [_id]);
+	useEffect(() => {}, [_id]);
 
 	const customerTypeOptions = Object.values(CustomerType).map(type => ({
 		value: type,
 		label: type,
 	}));
-
-	console.log(customerType);
 
 	return (
 		<form onSubmit={action}>

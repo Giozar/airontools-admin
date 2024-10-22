@@ -58,9 +58,6 @@ export default function useCreateOrder() {
 			}
 			let customerId = customer || '';
 
-			console.log(
-				CustomerType[customerType as unknown as keyof typeof CustomerType],
-			);
 			if (!isId(customerId)) {
 				const createdCustomer = await createCustomerService({
 					...(customerType === 'Empresa'
