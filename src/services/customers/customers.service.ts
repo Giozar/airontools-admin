@@ -44,6 +44,7 @@ export interface SearchCustomersParams {
 	limit?: number;
 	offset?: number;
 	companyId?: string;
+	customerType?: string;
 }
 
 export async function searchCustomersService({
@@ -51,6 +52,7 @@ export async function searchCustomersService({
 	limit = 10,
 	offset = 0,
 	companyId = '',
+	customerType = '',
 }: SearchCustomersParams): Promise<Customer[]> {
 	try {
 		const response = await axios.post<Customer[]>(
@@ -58,6 +60,8 @@ export async function searchCustomersService({
 			{
 				keywords: searchTerm,
 				companyId,
+				autocomplete: true,
+				customerType,
 			},
 		);
 		return response.data;
