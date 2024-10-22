@@ -13,6 +13,8 @@ import RepairOrderPagination from './RepairOrderPagination';
 // Main component for displaying repair orders list
 export default function RepairOrderList() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [checkedRows, setCheckedRows] = useState<number[]>([]);
+
 	const { fetchOrders, orders, totalPages, setPage } = useOrders();
 	const { debouncedFetch } = useDebounce(fetchOrders, 300);
 
@@ -28,7 +30,14 @@ export default function RepairOrderList() {
 		},
 		[navigate],
 	);
-
+	// Maneja la selección/deselección de filas y checkboxes
+	const handleToggleCheck = (index: number) => {
+		if (checkedRows.includes(index)) {
+			setCheckedRows(checkedRows.filter(i => i !== index));
+		} else {
+			setCheckedRows([...checkedRows, index]);
+		}
+	};
 	const tableData = {
 		headers: [
 			'Order No.',
@@ -37,8 +46,9 @@ export default function RepairOrderList() {
 			'Recibido por',
 			'PDF',
 			'Editar Orden',
+			'',
 		],
-		rows: orders.map(order => [
+		rows: orders.map((order, index) => [
 			`AT${order.control}`,
 			new Date(order.createdAt).toLocaleDateString(),
 			order.customer?.name || '',
@@ -58,13 +68,20 @@ export default function RepairOrderList() {
 			>
 				<EditIcon />
 			</button>,
+			<input
+				key={`check-${order._id}`}
+				type='checkbox'
+				name='checkOrder'
+				checked={checkedRows.includes(index)} // Muestra si está seleccionado
+				onChange={() => handleToggleCheck(index)} // Cambia el estado al hacer clic
+			/>,
 		]),
 	};
 
 	return (
 		<>
 			<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
-			<TableComponent data={tableData} />
+			<TableComponent data={tableData} setSelectedRow={handleToggleCheck} />
 			<RepairOrderPagination totalPages={totalPages} setCurrentPage={setPage} />
 		</>
 	);
