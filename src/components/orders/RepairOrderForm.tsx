@@ -128,6 +128,8 @@ export default function RepairOrderForm({
 		label: type,
 	}));
 
+	console.log(customerType);
+
 	return (
 		<form onSubmit={action}>
 			<SelectInput
