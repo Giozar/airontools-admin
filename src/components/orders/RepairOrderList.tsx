@@ -5,7 +5,7 @@ import EditIcon from '@components/svg/EditIcon';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import useDebounce from '@hooks/search/useDebounce';
-import { useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useOrders from './hooks/useOrders';
 import RepairOrderPagination from './RepairOrderPagination';
@@ -15,7 +15,8 @@ export default function RepairOrderList() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
-	const { fetchOrders, orders, totalPages, setPage } = useOrders();
+	const { fetchOrders, orders, totalPages, setPage, limit, setLimit } =
+		useOrders();
 	const { debouncedFetch } = useDebounce(fetchOrders, 300);
 
 	const navigate = useNavigate();
@@ -81,6 +82,16 @@ export default function RepairOrderList() {
 	return (
 		<>
 			<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
+			<label htmlFor='limit'>Mostrar hasta: </label>
+			<input
+				type='number'
+				name='limit'
+				min={1}
+				value={limit}
+				onChange={(e: ChangeEvent<HTMLInputElement>) =>
+					setLimit(parseInt(e.target.value))
+				}
+			/>
 			<TableComponent data={tableData} setSelectedRow={handleToggleCheck} />
 			<RepairOrderPagination totalPages={totalPages} setCurrentPage={setPage} />
 		</>

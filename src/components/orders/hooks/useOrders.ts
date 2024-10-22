@@ -9,6 +9,7 @@ export default function useOrders() {
 	const [totalOrders, setTotalOrders] = useState<number>(0);
 	const [totalPages, setTotalPages] = useState<number>(1);
 	const [page, setPage] = useState<number>(1);
+	const [limit, setLimit] = useState<number>(10);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string>('');
 
@@ -17,7 +18,7 @@ export default function useOrders() {
 			try {
 				setLoading(true);
 				setError('');
-				const newOrders = await searchOrdersServices(searchTerm, page);
+				const newOrders = await searchOrdersServices(searchTerm, page, limit);
 				setOrders(newOrders.data);
 				setTotalOrders(newOrders.total);
 				setTotalPages(newOrders.totalPages);
@@ -28,15 +29,17 @@ export default function useOrders() {
 				setLoading(false);
 			}
 		},
-		[page],
+		[limit, page],
 	);
 
 	return {
 		orders,
 		totalOrders,
 		totalPages,
-		fetchOrders,
 		setPage,
+		limit,
+		setLimit,
+		fetchOrders,
 		loading,
 		error,
 	};
