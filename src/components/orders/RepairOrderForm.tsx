@@ -126,6 +126,12 @@ export default function RepairOrderForm({
 		label: type,
 	}));
 
+	useEffect(() => {
+		if (customerType === 'Individual') {
+			setCompany('');
+		}
+	}, [customerType]);
+
 	return (
 		<form onSubmit={action}>
 			<SelectInput
@@ -155,7 +161,11 @@ export default function RepairOrderForm({
 				value={customer || ''}
 				setValue={setCustomer}
 				fetchFunction={(searchTerm: string) =>
-					fetchCustomers({ companyId: company, searchTerm })
+					fetchCustomers({
+						companyId: company,
+						searchTerm,
+						customerType,
+					})
 				}
 				options={customers}
 			/>
