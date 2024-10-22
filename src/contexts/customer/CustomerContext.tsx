@@ -11,7 +11,7 @@ const CustomerContext = createContext<CustomerContextProps | null>(null);
 export const CustomerProvider = ({ children }: { children: ReactNode }) => {
 	// Estado inicial
 	const initialState = {
-		customerType: CustomerType.INDIVIDUAL,
+		customerType: CustomerType.COMPANY,
 		name: '',
 		phoneNumber: '',
 		company: '',
