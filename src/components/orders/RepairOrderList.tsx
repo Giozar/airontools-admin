@@ -7,6 +7,8 @@ import EditIcon from '@components/svg/EditIcon';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import useDebounce from '@hooks/search/useDebounce';
+import saveAs from 'file-saver';
+import JSZip from 'jszip';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useOrders from './hooks/useOrders';
@@ -40,7 +42,7 @@ export default function RepairOrderList() {
 			setCheckedRows([...checkedRows, index]);
 		}
 	};
-	const handleDownload = async () => {
+	/* const handleDownload = async () => {
 		const urls: string[] = [];
 		checkedRows.forEach(selectedOrder => {
 			urls.push(
@@ -56,10 +58,48 @@ export default function RepairOrderList() {
 		try {
 			const response = await Promise.all(promises);
 			console.log(response);
+
+			saveAs(new Blob(response), 'hola.zip');
 		} catch (error) {
 			console.error(error);
 		}
+	}; */
+
+	const handleDownload = async () => {
+		const urls: string[] = [];
+		checkedRows.forEach(selectedOrder => {
+			urls.push(
+				`${airontoolsAPI}/basic-reports/repair-order/${orders[selectedOrder]._id}`,
+			);
+		});
+
+		console.log(urls);
+
+		try {
+			// Realizar todas las peticiones en paralelo
+			const promises = urls.map(async (url: string) => {
+				const res = await fetch(url);
+				const blob = await res.blob();
+				return blob;
+			});
+			const responses = await Promise.all(promises);
+			if (responses.length <= 5) {
+				responses.forEach((blob, index) => {
+					saveAs(blob, `archivo${index}.pdf`);
+				});
+			} else {
+				const zip = new JSZip();
+				responses.forEach((blob, index) => {
+					zip.file(`archivo${index}.pdf`, blob);
+				});
+				const zipFile = await zip.generateAsync({ type: 'blob' });
+				saveAs(zipFile, 'reportes.zip');
+			}
+		} catch (error) {
+			console.error('Error al descargar los archivos:', error);
+		}
 	};
+
 	const tableData = {
 		headers: [
 			'Order No.',
