@@ -40,6 +40,26 @@ export default function RepairOrderList() {
 			setCheckedRows([...checkedRows, index]);
 		}
 	};
+	const handleDownload = async () => {
+		const urls: string[] = [];
+		checkedRows.forEach(selectedOrder => {
+			urls.push(
+				`${airontoolsAPI}/basic-reports/repair-order/${orders[selectedOrder]._id}`,
+			);
+		});
+		console.log(urls);
+		const promises = urls.map(async (url: string) => {
+			const res = await fetch(url);
+			const blob = await res.blob();
+			return blob;
+		});
+		try {
+			const response = await Promise.all(promises);
+			console.log(response);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 	const tableData = {
 		headers: [
 			'Order No.',
@@ -84,6 +104,7 @@ export default function RepairOrderList() {
 		<>
 			<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
 			<LimitInput limit={limit} setLimit={setLimit} />
+			<button onClick={handleDownload}>Descargar archivosxd</button>
 			<TableComponent data={tableData} setSelectedRow={handleToggleCheck} />
 			<Pagination totalPages={totalPages} setCurrentPage={setPage} />
 		</>
