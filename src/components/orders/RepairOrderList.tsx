@@ -1,14 +1,15 @@
 // Importing necessary components, hooks, and libraries
 import TableComponent from '@components/commons/DynamicTable';
+import LimitInput from '@components/commons/Pagination/LimitInput';
+import Pagination from '@components/commons/Pagination/Pagination';
 import Searchbar from '@components/search/Searchbar';
 import EditIcon from '@components/svg/EditIcon';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import useDebounce from '@hooks/search/useDebounce';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useOrders from './hooks/useOrders';
-import RepairOrderPagination from './RepairOrderPagination';
 
 // Main component for displaying repair orders list
 export default function RepairOrderList() {
@@ -82,18 +83,9 @@ export default function RepairOrderList() {
 	return (
 		<>
 			<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
-			<label htmlFor='limit'>Mostrar hasta: </label>
-			<input
-				type='number'
-				name='limit'
-				min={1}
-				value={limit}
-				onChange={(e: ChangeEvent<HTMLInputElement>) =>
-					setLimit(parseInt(e.target.value))
-				}
-			/>
+			<LimitInput limit={limit} setLimit={setLimit} />
 			<TableComponent data={tableData} setSelectedRow={handleToggleCheck} />
-			<RepairOrderPagination totalPages={totalPages} setCurrentPage={setPage} />
+			<Pagination totalPages={totalPages} setCurrentPage={setPage} />
 		</>
 	);
 }
