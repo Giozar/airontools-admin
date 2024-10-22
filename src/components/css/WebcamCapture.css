@@ -45,3 +45,10 @@ button:hover {
 	margin-top: 0.5rem;
 	color: #4caf50;
 }
+.takephoto-button {
+	margin-top: 0;
+	border: 0;
+	background-color: var(--add);
+	width: 200px;
+	font-weight: bold;
+}

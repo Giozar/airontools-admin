@@ -1,5 +1,4 @@
 import NumberInput from '@components/commons/NumberInput';
-import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
 import { useOrderProduct } from './hooks/useRepairProductUpdate';
@@ -18,7 +17,7 @@ const RowComponent = ({ index }: RowComponentProps) => {
 		serialNumber,
 		description,
 		observation,
-		rawImage,
+		// rawImage,
 	} = product;
 
 	const columns = [
@@ -74,14 +73,14 @@ const RowComponent = ({ index }: RowComponentProps) => {
 			value={observation || ''}
 			placeholder='Observación sobre la herramienta'
 			onChange={e => updateProduct({ observation: e.target.value })}
-		/>,
-		<SingleImageChange
+		/> /*,
+		 <SingleImageChange
 			key={`imagen-${index}`}
 			title='Foto de herramienta'
 			filePreview={rawImage ? URL.createObjectURL(rawImage) : ''}
 			setFilePreview={file => updateProduct({ rawImage: file })}
 			capture={true}
-		/>,
+		/> */,
 	];
 	return (
 		<>

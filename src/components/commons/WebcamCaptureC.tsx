@@ -7,8 +7,10 @@ interface CapturedImage {
 
 export default function WebcamCapture({
 	setFile,
+	setError,
 }: {
 	setFile: (value: File | null) => void;
+	setError: (value: boolean) => void;
 }) {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,8 +30,10 @@ export default function WebcamCapture({
 				if (videoRef.current) {
 					videoRef.current.srcObject = mediaStream;
 				}
+				setError(false);
 			} catch (error) {
 				console.error('Error accessing webcam:', error);
+				setError(true);
 			}
 		};
 
@@ -70,7 +74,7 @@ export default function WebcamCapture({
 	return (
 		<div className='webcam-capture'>
 			<video ref={videoRef} autoPlay playsInline muted />
-			<button onClick={capturePhoto} type='button'>
+			<button onClick={capturePhoto} type='button' className='takephoto-button'>
 				Tomar Foto
 			</button>
 			<canvas ref={canvasRef} style={{ display: 'none' }} />

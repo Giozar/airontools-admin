@@ -80,6 +80,7 @@ export default function RepairOrderForm({
 		customerType,
 		setCustomerType,
 	} = useCustomerContext();
+	const [webcamError, setWebcamError] = useState<boolean>(false);
 
 	const { addProduct, removeProduct } = useOrderProduct(0);
 	const [openModal, setOpenModal] = useState(true);
@@ -229,7 +230,7 @@ export default function RepairOrderForm({
 					setDate={setAuthorizationDate}
 				/>
 			)}
-			{false && (
+			{webcamError && (
 				<SingleImageInput
 					title='Foto general de las herramientas'
 					url={images.length > 0 ? images[0] : null} // Verifica si existe una imagen en la primera posición
@@ -246,7 +247,7 @@ export default function RepairOrderForm({
 				/>
 			)}
 
-			<WebcamCapture setFile={setImageRaw} />
+			<WebcamCapture setFile={setImageRaw} setError={setWebcamError} />
 			{false && (
 				<DateInput
 					label='Fecha de entrega'
