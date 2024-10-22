@@ -8,12 +8,14 @@ import useDebounce from '@hooks/search/useDebounce';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useOrders from './hooks/useOrders';
+import RepairOrderPagination from './RepairOrderPagination';
 
 // Main component for displaying repair orders list
 export default function RepairOrderList() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
-	const { fetchOrders, orders } = useOrders();
+	const { fetchOrders, orders, totalPages, setPage } = useOrders();
 	const { debouncedFetch } = useDebounce(fetchOrders, 300);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -63,6 +65,7 @@ export default function RepairOrderList() {
 		<>
 			<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
 			<TableComponent data={tableData} />
+			<RepairOrderPagination totalPages={totalPages} setCurrentPage={setPage} />
 		</>
 	);
 }
