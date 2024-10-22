@@ -16,7 +16,6 @@ export default function useCustomers() {
 			setLoading(true);
 			setError('');
 			const customersFound = await searchCustomersService(params);
-			console.log(customersFound);
 			setCustomers(customersFound);
 		} catch (error) {
 			const err = error as ErrorResponse;

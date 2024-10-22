@@ -38,9 +38,7 @@ const SingleImageChange = ({
 		if (setFileToDelete) setFileToDelete(true);
 	};
 
-	useEffect(() => {
-		console.log(filePreview, 'se tiene que quitar la imagen');
-	}, [filePreview]);
+	useEffect(() => {}, [filePreview]);
 	return (
 		<>
 			<p>{title}</p>
