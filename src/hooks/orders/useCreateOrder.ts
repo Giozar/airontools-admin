@@ -48,7 +48,7 @@ export default function useCreateOrder() {
 
 		try {
 			let companyId = company || '';
-			if (!isId(companyId)) {
+			if (!isId(companyId) && customerType === 'Empresa') {
 				const createdCompany = await createCompanyService({
 					name: companyId,
 					createdBy,
@@ -76,7 +76,7 @@ export default function useCreateOrder() {
 
 			const createdOrder = await createOrderService({
 				customer: customerId,
-				company: companyId,
+				...(companyId && { company: companyId }),
 				orderType,
 				authorizationDate,
 				products,
@@ -87,6 +87,7 @@ export default function useCreateOrder() {
 				quoteDeliveryTime,
 				createdBy,
 			});
+
 			console.log(createdOrder);
 			resetRepairOrder();
 			setSuccess(true);

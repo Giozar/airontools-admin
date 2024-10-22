@@ -5,8 +5,17 @@ import axios from 'axios';
 
 // Crear una nueva orden
 export async function createOrderService(order: CreateOrder) {
+	// Hacer una copia del objeto para evitar mutaciones no deseadas
+	const orderData = { ...order };
+
+	// Si la propiedad `company` es null o undefined, la eliminamos del objeto
+	if (!orderData.company) {
+		// `== null` cubre ambos casos: null y undefined
+		delete orderData.company;
+	}
+
 	try {
-		const response = await axios.post(`${airontoolsAPI}/orders`, order);
+		const response = await axios.post(`${airontoolsAPI}/orders`, orderData);
 		return response.data;
 	} catch (error) {
 		throw errorHandler(error);

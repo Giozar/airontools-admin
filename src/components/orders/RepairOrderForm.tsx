@@ -132,7 +132,7 @@ export default function RepairOrderForm({
 		<form onSubmit={action}>
 			<SelectInput
 				id='customerTypeSelect'
-				name='Tipo de Cliente'
+				name='Tipo de entidad'
 				options={customerTypeOptions}
 				value={customerType}
 				setValue={value => setCustomerType(value as CustomerType)}
@@ -140,14 +140,16 @@ export default function RepairOrderForm({
 				label='Selecciona un tipo de cliente'
 			/>
 
-			<AutocompleteDebouncedSearch
-				label='Procedencia'
-				placeholder='Empresa de procedencia'
-				value={company || ''}
-				setValue={setCompany}
-				fetchFunction={fetchCompanies}
-				options={companies}
-			/>
+			{customerType === 'Empresa' && (
+				<AutocompleteDebouncedSearch
+					label='Procedencia'
+					placeholder='Empresa de procedencia'
+					value={company || ''}
+					setValue={setCompany}
+					fetchFunction={fetchCompanies}
+					options={companies}
+				/>
+			)}
 			<AutocompleteDebouncedSearch
 				key={'customer'}
 				label='Responsable'
@@ -189,7 +191,7 @@ export default function RepairOrderForm({
 			<SelectInput
 				id={'empleado_que_recibe_herramientas'}
 				name={'Empleado que recibe herramientas'}
-				label='Empleado que recibe herramientas'
+				label='Selecciona el empleado'
 				options={userSelectOptions()}
 				value={receivedBy}
 				setValue={setReceivedBy}
