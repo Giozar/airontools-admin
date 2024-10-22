@@ -6,6 +6,7 @@ import PhoneInput from '@components/commons/PhoneInput';
 import SelectInput from '@components/commons/SelectInput';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import TextInput from '@components/commons/TextInput';
+import WebcamCapture from '@components/commons/WebcamCaptureC';
 import SingleImageInput from '@components/files/SingleImageInput';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
@@ -228,21 +229,24 @@ export default function RepairOrderForm({
 					setDate={setAuthorizationDate}
 				/>
 			)}
-			<SingleImageInput
-				title='Foto general de las herramientas'
-				url={images.length > 0 ? images[0] : null} // Verifica si existe una imagen en la primera posición
-				file={imageRaw}
-				setFile={setImageRaw}
-				setUrl={(value: string | null) => {
-					// Si el valor es nulo, limpiamos el array, de lo contrario, actualizamos el primer valor del array
-					setImages(value ? [value] : []);
-				}}
-				setUrlRemoved={setImageRemoved}
-				urlRemoved={imageRemoved}
-				key='fotos-herramientas'
-				size='large'
-			/>
+			{false && (
+				<SingleImageInput
+					title='Foto general de las herramientas'
+					url={images.length > 0 ? images[0] : null} // Verifica si existe una imagen en la primera posición
+					file={imageRaw}
+					setFile={setImageRaw}
+					setUrl={(value: string | null) => {
+						// Si el valor es nulo, limpiamos el array, de lo contrario, actualizamos el primer valor del array
+						setImages(value ? [value] : []);
+					}}
+					setUrlRemoved={setImageRemoved}
+					urlRemoved={imageRemoved}
+					key='fotos-herramientas'
+					size='large'
+				/>
+			)}
 
+			<WebcamCapture setFile={setImageRaw} />
 			{false && (
 				<DateInput
 					label='Fecha de entrega'
