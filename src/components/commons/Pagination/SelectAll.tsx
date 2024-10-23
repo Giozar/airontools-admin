@@ -2,10 +2,12 @@ import '@components/css/SelectAll.css';
 interface SelectAllProps {
 	currentPageCount: number;
 	searchResultCount: number;
+	handleSelectAll: (value: number) => void;
 }
 export default function SelectAll({
 	currentPageCount,
 	searchResultCount,
+	handleSelectAll,
 }: SelectAllProps) {
 	return (
 		<div className='select-all'>
@@ -17,10 +19,10 @@ export default function SelectAll({
 						name='selectAll'
 						value='currentPage'
 						className='select-all__input'
-						//onChange={() => handleSelectAll('currentPage')}
+						onChange={() => handleSelectAll(currentPageCount)}
 					/>
 					<span className='select-all__label'>
-						Seleccionar Todos [Página Actual ({currentPageCount})]
+						Página Actual ({currentPageCount})
 					</span>
 				</label>
 				<label className='select-all__option'>
@@ -29,10 +31,10 @@ export default function SelectAll({
 						name='selectAll'
 						value='searchResults'
 						className='select-all__input'
-						//onChange={() => handleSelectAll('searchResults')}
+						onChange={() => handleSelectAll(searchResultCount)}
 					/>
 					<span className='select-all__label'>
-						Seleccionar Todos [Resultados de Búsqueda ({searchResultCount})]
+						Resultados de Búsqueda ({searchResultCount})
 					</span>
 				</label>
 			</div>

@@ -1,6 +1,5 @@
-// Searchbar component for entering the search term
-import { type ChangeEvent } from 'react';
-
+import { ChangeEvent } from 'react';
+import './searchbar.css';
 interface SearchbarProps {
 	searchValue: string;
 	onSearchChange: (value: string) => void;
@@ -17,14 +16,15 @@ export default function Searchbar({
 	};
 
 	return (
-		<label htmlFor='searchOrderBar'>
+		<label className='searchbar'>
 			<input
+				className='searchbar__input'
 				id='searchOrderBar'
 				value={searchValue}
 				onChange={handleInputChange}
 				type='search'
 				name='searchOrderBar'
-				placeholder='Search...'
+				placeholder='Buscar...'
 			/>
 		</label>
 	);
