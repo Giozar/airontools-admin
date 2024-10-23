@@ -4,6 +4,7 @@ import TableComponent from '@components/commons/DynamicTable';
 import CircularCheckbox from '@components/commons/form/CircularCheckbox';
 import LimitInput from '@components/commons/Pagination/LimitInput';
 import Pagination from '@components/commons/Pagination/Pagination';
+import SelectAll from '@components/commons/Pagination/SelectAll';
 import Searchbar from '@components/search/Searchbar';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
@@ -87,12 +88,17 @@ export default function RepairOrderList() {
 			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 				<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
 				<LimitInput limit={limit} setLimit={setLimit} />
-				<div>
-					{/*<SelectAll
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'space-between',
+					}}
+				>
+					<SelectAll
 						currentPageCount={Math.min(totalOrders, limit)}
 						searchResultCount={totalOrders}
 						handleSelectAll={handleSelectAll}
-					/>*/}
+					/>
 					{checkedRows.length <= orders.length && (
 						<DownloadButtons
 							urls={checkedRows.map(
