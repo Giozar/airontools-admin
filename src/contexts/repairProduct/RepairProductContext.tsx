@@ -19,7 +19,7 @@ export const RepairProductProvider = ({
 	const [serialNumber, setSerialNumber] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [quantity, setQuantity] = useState<number>(1);
-	const [images, setImages] = useState<string[] | undefined>(undefined);
+	const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
 	const [observation, setObservation] = useState<string>('');
 
 	return (
@@ -37,8 +37,8 @@ export const RepairProductProvider = ({
 				setDescription,
 				quantity,
 				setQuantity,
-				images,
-				setImages,
+				imageUrl,
+				setImageUrl,
 				observation,
 				setObservation,
 			}}
