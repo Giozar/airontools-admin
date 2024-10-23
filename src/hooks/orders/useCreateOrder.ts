@@ -25,7 +25,7 @@ export default function useCreateOrder() {
 		imageRaw,
 		company,
 		customer,
-		setImages,
+		setImageUrl,
 		setImageRaw,
 		setSuccess,
 		setId,
@@ -86,30 +86,25 @@ export default function useCreateOrder() {
 				createdBy,
 			});
 
-			console.log(createdOrder);
-			resetRepairOrder();
-			setSuccess(true);
-			setId(createdOrder._id);
-
 			if (createdOrder?._id && imageRaw) {
 				console.log('Subo archivo');
-				const imageUrls = await fileUpload({
+				const imageUrl = await fileUpload({
 					type: 'images',
 					feature: `orders/${createdOrder._id}`,
 					file: imageRaw,
 					setFile: setImageRaw,
-					setFileUrl: (url: string) => {
-						if (setImages) {
-							setImages([url]);
-						}
-					},
+					setFileUrl: setImageUrl,
 				});
-				imageUrls &&
+				console.log(imageUrl);
+				imageUrl &&
 					(await uploadOrderUrlImagesService({
 						orderId: createdOrder._id,
-						imageUrls: [imageUrls],
+						imageUrl,
 					}));
 			}
+			resetRepairOrder();
+			setId(createdOrder._id);
+			setSuccess(true);
 			showSuccess('Orden creada con éxito');
 		} catch (error) {
 			showError('No se pudo crear la orden', error);

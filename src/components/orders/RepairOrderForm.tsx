@@ -37,10 +37,10 @@ export default function RepairOrderForm({
 	const {
 		observations,
 		setObservations,
-		images,
+		imageUrl,
 		imageRaw,
 		imageRemoved,
-		setImages,
+		setImageUrl,
 		setImageRaw,
 		setImageRemoved,
 		deliveryDate,
@@ -108,7 +108,7 @@ export default function RepairOrderForm({
 		setCompany(initialData.company?._id || '');
 		setCustomer(initialData.customer?._id || '');
 		setReceivedBy(initialData.receivedBy?._id || '');
-		setImages(initialData?.images || []);
+		setImageUrl(initialData?.imageUrl || '');
 	};
 
 	useEffect(() => {}, [observations, authorizationDate]);
@@ -233,13 +233,10 @@ export default function RepairOrderForm({
 			{webcamError && (
 				<SingleImageInput
 					title='Foto general de las herramientas'
-					url={images.length > 0 ? images[0] : null} // Verifica si existe una imagen en la primera posición
+					url={imageUrl} // Verifica si existe una imagen en la primera posición
 					file={imageRaw}
 					setFile={setImageRaw}
-					setUrl={(value: string | null) => {
-						// Si el valor es nulo, limpiamos el array, de lo contrario, actualizamos el primer valor del array
-						setImages(value ? [value] : []);
-					}}
+					setUrl={setImageUrl}
 					setUrlRemoved={setImageRemoved}
 					urlRemoved={imageRemoved}
 					key='fotos-herramientas'
