@@ -1,3 +1,41 @@
-.limit-input__input {
-	width: 50px;
+/* Estilos del bloque limit-input */
+.limit-input {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin: 10px 0;
+}
+
+/* Elemento label dentro del bloque limit-input */
+.limit-input__label {
+	margin-bottom: 5px;
+	color: var(--text-primary);
+	font-size: 16px;
+}
+
+/* Elemento input dentro del bloque limit-input */
+.limit-input__field {
+	transition: border-color 0.3s ease-in-out;
+	border: 1px solid var(--input-bg);
+	border-radius: 4px;
+	padding: 5px;
+	width: 100px;
+	color: var(--text-primary);
+	font-size: 14px;
+}
+
+/* Modificador para el estado de focus en el input */
+.limit-input__field:focus {
+	outline: none;
+	border-color: var(--accent-primary);
+}
+
+/* Modificador para el estado de error (ejemplo) */
+.limit-input__field--error {
+	border-color: var(--error);
+}
+
+/* Bloque limit-input con un estilo adicional en caso de error (opcional) */
+.limit-input--error .limit-input__label {
+	color: var(--error);
 }
