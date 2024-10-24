@@ -94,6 +94,9 @@ export default function DiagnosticForm({
 	return (
 		<form onSubmit={action}>
 			<h2>Datos de la herramienta</h2>
+			<p className='info no-margin'>
+				En esta orden hay {products.length} herramientas.
+			</p>
 			{products.map((_product, index) => (
 				<DiagnosticRowComponent index={index} />
 			))}

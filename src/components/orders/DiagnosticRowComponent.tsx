@@ -27,12 +27,30 @@ export default function DiagnosticRowComponent({ index }: RowComponentProps) {
 	// You need to define webcamError, imageUrl, imageRaw, setImageRaw, setImageUrl, setImageRemoved, and imageRemoved
 
 	const columns = [
-		<Info title={'Cantidad'} info={quantity.toString()} />,
-		<Info title={'Marca'} info={brand} />,
-		<Info title={'Modelo'} info={model} />,
-		<Info title={'Número de serie'} info={serialNumber} />,
-		<Info title={'Descripción'} info={description} />,
-		<Info title={'Observación'} info={observation} />,
+		<hr></hr>,
+		<h3>Herramienta {index + 1}</h3>,
+		<Info
+			title={'Cantidad'}
+			info={quantity.toString()}
+			infoClass='info no-margin'
+		/>,
+		<Info title={'Marca'} info={brand} infoClass='info no-margin' />,
+		<Info title={'Modelo'} info={model} infoClass='info no-margin' />,
+		<Info
+			title={'Número de serie'}
+			info={serialNumber}
+			infoClass='info no-margin'
+		/>,
+		<Info
+			title={'Descripción'}
+			info={description}
+			infoClass='info no-margin'
+		/>,
+		<Info
+			title={'Observación'}
+			info={observation}
+			infoClass='info no-margin'
+		/>,
 		<TextAreaInput
 			id='diagnostico'
 			label='Diagnóstico'
@@ -60,7 +78,7 @@ export default function DiagnosticRowComponent({ index }: RowComponentProps) {
 	);
 
 	columns.push(imageComponent); // Add the image component to columns
-
+	columns.push(<hr></hr>);
 	return (
 		<>
 			{columns.map((column, i) => (

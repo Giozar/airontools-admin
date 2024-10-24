@@ -1,22 +1,25 @@
+import '@components/css/Info.css';
 const Info = ({
 	title,
 	info,
 	titleClass,
 	infoClass,
+	noinfoClass,
 }: {
 	title: string;
 	info?: string;
 	titleClass?: string;
 	infoClass?: string;
+	noinfoClass?: string;
 }) => {
 	return (
 		<>
 			{info ? (
-				<p className={titleClass || ''}>
-					<strong>{title}:</strong> {info}
+				<p className={infoClass || 'info'}>
+					<strong className={titleClass || 'title'}>{title}:</strong> {info}
 				</p>
 			) : (
-				<p className={infoClass || ''}>No hay {title} disponible</p>
+				<p className={noinfoClass || 'no-info'}>No hay {title} disponible</p>
 			)}
 		</>
 	);
