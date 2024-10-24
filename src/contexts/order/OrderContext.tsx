@@ -34,7 +34,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 		authorizationDate: new Date(),
 		deliveryDate: new Date(),
 		observations: '',
-		images: [] as string[],
+		imageUrl: '',
 		imageRemoved: '',
 		imageRaw: null as File | null,
 		receivedBy: '',
@@ -62,7 +62,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	const [observations, setObservations] = useState<string>(
 		initialState.observations,
 	);
-	const [images, setImages] = useState<string[]>(initialState.images);
+	const [imageUrl, setImageUrl] = useState<string>(initialState.imageUrl);
 	const [imageRemoved, setImageRemoved] = useState<string>(
 		initialState.imageRemoved,
 	);
@@ -94,7 +94,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 		setAuthorizationDate(initialState.authorizationDate);
 		setDeliveryDate(initialState.deliveryDate);
 		setObservations(initialState.observations);
-		setImages(initialState.images);
+		setImageUrl(initialState.imageUrl);
 		setImageRaw(initialState.imageRaw);
 		setImageRemoved(initialState.imageRemoved);
 		setReceivedBy(initialState.receivedBy);
@@ -127,8 +127,8 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 				setProducts,
 				observations,
 				setObservations,
-				images,
-				setImages,
+				imageUrl,
+				setImageUrl,
 				imageRaw,
 				setImageRaw,
 				imageRemoved,

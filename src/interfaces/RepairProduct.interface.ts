@@ -7,7 +7,7 @@ export interface RepairProduct {
 	serialNumber?: string;
 	description: string;
 	quantity: number;
-	images?: string[];
+	imageUrl?: string;
 	observation?: string;
 	rawImage?: File | null;
 }
@@ -19,7 +19,7 @@ export interface CreateRepairProduct {
 	serialNumber?: string;
 	description: string;
 	quantity: number;
-	images?: string[];
+	imageUrl?: string;
 	observation?: string;
 }
 
@@ -31,7 +31,7 @@ export interface UpdateRepairProduct {
 	serialNumber?: string;
 	description?: string;
 	quantity?: number;
-	images?: string[];
+	imageUrl?: string;
 	observation?: string;
 }
 
@@ -48,8 +48,8 @@ export interface RepairProductContextProps {
 	setDescription: (value: string) => void;
 	quantity: number;
 	setQuantity: (value: number) => void;
-	images?: string[];
-	setImages: (value: string[]) => void;
+	imageUrl?: string;
+	setImageUrl: (value: string) => void;
 	observation: string;
 	setObservation: (value: string) => void;
 }

@@ -6,7 +6,7 @@ interface UseSingleFileInputParams {
 
 interface UseSingleUrlInputParams {
 	url: string | null;
-	setUrl: (value: string | null) => void;
+	setUrl: (value: string) => void;
 	urlRemoved: string | null;
 	setUrlRemoved: (value: string) => void;
 }
@@ -43,7 +43,7 @@ export default function useSingleFileInput() {
 		setUrlRemoved,
 	}: UseSingleUrlInputParams) => {
 		if (url) {
-			setUrl(null);
+			setUrl('');
 			setUrlRemoved(url);
 		}
 	};

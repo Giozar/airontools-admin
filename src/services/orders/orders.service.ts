@@ -95,16 +95,16 @@ export async function deleteOrderService(id: string) {
 
 export async function uploadOrderUrlImagesService({
 	orderId,
-	imageUrls,
+	imageUrl,
 }: {
 	orderId: string;
-	imageUrls: string[];
+	imageUrl: string;
 }) {
 	try {
 		const orderUpdated = await axios.patch(
 			airontoolsAPI + '/orders/' + orderId,
 			{
-				images: imageUrls,
+				imageUrl,
 			},
 		);
 		return orderUpdated;

@@ -8,7 +8,7 @@ interface SingleFileInputProps {
 	file: File | null;
 	setFile: (value: File | null) => void;
 	url: string | null;
-	setUrl: (value: string | null) => void;
+	setUrl: (value: string) => void;
 	urlRemoved: string;
 	setUrlRemoved: (value: string) => void;
 	size?: string;
@@ -63,7 +63,7 @@ export default function SingleImageInput({
 			const objectUrl = URL.createObjectURL(file);
 			return () => URL.revokeObjectURL(objectUrl); // Cleanup object URL
 		}
-	}, [file, previewUrl]);
+	}, [file, previewUrl, url]);
 
 	return (
 		<div>

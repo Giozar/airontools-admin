@@ -8,12 +8,17 @@ export enum OrderType {
 }
 
 export enum OrderStatus {
+	ENTERED = 'Ingresado',
+	UNDER_REVIEW = 'En revisión',
+	ACCEPTED = 'Aceptada',
 	PENDING = 'Pendiente',
 	IN_PROGRESS = 'En progreso',
-	COMPLETED = 'Completado',
-	CANCELLED = 'Cancelado',
+	IN_PROCESS = 'En proceso',
 	ON_HOLD = 'En espera',
+	COMPLETED = 'Completado',
+	FINALIZED = 'Finalizado',
 	DELIVERED = 'Entregado',
+	CANCELLED = 'Cancelado',
 	REJECTED = 'Rechazado',
 }
 
@@ -25,7 +30,7 @@ export interface Order {
 	deliveryDate?: Date; //  Fecha de entrega del producto
 	quoteDeliveryTime: string; // Tiempo de entrega de la cotización
 	products: OrderProduct[]; // Array de productos
-	images: string[]; // Array de URLs de imágenes
+	imageUrl: string; // Array de URLs de imágenes
 	receivedBy: UserDataBackend; // ID de quien recibió la orden
 	deliveryRepresentative: string; // Nombre del representante de entrega
 	orderStatus: string; // Estado de la orden
@@ -53,7 +58,7 @@ export interface CreateOrder {
 	quoteDeliveryTime: string; // Tiempo de entrega de la cotización
 	products: OrderProduct[]; // Lista para id's de productos a reparar
 	observations?: string; // Observaciones generales (opcional)
-	images?: string[]; // URLs de las imágenes opcionales (opcional)
+	imageUrl?: string; // URLs de las imágenes opcionales (opcional)
 	receivedBy: string; // ID del empleado que recibe el producto
 	deliveryRepresentative: string; // Representante que entrega la herramienta
 	orderStatus: OrderStatus; // Estado de la orden
@@ -70,7 +75,7 @@ export interface UpdateOrder {
 	quoteDeliveryTime?: string; // Tiempo de entrega de la cotización
 	products?: OrderProduct[]; // Lista de productos a reparar (opcional)
 	observations?: string; // Observaciones generales (opcional)
-	images?: string[]; // URLs de las imágenes (opcional)
+	imageUrl?: string; // URLs de las imágenes (opcional)
 	receivedBy?: string; // ID del empleado que recibe el producto (opcional)
 	deliveryRepresentative?: string; // Representante que entrega la herramienta (opcional)
 	orderStatus?: OrderStatus; // Estado de la orden (opcional)
@@ -96,8 +101,8 @@ export interface OrderContextProps {
 	setProducts: (value: OrderProduct[]) => void; // Setter para actualizar la lista de productos
 	observations: string; // Observaciones generales
 	setObservations: (value: string) => void; // Setter para actualizar las observaciones
-	images: string[]; // URLs de las imágenes opcionales
-	setImages: (value: string[]) => void; // Setter para actualizar las imágenes
+	imageUrl: string; // URLs de las imágenes opcionales
+	setImageUrl: (value: string) => void; // Setter para actualizar las imágenes
 	imageRaw: File | null;
 	setImageRaw: (value: File | null) => void;
 	imageRemoved: string; // URLs de las imágenes opcionales
