@@ -1,6 +1,6 @@
 // Importing necessary components, hooks, and libraries
 import DownloadButtons from '@components/commons/DownloadButtons';
-import TableComponent from '@components/commons/DynamicTable';
+import TableComponent, { CellColor } from '@components/commons/DynamicTable';
 import CircularCheckbox from '@components/commons/form/CircularCheckbox';
 import LimitInput from '@components/commons/Pagination/LimitInput';
 import Pagination from '@components/commons/Pagination/Pagination';
@@ -61,9 +61,43 @@ export default function RepairOrderList() {
 		}
 	};
 
+	// Función que determina el color de la fila basado en el estado de la orden
+	const getCellColor = (rowIndex: number, colIndex: number) => {
+		const statusColumnIndex = 1; // Índice de la columna de 'Estado'
+		if (colIndex === statusColumnIndex) {
+			const orderStatus = orders[rowIndex].orderStatus;
+			switch (orderStatus) {
+				case 'Pendiente':
+					return CellColor.WARNING;
+				case 'Completado':
+					return CellColor.SUCCESS;
+				case 'Cancelado':
+					return CellColor.ERROR;
+				default:
+					return CellColor.NEUTRAL;
+			}
+		}
+		return CellColor.NONE;
+	};
+
 	const tableData = {
-		headers: ['Order No.', 'Fecha', 'Cliente', 'Recibido por', 'PDF', ''],
+		headers: [
+			'',
+			'Estado',
+			'Order No.',
+			'Fecha',
+			'Cliente',
+			'Recibido por',
+			'PDF',
+		],
 		rows: orders.map(order => [
+			<CircularCheckbox
+				key={`check-${order._id}`}
+				id={`check-${order._id}`}
+				checked={checkedRows.includes(order._id)}
+				onChange={() => handleToggleCheck(order._id)}
+			/>,
+			order.orderStatus, //si es Pendiente cambiar el color
 			`AT${order.control || 'N/A'}`,
 			order.createdAt
 				? new Date(order.createdAt).toLocaleDateString()
@@ -78,12 +112,6 @@ export default function RepairOrderList() {
 			>
 				<PDFIcon />
 			</a>,
-			<CircularCheckbox
-				key={`check-${order._id}`}
-				id={`check-${order._id}`}
-				checked={checkedRows.includes(order._id)}
-				onChange={() => handleToggleCheck(order._id)}
-			/>,
 		]),
 	};
 
@@ -109,10 +137,10 @@ export default function RepairOrderList() {
 					)}
 				</div>
 			</div>
-
 			<TableComponent
 				data={tableData}
 				setSelectedRow={(index: number) => handleToggleCheck(orders[index]._id)}
+				getCellColor={getCellColor}
 			/>
 			<Pagination totalPages={totalPages} setCurrentPage={setPage} />
 		</>

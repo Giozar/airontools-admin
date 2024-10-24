@@ -13,7 +13,9 @@
 .table__head {
 	background-color: var(--accent-primary);
 }
-
+.table__row.selected {
+	background-color: blueviolet;
+}
 .table__row,
 .table__row--vertical {
 	transition: background-color 0.3s;
@@ -86,4 +88,30 @@
 	.table__cell--vertical {
 		display: block;
 	}
+}
+
+.table__cell.neutral,
+.table__row.neutral {
+	background-color: var(--neutral);
+	color: var(--text-primary);
+}
+.table__cell.success,
+.table__row.success {
+	background-color: var(--success);
+	color: var(--text-primary);
+}
+.table__cell.error,
+.table__row.error {
+	background-color: var(--error);
+	color: var(--text-primary);
+}
+.table__cell.warning,
+.table__row.warning {
+	background-color: var(--warning);
+	color: var(--text-primary);
+}
+.table__cell.info,
+.table__row.info {
+	background-color: var(--info);
+	color: var(--text-primary);
 }
