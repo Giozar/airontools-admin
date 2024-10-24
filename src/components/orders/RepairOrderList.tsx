@@ -107,6 +107,7 @@ export default function RepairOrderList() {
 								selectedOrder =>
 									`${airontoolsAPI}/basic-reports/repair-order/${selectedOrder}`,
 							)}
+							names={checkedRows.map(selectedOrder => `${selectedOrder}`)}
 						/>
 					)}
 				</div>
