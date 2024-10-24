@@ -1,3 +1,4 @@
+import Info from '@components/commons/Info';
 import SingleImageChange from '@components/commons/SingleImageChange';
 import TextAreaInput from '@components/commons/TextAreaInput';
 import WebcamCapture from '@components/commons/WebcamCaptureC';
@@ -26,12 +27,12 @@ export default function DiagnosticRowComponent({ index }: RowComponentProps) {
 	// You need to define webcamError, imageUrl, imageRaw, setImageRaw, setImageUrl, setImageRemoved, and imageRemoved
 
 	const columns = [
-		<p key='quantity'>Cantidad: {quantity}</p>,
-		<p key='brand'>Marca: {brand}</p>,
-		<p key='model'>Modelo: {model}</p>,
-		<p key='serialNumber'>Número de serie: {serialNumber}</p>,
-		<p key='description'>Descripción: {description}</p>,
-		<p key='observation'>Observación: {observation}</p>,
+		<Info title={'Cantidad'} info={quantity.toString()} />,
+		<Info title={'Marca'} info={brand} />,
+		<Info title={'Modelo'} info={model} />,
+		<Info title={'Número de serie'} info={serialNumber} />,
+		<Info title={'Descripción'} info={description} />,
+		<Info title={'Observación'} info={observation} />,
 		<TextAreaInput
 			id='diagnostico'
 			label='Diagnóstico'

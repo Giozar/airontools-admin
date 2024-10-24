@@ -3,11 +3,19 @@ import { TableData } from '@interfaces/TableData.interface';
 
 // Enum para los colores disponibles
 export enum CellColor {
-	NEUTRAL = 'neutral',
-	SUCCESS = 'success',
-	ERROR = 'error',
-	WARNING = 'warning',
-	INFO = 'info',
+	NEUTRAL = 'neutral', // Neutro
+	ENTERED = 'entered', // Azul claro
+	UNDER_REVIEW = 'under-review', // Amarillo
+	ACCEPTED = 'accepted', // Verde
+	PENDING = 'pending', // Naranja
+	IN_PROGRESS = 'in-progress', // Azul
+	IN_PROCESS = 'in-process', // Verde claro
+	ON_HOLD = 'on-hold', // Gris
+	COMPLETED = 'completed', // Verde oscuro
+	FINALIZED = 'finalized', // Verde
+	DELIVERED = 'delivered', // Azul
+	CANCELLED = 'cancelled', // Rojo
+	REJECTED = 'rejected', // Rojo oscuro
 	NONE = '',
 }
 

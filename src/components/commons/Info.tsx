@@ -1,12 +1,22 @@
-const Info = ({ title, info }: { title: string; info?: string }) => {
+const Info = ({
+	title,
+	info,
+	titleClass,
+	infoClass,
+}: {
+	title: string;
+	info?: string;
+	titleClass?: string;
+	infoClass?: string;
+}) => {
 	return (
 		<>
 			{info ? (
-				<p>
+				<p className={titleClass || ''}>
 					<strong>{title}:</strong> {info}
 				</p>
 			) : (
-				<p>No hay {title} disponible</p>
+				<p className={infoClass || ''}>No hay {title} disponible</p>
 			)}
 		</>
 	);

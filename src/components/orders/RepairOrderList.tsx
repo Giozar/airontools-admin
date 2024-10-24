@@ -9,10 +9,12 @@ import Searchbar from '@components/search/Searchbar';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import useDebounce from '@hooks/search/useDebounce';
+import { OrderStatus } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useOrders from './hooks/useOrders';
 import './repairOrderlist.css';
+
 // Main component for displaying repair orders list
 export default function RepairOrderList() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -69,12 +71,28 @@ export default function RepairOrderList() {
 		if (colIndex === statusColumnIndex) {
 			const orderStatus = orders[rowIndex].orderStatus;
 			switch (orderStatus) {
-				case 'Pendiente':
-					return CellColor.WARNING;
-				case 'Completado':
-					return CellColor.SUCCESS;
-				case 'Cancelado':
-					return CellColor.ERROR;
+				case OrderStatus.PENDING:
+					return CellColor.PENDING;
+				case OrderStatus.ACCEPTED:
+					return CellColor.ACCEPTED;
+				case OrderStatus.CANCELLED:
+					return CellColor.CANCELLED;
+				case OrderStatus.COMPLETED:
+					return CellColor.COMPLETED;
+				case OrderStatus.DELIVERED:
+					return CellColor.DELIVERED;
+				case OrderStatus.ENTERED:
+					return CellColor.ENTERED;
+				case OrderStatus.FINALIZED:
+					return CellColor.FINALIZED;
+				case OrderStatus.IN_PROCESS:
+					return CellColor.IN_PROCESS;
+				case OrderStatus.ON_HOLD:
+					return CellColor.ON_HOLD;
+				case OrderStatus.REJECTED:
+					return CellColor.REJECTED;
+				case OrderStatus.UNDER_REVIEW:
+					return CellColor.UNDER_REVIEW;
 				default:
 					return CellColor.NEUTRAL;
 			}
