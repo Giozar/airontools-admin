@@ -11,6 +11,7 @@ import { airontoolsAPI } from '@configs/api.config';
 import useDebounce from '@hooks/search/useDebounce';
 import { useEffect, useState } from 'react';
 import useOrders from './hooks/useOrders';
+import './repairOrderlist.css';
 // Main component for displaying repair orders list
 export default function RepairOrderList() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -88,15 +89,10 @@ export default function RepairOrderList() {
 
 	return (
 		<>
-			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+			<div className='repair-order-list'>
 				<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
 				<LimitInput limit={limit} setLimit={setLimit} />
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'space-between',
-					}}
-				>
+				<div className='repair-order-list-item'>
 					<SelectShowAll
 						currentPageCount={Math.min(limit, totalOrders)}
 						searchResultCount={totalOrders}

@@ -1,0 +1,11 @@
+.repair-order-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.repair-order-list-item {
+	display: flex;
+	justify-content: center;
+}
