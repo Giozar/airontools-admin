@@ -23,6 +23,11 @@
 	width: 24px;
 	height: 24px;
 }
+.checkbox-wrapper-15 .cbx span:last-child {
+	position: relative;
+	vertical-align: middle;
+	margin: 0 0.5rem;
+}
 
 .checkbox-wrapper-15 .cbx span:first-child svg {
 	position: absolute;
