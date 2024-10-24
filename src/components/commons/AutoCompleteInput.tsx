@@ -68,6 +68,25 @@ export default function Autocomplete({
 		}
 	}, [options, searchValue, onChange]);
 
+	useEffect(() => {
+		if (searchValue.trim() === '') {
+			setIsNewValue(false);
+			return;
+		}
+
+		const exactMatch = options.find(
+			option =>
+				option.name.trim().toLowerCase() === searchValue.trim().toLowerCase(),
+		);
+
+		if (exactMatch) {
+			setIsNewValue(false);
+		} else {
+			setIsNewValue(true);
+			onChange(searchValue); // Llama a onChange con el valor actual
+		}
+	}, [options, searchValue]);
+
 	// Maneja clics fuera del componente
 	const handleDocumentClick = (event: MouseEvent) => {
 		if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
@@ -175,6 +194,7 @@ export default function Autocomplete({
 			<br />
 			<em
 				style={{
+					height: ' 10px ',
 					margin: '0',
 					marginTop: '-0.5rem',
 					color: 'var(--warning)',
