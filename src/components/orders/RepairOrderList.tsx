@@ -29,10 +29,11 @@ export default function RepairOrderList() {
 	useEffect(() => {
 		debouncedFetch(searchTerm);
 	}, [searchTerm, debouncedFetch]);
-
+	useEffect(() => {
+		setCheckedRows([]);
+	}, [limit]);
 	// Maneja la selección/deselección de filas y checkboxes
 	const handleToggleCheck = (orderId: string) => {
-		console.log(orderId, checkedRows.includes(orderId));
 		if (checkedRows.includes(orderId)) {
 			setCheckedRows(checkedRows.filter(id => id !== orderId));
 		} else {

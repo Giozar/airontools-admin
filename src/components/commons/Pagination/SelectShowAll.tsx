@@ -1,5 +1,5 @@
 import '@components/css/selectShowAll.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CircularCheckbox from '../form/CircularCheckbox';
 
 interface SelectShowAllProps {
@@ -14,7 +14,10 @@ export default function SelectShowAll({
 }: SelectShowAllProps) {
 	const [isCurrentPageSelected, setIsCurrentPageSelected] = useState(false);
 	const [isAllResultsSelected, setIsAllResultsSelected] = useState(false);
-
+	useEffect(() => {
+		setIsCurrentPageSelected(false);
+		if (currentPageCount < searchResultCount) setIsAllResultsSelected(false);
+	}, [currentPageCount]);
 	const handleCheckboxChange = (type: 'clear' | 'current' | 'all') => {
 		switch (type) {
 			case 'current':
