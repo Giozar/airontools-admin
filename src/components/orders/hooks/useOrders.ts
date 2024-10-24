@@ -2,7 +2,7 @@
 import { ErrorResponse } from '@interfaces/ErrorResponse';
 import { Order } from '@interfaces/Order.interface';
 import { searchOrdersServices } from '@services/orders/orders.service';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function useOrders() {
 	const [orders, setOrders] = useState<Order[]>([]);
@@ -31,6 +31,10 @@ export default function useOrders() {
 		},
 		[limit, page],
 	);
+
+	useEffect(() => {
+		fetchOrders('');
+	}, [limit, page, fetchOrders]);
 
 	return {
 		orders,
