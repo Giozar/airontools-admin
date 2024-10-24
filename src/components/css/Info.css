@@ -1,0 +1,19 @@
+.title {
+	margin-bottom: 0.5rem;
+	color: var(--text-primary);
+	font-weight: bold;
+}
+
+.info {
+	color: var(--text-secondary);
+}
+
+.no-info {
+	margin-top: 0.5rem;
+	color: var(--neutral);
+	font-style: italic;
+}
+
+.info.no-margin {
+	margin: 0;
+}

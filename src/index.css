@@ -38,6 +38,19 @@
 	--neutral: #34495e;
 
 	--add: #115a37;
+
+	--color-entered: #007bff; /* Azul claro */
+	--color-under-review: #ffc107; /* Amarillo */
+	--color-accepted: #28a745; /* Verde */
+	--color-pending: var(--warning); /* Naranja */
+	--color-in-progress: #007bff; /* Azul */
+	--color-in-process: #69aa7e; /* Verde claro */
+	--color-on-hold: #6c757d; /* Gris */
+	--color-completed: #155724; /* Verde oscuro */
+	--color-finalized: #292929; /* Verde */
+	--color-delivered: #007bff; /* Azul */
+	--color-cancelled: #b92938; /* Rojo */
+	--color-rejected: #470d13; /* Rojo oscuro */
 }
 .dark-theme {
 	/* Colores principales */

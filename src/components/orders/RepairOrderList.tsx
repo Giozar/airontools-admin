@@ -1,6 +1,6 @@
 // Importing necessary components, hooks, and libraries
 import DownloadButtons from '@components/commons/DownloadButtons';
-import TableComponent from '@components/commons/DynamicTable';
+import TableComponent, { CellColor } from '@components/commons/DynamicTable';
 import CircularCheckbox from '@components/commons/form/CircularCheckbox';
 import LimitInput from '@components/commons/Pagination/LimitInput';
 import Pagination from '@components/commons/Pagination/Pagination';
@@ -9,9 +9,12 @@ import Searchbar from '@components/search/Searchbar';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import useDebounce from '@hooks/search/useDebounce';
+import { OrderStatus } from '@interfaces/Order.interface';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useOrders from './hooks/useOrders';
 import './repairOrderlist.css';
+
 // Main component for displaying repair orders list
 export default function RepairOrderList() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -26,6 +29,7 @@ export default function RepairOrderList() {
 		setLimit,
 	} = useOrders();
 	const { debouncedFetch } = useDebounce(fetchOrders, 300);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		debouncedFetch(searchTerm);
@@ -61,9 +65,61 @@ export default function RepairOrderList() {
 		}
 	};
 
+	// Función que determina el color de la fila basado en el estado de la orden
+	const getCellColor = (rowIndex: number, colIndex: number) => {
+		const statusColumnIndex = 1; // Índice de la columna de 'Estado'
+		if (colIndex === statusColumnIndex) {
+			const orderStatus = orders[rowIndex].orderStatus;
+			switch (orderStatus) {
+				case OrderStatus.PENDING:
+					return CellColor.PENDING;
+				case OrderStatus.ACCEPTED:
+					return CellColor.ACCEPTED;
+				case OrderStatus.CANCELLED:
+					return CellColor.CANCELLED;
+				case OrderStatus.COMPLETED:
+					return CellColor.COMPLETED;
+				case OrderStatus.DELIVERED:
+					return CellColor.DELIVERED;
+				case OrderStatus.ENTERED:
+					return CellColor.ENTERED;
+				case OrderStatus.FINALIZED:
+					return CellColor.FINALIZED;
+				case OrderStatus.IN_PROCESS:
+					return CellColor.IN_PROCESS;
+				case OrderStatus.ON_HOLD:
+					return CellColor.ON_HOLD;
+				case OrderStatus.REJECTED:
+					return CellColor.REJECTED;
+				case OrderStatus.UNDER_REVIEW:
+					return CellColor.UNDER_REVIEW;
+				default:
+					return CellColor.NEUTRAL;
+			}
+		}
+		return CellColor.NONE;
+	};
+
 	const tableData = {
-		headers: ['Order No.', 'Fecha', 'Cliente', 'Recibido por', 'PDF', ''],
+		headers: [
+			'',
+			'Estado',
+			'Order No.',
+			'Fecha',
+			'Cliente',
+			'Recibido por',
+			'PDF',
+			'Diagnóstico',
+		],
 		rows: orders.map(order => [
+			/*TODO: solo el Administrador podra ver el select */
+			<CircularCheckbox
+				key={`check-${order._id}`}
+				id={`check-${order._id}`}
+				checked={checkedRows.includes(order._id)}
+				onChange={() => handleToggleCheck(order._id)}
+			/>,
+			order.orderStatus, //si es Pendiente cambiar el color
 			`AT${order.control || 'N/A'}`,
 			order.createdAt
 				? new Date(order.createdAt).toLocaleDateString()
@@ -78,12 +134,13 @@ export default function RepairOrderList() {
 			>
 				<PDFIcon />
 			</a>,
-			<CircularCheckbox
-				key={`check-${order._id}`}
-				id={`check-${order._id}`}
-				checked={checkedRows.includes(order._id)}
-				onChange={() => handleToggleCheck(order._id)}
-			/>,
+			/*TODO: solo el técnico y el admin podrá ver el botón de diagnóstico */
+			<button
+				type='button'
+				onClick={() => navigate(`diagnostico/${order._id}`)}
+			>
+				Dar <br></br>diagnóstico
+			</button>,
 		]),
 	};
 
@@ -92,6 +149,7 @@ export default function RepairOrderList() {
 			<div className='repair-order-list'>
 				<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
 				<LimitInput limit={limit} setLimit={setLimit} />
+				{/*TODO: solo el Administrador podra ver lo del pdf */}
 				<div className='repair-order-list-item'>
 					<SelectShowAll
 						currentPageCount={Math.min(limit, totalOrders)}
@@ -109,10 +167,10 @@ export default function RepairOrderList() {
 					)}
 				</div>
 			</div>
-
 			<TableComponent
 				data={tableData}
 				setSelectedRow={(index: number) => handleToggleCheck(orders[index]._id)}
+				getCellColor={getCellColor}
 			/>
 			<Pagination totalPages={totalPages} setCurrentPage={setPage} />
 		</>

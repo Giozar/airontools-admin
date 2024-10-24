@@ -13,7 +13,9 @@
 .table__head {
 	background-color: var(--accent-primary);
 }
-
+.table__row.selected {
+	background-color: blueviolet;
+}
 .table__row,
 .table__row--vertical {
 	transition: background-color 0.3s;
@@ -86,4 +88,84 @@
 	.table__cell--vertical {
 		display: block;
 	}
+}
+
+.table__cell.neutral,
+.table__row.neutral {
+	background-color: var(--color-neutral);
+	color: var(
+		--text-primary
+	); /* Ajusta el color del texto según sea necesario */
+}
+
+.table__cell.entered,
+.table__row.entered {
+	background-color: var(--color-entered);
+	color: var(--text-primary);
+}
+
+.table__cell.under-review,
+.table__row.under-review {
+	background-color: var(--color-under-review);
+	color: var(--text-primary);
+}
+
+.table__cell.accepted,
+.table__row.accepted {
+	background-color: var(--color-accepted);
+	color: var(--text-primary);
+}
+
+.table__cell.pending,
+.table__row.pending {
+	background-color: var(--color-pending);
+	color: var(--text-primary);
+}
+
+.table__cell.in-progress,
+.table__row.in-progress {
+	background-color: var(--color-in-progress);
+	color: var(--text-primary);
+}
+
+.table__cell.in-process,
+.table__row.in-process {
+	background-color: var(--color-in-process);
+	color: var(--text-primary);
+}
+
+.table__cell.on-hold,
+.table__row.on-hold {
+	background-color: var(--color-on-hold);
+	color: var(--text-primary);
+}
+
+.table__cell.completed,
+.table__row.completed {
+	background-color: var(--color-completed);
+	color: var(--text-primary);
+}
+
+.table__cell.finalized,
+.table__row.finalized {
+	background-color: var(--color-finalized);
+	color: var(--text-primary);
+}
+
+.table__cell.delivered,
+.table__row.delivered {
+	background-color: var(--color-delivered);
+	color: var(--text-primary);
+}
+
+.table__cell.cancelled,
+.table__row.cancelled {
+	background-color: var(--color-cancelled);
+	color: var(--text-primary);
+}
+
+.table__cell.rejected,
+.table__row.rejected {
+	background-color: var(--color-rejected);
+	color: var(--text-primary);
 }

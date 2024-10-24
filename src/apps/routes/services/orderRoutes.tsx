@@ -4,6 +4,7 @@ import { OrderProvider } from '@contexts/order/OrderContext';
 import { OtherProductProvider } from '@contexts/otherProduct/OtherProductContext';
 import { RepairProductProvider } from '@contexts/repairProduct/RepairProductContext';
 import EditOrderRedirect from '@pages/Redirects/EditOrderRedirect';
+import CreateDiagnosticPage from '@pages/repairOrderPages/CreateDiagnosticPage';
 import CreateRepairOrderPage from '@pages/repairOrderPages/CreateRepairOrderPage';
 import EditRepairOrderPage from '@pages/repairOrderPages/EditRepairOrderPage';
 import RepairOrderMenuPage from '@pages/repairOrderPages/RepairOrderMenuPage';
@@ -41,6 +42,31 @@ export const createEditOrderRoutes = () => [
 								<RepairProductProvider>
 									<CustomerProvider>
 										<EditRepairOrderPage />
+									</CustomerProvider>
+								</RepairProductProvider>
+							</OtherProductProvider>
+						</CompanyProvider>
+					</OrderProvider>
+				),
+			},
+		],
+	},
+	{
+		path: 'diagnostico',
+		element: <EditOrderRedirect />,
+	},
+	{
+		path: 'diagnostico',
+		children: [
+			{
+				path: ':orderId',
+				element: (
+					<OrderProvider>
+						<CompanyProvider>
+							<OtherProductProvider>
+								<RepairProductProvider>
+									<CustomerProvider>
+										<CreateDiagnosticPage />
 									</CustomerProvider>
 								</RepairProductProvider>
 							</OtherProductProvider>
