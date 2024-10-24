@@ -1,0 +1,29 @@
+.select-all {
+	margin: 1rem 0;
+	margin-right: 0.5rem;
+	font-family: Arial, sans-serif;
+}
+
+.select-all__title {
+	margin-bottom: 0.5rem;
+	font-size: 1.2rem;
+}
+
+.select-all__options {
+	display: flex;
+	flex-direction: column;
+}
+
+.select-all__option {
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.5rem;
+}
+
+.select-all__input {
+	margin-right: 0.5rem;
+}
+
+.select-all__label {
+	font-size: 1rem;
+}

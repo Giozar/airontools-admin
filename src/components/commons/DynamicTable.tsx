@@ -3,9 +3,14 @@ import { TableData } from '@interfaces/TableData.interface';
 interface TableComponentProps {
 	data: TableData;
 	vertical?: boolean;
+	setSelectedRow?: (index: number) => void;
 }
 
-const TableComponent = ({ data, vertical }: TableComponentProps) => {
+const TableComponent = ({
+	data,
+	vertical,
+	setSelectedRow,
+}: TableComponentProps) => {
 	return (
 		<div className='table'>
 			<table className='table__element'>
@@ -23,6 +28,7 @@ const TableComponent = ({ data, vertical }: TableComponentProps) => {
 						<tr
 							className={`table__row${vertical ? '--vertical' : ''}`}
 							key={rowIndex}
+							onClick={() => setSelectedRow?.(rowIndex)}
 						>
 							{row.map((cell, cellIndex) => (
 								<td

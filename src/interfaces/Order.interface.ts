@@ -37,6 +37,13 @@ export interface Order {
 	control: number;
 }
 
+export interface OrderPage {
+	data: Order[];
+	total: number;
+	totalPages: number;
+	page: number;
+}
+
 export interface CreateOrder {
 	customer: string; // ID del cliente relacionado
 	company?: string;
