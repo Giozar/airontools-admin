@@ -1,18 +1,18 @@
-import '@components/css/SelectAll.css';
+import '@components/css/Filters.css';
 import DownArrow from '@components/svg/DownArrow';
 import { useState } from 'react';
 
-interface SelectAllProps {
+interface FiltersProps {
 	currentPageCount: number;
 	searchResultCount: number;
-	handleSelectAll: (value: 'clear' | 'current' | 'all') => void;
+	handleFilters: (value: 'clear' | 'current' | 'all') => void;
 }
 
-export default function SelectAll({
+export default function Filters({
 	currentPageCount,
 	searchResultCount,
-	handleSelectAll,
-}: SelectAllProps) {
+	handleFilters,
+}: FiltersProps) {
 	// Estados para manejar el marcado de cada checkbox
 	const [isCustomSelected, setIsCustomSelected] = useState(true);
 	const [isCurrentPageSelected, setIsCurrentPageSelected] = useState(false);
@@ -23,25 +23,25 @@ export default function SelectAll({
 		switch (type) {
 			case 'custom':
 				if (isCustomSelected) {
-					handleSelectAll('clear'); // Si ya está marcado y se desmarca, limpiamos.
+					handleFilters('clear'); // Si ya está marcado y se desmarca, limpiamos.
 				} else {
-					handleSelectAll('clear'); // Reiniciar y aplicar lógica de personalizada según sea necesario.
+					handleFilters('clear'); // Reiniciar y aplicar lógica de personalizada según sea necesario.
 				}
 				setIsCustomSelected(!isCustomSelected); // Cambiar el estado del checkbox.
 				break;
 			case 'current':
 				if (isCurrentPageSelected) {
-					handleSelectAll('clear'); // Limpiar si se desmarca.
+					handleFilters('clear'); // Limpiar si se desmarca.
 				} else {
-					handleSelectAll('current'); // Seleccionar la página actual.
+					handleFilters('current'); // Seleccionar la página actual.
 				}
 				setIsCurrentPageSelected(!isCurrentPageSelected);
 				break;
 			case 'all':
 				if (isAllResultsSelected) {
-					handleSelectAll('clear'); // Limpiar si se desmarca.
+					handleFilters('clear'); // Limpiar si se desmarca.
 				} else {
-					handleSelectAll('all'); // Seleccionar todos los resultados.
+					handleFilters('all'); // Seleccionar todos los resultados.
 				}
 				setIsAllResultsSelected(!isAllResultsSelected);
 				break;

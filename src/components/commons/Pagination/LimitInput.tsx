@@ -1,5 +1,5 @@
 import '@components/css/LimitInput.css';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 interface LimitInputProps {
 	limit: number;
@@ -34,6 +34,9 @@ export default function LimitInput({ limit, setLimit }: LimitInputProps) {
 			setInputValue(limit.toString());
 		}
 	};
+	useEffect(() => {
+		setInputValue(limit.toString());
+	}, [limit]);
 
 	return (
 		<div className='limit-input'>

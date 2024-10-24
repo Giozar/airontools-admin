@@ -4,7 +4,7 @@ import TableComponent from '@components/commons/DynamicTable';
 import CircularCheckbox from '@components/commons/form/CircularCheckbox';
 import LimitInput from '@components/commons/Pagination/LimitInput';
 import Pagination from '@components/commons/Pagination/Pagination';
-import SelectAll from '@components/commons/Pagination/SelectAll';
+import SelectShowAll from '@components/commons/Pagination/SelectShowAll';
 import Searchbar from '@components/search/Searchbar';
 import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
@@ -15,8 +15,6 @@ import useOrders from './hooks/useOrders';
 export default function RepairOrderList() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [checkedRows, setCheckedRows] = useState<string[]>([]);
-	const [selectAll, setSelectAll] = useState(false);
-
 	const {
 		fetchOrders,
 		orders,
@@ -44,37 +42,21 @@ export default function RepairOrderList() {
 	const handleSelectCurrentPage = () => {
 		const currentPageOrderIds = orders.map(order => order._id);
 		setCheckedRows(currentPageOrderIds);
-		setSelectAll(false);
 	};
 
 	const handleSelectAll = (option: 'clear' | 'current' | 'all') => {
 		switch (option) {
 			case 'clear':
 				setCheckedRows([]);
-				setSelectAll(false);
 				break;
 			case 'current':
 				handleSelectCurrentPage();
 				break;
 			case 'all':
-				setSelectAll(true);
 				setLimit(totalOrders);
 				break;
 		}
 	};
-
-	useEffect(() => {
-		if (selectAll) {
-			// Asegurarse de seleccionar todas las órdenes cuando selectAll es true
-			const allOrderIds = orders.map(order => order._id);
-			setCheckedRows(allOrderIds);
-		}
-	}, [orders, selectAll]);
-
-	useEffect(() => {
-		const currentOrderIds = orders.map(order => order._id);
-		setCheckedRows(checkedRows.filter(id => currentOrderIds.includes(id)));
-	}, [limit, orders]);
 
 	const tableData = {
 		headers: ['Order No.', 'Fecha', 'Cliente', 'Recibido por', 'PDF', ''],
@@ -113,8 +95,8 @@ export default function RepairOrderList() {
 						justifyContent: 'space-between',
 					}}
 				>
-					<SelectAll
-						currentPageCount={Math.min(totalOrders, limit)}
+					<SelectShowAll
+						currentPageCount={Math.min(limit, totalOrders)}
 						searchResultCount={totalOrders}
 						handleSelectAll={handleSelectAll}
 					/>
