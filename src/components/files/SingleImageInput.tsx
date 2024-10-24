@@ -26,7 +26,7 @@ export default function SingleImageInput({
 	size = 'default',
 	capture,
 }: SingleFileInputProps) {
-	const { selectFile, removeFile, removeUrl, previewUrl } =
+	const { selectFile, removeFile, removeUrl, previewUrl, setPreviewUrl } =
 		useSingleFileInput();
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 	const [isHovering, setIsHovering] = useState(false); // Para manejar el hover
@@ -47,6 +47,7 @@ export default function SingleImageInput({
 
 	const handleRemoveFile = () => {
 		removeFile({ setFile });
+		setPreviewUrl(null); // Limpiar la vista previa de la imagen
 	};
 
 	const handleRemoveUrl = () => {
@@ -56,14 +57,26 @@ export default function SingleImageInput({
 			urlRemoved,
 			setUrlRemoved,
 		});
+		setPreviewUrl(null); // Limpiar la vista previa de la imagen
 	};
 
+	// Efecto para manejar la vista previa del archivo seleccionado
 	useEffect(() => {
-		if (file && !previewUrl) {
+		if (file) {
 			const objectUrl = URL.createObjectURL(file);
+			setPreviewUrl(objectUrl); // Establece la vista previa
 			return () => URL.revokeObjectURL(objectUrl); // Cleanup object URL
+		} else {
+			setPreviewUrl(null); // Limpiar la vista previa si no hay archivo
 		}
-	}, [file, previewUrl, url]);
+	}, [file, setPreviewUrl]);
+
+	// Limpiar la URL de la vista previa si se elimina la URL o el archivo
+	useEffect(() => {
+		if (!file && !url) {
+			setPreviewUrl(null); // Limpiar la vista previa si no hay archivo ni URL
+		}
+	}, [file, url, setPreviewUrl]);
 
 	return (
 		<div>
