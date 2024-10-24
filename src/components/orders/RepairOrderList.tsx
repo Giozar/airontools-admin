@@ -10,6 +10,7 @@ import PDFIcon from '@components/svg/PDFIcon';
 import { airontoolsAPI } from '@configs/api.config';
 import useDebounce from '@hooks/search/useDebounce';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useOrders from './hooks/useOrders';
 import './repairOrderlist.css';
 // Main component for displaying repair orders list
@@ -26,6 +27,7 @@ export default function RepairOrderList() {
 		setLimit,
 	} = useOrders();
 	const { debouncedFetch } = useDebounce(fetchOrders, 300);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		debouncedFetch(searchTerm);
@@ -114,8 +116,11 @@ export default function RepairOrderList() {
 			>
 				<PDFIcon />
 			</a>,
-			/*TODO: solo el técnico podrá ver el botón de diagnóstico */
-			<button type='button'>
+			/*TODO: solo el técnico y el admin podrá ver el botón de diagnóstico */
+			<button
+				type='button'
+				onClick={() => navigate(`diagnostico/${order._id}`)}
+			>
 				Dar <br></br>diagnóstico
 			</button>,
 		]),

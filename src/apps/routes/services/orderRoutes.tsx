@@ -50,6 +50,31 @@ export const createEditOrderRoutes = () => [
 			},
 		],
 	},
+	{
+		path: 'diagnostico',
+		element: <EditOrderRedirect />,
+	},
+	{
+		path: 'diagnostico',
+		children: [
+			{
+				path: ':orderId',
+				element: (
+					<OrderProvider>
+						<CompanyProvider>
+							<OtherProductProvider>
+								<RepairProductProvider>
+									<CustomerProvider>
+										<EditRepairOrderPage />
+									</CustomerProvider>
+								</RepairProductProvider>
+							</OtherProductProvider>
+						</CompanyProvider>
+					</OrderProvider>
+				),
+			},
+		],
+	},
 ];
 
 export const orderRoutes = () => [
