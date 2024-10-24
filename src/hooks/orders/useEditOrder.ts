@@ -26,7 +26,7 @@ export default function useEditOrder() {
 		receivedBy,
 		imageRaw,
 		setImageRaw,
-		setImages,
+		setImageUrl,
 		imageRemoved,
 		setImageRemoved,
 		_id,
@@ -71,29 +71,25 @@ export default function useEditOrder() {
 				console.log(imageRemoved);
 				await deleteFileService(imageRemoved);
 				setImageRemoved('');
-				setImages([]);
+				setImageUrl('');
 				await updateOrderService(_id, {
-					images: [],
+					imageUrl: '',
 				});
 			}
 
 			if (imageRaw) {
 				console.log('Subo archivo');
-				const imageUrls = await fileUpload({
+				const imageUrl = await fileUpload({
 					type: 'images',
 					feature: `orders/${_id}`,
 					file: imageRaw,
 					setFile: setImageRaw,
-					setFileUrl: (url: string) => {
-						if (setImages) {
-							setImages([url]);
-						}
-					},
+					setFileUrl: setImageUrl,
 				});
-				imageUrls &&
+				imageUrl &&
 					(await uploadOrderUrlImagesService({
 						orderId: _id,
-						imageUrls: [imageUrls],
+						imageUrl,
 					}));
 			}
 			setSuccess(true);
