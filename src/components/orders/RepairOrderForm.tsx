@@ -244,7 +244,11 @@ export default function RepairOrderForm({
 				/>
 			)}
 
-			<WebcamCapture setFile={setImageRaw} setError={setWebcamError} />
+			<WebcamCapture
+				fileUrl={imageUrl}
+				setFile={setImageRaw}
+				setError={setWebcamError}
+			/>
 			{false && (
 				<DateInput
 					label='Fecha de entrega'
