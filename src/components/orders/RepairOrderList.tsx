@@ -89,8 +89,10 @@ export default function RepairOrderList() {
 			'Cliente',
 			'Recibido por',
 			'PDF',
+			'Diagnóstico',
 		],
 		rows: orders.map(order => [
+			/*TODO: solo el Administrador podra ver el select */
 			<CircularCheckbox
 				key={`check-${order._id}`}
 				id={`check-${order._id}`}
@@ -112,6 +114,10 @@ export default function RepairOrderList() {
 			>
 				<PDFIcon />
 			</a>,
+			/*TODO: solo el técnico podrá ver el botón de diagnóstico */
+			<button type='button'>
+				Dar <br></br>diagnóstico
+			</button>,
 		]),
 	};
 
@@ -120,6 +126,7 @@ export default function RepairOrderList() {
 			<div className='repair-order-list'>
 				<Searchbar searchValue={searchTerm} onSearchChange={setSearchTerm} />
 				<LimitInput limit={limit} setLimit={setLimit} />
+				{/*TODO: solo el Administrador podra ver lo del pdf */}
 				<div className='repair-order-list-item'>
 					<SelectShowAll
 						currentPageCount={Math.min(limit, totalOrders)}
