@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface UseSingleFileInputParams {
 	setFile: (value: File | null) => void;
@@ -31,6 +31,9 @@ export default function useSingleFileInput() {
 	// Elimina el archivo y su previsualización del estado
 	const removeFile = ({ setFile }: UseSingleFileInputParams) => {
 		setFile(null);
+		if (previewUrl) {
+			URL.revokeObjectURL(previewUrl); // Limpieza de la URL creada
+		}
 		setPreviewUrl(null);
 		setFileName(null);
 	};
@@ -39,14 +42,23 @@ export default function useSingleFileInput() {
 	const removeUrl = ({
 		url,
 		setUrl,
-
 		setUrlRemoved,
 	}: UseSingleUrlInputParams) => {
 		if (url) {
-			setUrl('');
-			setUrlRemoved(url);
+			setUrl(''); // Limpiar la URL del estado
+			setUrlRemoved(url); // Guardar la URL eliminada (si es necesario)
 		}
+		setPreviewUrl(null); // Limpiar la vista previa
 	};
+
+	// Cleanup cuando el componente que usa el hook se desmonta
+	useEffect(() => {
+		return () => {
+			if (previewUrl) {
+				URL.revokeObjectURL(previewUrl); // Limpieza de la URL cuando el componente se desmonta
+			}
+		};
+	}, [previewUrl]);
 
 	return {
 		selectFile,
@@ -54,5 +66,6 @@ export default function useSingleFileInput() {
 		removeUrl,
 		previewUrl,
 		fileName,
+		setPreviewUrl, // Agregado para permitir el manejo manual desde otros componentes
 	};
 }
