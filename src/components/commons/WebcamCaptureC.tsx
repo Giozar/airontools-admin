@@ -6,9 +6,11 @@ interface CapturedImage {
 }
 
 export default function WebcamCapture({
+	fileUrl,
 	setFile,
 	setError,
 }: {
+	fileUrl: string;
 	setFile: (value: File | null) => void;
 	setError: (value: boolean) => void;
 }) {
@@ -19,6 +21,11 @@ export default function WebcamCapture({
 		file: null,
 		dataUrl: null,
 	});
+
+	// Si cambian el estado de la url de la imagen (cuando se sube la imagen), se limpia la imagen que se captura
+	useEffect(() => {
+		setCapturedImage({ file: null, dataUrl: null });
+	}, [fileUrl]);
 
 	useEffect(() => {
 		const startWebcam = async () => {
