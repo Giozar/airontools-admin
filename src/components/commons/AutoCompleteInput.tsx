@@ -194,6 +194,7 @@ export default function Autocomplete({
 			<br />
 			<em
 				style={{
+					height: ' 10px ',
 					margin: '0',
 					marginTop: '-0.5rem',
 					color: 'var(--warning)',
