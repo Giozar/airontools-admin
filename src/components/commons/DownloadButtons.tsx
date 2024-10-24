@@ -27,7 +27,7 @@ export default function DownloadButtons({
 			} else {
 				const zip = new JSZip();
 				responses.forEach((blob, index) => {
-					if (names) saveAs(blob, `${names[index]}.pdf`);
+					if (names) zip.file(`${names[index]}.pdf`, blob);
 					else zip.file(`archivo${index}.pdf`, blob);
 				});
 				const zipFile = await zip.generateAsync({ type: 'blob' });
