@@ -1,4 +1,6 @@
+import '@components/css/selectShowAll.css';
 import { useState } from 'react';
+import CircularCheckbox from '../form/CircularCheckbox';
 
 interface SelectShowAllProps {
 	currentPageCount: number;
@@ -36,32 +38,21 @@ export default function SelectShowAll({
 		}
 	};
 	return (
-		<>
-			<label htmlFor='FilterAll' className='availability-filter__label'>
-				<input
-					type='checkbox'
-					id='FilterAll'
-					className='availability-filter__checkbox'
-					checked={isAllResultsSelected}
-					onChange={() => handleCheckboxChange('all')}
-				/>
-				<span className='availability-filter__label-text'>
-					Mostrar todos ({searchResultCount})
-				</span>
-			</label>
-			<label htmlFor='FilterCurrent' className='availability-filter__label'>
-				<input
-					type='checkbox'
-					id='FilterCurrent'
-					className='availability-filter__checkbox'
-					checked={isCurrentPageSelected}
-					onChange={() => handleCheckboxChange('current')}
-				/>
-				<span className='availability-filter__label-text'>
-					Seleccionar todo ({currentPageCount})
-				</span>
-			</label>
-		</>
+		<div className='select-show-all'>
+			<CircularCheckbox
+				key={`FilterAll`}
+				id={`FilterAll`}
+				checked={isAllResultsSelected}
+				onChange={() => handleCheckboxChange('all')}
+				label={`Mostrar todos (${searchResultCount})`}
+			/>
+			<CircularCheckbox
+				key={'FilterCurrent'}
+				id={'FilterCurrent'}
+				checked={isCurrentPageSelected}
+				onChange={() => handleCheckboxChange('current')}
+				label={`Seleccionar todo (${currentPageCount})`}
+			/>
+		</div>
 	);
 }
-//Math.min(limit, totalOrders)

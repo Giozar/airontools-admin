@@ -1,10 +1,12 @@
 import '@components/css/CircularCheckbox.css';
+
 interface CircularCheckboxProps {
 	label?: string;
 	id: string;
 	checked: boolean;
 	onChange: (value: any) => void;
 }
+
 export default function CircularCheckbox({
 	label,
 	id,
@@ -21,7 +23,14 @@ export default function CircularCheckbox({
 				checked={checked}
 				onChange={onChange}
 			/>
-			<label className='cbx' htmlFor='cbx-15'>
+			<label
+				className='cbx'
+				htmlFor={id}
+				onClick={e => {
+					e.stopPropagation(); // Detener la propagación
+					onChange; // Cambiar el estado
+				}}
+			>
 				<span>
 					<svg width='12px' height='9px' viewBox='0 0 12 9'>
 						<polyline points='1 5 4 8 11 1'></polyline>
