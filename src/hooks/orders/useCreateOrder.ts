@@ -6,14 +6,18 @@ import { useCustomerContext } from '@contexts/customer/CustomerContext';
 import { useOrderContext } from '@contexts/order/OrderContext';
 import { CustomerType } from '@interfaces/Customer.interface';
 import { createCompanyService } from '@services/companies/companies.service';
-import { createCustomerService } from '@services/customers/customers.service';
+import {
+	createCustomerService,
+	getCustomerByIdService,
+} from '@services/customers/customers.service';
 import {
 	createOrderService,
 	uploadOrderUrlImagesService,
 } from '@services/orders/orders.service';
+import { useEffect } from 'react';
 
 export default function useCreateOrder() {
-	const { phoneNumber, customerType } = useCustomerContext();
+	const { phoneNumber, setPhoneNumber, customerType } = useCustomerContext();
 	const {
 		orderType,
 		orderStatus,
@@ -41,6 +45,19 @@ export default function useCreateOrder() {
 		.join('. '); // obten las observaciones de los productos
 
 	const isId = (part: string) => /[a-f0-9]{24}/.test(part); // Verifica si el part es un ID
+
+	useEffect(() => {
+		if (isId(customer)) {
+			const fetchCustomer = async () => {
+				const customerFound = await getCustomerByIdService(customer);
+				if (customerFound) {
+					setPhoneNumber(customerFound.phoneNumber);
+				}
+			};
+
+			fetchCustomer();
+		}
+	}, [customer]);
 
 	const createOrder = async (e: Event) => {
 		e.preventDefault();
