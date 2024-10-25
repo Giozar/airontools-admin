@@ -70,7 +70,7 @@ export default function RepairOrderForm({
 		.filter(observation => observation !== '')
 		.join('. '); // obten las observaciones de los productos
 
-	const { /* name: companyName, */ setName: setCompanyName } =
+	const { /* name: companyName, */ setName: setCompanyName, resetCompany } =
 		useCompanyContext();
 	const {
 		// name: customerName,
@@ -79,6 +79,7 @@ export default function RepairOrderForm({
 		setPhoneNumber,
 		customerType,
 		setCustomerType,
+		resetCustomer,
 	} = useCustomerContext();
 	const [webcamError, setWebcamError] = useState<boolean>(false);
 
@@ -131,6 +132,13 @@ export default function RepairOrderForm({
 	useEffect(() => {
 		if (customerType === 'Individual') {
 			setCompany('');
+			setCustomer('');
+			setPhoneNumber('');
+		}
+		if (customerType === 'Empresa') {
+			setCompany('');
+			setCustomer('');
+			setPhoneNumber('');
 		}
 	}, [customerType]);
 
